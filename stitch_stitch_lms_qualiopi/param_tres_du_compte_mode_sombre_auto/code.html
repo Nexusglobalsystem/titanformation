@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Paramètres du Compte | Kinetic LMS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Hanken+Grotesk:wght@600;700&amp;family=Geist:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-surface": "#d4e4fa",
+                    "on-surface-variant": "#c7c4d7",
+                    "on-tertiary-container": "#1f2a3c",
+                    "on-primary-fixed": "#07006c",
+                    "inverse-on-surface": "#233143",
+                    "surface-container-low": "#0d1c2d",
+                    "on-primary-container": "#0d0096",
+                    "tertiary-fixed-dim": "#bcc7de",
+                    "on-primary-fixed-variant": "#2f2ebe",
+                    "inverse-primary": "#494bd6",
+                    "surface": "#051424",
+                    "on-surface": "#d4e4fa",
+                    "surface-container": "#122131",
+                    "on-secondary": "#283044",
+                    "on-background": "#d4e4fa",
+                    "primary": "#c0c1ff",
+                    "surface-dim": "#051424",
+                    "surface-tint": "#c0c1ff",
+                    "on-secondary-container": "#adb4ce",
+                    "primary-fixed": "#e1e0ff",
+                    "on-tertiary": "#263143",
+                    "surface-variant": "#273647",
+                    "error-container": "#93000a",
+                    "surface-container-high": "#1c2b3c",
+                    "on-error-container": "#ffdad6",
+                    "tertiary": "#bcc7de",
+                    "secondary": "#bec6e0",
+                    "secondary-container": "#3f465c",
+                    "outline": "#908fa0",
+                    "on-secondary-fixed": "#131b2e",
+                    "on-secondary-fixed-variant": "#3f465c",
+                    "surface-container-lowest": "#010f1f",
+                    "on-primary": "#1000a9",
+                    "outline-variant": "#464554",
+                    "on-tertiary-fixed": "#111c2d",
+                    "on-tertiary-fixed-variant": "#3c475a",
+                    "secondary-fixed": "#dae2fd",
+                    "surface-container-highest": "#273647",
+                    "on-error": "#690005",
+                    "primary-container": "#8083ff",
+                    "secondary-fixed-dim": "#bec6e0",
+                    "tertiary-fixed": "#d8e3fb",
+                    "error": "#ffb4ab",
+                    "primary-fixed-dim": "#c0c1ff",
+                    "background": "#051424",
+                    "surface-bright": "#2c3a4c",
+                    "tertiary-container": "#8691a7"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "unit": "4px",
+                    "container-max": "1440px",
+                    "gutter": "24px",
+                    "margin-desktop": "40px",
+                    "margin-mobile": "16px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Hanken Grotesk"],
+                    "headline-md": ["Hanken Grotesk"],
+                    "headline-md-mobile": ["Hanken Grotesk"],
+                    "body-sm": ["Inter"],
+                    "body-base": ["Inter"],
+                    "label-mono": ["Geist"]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-md-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "body-base": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-mono": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass-sidebar { backdrop-filter: blur(12px); }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-tab {
+            box-shadow: inset 2px 0 0 0 #c0c1ff;
+        }
+        .dark .active-tab {
+            box-shadow: inset 2px 0 0 0 #c0c1ff;
+        }
+        input:focus { outline: none; border-color: #c0c1ff; box-shadow: 0 0 0 4px rgba(192, 193, 255, 0.1); }
+        .transition-all { transition: all 0.2s ease-in-out; }
+    </style>
+</head>
+<body class="bg-white dark:bg-background text-slate-900 dark:text-on-background min-h-screen transition-colors duration-300">
+<!-- SideNavBar Component -->
+<aside class="fixed left-0 top-0 h-full w-64 bg-slate-50 dark:bg-surface-container-lowest border-r border-slate-200 dark:border-outline-variant shadow-sm z-50 flex flex-col py-8 px-4 transition-all glass-sidebar">
+<div class="mb-10 px-2 flex items-center gap-3">
+<div class="w-10 h-10 bg-indigo-600 dark:bg-primary rounded-lg flex items-center justify-center text-white shadow-md">
+<span class="material-symbols-outlined">bolt</span>
+</div>
+<div>
+<h1 class="font-headline-md text-xl text-indigo-600 dark:text-primary leading-none">Kinetic LMS</h1>
+<p class="text-[12px] text-slate-500 dark:text-on-surface-variant/70">Gestion B2B</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-on-secondary-container hover:bg-slate-100 dark:hover:bg-surface-container-low transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-indigo-600 dark:group-hover:text-primary">dashboard</span>
+<span class="text-sm font-medium">Tableau de bord</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-on-secondary-container hover:bg-slate-100 dark:hover:bg-surface-container-low transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-indigo-600 dark:group-hover:text-primary">payments</span>
+<span class="text-sm font-medium">Budgets</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-on-secondary-container hover:bg-slate-100 dark:hover:bg-surface-container-low transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-indigo-600 dark:group-hover:text-primary">receipt_long</span>
+<span class="text-sm font-medium">Facturation</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-on-secondary-container hover:bg-slate-100 dark:hover:bg-surface-container-low transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-indigo-600 dark:group-hover:text-primary">credit_card</span>
+<span class="text-sm font-medium">Paiements</span>
+</a>
+<!-- Active Navigation -->
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-indigo-600 dark:text-primary font-bold border-l-4 border-indigo-600 dark:border-primary bg-indigo-50 dark:bg-primary-container/20 scale-[0.98] transition-transform" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm">Paramètres</span>
+</a>
+</nav>
+<div class="mt-auto pt-6 border-t border-slate-200 dark:border-outline-variant space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-on-secondary-container hover:bg-slate-100 dark:hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="text-sm">Aide</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-rose-600 dark:text-error hover:bg-rose-50 dark:hover:bg-error-container/20 transition-colors" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="text-sm">Déconnexion</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<div class="ml-64 min-h-screen flex flex-col">
+<!-- TopNavBar Component -->
+<header class="sticky top-0 w-full z-40 bg-white/70 dark:bg-surface/70 backdrop-blur-md border-b border-slate-200 dark:border-outline-variant flex justify-between items-center h-16 px-12 max-w-container-max mx-auto shadow-sm">
+<div class="flex items-center gap-4">
+<h2 class="text-lg font-bold text-slate-900 dark:text-on-surface">Gestion Budgétaire</h2>
+<nav class="hidden md:flex gap-6 ml-8">
+<a class="text-xs font-medium text-slate-500 dark:text-secondary hover:text-indigo-600 dark:hover:text-primary transition-opacity" href="#">Vue Globale</a>
+<a class="text-xs font-medium text-slate-500 dark:text-secondary hover:text-indigo-600 dark:hover:text-primary transition-opacity" href="#">Analytique</a>
+<a class="text-xs font-medium text-slate-500 dark:text-secondary hover:text-indigo-600 dark:hover:text-primary transition-opacity" href="#">Export</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative group">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-400 dark:text-outline text-lg">search</span>
+<input class="pl-10 pr-4 py-2 bg-slate-100 dark:bg-surface-container-low border-none rounded-full text-sm focus:ring-2 focus:ring-indigo-600/20 dark:focus:ring-primary/20 w-64 transition-all" placeholder="Rechercher..." type="text"/>
+</div>
+<div class="flex items-center gap-4 text-slate-500 dark:text-on-surface-variant">
+<button class="hover:opacity-80 transition-opacity" onclick="document.documentElement.classList.toggle('dark')">
+<span class="material-symbols-outlined">dark_mode</span>
+</button>
+<button class="hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity">
+<img alt="User profile" class="w-8 h-8 rounded-full object-cover ring-2 ring-indigo-600/10 dark:ring-primary/10" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDaEEB3N7ERIoIoJZV3HmRMi7L_Zu0sV659HxRehBVz0nX9PyyKsO6iFLnA-7cd_FjhdwelJ9GSFgP5YKUSkrF2ZvDu8ZjrlHyfeWlqD16_JZQ6ozP_aWAGohBCyuhMGBMOFy99PFsKwvYt8gHafaDuPP9HKsYAqOHIZPjzq4n6me4vHIeFHavBKOrktOqhR-H4TJUUYDhzo0gPtdl4tb9Hs_i1LBQA-tDCwd0AX4SI5LIFVOurwcqM"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="flex-1 px-12 py-8 max-w-container-max mx-auto w-full">
+<div class="flex flex-col md:flex-row gap-gutter">
+<!-- Vertical Settings Menu -->
+<nav class="w-full md:w-72 space-y-2">
+<button class="settings-tab-btn active w-full flex items-center gap-3 px-4 py-4 rounded-xl text-left bg-white dark:bg-surface-container-lowest shadow-sm border border-indigo-600 dark:border-primary transition-all active-tab" id="tab-btn-profil" onclick="switchTab('profil')">
+<span class="material-symbols-outlined text-indigo-600 dark:text-primary">domain</span>
+<div>
+<p class="text-sm font-bold text-slate-900 dark:text-on-surface">Profil Organisation</p>
+<p class="text-[11px] text-slate-500 dark:text-on-surface-variant opacity-70">Identité et coordonnées</p>
+</div>
+</button>
+<button class="settings-tab-btn w-full flex items-center gap-3 px-4 py-4 rounded-xl text-left bg-white dark:bg-surface-container-lowest border border-transparent hover:border-slate-200 dark:hover:border-outline-variant transition-all" id="tab-btn-notifications" onclick="switchTab('notifications')">
+<span class="material-symbols-outlined text-slate-400 dark:text-secondary">notifications_active</span>
+<div>
+<p class="text-sm font-medium text-slate-600 dark:text-on-surface">Notifications</p>
+<p class="text-[11px] text-slate-500 dark:text-on-surface-variant opacity-70">Alertes et communications</p>
+</div>
+</button>
+<button class="settings-tab-btn w-full flex items-center gap-3 px-4 py-4 rounded-xl text-left bg-white dark:bg-surface-container-lowest border border-transparent hover:border-slate-200 dark:hover:border-outline-variant transition-all" id="tab-btn-securite" onclick="switchTab('securite')">
+<span class="material-symbols-outlined text-slate-400 dark:text-secondary">security</span>
+<div>
+<p class="text-sm font-medium text-slate-600 dark:text-on-surface">Sécurité &amp; Accès</p>
+<p class="text-[11px] text-slate-500 dark:text-on-surface-variant opacity-70">MFA et mots de passe</p>
+</div>
+</button>
+<button class="settings-tab-btn w-full flex items-center gap-3 px-4 py-4 rounded-xl text-left bg-white dark:bg-surface-container-lowest border border-transparent hover:border-slate-200 dark:hover:border-outline-variant transition-all" id="tab-btn-integrations" onclick="switchTab('integrations')">
+<span class="material-symbols-outlined text-slate-400 dark:text-secondary">hub</span>
+<div>
+<p class="text-sm font-medium text-slate-600 dark:text-on-surface">Intégrations</p>
+<p class="text-[11px] text-slate-500 dark:text-on-surface-variant opacity-70">Connexions API et outils</p>
+</div>
+</button>
+</nav>
+<!-- Content Area -->
+<div class="flex-1 bg-white dark:bg-surface-container-lowest rounded-2xl border border-slate-200 dark:border-outline-variant shadow-sm p-8 min-h-[600px]">
+<!-- Section: Profil Organisation -->
+<div class="settings-content space-y-8 animate-in fade-in duration-500" id="content-profil">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-xl font-bold text-slate-900 dark:text-on-surface">Profil de l'Organisation</h3>
+<p class="text-sm text-slate-500 dark:text-on-surface-variant">Configurez les informations visibles sur vos factures et certificats.</p>
+</div>
+<button class="bg-indigo-600 dark:bg-primary text-white dark:text-on-primary px-6 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 dark:hover:bg-primary-container transition-colors shadow-md active:scale-95">Enregistrer</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-6 border-t border-slate-100 dark:border-outline-variant">
+<div class="space-y-6">
+<div class="flex flex-col gap-2">
+<label class="text-sm font-medium text-slate-700 dark:text-on-surface">Nom de l'entreprise</label>
+<input class="w-full px-4 py-2 bg-slate-50 dark:bg-background border border-slate-200 dark:border-outline-variant rounded-lg text-sm dark:text-on-background" type="text" value="Kinetic Global Services"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-sm font-medium text-slate-700 dark:text-on-surface">Adresse du siège</label>
+<textarea class="w-full px-4 py-2 bg-slate-50 dark:bg-background border border-slate-200 dark:border-outline-variant rounded-lg text-sm dark:text-on-background" rows="3">12 Rue de la Performance, 75008 Paris, France</textarea>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-sm font-medium text-slate-700 dark:text-on-surface">Contact Principal</label>
+<div class="flex gap-2">
+<input class="flex-1 px-4 py-2 bg-slate-50 dark:bg-background border border-slate-200 dark:border-outline-variant rounded-lg text-sm dark:text-on-background" type="text" value="Jean Dupont"/>
+<input class="flex-1 px-4 py-2 bg-slate-50 dark:bg-background border border-slate-200 dark:border-outline-variant rounded-lg text-sm dark:text-on-background" type="email" value="j.dupont@kinetic.com"/>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-center justify-center p-8 border-2 border-dashed border-slate-200 dark:border-outline-variant rounded-2xl bg-slate-50 dark:bg-surface-container-low group cursor-pointer hover:border-indigo-600 dark:hover:border-primary transition-colors">
+<div class="w-24 h-24 bg-slate-100 dark:bg-surface-container-highest rounded-xl flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-indigo-600 dark:text-primary text-4xl">upload_file</span>
+</div>
+<p class="text-sm font-medium text-slate-700 dark:text-on-surface">Charger le logo</p>
+<p class="text-[12px] text-slate-400 dark:text-on-surface-variant mt-1 text-center">PNG ou SVG. Max 2MB.<br/>Recommandé : 400x400px</p>
+</div>
+</div>
+</div>
+<!-- Section: Notifications -->
+<div class="settings-content hidden space-y-8 animate-in fade-in duration-500" id="content-notifications">
+<div>
+<h3 class="text-xl font-bold text-slate-900 dark:text-on-surface">Préférences de Notification</h3>
+<p class="text-sm text-slate-500 dark:text-on-surface-variant">Contrôlez quand et comment vous êtes informé des activités importantes.</p>
+</div>
+<div class="space-y-4 pt-6 border-t border-slate-100 dark:border-outline-variant">
+<div class="flex items-center justify-between p-4 bg-slate-50 dark:bg-background rounded-xl">
+<div class="flex gap-4 items-center">
+<span class="material-symbols-outlined text-indigo-600 dark:text-primary">payments</span>
+<div>
+<p class="text-sm font-bold text-slate-900 dark:text-on-surface">Alertes de facturation</p>
+<p class="text-[12px] text-slate-500 dark:text-on-surface-variant">Notifications lors de l'émission d'une facture ou d'un échec de paiement.</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-300 dark:bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600 dark:peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="flex items-center justify-between p-4 bg-slate-50 dark:bg-background rounded-xl">
+<div class="flex gap-4 items-center">
+<span class="material-symbols-outlined text-emerald-600 dark:text-tertiary">verified</span>
+<div>
+<p class="text-sm font-bold text-slate-900 dark:text-on-surface">Rappels de conformité (Qualiopi)</p>
+<p class="text-[12px] text-slate-500 dark:text-on-surface-variant">Alertes sur les documents manquants ou les audits à venir.</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-300 dark:bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600 dark:peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="flex items-center justify-between p-4 bg-slate-50 dark:bg-background rounded-xl">
+<div class="flex gap-4 items-center">
+<span class="material-symbols-outlined text-slate-400 dark:text-secondary">trending_up</span>
+<div>
+<p class="text-sm font-bold text-slate-900 dark:text-on-surface">Progression des apprenants</p>
+<p class="text-[12px] text-slate-500 dark:text-on-surface-variant">Rapport hebdomadaire sur le taux de complétion des modules.</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-300 dark:bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600 dark:peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+</div>
+<!-- Section: Sécurité -->
+<div class="settings-content hidden space-y-8 animate-in fade-in duration-500" id="content-securite">
+<div>
+<h3 class="text-xl font-bold text-slate-900 dark:text-on-surface">Sécurité &amp; Accès</h3>
+<p class="text-sm text-slate-500 dark:text-on-surface-variant">Gérez la sécurité de votre compte et surveillez les accès récents.</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 pt-6 border-t border-slate-100 dark:border-outline-variant">
+<div class="space-y-6">
+<div class="p-6 rounded-2xl bg-indigo-50 dark:bg-primary/5 border border-indigo-100 dark:border-primary/20">
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-indigo-600 dark:text-primary">vibration</span>
+<h4 class="text-sm font-bold text-slate-900 dark:text-on-surface">Authentification Forte (MFA)</h4>
+</div>
+<span class="px-3 py-1 bg-emerald-100 dark:bg-tertiary/10 text-emerald-700 dark:text-tertiary rounded-full text-[10px] font-bold uppercase tracking-wider">Activé</span>
+</div>
+<p class="text-[13px] text-slate-600 dark:text-on-surface-variant mb-4">Votre compte est protégé par une validation via Google Authenticator.</p>
+<button class="text-indigo-600 dark:text-primary text-xs font-semibold hover:underline">Modifier les paramètres MFA</button>
+</div>
+<div class="space-y-4">
+<h4 class="text-sm font-bold text-slate-900 dark:text-on-surface">Changer le mot de passe</h4>
+<div class="space-y-3">
+<input class="w-full px-4 py-2 bg-slate-50 dark:bg-background border border-slate-200 dark:border-outline-variant rounded-lg text-sm dark:text-on-background" placeholder="Mot de passe actuel" type="password"/>
+<input class="w-full px-4 py-2 bg-slate-50 dark:bg-background border border-slate-200 dark:border-outline-variant rounded-lg text-sm dark:text-on-background" placeholder="Nouveau mot de passe" type="password"/>
+<button class="w-full bg-slate-100 dark:bg-surface-container-high text-slate-700 dark:text-on-surface py-2 rounded-lg text-sm font-medium hover:bg-slate-200 dark:hover:bg-surface-container-highest transition-colors">Mettre à jour le mot de passe</button>
+</div>
+</div>
+</div>
+<div class="space-y-4">
+<h4 class="text-sm font-bold text-slate-900 dark:text-on-surface">Sessions Actives</h4>
+<div class="divide-y divide-slate-100 dark:divide-outline-variant">
+<div class="py-3 flex justify-between items-center">
+<div class="flex gap-3 items-center">
+<span class="material-symbols-outlined text-slate-400 dark:text-on-surface-variant/60">desktop_windows</span>
+<div>
+<p class="text-[13px] font-bold text-slate-900 dark:text-on-surface">Chrome sur macOS</p>
+<p class="text-[11px] text-slate-500 dark:text-on-surface-variant">Paris, France • Actuel</p>
+</div>
+</div>
+<span class="w-2 h-2 rounded-full bg-emerald-500 dark:bg-tertiary"></span>
+</div>
+<div class="py-3 flex justify-between items-center">
+<div class="flex gap-3 items-center">
+<span class="material-symbols-outlined text-slate-400 dark:text-on-surface-variant/60">smartphone</span>
+<div>
+<p class="text-[13px] font-bold text-slate-900 dark:text-on-surface">App Kinetic sur iOS</p>
+<p class="text-[11px] text-slate-500 dark:text-on-surface-variant">Lyon, France • Il y a 2h</p>
+</div>
+</div>
+<button class="text-rose-600 dark:text-error text-[11px] font-bold hover:underline">Déconnecter</button>
+</div>
+</div>
+<button class="w-full text-center py-2 text-slate-400 dark:text-outline text-[12px] font-medium hover:text-slate-700 dark:hover:text-on-surface transition-colors">Déconnecter toutes les autres sessions</button>
+</div>
+</div>
+</div>
+<!-- Section: Intégrations -->
+<div class="settings-content hidden space-y-8 animate-in fade-in duration-500" id="content-integrations">
+<div class="flex justify-between items-end">
+<div>
+<h3 class="text-xl font-bold text-slate-900 dark:text-on-surface">Intégrations &amp; API</h3>
+<p class="text-sm text-slate-500 dark:text-on-surface-variant">Connectez vos outils RH et de gestion à Kinetic LMS.</p>
+</div>
+<button class="flex items-center gap-2 border border-slate-200 dark:border-outline-variant px-4 py-2 rounded-lg text-xs font-medium dark:text-on-surface hover:bg-slate-50 dark:hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-lg">add</span>
+                            Nouvelle Intégration
+                        </button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-6 border-t border-slate-100 dark:border-outline-variant">
+<!-- Integration Card 1 -->
+<div class="p-6 rounded-2xl border border-slate-200 dark:border-outline-variant hover:shadow-md transition-all group bg-white dark:bg-surface-container-lowest">
+<div class="flex items-start justify-between mb-4">
+<div class="w-12 h-12 bg-indigo-50 dark:bg-primary/10 rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-indigo-600 dark:text-primary">cloud_sync</span>
+</div>
+<div class="h-6 px-2 bg-emerald-100 dark:bg-tertiary/10 text-emerald-700 dark:text-tertiary rounded flex items-center text-[10px] font-bold">CONNECTÉ</div>
+</div>
+<h4 class="text-sm font-bold text-slate-900 dark:text-on-surface mb-1">Slack Connect</h4>
+<p class="text-[12px] text-slate-500 dark:text-on-surface-variant mb-6">Recevez les rapports de progression directement dans vos canaux Slack.</p>
+<button class="w-full text-center py-2 border border-slate-200 dark:border-outline-variant rounded-lg text-xs font-medium dark:text-on-surface hover:bg-rose-50 dark:hover:bg-error-container/10 hover:text-rose-600 dark:hover:text-error hover:border-rose-200 dark:hover:border-error transition-all">Configurer</button>
+</div>
+<!-- Integration Card 2 -->
+<div class="p-6 rounded-2xl border border-slate-200 dark:border-outline-variant hover:shadow-md transition-all group bg-slate-50 dark:bg-surface-container-low/50 border-dashed">
+<div class="flex items-start justify-between mb-4">
+<div class="w-12 h-12 bg-slate-100 dark:bg-surface-container-high rounded-lg flex items-center justify-center opacity-40">
+<span class="material-symbols-outlined text-slate-400 dark:text-secondary">api</span>
+</div>
+</div>
+<h4 class="text-sm font-bold text-slate-900 dark:text-on-surface mb-1">Zapier</h4>
+<p class="text-[12px] text-slate-500 dark:text-on-surface-variant mb-6">Automatisez vos workflows entre plus de 5000 applications.</p>
+<button class="w-full text-center py-2 bg-indigo-600 dark:bg-primary text-white dark:text-on-primary rounded-lg text-xs font-medium hover:bg-indigo-700 dark:hover:bg-primary-container transition-all shadow-sm">Activer l'extension</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Micro-interactions Script -->
+<script>
+    function switchTab(tabId) {
+        // Hide all content
+        const contents = document.querySelectorAll('.settings-content');
+        contents.forEach(content => content.classList.add('hidden'));
+
+        // Show selected content
+        document.getElementById('content-' + tabId).classList.remove('hidden');
+
+        // Update buttons styling (Reset all)
+        const buttons = document.querySelectorAll('.settings-tab-btn');
+        buttons.forEach(btn => {
+            btn.classList.remove('active-tab', 'border-indigo-600', 'dark:border-primary', 'shadow-sm');
+            btn.classList.add('border-transparent');
+            
+            const label = btn.querySelector('p');
+            const icon = btn.querySelector('.material-symbols-outlined');
+            
+            label.classList.remove('font-bold', 'text-slate-900', 'dark:text-on-surface');
+            label.classList.add('font-medium', 'text-slate-600', 'dark:text-on-surface');
+            icon.classList.remove('text-indigo-600', 'dark:text-primary');
+            icon.classList.add('text-slate-400', 'dark:text-secondary');
+        });
+
+        // Highlight active button
+        const activeBtn = document.getElementById('tab-btn-' + tabId);
+        activeBtn.classList.add('active-tab', 'border-indigo-600', 'dark:border-primary', 'shadow-sm');
+        activeBtn.classList.remove('border-transparent');
+        
+        const activeLabel = activeBtn.querySelector('p');
+        const activeIcon = activeBtn.querySelector('.material-symbols-outlined');
+        
+        activeLabel.classList.add('font-bold', 'text-slate-900', 'dark:text-on-surface');
+        activeIcon.classList.add('text-indigo-600', 'dark:text-primary');
+        activeIcon.classList.remove('text-slate-400', 'dark:text-secondary');
+    }
+
+    // Search Bar Focus Effect
+    const searchInput = document.querySelector('input[type="text"]');
+    searchInput.addEventListener('focus', () => {
+        searchInput.parentElement.classList.add('scale-105');
+    });
+    searchInput.addEventListener('blur', () => {
+        searchInput.parentElement.classList.remove('scale-105');
+    });
+
+    // Auto-detect system preference
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
+    }
+</script>
+</body></html>

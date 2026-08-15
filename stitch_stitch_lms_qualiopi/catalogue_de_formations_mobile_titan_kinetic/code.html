@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Titan Kinetic - Course Catalog</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@500&amp;family=Hanken+Grotesk:wght@600;700&amp;family=Inter:wght@400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container": "#1e2023",
+                        "on-tertiary-container": "#d8885c",
+                        "surface-container-low": "#1a1c1f",
+                        "on-secondary": "#3c2f00",
+                        "surface-variant": "#333539",
+                        "inverse-primary": "#3a5f94",
+                        "tertiary-container": "#592300",
+                        "primary-container": "#003366",
+                        "on-tertiary-fixed-variant": "#723610",
+                        "on-error-container": "#ffdad6",
+                        "primary": "#a7c8ff",
+                        "tertiary-fixed-dim": "#ffb690",
+                        "error": "#ffb4ab",
+                        "tertiary": "#ffb690",
+                        "outline": "#8d919a",
+                        "on-secondary-container": "#342800",
+                        "surface-dark": "#050C14",
+                        "surface-container-high": "#282a2e",
+                        "deep-navy": "#003366",
+                        "inverse-on-surface": "#2f3034",
+                        "on-primary-fixed": "#001b3c",
+                        "on-primary-fixed-variant": "#1f477b",
+                        "tertiary-fixed": "#ffdbca",
+                        "surface-container-lowest": "#0c0e12",
+                        "inverse-surface": "#e2e2e7",
+                        "titan-gold": "#D4AF37",
+                        "on-surface": "#e2e2e7",
+                        "on-secondary-fixed-variant": "#574500",
+                        "error-container": "#93000a",
+                        "on-surface-variant": "#c3c6d1",
+                        "primary-fixed-dim": "#a7c8ff",
+                        "surface-light": "#F8F9FA",
+                        "secondary-fixed-dim": "#e9c349",
+                        "on-primary-container": "#799dd6",
+                        "surface-container-highest": "#333539",
+                        "on-primary": "#003061",
+                        "secondary-fixed": "#ffe088",
+                        "secondary": "#e9c349",
+                        "primary-fixed": "#d5e3ff",
+                        "outline-variant": "#43474f",
+                        "secondary-container": "#af8d11",
+                        "on-secondary-fixed": "#241a00",
+                        "on-tertiary-fixed": "#341100",
+                        "on-tertiary": "#552100",
+                        "on-background": "#e2e2e7",
+                        "surface-dim": "#121317",
+                        "background": "#121317",
+                        "surface-bright": "#38393d",
+                        "surface-tint": "#a7c8ff",
+                        "surface": "#121317",
+                        "on-error": "#690005"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "container-max": "1440px",
+                        "margin-desktop": "40px",
+                        "margin-mobile": "16px",
+                        "unit": "4px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "label-mono": ["Geist"],
+                        "headline-md-mobile": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "body-base": ["Inter"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "body-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-mono": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-md-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-md": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-base": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #050C14; /* surface-dark equivalent */
+            color: #e2e2e7;
+            -webkit-font-smoothing: antialiased;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface-dark text-on-surface font-body-base min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="bg-surface-container w-full top-0 sticky z-40 border-b border-surface-variant flex justify-between items-center px-margin-mobile h-16 w-full">
+<div class="flex items-center gap-4">
+<button aria-label="Menu" class="text-primary active:scale-95 duration-150 p-2 rounded-full hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<h1 class="font-headline-md-mobile text-headline-md-mobile font-bold text-titan-gold tracking-tight">Titan Kinetic</h1>
+</div>
+<div>
+<button aria-label="Profile" class="text-primary active:scale-95 duration-150 p-2 rounded-full hover:bg-surface-variant transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="account_circle" style="font-variation-settings: 'FILL' 1;">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="px-margin-mobile py-6 space-y-6">
+<!-- Search & Filter -->
+<div class="space-y-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full bg-surface-container-high border border-surface-variant rounded text-on-surface pl-10 pr-4 py-3 focus:outline-none focus:border-titan-gold focus:ring-1 focus:ring-titan-gold transition-colors placeholder-on-surface-variant font-body-base" placeholder="Search training programs..." type="text"/>
+</div>
+<div class="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+<button class="whitespace-nowrap px-4 py-1.5 rounded-full bg-deep-navy text-titan-gold border border-titan-gold font-label-mono text-label-mono uppercase tracking-wider">All Programs</button>
+<button class="whitespace-nowrap px-4 py-1.5 rounded-full bg-surface-container-high text-on-surface-variant border border-surface-variant hover:bg-surface-variant transition-colors font-label-mono text-label-mono uppercase tracking-wider">Management</button>
+<button class="whitespace-nowrap px-4 py-1.5 rounded-full bg-surface-container-high text-on-surface-variant border border-surface-variant hover:bg-surface-variant transition-colors font-label-mono text-label-mono uppercase tracking-wider">Tech</button>
+<button class="whitespace-nowrap px-4 py-1.5 rounded-full bg-surface-container-high text-on-surface-variant border border-surface-variant hover:bg-surface-variant transition-colors font-label-mono text-label-mono uppercase tracking-wider">Compliance</button>
+</div>
+</div>
+<!-- Catalog Grid -->
+<div class="grid grid-cols-1 gap-6">
+<!-- Course Card 1 -->
+<article class="bg-surface-container border border-surface-variant rounded-lg overflow-hidden flex flex-col transition-transform hover:-translate-y-1 duration-200">
+<div class="h-48 w-full bg-surface-variant relative overflow-hidden">
+<img alt="Advanced Industrial Operations" class="w-full h-full object-cover opacity-80" data-alt="A high-quality, dramatic wide shot of a modern industrial facility floor in a dark mode aesthetic. Deep navy shadows contrast with striking gold and warm amber accent lighting reflecting off precision machinery. The mood is highly professional, technical, and focused on advanced engineering capabilities." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXme4c2YLLvY_0SrIXwHXMNpuvkYIYk6_-oyQksV6fip992wbTmOQcHWanqa_LhYitLY55UNkuqWWmUAeXYG4Tc3UqVfCEYyaHPqpIgl_-kZu4V_WXQ-sBHL5iI1uBby9iXdZMLkPR6hYK_9FhAD26Ccm-g0EAEzCoGhwY0AiaUypWVG6IgtkZFgKKcw9BD_kRiRSlUlVaoeju1velCLUtGWlYyaktMa1FNPdczfv0P2KdvXNPsJQY"/>
+<div class="absolute top-3 left-3 bg-deep-navy/90 backdrop-blur-sm border border-titan-gold/30 text-titan-gold px-2 py-1 rounded font-label-mono text-label-mono uppercase">Management</div>
+</div>
+<div class="p-4 flex flex-col flex-grow">
+<h2 class="font-headline-md-mobile text-xl font-bold text-on-surface mb-2">Advanced Industrial Operations Leadership</h2>
+<div class="flex items-center gap-4 text-on-surface-variant font-body-sm mb-4">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">schedule</span>
+<span>12 Weeks</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">signal_cellular_alt</span>
+<span>Advanced</span>
+</div>
+</div>
+<div class="mt-auto pt-4 border-t border-surface-variant/50">
+<button class="w-full bg-deep-navy text-titan-gold border border-titan-gold rounded py-2 font-label-mono text-label-mono uppercase tracking-wider hover:bg-titan-gold hover:text-deep-navy transition-colors active:scale-95 duration-150">Discover</button>
+</div>
+</div>
+</article>
+<!-- Course Card 2 -->
+<article class="bg-surface-container border border-surface-variant rounded-lg overflow-hidden flex flex-col transition-transform hover:-translate-y-1 duration-200">
+<div class="h-48 w-full bg-surface-variant relative overflow-hidden">
+<img alt="Enterprise Architecture" class="w-full h-full object-cover opacity-80" data-alt="A close-up, precision-focused shot of complex server racks in a darkened data center. Cold blue and deep navy ambient lighting is punctuated by sharp, bright gold indicator lights on the hardware. The aesthetic is extremely technical, secure, and conveys cutting-edge enterprise infrastructure." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4kiFKAAo-1Y6zLppPwn4zRVX48SyWQ7wtV167_9JeHAqJKX0cidzlaLYqbRjwUk0PxNZIbTaWCUGgA-_wz6Og2ZggtiB9X_LQ68WonQBTDyZ7TQjXM53kNTxGQ3X54EllhcjWAsFEzPw5i0SDT1I1yLuvoD8QXRAaF9rld4Clv2NSEh5-JCIyl5_cZVSHi8LUUy0WSqjGuOp4uydHFkxsyEjGUlkf96D0SPpcyx_NFFxZFcLf01ob"/>
+<div class="absolute top-3 left-3 bg-deep-navy/90 backdrop-blur-sm border border-titan-gold/30 text-titan-gold px-2 py-1 rounded font-label-mono text-label-mono uppercase">Tech</div>
+</div>
+<div class="p-4 flex flex-col flex-grow">
+<h2 class="font-headline-md-mobile text-xl font-bold text-on-surface mb-2">Enterprise Infrastructure &amp; Systems Architecture</h2>
+<div class="flex items-center gap-4 text-on-surface-variant font-body-sm mb-4">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">schedule</span>
+<span>8 Weeks</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">signal_cellular_alt_2_bar</span>
+<span>Intermediate</span>
+</div>
+</div>
+<div class="mt-auto pt-4 border-t border-surface-variant/50">
+<button class="w-full bg-surface-container-high text-on-surface border border-surface-variant rounded py-2 font-label-mono text-label-mono uppercase tracking-wider hover:border-titan-gold hover:text-titan-gold transition-colors active:scale-95 duration-150">Discover</button>
+</div>
+</div>
+</article>
+<!-- Course Card 3 -->
+<article class="bg-surface-container border border-surface-variant rounded-lg overflow-hidden flex flex-col transition-transform hover:-translate-y-1 duration-200">
+<div class="h-48 w-full bg-surface-variant relative overflow-hidden">
+<img alt="Global Compliance" class="w-full h-full object-cover opacity-80" data-alt="An abstract, stylized shot of glowing data streams and secure lock icons overlaid on a deep navy background. Golden data nodes connect in a complex web, representing secure compliance and data governance. The style is minimalist, corporate, and highly authoritative, fit for a dark mode enterprise application." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2juRjJkNdfK5UxQtX2pMd5loELRjC-uvSaYegCJ-1EfuKE_FIEPUKtimA9QpgsIa0OfJw9guBOurT9XFqQtsGr-25bimjfX7Sx4fq4OxNxctNoR4laPxbyyjBnlrMvTSSr4gmZ47n5dhoZ0vbqAFgUyx4u2VP8fezitc93Xyg-JLYv2Q2WASmU6n72T-9axnvMdEcU3fhIjOM5xs4DbtDOHa18QELJ5OG2vHg38xYHd2w5aZf-LjX"/>
+<div class="absolute top-3 left-3 bg-deep-navy/90 backdrop-blur-sm border border-titan-gold/30 text-titan-gold px-2 py-1 rounded font-label-mono text-label-mono uppercase">Compliance</div>
+</div>
+<div class="p-4 flex flex-col flex-grow">
+<h2 class="font-headline-md-mobile text-xl font-bold text-on-surface mb-2">Global Data Governance &amp; Strategic Compliance</h2>
+<div class="flex items-center gap-4 text-on-surface-variant font-body-sm mb-4">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">schedule</span>
+<span>4 Weeks</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">signal_cellular_alt_1_bar</span>
+<span>Foundational</span>
+</div>
+</div>
+<div class="mt-auto pt-4 border-t border-surface-variant/50">
+<button class="w-full bg-surface-container-high text-on-surface border border-surface-variant rounded py-2 font-label-mono text-label-mono uppercase tracking-wider hover:border-titan-gold hover:text-titan-gold transition-colors active:scale-95 duration-150">Discover</button>
+</div>
+</div>
+</article>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="bg-surface-container-low fixed bottom-0 w-full z-50 border-t border-surface-variant md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-2">
+<!-- Active: Catalog -->
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 active:scale-90 duration-200 transition-all" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="grid_view" style="font-variation-settings: 'FILL' 1;">grid_view</span>
+<span class="font-label-mono text-[10px] uppercase tracking-wider font-bold">Catalog</span>
+</a>
+<!-- Inactive: My Learning -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-titan-gold transition-all active:scale-90 duration-200 px-2 py-1" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="menu_book">menu_book</span>
+<span class="font-label-mono text-[10px] uppercase tracking-wider">My Learning</span>
+</a>
+<!-- Inactive: Progress -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-titan-gold transition-all active:scale-90 duration-200 px-2 py-1" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="analytics">analytics</span>
+<span class="font-label-mono text-[10px] uppercase tracking-wider">Progress</span>
+</a>
+<!-- Inactive: Profile -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-titan-gold transition-all active:scale-90 duration-200 px-2 py-1" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="person">person</span>
+<span class="font-label-mono text-[10px] uppercase tracking-wider">Profile</span>
+</a>
+</nav>
+</body></html>

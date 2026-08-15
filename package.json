@@ -1,0 +1,20 @@
+{
+  "name": "titan-kinetic",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@11.21.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "seed": "pnpm --filter @titan-kinetic/core run seed"
+  },
+  "devDependencies": {
+    "turbo": "^2.5.0"
+  }
+}

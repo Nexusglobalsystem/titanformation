@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Geist:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        body {
+            background-color: #f8f9ff;
+            color: #0b1c30;
+            overflow-x: hidden;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                "on-tertiary-fixed": "#002113",
+                "on-primary": "#ffffff",
+                "on-tertiary": "#ffffff",
+                "error": "#ba1a1a",
+                "tertiary-fixed": "#6ffbbe",
+                "surface-container-highest": "#d3e4fe",
+                "surface-tint": "#494bd6",
+                "secondary-fixed-dim": "#bec6e0",
+                "tertiary-fixed-dim": "#4edea3",
+                "on-secondary": "#ffffff",
+                "on-primary-fixed-variant": "#2f2ebe",
+                "primary": "#4648d4",
+                "surface-dim": "#cbdbf5",
+                "outline": "#767586",
+                "on-surface-variant": "#464554",
+                "outline-variant": "#c7c4d7",
+                "tertiary-container": "#00885d",
+                "on-tertiary-container": "#000703",
+                "secondary": "#565e74",
+                "surface-container": "#e5eeff",
+                "primary-container": "#6063ee",
+                "on-primary-fixed": "#07006c",
+                "inverse-surface": "#213145",
+                "inverse-on-surface": "#eaf1ff",
+                "on-surface": "#0b1c30",
+                "error-container": "#ffdad6",
+                "surface-container-low": "#eff4ff",
+                "surface-container-high": "#dce9ff",
+                "surface-container-lowest": "#ffffff",
+                "secondary-container": "#dae2fd",
+                "on-primary-container": "#fffbff",
+                "inverse-primary": "#c0c1ff",
+                "secondary-fixed": "#dae2fd",
+                "primary-fixed-dim": "#c0c1ff",
+                "on-error-container": "#93000a",
+                "on-error": "#ffffff",
+                "on-secondary-container": "#5c647a",
+                "on-secondary-fixed-variant": "#3f465c",
+                "tertiary": "#006c49",
+                "surface-bright": "#f8f9ff",
+                "surface": "#f8f9ff",
+                "surface-variant": "#d3e4fe",
+                "on-tertiary-fixed-variant": "#005236",
+                "on-background": "#0b1c30",
+                "background": "#f8f9ff",
+                "on-secondary-fixed": "#131b2e",
+                "primary-fixed": "#e1e0ff"
+              },
+              "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+              },
+              "spacing": {
+                "container-max": "1440px",
+                "margin-mobile": "16px",
+                "gutter": "24px",
+                "margin-desktop": "48px",
+                "unit": "4px"
+              },
+              "fontFamily": {
+                "label-sm": ["Geist"],
+                "body-md": ["Inter"],
+                "label-md": ["Geist"],
+                "headline-lg": ["Inter"],
+                "headline-md": ["Inter"],
+                "body-lg": ["Inter"],
+                "display": ["Inter"]
+              }
+            }
+          }
+        }
+    </script>
+</head>
+<body class="font-body-md text-on-surface selection:bg-primary-container selection:text-on-primary-container">
+<!-- Sidebar Navigation -->
+<aside class="h-screen w-64 hidden md:flex flex-col fixed left-0 top-0 bg-surface-container-low dark:bg-surface-dim border-r border-outline-variant/30 z-[60]">
+<div class="p-6 flex items-center gap-3">
+<div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+</div>
+<div>
+<h1 class="font-display text-headline-md text-on-surface leading-tight">Analytique</h1>
+<p class="font-label-sm text-secondary text-[11px] uppercase tracking-wider">Module de Reporting</p>
+</div>
+</div>
+<nav class="flex-1 mt-4 px-3 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-primary dark:text-primary-fixed-dim font-bold border-l-4 border-primary bg-primary-container/20 transition-all duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-md text-label-md">Tableau de bord</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container-highest transition-all duration-150 group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="trending_up">trending_up</span>
+<span class="font-label-md text-label-md">Progrès apprenants</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container-highest transition-all duration-150 group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="verified">verified</span>
+<span class="font-label-md text-label-md">Rapports Qualiopi</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container-highest transition-all duration-150 group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="group">group</span>
+<span class="font-label-md text-label-md">Analyses de groupe</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container-highest transition-all duration-150 group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="download">download</span>
+<span class="font-label-md text-label-md">Exportations</span>
+</a>
+</nav>
+<div class="p-4 mt-auto">
+<button class="w-full py-3 px-4 bg-primary text-on-primary rounded-xl font-bold flex items-center justify-center gap-2 shadow-sm hover:brightness-110 transition-all">
+<span class="material-symbols-outlined text-[20px]" data-icon="add">add</span>
+<span class="font-label-md text-label-md">Nouveau Rapport</span>
+</button>
+</div>
+<div class="px-3 py-4 border-t border-outline-variant/30 space-y-1">
+<a class="flex items-center gap-3 px-4 py-2 rounded-xl text-on-surface-variant hover:bg-surface-container-highest transition-all duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="font-label-md text-label-md">Aide</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 rounded-xl text-on-surface-variant hover:bg-surface-container-highest transition-all duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-label-md text-label-md">Déconnexion</span>
+</a>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="md:ml-64 min-h-screen">
+<!-- Top Navigation -->
+<header class="bg-surface/70 backdrop-blur-md sticky top-0 z-50 flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 shadow-sm">
+<div class="flex items-center gap-4">
+<h2 class="font-display text-headline-md text-primary">LMS Analytics</h2>
+<div class="hidden lg:flex items-center bg-surface-container-low px-4 py-2 rounded-full border border-outline-variant/30 w-96">
+<span class="material-symbols-outlined text-outline" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-md w-full ml-2" placeholder="Rechercher un apprenant, un cours..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-secondary hover:bg-surface-container-high/50 rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 text-secondary hover:bg-surface-container-high/50 rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="h-10 w-10 rounded-full bg-surface-container-highest border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a corporate administrator in high-end minimalist attire, looking confidently at the camera against a soft, neutral grey background. The lighting is bright and clean, reflecting a professional and authoritative atmosphere within a modern corporate education environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3NoP06dPHjDbQCiaE87-PMOPswUO3vUdXGH1aA9g_78wbtMiH3uOYjZhv99s17jug3mGyCj3kZx9_pIRwbyc65L-gYrt40gsq-rPdNgHE1tzYS1w7C2undjBza55iHCsQu2sUPY0MeU8XKfUyutj-8wi2Zs7GLS3f2xZ0Y8DspaquqsDrvuN1rwGkimukm_Al9zcsJRHdMH3QIXzIdXsLyW6edRsH1-PzyEfe0wo1E7CAyZrHO8DQ"/>
+</div>
+</div>
+</header>
+<div class="p-margin-mobile md:p-margin-desktop max-w-container-max mx-auto">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
+<div>
+<h3 class="font-headline-lg text-headline-lg text-on-surface">Vue d'ensemble analytique</h3>
+<p class="text-secondary font-body-md">Statistiques en temps réel pour la période : <span class="font-semibold">01 Jan - 30 Juin 2024</span></p>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-2 px-5 py-2.5 bg-surface-container-high text-on-surface-variant font-label-md rounded-lg border border-outline-variant hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="schedule">schedule</span>
+                        Programmer
+                    </button>
+<button class="flex items-center gap-2 px-5 py-2.5 bg-primary text-on-primary font-label-md rounded-lg shadow-sm hover:brightness-110 transition-all">
+<span class="material-symbols-outlined text-[18px]" data-icon="file_download">file_download</span>
+                        Exporter (PDF/CSV)
+                    </button>
+</div>
+</div>
+<!-- KPIs Section -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+<div class="glass-card p-6 rounded-[24px] relative overflow-hidden group">
+<div class="relative z-10">
+<div class="flex justify-between items-start mb-4">
+<div class="p-3 bg-primary/10 rounded-xl text-primary">
+<span class="material-symbols-outlined" data-icon="task_alt">task_alt</span>
+</div>
+<span class="text-emerald-600 font-label-sm bg-emerald-50 px-2 py-1 rounded">+5.2%</span>
+</div>
+<p class="text-secondary font-label-md uppercase tracking-wide mb-1">Taux de complétion global</p>
+<h4 class="text-[36px] font-bold text-on-surface">84.3%</h4>
+</div>
+<div class="absolute bottom-0 left-0 w-full h-1.5 bg-surface-variant">
+<div class="h-full bg-primary w-[84.3%] rounded-r-full"></div>
+</div>
+</div>
+<div class="glass-card p-6 rounded-[24px] group">
+<div class="flex justify-between items-start mb-4">
+<div class="p-3 bg-tertiary-container/10 text-tertiary">
+<span class="material-symbols-outlined" data-icon="school">school</span>
+</div>
+<span class="text-emerald-600 font-label-sm bg-emerald-50 px-2 py-1 rounded">+2.1%</span>
+</div>
+<p class="text-secondary font-label-md uppercase tracking-wide mb-1">Score moyen aux quiz</p>
+<h4 class="text-[36px] font-bold text-on-surface">16.4/20</h4>
+</div>
+<div class="glass-card p-6 rounded-[24px] group">
+<div class="flex justify-between items-start mb-4">
+<div class="p-3 bg-secondary-container text-secondary">
+<span class="material-symbols-outlined" data-icon="trending_up">trending_up</span>
+</div>
+<span class="text-error font-label-sm bg-error-container/30 px-2 py-1 rounded">-0.8%</span>
+</div>
+<p class="text-secondary font-label-md uppercase tracking-wide mb-1">Engagement hebdomadaire</p>
+<h4 class="text-[36px] font-bold text-on-surface">72%</h4>
+</div>
+</section>
+<!-- Main Charts and Bento Area -->
+<div class="bento-grid mb-10">
+<!-- Performance Chart (Col 8) -->
+<div class="col-span-12 lg:col-span-8 glass-card p-8 rounded-[24px] flex flex-col">
+<div class="flex items-center justify-between mb-8">
+<div>
+<h5 class="text-headline-md font-display mb-1">Évolution des performances</h5>
+<p class="text-secondary text-sm">Progression des scores et complétion sur les 6 derniers mois</p>
+</div>
+<select class="bg-surface-container-low border-outline-variant/30 rounded-lg text-sm focus:ring-primary focus:border-primary">
+<option>Semestriel</option>
+<option>Trimestriel</option>
+</select>
+</div>
+<div class="flex-1 w-full h-[300px] relative mt-4 flex items-end justify-between px-4">
+<!-- Mock Chart Visualization -->
+<div class="flex flex-col items-center group w-full">
+<div class="w-10 bg-primary/20 hover:bg-primary/40 transition-all rounded-t-lg h-32 relative">
+<div class="absolute bottom-0 w-full bg-primary h-20 rounded-t-lg transition-all group-hover:h-24"></div>
+</div>
+<span class="text-[10px] mt-2 text-secondary font-bold uppercase">Jan</span>
+</div>
+<div class="flex flex-col items-center group w-full">
+<div class="w-10 bg-primary/20 hover:bg-primary/40 transition-all rounded-t-lg h-40 relative">
+<div class="absolute bottom-0 w-full bg-primary h-28 rounded-t-lg transition-all group-hover:h-32"></div>
+</div>
+<span class="text-[10px] mt-2 text-secondary font-bold uppercase">Fév</span>
+</div>
+<div class="flex flex-col items-center group w-full">
+<div class="w-10 bg-primary/20 hover:bg-primary/40 transition-all rounded-t-lg h-48 relative">
+<div class="absolute bottom-0 w-full bg-primary h-40 rounded-t-lg transition-all group-hover:h-44"></div>
+</div>
+<span class="text-[10px] mt-2 text-secondary font-bold uppercase">Mar</span>
+</div>
+<div class="flex flex-col items-center group w-full">
+<div class="w-10 bg-primary/20 hover:bg-primary/40 transition-all rounded-t-lg h-44 relative">
+<div class="absolute bottom-0 w-full bg-primary h-36 rounded-t-lg transition-all group-hover:h-40"></div>
+</div>
+<span class="text-[10px] mt-2 text-secondary font-bold uppercase">Avr</span>
+</div>
+<div class="flex flex-col items-center group w-full">
+<div class="w-10 bg-primary/20 hover:bg-primary/40 transition-all rounded-t-lg h-56 relative">
+<div class="absolute bottom-0 w-full bg-primary h-48 rounded-t-lg transition-all group-hover:h-52"></div>
+</div>
+<span class="text-[10px] mt-2 text-secondary font-bold uppercase">Mai</span>
+</div>
+<div class="flex flex-col items-center group w-full">
+<div class="w-10 bg-primary/20 hover:bg-primary/40 transition-all rounded-t-lg h-60 relative">
+<div class="absolute bottom-0 w-full bg-primary h-52 rounded-t-lg transition-all group-hover:h-56"></div>
+</div>
+<span class="text-[10px] mt-2 text-secondary font-bold uppercase">Juin</span>
+</div>
+</div>
+</div>
+<!-- Qualiopi Reports (Col 4) -->
+<div class="col-span-12 lg:col-span-4 glass-card p-6 rounded-[24px] flex flex-col">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary" data-icon="verified">verified</span>
+<h5 class="font-display text-headline-md">Rapports Qualiopi</h5>
+</div>
+<div class="space-y-4 flex-1">
+<div class="p-4 bg-surface-container-low rounded-xl border border-outline-variant/30">
+<div class="flex justify-between items-center mb-2">
+<span class="font-label-md text-on-surface">Indicateur 1 : Diffusion</span>
+<span class="text-[11px] font-bold text-tertiary">92%</span>
+</div>
+<div class="w-full h-2 bg-outline-variant/20 rounded-full">
+<div class="h-full bg-tertiary w-[92%] rounded-full"></div>
+</div>
+</div>
+<div class="p-4 bg-surface-container-low rounded-xl border border-outline-variant/30">
+<div class="flex justify-between items-center mb-2">
+<span class="font-label-md text-on-surface">Indicateur 2 : Objectifs</span>
+<span class="text-[11px] font-bold text-tertiary">85%</span>
+</div>
+<div class="w-full h-2 bg-outline-variant/20 rounded-full">
+<div class="h-full bg-tertiary w-[85%] rounded-full"></div>
+</div>
+</div>
+<div class="p-4 bg-surface-container-low rounded-xl border border-outline-variant/30">
+<div class="flex justify-between items-center mb-2">
+<span class="font-label-md text-on-surface">Indicateur 11 : Engagement</span>
+<span class="text-[11px] font-bold text-error">42%</span>
+</div>
+<div class="w-full h-2 bg-outline-variant/20 rounded-full">
+<div class="h-full bg-error w-[42%] rounded-full"></div>
+</div>
+</div>
+</div>
+<button class="mt-6 w-full py-3 text-primary border border-primary/20 rounded-xl font-label-md hover:bg-primary-container/10 transition-colors">
+                        Voir tous les indicateurs
+                    </button>
+</div>
+<!-- At-Risk Learners Table (Col 12) -->
+<div class="col-span-12 glass-card rounded-[24px] overflow-hidden">
+<div class="p-6 border-b border-outline-variant/20 flex justify-between items-center">
+<div>
+<h5 class="text-headline-md font-display">Apprenants à risque</h5>
+<p class="text-secondary text-sm">Dernière alerte : Aujourd'hui, 09:45</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="flex h-3 w-3 rounded-full bg-error animate-pulse"></span>
+<span class="text-error font-label-md">12 Alertes critiques</span>
+</div>
+</div>
+<div class="overflow-x-auto custom-scrollbar">
+<table class="w-full text-left">
+<thead class="bg-surface-container-low">
+<tr>
+<th class="px-6 py-4 font-label-sm text-secondary uppercase tracking-wider">Apprenant</th>
+<th class="px-6 py-4 font-label-sm text-secondary uppercase tracking-wider">Cours</th>
+<th class="px-6 py-4 font-label-sm text-secondary uppercase tracking-wider">Progression</th>
+<th class="px-6 py-4 font-label-sm text-secondary uppercase tracking-wider">Score Quiz</th>
+<th class="px-6 py-4 font-label-sm text-secondary uppercase tracking-wider">Dernière activité</th>
+<th class="px-6 py-4 font-label-sm text-secondary uppercase tracking-wider text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<tr class="hover:bg-surface-container-low/50 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-surface-container-highest overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A portrait of a young male student in a minimal, bright library setting, wearing a clean, modern navy blue sweater. The lighting is natural and soft, evoking a focused but struggling academic atmosphere. High-end modern photography style with a shallow depth of field." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWeY2LXKsmQ2iV5ItlayD4tMAF5aaGovXDdS5xEAnty_ADKH9dOuHwlCkEojh7dUq8LeZXBqMLnP0hc1VpwYhCtaXSdN1sA69Fb1o-zQanSFNU56AXBK2bZt_WC6RyFR1r7dnrbdkUliYeY_aN2FCcmm9TiHxAa7JysppQuiCUH2ZaBpg0ZHJ1RHvwCmCLNXPb6jze8JofFpEzttC5s9CW-HO0eYSrpIgiZ8zXbDjLuruO_sNmGAVx"/>
+</div>
+<div>
+<div class="font-semibold text-on-surface">Jean Dupont</div>
+<div class="text-[11px] text-secondary">j.dupont@enterprise.com</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-on-surface">Intelligence Artificielle</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="text-xs font-bold text-error">12%</span>
+<div class="w-20 h-1.5 bg-error/10 rounded-full overflow-hidden">
+<div class="h-full bg-error w-[12%]"></div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="text-sm font-medium text-error">08.5/20</div>
+</td>
+<td class="px-6 py-4 text-sm text-secondary">Il y a 14 jours</td>
+<td class="px-6 py-4 text-right">
+<button class="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors">
+<span class="material-symbols-outlined" data-icon="mail">mail</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/50 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-surface-container-highest overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A profile photo of a professional woman with a contemplative expression, wearing a stylish minimalist white shirt in a modern workspace environment with soft ambient lighting. The background is a blurred office with clean lines and a high-end corporate aesthetic. Soft, bright colors dominate the scene." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_TVjvePKcmPrQiWq0lj1bvQpIZ15cKR68kiwhgoC6nzyGbaSaG_tPSA8t_FFS98DxzmdFeSCi70NQnDN6wnDnoneecN0-WF03e1evYSxopf98yG1TF8Pf6jS4mL9nZ_DSTxcAtdHUNhbevJ6EF3qFB8yG9rDxkZSYE7cKiFWGgC-ACgJLAp8GIT7oIkWTKSGM0K1Mcpdnurw3jjshmQPnJC7cNaS6MN69K5G9CiwESJZgGwcCmsPL"/>
+</div>
+<div>
+<div class="font-semibold text-on-surface">Marie Curie</div>
+<div class="text-[11px] text-secondary">m.curie@lab.com</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-on-surface">Physique Quantique</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="text-xs font-bold text-secondary">45%</span>
+<div class="w-20 h-1.5 bg-secondary/10 rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[45%]"></div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="text-sm font-medium text-on-surface">11.0/20</div>
+</td>
+<td class="px-6 py-4 text-sm text-secondary">Il y a 2 jours</td>
+<td class="px-6 py-4 text-right">
+<button class="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors">
+<span class="material-symbols-outlined" data-icon="mail">mail</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/50 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-surface-container-highest overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A portrait of a male professional in a high-tech coworking space, illuminated by modern cool-toned light strips and natural window light. He has a concerned expression, suggesting academic struggle. The overall style is clean, sharp, and modern, using a palette of blues and greys." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAB-ocIvYb4x6tFJYSZPL_2Bbyw1sIm3D7xYkh27hv8bu8G_Z5h7IWIpVClp-ZZZhlpd2QSXIcUhIl0p1NkkIimBV3uGnUETHIILLVgefoaenGBEjWJpFnV_XN6S5VmDt9gTHG817fKUc0S2cpVWE9-XgKsRIWahbeqEHrPeUqcxs8fu5W84zjF9uMfeef4Yz7XtxjE3rDHh2NmgvEPY-96HsEDQNmUWALjFup2uA-4plbK4T4ALf3Y"/>
+</div>
+<div>
+<div class="font-semibold text-on-surface">Marc Vasseur</div>
+<div class="text-[11px] text-secondary">marc.v@startup.io</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-on-surface">Ventes Stratégiques</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="text-xs font-bold text-error">05%</span>
+<div class="w-20 h-1.5 bg-error/10 rounded-full overflow-hidden">
+<div class="h-full bg-error w-[5%]"></div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="text-sm font-medium text-error">-- /20</div>
+</td>
+<td class="px-6 py-4 text-sm text-secondary">Jamais connecté</td>
+<td class="px-6 py-4 text-right">
+<button class="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors">
+<span class="material-symbols-outlined" data-icon="mail">mail</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Footer Decorative -->
+<footer class="mt-20 py-8 border-t border-outline-variant/20 text-center">
+<p class="text-secondary text-sm font-label-md">© 2024 LMS Analytics — Kinetic Enterprise Reporting Platform</p>
+<div class="flex justify-center gap-4 mt-2">
+<a class="text-[11px] text-outline hover:text-primary transition-colors" href="#">Confidentialité</a>
+<a class="text-[11px] text-outline hover:text-primary transition-colors" href="#">Support Technique</a>
+<a class="text-[11px] text-outline hover:text-primary transition-colors" href="#">Documentation API</a>
+</div>
+</footer>
+</div>
+</main>
+<!-- Bottom Navigation (Mobile Only) -->
+<nav class="fixed bottom-0 w-full flex justify-around items-center px-4 py-2 bg-surface/80 backdrop-blur-lg border-t border-outline-variant/20 z-50 md:hidden shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl p-2 transition-all duration-100 scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-sm text-[10px]">Accueil</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2" href="#">
+<span class="material-symbols-outlined" data-icon="query_stats">query_stats</span>
+<span class="font-label-sm text-[10px]">Suivi</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-label-sm text-[10px]">KPIs</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2" href="#">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+<span class="font-label-sm text-[10px]">Plus</span>
+</a>
+</nav>
+<script>
+        // Simple interactivity for demonstration
+        document.querySelectorAll('a, button').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                el.classList.add('transition-all');
+            });
+        });
+
+        // Initialize micro-animations for charts if needed
+        window.addEventListener('load', () => {
+            const bars = document.querySelectorAll('.bg-primary.rounded-t-lg');
+            bars.forEach(bar => {
+                const height = bar.style.height;
+                bar.style.height = '0';
+                setTimeout(() => {
+                    bar.style.height = height;
+                }, 300);
+            });
+        });
+    </script>
+</body></html>

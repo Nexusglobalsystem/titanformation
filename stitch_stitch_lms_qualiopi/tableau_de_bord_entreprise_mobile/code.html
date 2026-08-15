@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>LMS Master Manager Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Geist:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary": "#565e74",
+                    "surface-container-lowest": "#ffffff",
+                    "error": "#ba1a1a",
+                    "surface-container-high": "#dce9ff",
+                    "on-primary-fixed-variant": "#2f2ebe",
+                    "surface-dim": "#cbdbf5",
+                    "surface-tint": "#494bd6",
+                    "surface-bright": "#f8f9ff",
+                    "primary-fixed-dim": "#c0c1ff",
+                    "tertiary-fixed-dim": "#4edea3",
+                    "on-primary-container": "#fffbff",
+                    "inverse-on-surface": "#eaf1ff",
+                    "surface": "#f8f9ff",
+                    "outline-variant": "#c7c4d7",
+                    "on-error-container": "#93000a",
+                    "on-background": "#0b1c30",
+                    "surface-container": "#e5eeff",
+                    "inverse-surface": "#213145",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary-container": "#000703",
+                    "surface-container-highest": "#d3e4fe",
+                    "primary": "#4648d4",
+                    "on-surface": "#0b1c30",
+                    "on-secondary-fixed": "#131b2e",
+                    "tertiary": "#006c49",
+                    "on-error": "#ffffff",
+                    "primary-fixed": "#e1e0ff",
+                    "on-primary-fixed": "#07006c",
+                    "surface-container-low": "#eff4ff",
+                    "on-tertiary-fixed-variant": "#005236",
+                    "secondary-container": "#dae2fd",
+                    "error-container": "#ffdad6",
+                    "on-primary": "#ffffff",
+                    "tertiary-container": "#00885d",
+                    "secondary-fixed": "#dae2fd",
+                    "on-secondary-container": "#5c647a",
+                    "surface-variant": "#d3e4fe",
+                    "on-surface-variant": "#464554",
+                    "outline": "#767586",
+                    "on-secondary-fixed-variant": "#3f465c",
+                    "secondary-fixed-dim": "#bec6e0",
+                    "tertiary-fixed": "#6ffbbe",
+                    "primary-container": "#6063ee",
+                    "background": "#f8f9ff",
+                    "on-tertiary": "#ffffff",
+                    "on-tertiary-fixed": "#002113",
+                    "inverse-primary": "#c0c1ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-desktop": "48px",
+                    "margin-mobile": "16px",
+                    "gutter": "24px",
+                    "unit": "4px",
+                    "container-max": "1440px"
+            },
+            "fontFamily": {
+                    "label-sm": ["Geist"],
+                    "headline-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "display": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-md": ["Geist"]
+            },
+            "fontSize": {
+                    "label-sm": ["12px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .backdrop-glass {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .active-pill {
+            view-transition-name: active-pill;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface min-h-screen pb-24">
+<!-- Top Navigation Bar (Mobile Variant) -->
+<header class="fixed top-0 w-full z-50 bg-surface/70 backdrop-blur-md shadow-sm h-16 flex justify-between items-center px-margin-mobile">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">school</span>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">LMS Master</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-low transition-colors active:scale-95 duration-100">
+<span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional studio portrait of a corporate manager in a high-end educational office setting. The lighting is soft and cinematic, highlighting a sophisticated and modern professional aesthetic. The background is a blurred minimalist office with blue and white tones, matching the premium LMS master brand identity. The mood is confident and expert." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-SGInTfPVYWfWGjsCriSsggquth8w8Zv2ihsQXAWhi5JlBnnvQQyC0SAFsqbJsumhLFPKoWa_QkAb2BC7eUXhdBR4r1b7Y1zGYcL91xjVZMpFY3VZ6uTfnRhiMFt2CpGVeMjIDJgZepxdy_DCeqVYKcrpI14-mbKLsGaLFivy1twwxSzjng3RLzN8sQKl7EpcUE-h7Zt0NJk3QdIx4UO2EsEmSQYu6OmU0ESTY4JhT29BUdSEa4CK"/>
+</div>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="pt-20 px-margin-mobile">
+<!-- Welcome Message -->
+<section class="mb-6">
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1">WELCOME BACK,</p>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface font-bold">Manager Dashboard</h2>
+</section>
+<!-- Quick Search -->
+<div class="relative mb-8">
+<div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline">search</span>
+</div>
+<input class="w-full pl-12 pr-4 py-4 bg-surface-container-low border-none rounded-xl font-body-md text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/20 transition-all" placeholder="Quick search employee progress..." type="text"/>
+</div>
+<!-- Key Metrics Bento (Horizontal Scroll) -->
+<section class="mb-8">
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-4 px-1">Key Performance Indicators</h3>
+<div class="flex gap-4 overflow-x-auto hide-scrollbar pb-2 -mx-margin-mobile px-margin-mobile">
+<!-- Metric Card 1 -->
+<div class="min-w-[160px] flex-1 bg-primary text-on-primary p-5 rounded-2xl shadow-md border border-primary-container/20">
+<span class="material-symbols-outlined mb-3 opacity-80" style="font-variation-settings: 'FILL' 1;">groups</span>
+<div class="font-display text-[28px] font-bold leading-tight">1,284</div>
+<div class="font-label-sm text-label-sm opacity-90">Active Learners</div>
+<div class="mt-3 flex items-center gap-1 font-label-sm text-label-sm bg-on-primary/10 w-fit px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> 12%
+                    </div>
+</div>
+<!-- Metric Card 2 -->
+<div class="min-w-[160px] flex-1 bg-surface-container-high text-on-surface p-5 rounded-2xl border border-outline-variant/30">
+<span class="material-symbols-outlined mb-3 text-primary" style="font-variation-settings: 'FILL' 1;">verified</span>
+<div class="font-display text-[28px] font-bold leading-tight">78.5%</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Completion Rate</div>
+<div class="mt-3 w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[78.5%] rounded-full"></div>
+</div>
+</div>
+<!-- Metric Card 3 -->
+<div class="min-w-[160px] flex-1 bg-tertiary-container text-on-tertiary-container p-5 rounded-2xl border border-tertiary/20">
+<span class="material-symbols-outlined mb-3" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<div class="font-display text-[28px] font-bold leading-tight">142</div>
+<div class="font-label-sm text-label-sm opacity-90">Quizzes Today</div>
+<div class="mt-3 flex items-center gap-1 font-label-sm text-label-sm bg-on-tertiary-container/10 w-fit px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> 92% Pass
+                    </div>
+</div>
+</div>
+</section>
+<!-- Recent Certifications List -->
+<section class="mb-8">
+<div class="flex justify-between items-end mb-4 px-1">
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Recent Certifications</h3>
+<button class="font-label-sm text-label-sm text-primary font-bold">View All</button>
+</div>
+<div class="space-y-3">
+<!-- Cert Item 1 -->
+<div class="flex items-center gap-4 bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 active:scale-[0.98] transition-transform">
+<div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">workspace_premium</span>
+</div>
+<div class="flex-1">
+<div class="font-label-md text-label-md text-on-surface">Alex Rivera</div>
+<div class="font-body-md text-[13px] text-on-surface-variant">Qualiopi Compliance L2</div>
+</div>
+<div class="text-right">
+<div class="font-label-sm text-label-sm text-tertiary">Just now</div>
+<div class="font-label-sm text-[10px] text-outline uppercase">98/100</div>
+</div>
+</div>
+<!-- Cert Item 2 -->
+<div class="flex items-center gap-4 bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 active:scale-[0.98] transition-transform">
+<div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">security</span>
+</div>
+<div class="flex-1">
+<div class="font-label-md text-label-md text-on-surface">Sarah Chen</div>
+<div class="font-body-md text-[13px] text-on-surface-variant">Data Privacy Fundamentals</div>
+</div>
+<div class="text-right">
+<div class="font-label-sm text-label-sm text-on-surface-variant">2h ago</div>
+<div class="font-label-sm text-[10px] text-outline uppercase">85/100</div>
+</div>
+</div>
+<!-- Cert Item 3 -->
+<div class="flex items-center gap-4 bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 active:scale-[0.98] transition-transform">
+<div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">psychology</span>
+</div>
+<div class="flex-1">
+<div class="font-label-md text-label-md text-on-surface">Jordan Smith</div>
+<div class="font-body-md text-[13px] text-on-surface-variant">AI Assistant Training</div>
+</div>
+<div class="text-right">
+<div class="font-label-sm text-label-sm text-on-surface-variant">5h ago</div>
+<div class="font-label-sm text-[10px] text-outline uppercase">92/100</div>
+</div>
+</div>
+<!-- Cert Item 4 -->
+<div class="flex items-center gap-4 bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 active:scale-[0.98] transition-transform">
+<div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">monitoring</span>
+</div>
+<div class="flex-1">
+<div class="font-label-md text-label-md text-on-surface">Elena Rodriguez</div>
+<div class="font-body-md text-[13px] text-on-surface-variant">Advanced Analytics Module</div>
+</div>
+<div class="text-right">
+<div class="font-label-sm text-label-sm text-on-surface-variant">8h ago</div>
+<div class="font-label-sm text-[10px] text-outline uppercase">100/100</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Compliance Gauge (Qualiopi Highlight) -->
+<section class="mb-12 bg-inverse-surface text-inverse-on-surface p-6 rounded-[2rem] relative overflow-hidden">
+<!-- Decorative gradient blur -->
+<div class="absolute -top-20 -right-20 w-48 h-48 bg-primary/30 blur-[60px] rounded-full"></div>
+<div class="relative z-10 flex flex-col gap-6">
+<div>
+<h3 class="font-headline-md text-headline-md font-bold mb-1">Compliance Status</h3>
+<p class="font-body-md text-outline-variant opacity-80">Qualiopi Certification Readiness</p>
+</div>
+<div class="flex items-center justify-center gap-8 py-4">
+<div class="relative w-28 h-28 flex items-center justify-center">
+<svg class="w-full h-full -rotate-90">
+<circle class="text-white/10" cx="56" cy="56" fill="none" r="50" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-tertiary-fixed" cx="56" cy="56" fill="none" r="50" stroke="currentColor" stroke-dasharray="314.159" stroke-dashoffset="31.4" stroke-width="8"></circle>
+</svg>
+<div class="absolute font-display text-[24px] font-bold">90%</div>
+</div>
+<div class="space-y-4">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-outline-variant">Audit Period</span>
+<span class="font-label-md text-label-md">Q3 2024</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-outline-variant">Pending Evidence</span>
+<span class="font-label-md text-label-md">4 Documents</span>
+</div>
+</div>
+</div>
+<button class="w-full py-4 bg-primary text-on-primary font-bold rounded-xl active:scale-95 transition-transform flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[20px]">assignment_turned_in</span>
+                    Run Compliance Report
+                </button>
+</div>
+</section>
+</main>
+<!-- Floating Action Button (Manager Action) -->
+<button class="fixed bottom-24 right-6 w-14 h-14 bg-primary text-on-primary rounded-2xl shadow-xl z-50 flex items-center justify-center active:scale-90 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add_task</span>
+</button>
+<!-- Bottom Navigation Bar (Shared Component Logic) -->
+<nav class="lg:hidden fixed bottom-0 left-0 w-full bg-surface/80 dark:bg-surface-container-highest/80 backdrop-blur-lg border-t border-outline-variant z-50 flex justify-around items-center px-4 py-2 pb-safe rounded-t-xl shadow-lg">
+<!-- Dashboard (Active) -->
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl p-2 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-label-sm-mobile text-label-sm-mobile">Home</span>
+</a>
+<!-- Quizzes -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant p-2 hover:bg-primary-container/50 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">assignment</span>
+<span class="font-label-sm-mobile text-label-sm-mobile">Quizzes</span>
+</a>
+<!-- AI Tutor -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant p-2 hover:bg-primary-container/50 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">psychology</span>
+<span class="font-label-sm-mobile text-label-sm-mobile">AI Tutor</span>
+</a>
+<!-- Me -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant p-2 hover:bg-primary-container/50 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm-mobile text-label-sm-mobile">Me</span>
+</a>
+</nav>
+<script>
+        // Micro-interaction for list item clicks
+        document.querySelectorAll('.flex-1').forEach(item => {
+            item.addEventListener('touchstart', function() {
+                this.classList.add('opacity-70');
+            });
+            item.addEventListener('touchend', function() {
+                this.classList.remove('opacity-70');
+            });
+        });
+
+        // Simple mock search behavior
+        const searchInput = document.querySelector('input');
+        searchInput.addEventListener('input', (e) => {
+            if(e.target.value.length > 2) {
+                console.log('Searching for:', e.target.value);
+                // In a real app, this would filter the lists
+            }
+        });
+    </script>
+</body></html>

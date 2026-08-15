@@ -1,0 +1,44 @@
+"use client";
+
+import { useActionState } from "react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, Input } from "@titan-kinetic/ui";
+import { resetPasswordAction, type ActionState } from "../_actions/auth";
+import { SubmitButton } from "../_components/SubmitButton";
+import { FormMessage } from "../_components/FormMessage";
+
+export default function ReinitialiserMotDePassePage() {
+  const [state, formAction] = useActionState<ActionState, FormData>(
+    resetPasswordAction,
+    undefined,
+  );
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Choisir un nouveau mot de passe</CardTitle>
+        <CardDescription>Ce lien n'est valable qu'une seule fois.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form action={formAction} className="flex flex-col gap-4">
+          <Input
+            label="Nouveau mot de passe"
+            name="password"
+            type="password"
+            autoComplete="new-password"
+            hint="8 caractères minimum"
+            required
+          />
+          <Input
+            label="Confirmer le mot de passe"
+            name="confirmPassword"
+            type="password"
+            autoComplete="new-password"
+            required
+          />
+          <FormMessage error={state?.error} success={state?.success} />
+          <SubmitButton>Mettre à jour le mot de passe</SubmitButton>
+        </form>
+      </CardContent>
+    </Card>
+  );
+}

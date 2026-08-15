@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Centre de Conformité Qualiopi | EduMastery</title>
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Geist:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error-container": "#ffdad6",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "on-tertiary-container": "#000703",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#005236",
+                        "on-secondary-fixed": "#131b2e",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-surface": "#0b1c30",
+                        "secondary-fixed": "#dae2fd",
+                        "on-secondary-container": "#5c647a",
+                        "inverse-primary": "#c0c1ff",
+                        "surface-variant": "#d3e4fe",
+                        "surface-tint": "#494bd6",
+                        "primary-fixed": "#e1e0ff",
+                        "background": "#f8f9ff",
+                        "on-primary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "tertiary-container": "#00885d",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed": "#07006c",
+                        "on-primary-fixed-variant": "#2f2ebe",
+                        "surface-bright": "#f8f9ff",
+                        "primary-fixed-dim": "#c0c1ff",
+                        "surface-dim": "#cbdbf5",
+                        "on-tertiary-fixed": "#002113",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "outline-variant": "#c7c4d7",
+                        "secondary": "#565e74",
+                        "outline": "#767586",
+                        "surface-container-high": "#dce9ff",
+                        "on-surface-variant": "#464554",
+                        "on-error-container": "#93000a",
+                        "primary": "#4648d4",
+                        "surface": "#f8f9ff",
+                        "tertiary-fixed-dim": "#4edea3",
+                        "surface-container-low": "#eff4ff",
+                        "error": "#ba1a1a",
+                        "secondary-container": "#dae2fd",
+                        "surface-container-highest": "#d3e4fe",
+                        "tertiary-fixed": "#6ffbbe",
+                        "on-primary-container": "#fffbff",
+                        "tertiary": "#006c49",
+                        "surface-container": "#e5eeff",
+                        "inverse-surface": "#213145",
+                        "on-background": "#0b1c30",
+                        "primary-container": "#6063ee"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1440px",
+                        "margin-desktop": "48px",
+                        "gutter": "24px",
+                        "unit": "4px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-sm": ["Geist"],
+                        "headline-md": ["Inter"],
+                        "label-md": ["Geist"],
+                        "display": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "label-md": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-header {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .floating-fab {
+            animation: float 4s ease-in-out infinite;
+        }
+    </style>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-container selection:text-on-primary-container">
+<!-- Top Navigation Anchor -->
+<header class="fixed top-0 w-full z-50 bg-surface/70 dark:bg-surface-dim/70 backdrop-blur-md border-b border-outline-variant/30 shadow-sm">
+<div class="flex items-center justify-between px-margin-desktop h-16 w-full max-w-container-max mx-auto">
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-primary p-2 hover:bg-surface-variant/50 rounded-full transition-colors active:scale-95" data-icon="menu">menu</button>
+<h1 class="font-display text-headline-md tracking-tight text-primary">EduMastery</h1>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-on-surface-variant font-medium hover:bg-surface-variant/50 transition-colors duration-200 px-3 py-2 rounded-lg" href="#">Accueil</a>
+<a class="text-on-surface-variant font-medium hover:bg-surface-variant/50 transition-colors duration-200 px-3 py-2 rounded-lg" href="#">Cours</a>
+<a class="text-primary font-semibold transition-colors duration-200 px-3 py-2 rounded-lg bg-primary-container/10" href="#">Conformité</a>
+<a class="text-on-surface-variant font-medium hover:bg-surface-variant/50 transition-colors duration-200 px-3 py-2 rounded-lg" href="#">Profil</a>
+</div>
+<div class="flex items-center gap-2">
+<button class="material-symbols-outlined text-primary p-2 hover:bg-surface-variant/50 rounded-full transition-colors active:scale-95" data-icon="search">search</button>
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold shadow-sm">AM</div>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-32 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<!-- Dashboard Header -->
+<div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<nav aria-label="Breadcrumb" class="flex items-center gap-2 text-label-sm text-secondary mb-2">
+<span>Tableau de bord</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-primary">Conformité &amp; Qualité</span>
+</nav>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Conformité &amp; Qualité</h2>
+<p class="text-on-surface-variant mt-1">Gérez vos indicateurs de certification Qualiopi et vos preuves probantes.</p>
+</div>
+<!-- Search & Filter Bar -->
+<div class="relative w-full md:w-96">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline" data-icon="search">search</span>
+<input class="w-full pl-12 pr-4 py-3 bg-surface border border-outline-variant rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none text-body-md" placeholder="Rechercher des documents ou indicateurs..." type="text"/>
+</div>
+</div>
+<!-- Compliance Overview Cards (Bento Style) -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter mb-12">
+<div class="md:col-span-3 bg-surface-container-low border border-outline-variant/30 rounded-3xl p-8 relative overflow-hidden group">
+<div class="absolute -right-16 -top-16 w-64 h-64 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors duration-700"></div>
+<div class="relative z-10 flex flex-col h-full justify-between">
+<div>
+<span class="px-4 py-1.5 rounded-full bg-tertiary-container text-on-tertiary-container font-label-sm flex items-center w-fit gap-2 mb-6">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+                        Certifié Qualiopi
+                    </span>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Santé globale de conformité</h3>
+<p class="text-on-surface-variant max-w-lg">Votre organisation respecte actuellement 92% des normes de qualité requises. 3 indicateurs nécessitent votre attention avant le prochain audit de surveillance.</p>
+</div>
+<div class="mt-8 flex items-center gap-6">
+<div class="flex-1">
+<div class="flex justify-between items-center mb-2">
+<span class="font-label-md text-secondary">Progression vers la maîtrise</span>
+<span class="font-label-md text-primary font-bold">29/32 Indicateurs</span>
+</div>
+<div class="h-3 w-full bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 92%"></div>
+</div>
+</div>
+<button class="px-6 py-3 bg-primary text-on-primary rounded-xl font-label-md shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all active:scale-95">
+                        Rapport d'audit
+                    </button>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-highest border border-outline-variant/30 rounded-3xl p-8 flex flex-col justify-between">
+<div>
+<h4 class="font-label-md text-secondary mb-4 uppercase tracking-wider">Prochaine échéance</h4>
+<div class="flex items-center gap-3 text-error mb-2">
+<span class="material-symbols-outlined">event</span>
+<span class="font-headline-md text-headline-md">24 Oct</span>
+</div>
+<p class="text-on-surface-variant text-label-md leading-relaxed">Phase 1 de l'audit de surveillance : revue documentaire et vérification sur site.</p>
+</div>
+<button class="w-full py-3 text-primary border border-primary/20 rounded-xl hover:bg-primary/5 transition-colors font-label-md">
+                Synchroniser calendrier
+            </button>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+<!-- Indicator List -->
+<section class="lg:col-span-8 space-y-gutter">
+<div class="flex items-center justify-between mb-2 px-2">
+<h3 class="font-headline-md text-headline-md">Indicateurs du référentiel</h3>
+<div class="flex items-center gap-2">
+<button class="p-2 text-secondary hover:bg-surface-variant rounded-lg transition-colors"><span class="material-symbols-outlined">filter_list</span></button>
+<button class="p-2 text-secondary hover:bg-surface-variant rounded-lg transition-colors"><span class="material-symbols-outlined">sort</span></button>
+</div>
+</div>
+<!-- Indicator Card 1 -->
+<div class="group bg-white border border-outline-variant/40 rounded-2xl p-6 hover:shadow-md transition-all duration-300">
+<div class="flex items-start justify-between gap-4 mb-4">
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 rounded-xl bg-tertiary-container/10 flex items-center justify-center text-tertiary-container">
+<span class="material-symbols-outlined text-[28px]">info</span>
+</div>
+<div>
+<h4 class="font-label-md text-primary mb-1">Indicateur 1</h4>
+<h5 class="font-headline-md text-on-surface text-lg">Information du public</h5>
+<p class="text-on-surface-variant text-sm mt-1">Conditions d'information du public sur les prestations proposées.</p>
+</div>
+</div>
+<span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold uppercase tracking-tight">Certifié</span>
+</div>
+<div class="flex items-center justify-between pt-4 border-t border-outline-variant/20">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-white bg-slate-200 flex items-center justify-center text-[10px] font-bold">PDF</div>
+<div class="w-8 h-8 rounded-full border-2 border-white bg-slate-200 flex items-center justify-center text-[10px] font-bold">DOC</div>
+</div>
+<button class="text-primary font-label-md flex items-center gap-2 hover:underline">
+                        Voir 12 Preuves <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Indicator Card 2 -->
+<div class="group bg-white border border-outline-variant/40 rounded-2xl p-6 hover:shadow-md transition-all duration-300 border-l-4 border-l-error">
+<div class="flex items-start justify-between gap-4 mb-4">
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 rounded-xl bg-error-container/10 flex items-center justify-center text-error">
+<span class="material-symbols-outlined text-[28px]">track_changes</span>
+</div>
+<div>
+<h4 class="font-label-md text-error mb-1">Indicateur 2</h4>
+<h5 class="font-headline-md text-on-surface text-lg">Identification des objectifs</h5>
+<p class="text-on-surface-variant text-sm mt-1">Identification précise des objectifs des prestations proposées.</p>
+</div>
+</div>
+<span class="px-3 py-1 rounded-full bg-error-container text-on-error-container text-xs font-bold uppercase tracking-tight">Action requise</span>
+</div>
+<div class="flex items-center justify-between pt-4 border-t border-outline-variant/20">
+<p class="text-xs text-error font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">warning</span>
+                        Preuve d'évaluation manquante pour la session #402
+                    </p>
+<button class="px-4 py-2 bg-primary text-on-primary rounded-lg text-sm font-label-md active:scale-95 transition-transform">
+                        Téléverser
+                    </button>
+</div>
+</div>
+<!-- Indicator Card 3 -->
+<div class="group bg-white border border-outline-variant/40 rounded-2xl p-6 hover:shadow-md transition-all duration-300 border-l-4 border-l-secondary">
+<div class="flex items-start justify-between gap-4 mb-4">
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 rounded-xl bg-secondary-container/10 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[28px]">handshake</span>
+</div>
+<div>
+<h4 class="font-label-md text-secondary mb-1">Indicateur 3</h4>
+<h5 class="font-headline-md text-on-surface text-lg">Adaptation aux publics</h5>
+<p class="text-on-surface-variant text-sm mt-1">Adaptation des prestations et des modalités d'accueil aux publics bénéficiaires.</p>
+</div>
+</div>
+<span class="px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-bold uppercase tracking-tight">Preuve manquante</span>
+</div>
+<div class="flex items-center justify-between pt-4 border-t border-outline-variant/20">
+<div class="flex items-center gap-4">
+<div class="h-1.5 w-32 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-0"></div>
+</div>
+<span class="text-xs text-on-surface-variant">0% Complété</span>
+</div>
+<button class="text-primary font-label-md flex items-center gap-2 hover:underline">
+                        Démarrer checklist <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Sidebar: Recent Actions & Traceability -->
+<aside class="lg:col-span-4 space-y-6">
+<div class="bg-surface-container-low rounded-3xl p-6 border border-outline-variant/30">
+<h3 class="font-label-md text-on-surface uppercase tracking-widest mb-6">Activité récente</h3>
+<div class="space-y-6">
+<div class="flex gap-4">
+<div class="relative">
+<div class="w-10 h-10 rounded-full bg-tertiary-container/20 flex items-center justify-center text-tertiary-container">
+<span class="material-symbols-outlined text-[20px]">check_circle</span>
+</div>
+<div class="absolute top-10 left-1/2 -translate-x-1/2 w-[1px] h-10 bg-outline-variant/40"></div>
+</div>
+<div>
+<p class="text-on-surface font-label-md">Signature collectée</p>
+<p class="text-on-surface-variant text-sm">Feuille de présence Session #402</p>
+<p class="text-outline text-xs mt-1">Il y a 2 heures • par Alex Morgan</p>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="relative">
+<div class="w-10 h-10 rounded-full bg-primary-container/20 flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined text-[20px]">upload_file</span>
+</div>
+<div class="absolute top-10 left-1/2 -translate-x-1/2 w-[1px] h-10 bg-outline-variant/40"></div>
+</div>
+<div>
+<p class="text-on-surface font-label-md">Nouvelle preuve ajoutée</p>
+<p class="text-on-surface-variant text-sm">Indicateur 1 : URL du site public</p>
+<p class="text-outline text-xs mt-1">Hier • par Système</p>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="w-10 h-10 rounded-full bg-error-container/20 flex items-center justify-center text-error">
+<span class="material-symbols-outlined text-[20px]">report_problem</span>
+</div>
+<div>
+<p class="text-on-surface font-label-md">Non-conformité détectée</p>
+<p class="text-on-surface-variant text-sm">Indicateur 2 : Formulaire de feedback manquant</p>
+<p class="text-outline text-xs mt-1">19 Oct • par Audit Bot</p>
+</div>
+</div>
+</div>
+<button class="w-full mt-8 py-3 text-primary text-sm font-medium hover:bg-primary/5 rounded-xl transition-colors">
+                    Journal complet de traçabilité
+                </button>
+</div>
+<!-- Quality Stats -->
+<div class="bg-surface-container rounded-3xl p-6">
+<h3 class="font-label-md text-on-surface uppercase tracking-widest mb-6">Préparation à l'audit</h3>
+<div class="flex flex-col items-center py-4">
+<div class="relative w-32 h-32 flex items-center justify-center mb-6">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-surface-variant" cx="64" cy="64" fill="transparent" r="58" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-primary transition-all duration-1000" cx="64" cy="64" fill="transparent" r="58" stroke="currentColor" stroke-dasharray="364.4" stroke-dashoffset="29.1" stroke-width="8"></circle>
+</svg>
+<div class="absolute flex flex-col items-center">
+<span class="text-headline-md font-display text-primary">92%</span>
+<span class="text-[10px] text-outline font-bold uppercase">Prêt</span>
+</div>
+</div>
+<div class="w-full grid grid-cols-2 gap-4">
+<div class="bg-white/50 p-3 rounded-xl text-center">
+<p class="text-xs text-outline mb-1">Certifiés</p>
+<p class="text-lg font-bold text-tertiary">29</p>
+</div>
+<div class="bg-white/50 p-3 rounded-xl text-center">
+<p class="text-xs text-outline mb-1">Critiques</p>
+<p class="text-lg font-bold text-error">3</p>
+</div>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- FAB: Quick Actions -->
+<div class="fixed bottom-24 right-8 z-[60] flex flex-col items-end gap-3 group">
+<!-- Sub-actions (hidden by default) -->
+<div class="flex flex-col items-end gap-3 opacity-0 translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
+<button class="flex items-center gap-3 bg-surface-container-high text-on-surface py-2.5 px-5 rounded-2xl shadow-xl hover:bg-surface-variant transition-colors group/btn active:scale-95">
+<span class="font-label-md">Lancer audit interne</span>
+<span class="material-symbols-outlined text-primary" data-icon="troubleshoot">troubleshoot</span>
+</button>
+<button class="flex items-center gap-3 bg-surface-container-high text-on-surface py-2.5 px-5 rounded-2xl shadow-xl hover:bg-surface-variant transition-colors group/btn active:scale-95">
+<span class="font-label-md">Générer rapport PDF</span>
+<span class="material-symbols-outlined text-primary" data-icon="picture_as_pdf">picture_as_pdf</span>
+</button>
+<button class="flex items-center gap-3 bg-surface-container-high text-on-surface py-2.5 px-5 rounded-2xl shadow-xl hover:bg-surface-variant transition-colors group/btn active:scale-95">
+<span class="font-label-md">Ajouter une preuve</span>
+<span class="material-symbols-outlined text-primary" data-icon="cloud_upload">cloud_upload</span>
+</button>
+</div>
+<!-- Primary FAB -->
+<button class="floating-fab w-16 h-16 bg-primary text-on-primary rounded-2xl shadow-2xl shadow-primary/40 flex items-center justify-center hover:scale-110 active:scale-90 transition-all duration-300">
+<span class="material-symbols-outlined text-[32px]" data-icon="add">add</span>
+</button>
+</div>
+<!-- Mobile Navigation -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-surface/80 backdrop-blur-lg border-t border-outline-variant/20 h-20 md:hidden flex justify-around items-center px-4">
+<button class="flex flex-col items-center justify-center text-on-surface-variant opacity-70">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] font-label-sm mt-1">Accueil</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant opacity-70">
+<span class="material-symbols-outlined">school</span>
+<span class="text-[10px] font-label-sm mt-1">Cours</span>
+</button>
+<button class="flex flex-col items-center justify-center text-primary bg-primary-container/30 rounded-xl px-4 py-1.5">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+<span class="text-[10px] font-label-sm mt-1">Conformité</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant opacity-70">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-label-sm mt-1">Profil</span>
+</button>
+</nav>
+<script>
+    // Simple micro-interaction for search focus
+    const searchInput = document.querySelector('input[type="text"]');
+    if (searchInput) {
+        searchInput.addEventListener('focus', () => {
+            searchInput.parentElement.classList.add('scale-[1.02]');
+        });
+        searchInput.addEventListener('blur', () => {
+            searchInput.parentElement.classList.remove('scale-[1.02]');
+        });
+    }
+
+    // Toggle FAB menu for mobile click (since hover doesn't exist)
+    const fab = document.querySelector('.floating-fab');
+    if (fab) {
+        fab.addEventListener('click', (e) => {
+            if (window.innerWidth < 1024) {
+                const subActions = fab.parentElement.querySelector('div');
+                subActions.classList.toggle('opacity-0');
+                subActions.classList.toggle('translate-y-4');
+                subActions.classList.toggle('pointer-events-none');
+            }
+        });
+    }
+</script>
+</body></html>

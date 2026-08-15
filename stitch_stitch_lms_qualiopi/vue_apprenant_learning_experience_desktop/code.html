@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lumina LMS - Certification Qualiopi</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Geist:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface": "#f8f9ff",
+                    "surface-container-low": "#eff4ff",
+                    "primary-fixed": "#e1e0ff",
+                    "on-error-container": "#93000a",
+                    "outline": "#767586",
+                    "secondary-fixed": "#dae2fd",
+                    "secondary-fixed-dim": "#bec6e0",
+                    "on-surface": "#0b1c30",
+                    "tertiary-fixed-dim": "#4edea3",
+                    "primary-fixed-dim": "#c0c1ff",
+                    "tertiary": "#006c49",
+                    "inverse-primary": "#c0c1ff",
+                    "primary": "#4648d4",
+                    "on-surface-variant": "#464554",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-container": "#dae2fd",
+                    "surface-container-highest": "#d3e4fe",
+                    "tertiary-fixed": "#6ffbbe",
+                    "on-tertiary-container": "#000703",
+                    "on-secondary-container": "#5c647a",
+                    "primary-container": "#6063ee",
+                    "surface-bright": "#f8f9ff",
+                    "on-error": "#ffffff",
+                    "inverse-surface": "#213145",
+                    "surface-container": "#e5eeff",
+                    "on-background": "#0b1c30",
+                    "background": "#f8f9ff",
+                    "error": "#ba1a1a",
+                    "surface-tint": "#494bd6",
+                    "outline-variant": "#c7c4d7",
+                    "on-tertiary-fixed": "#002113",
+                    "on-primary-container": "#fffbff",
+                    "surface-container-high": "#dce9ff",
+                    "error-container": "#ffdad6",
+                    "on-primary-fixed-variant": "#2f2ebe",
+                    "on-tertiary-fixed-variant": "#005236",
+                    "on-primary-fixed": "#07006c",
+                    "surface-variant": "#d3e4fe",
+                    "on-secondary-fixed": "#131b2e",
+                    "on-secondary": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "inverse-on-surface": "#eaf1ff",
+                    "surface-dim": "#cbdbf5",
+                    "on-secondary-fixed-variant": "#3f465c",
+                    "secondary": "#565e74",
+                    "tertiary-container": "#00885d"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "4px",
+                    "gutter": "24px",
+                    "margin-desktop": "48px",
+                    "container-max": "1440px",
+                    "margin-mobile": "16px"
+            },
+            "fontFamily": {
+                    "label-sm": ["Geist"],
+                    "headline-lg-mobile": ["Inter"],
+                    "display": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "label-md": ["Geist"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "label-sm": ["12px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "label-md": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .video-container {
+            aspect-ratio: 16/9;
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c7c4d7;
+            border-radius: 10px;
+        }
+        .glass-panel {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .active-tab-indicator {
+            height: 2px;
+            bottom: -1px;
+        }
+    </style>
+</head>
+<body class="bg-surface font-body-md text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopNavBar (Shared Component Logic) -->
+<header class="fixed top-0 w-full bg-surface/70 dark:bg-surface/70 backdrop-blur-md border-b border-outline-variant dark:border-outline shadow-sm z-50">
+<div class="flex justify-between items-center px-margin-desktop h-16 w-full max-w-container-max mx-auto">
+<div class="flex items-center gap-8">
+<span class="text-headline-md font-headline-md font-bold text-primary cursor-pointer">Lumina LMS</span>
+<div class="hidden md:flex items-center gap-6">
+<a class="text-primary dark:text-primary-fixed-dim border-b-2 border-primary pb-1 font-label-md text-label-md transition-colors" href="#">Dashboard</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors font-label-md text-label-md" href="#">Catalog</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors font-label-md text-label-md" href="#">Community</a>
+</div>
+</div>
+<!-- Focus specific: Course Info in TopNav -->
+<div class="hidden lg:flex items-center flex-1 justify-center px-12">
+<div class="flex flex-col items-center max-w-md w-full">
+<span class="text-label-sm font-label-sm text-on-surface-variant truncate">Certification Qualiopi : Maîtrise des Indicateurs</span>
+<div class="w-full bg-surface-container h-1.5 rounded-full mt-1 overflow-hidden">
+<div class="bg-primary h-full rounded-full transition-all duration-1000" style="width: 75%;"></div>
+</div>
+</div>
+<span class="ml-4 text-label-sm font-label-sm font-bold text-primary">75%</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-highest rounded-full transition-colors cursor-pointer active:scale-95">
+<span class="material-symbols-outlined">help</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-highest rounded-full transition-colors cursor-pointer active:scale-95">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center overflow-hidden border border-outline-variant cursor-pointer active:scale-95 transition-transform">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a female student in her late 20s, wearing business casual attire, set against a soft-focus office background. The lighting is clean and bright, characteristic of a high-end educational platform. The overall aesthetic is minimalist, polished, and professional with a cool-toned color palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-kHbKUozKLcR2NtBT-Mm7zzQFjyv4Xwf7xdIY4wCoEcw_wDu1417X4JSoiS4xC-PwL0vKENiq-OP6lGaRVdxPmeg4tGiIoyhPHFwRrVi4zX1YIuGyKyTxkGaMU8NX9lDRjiNzla_7-lGlq7wBNfHEgIbyI4J0qBt4__mqvAaR0XxvMH0t21bGJRl6GSBGxtG6yX5pFFoi7lNJgfJhM71YSaumG-05Z9R_hKJZNAQ2CsSzo1LOC3-i"/>
+</div>
+</div>
+</div>
+</header>
+<!-- App Layout -->
+<div class="flex pt-16 min-h-screen">
+<!-- SideNavBar (Shared Component Logic) -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-64px)] w-80 bg-surface-container-low dark:bg-surface-container shadow-md hidden lg:flex flex-col border-r border-outline-variant dark:border-outline overflow-y-auto custom-scrollbar z-40">
+<div class="p-6">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">school</span>
+</div>
+<div>
+<h3 class="font-headline-md text-label-md text-on-surface font-bold">Qualiopi Mastery</h3>
+<p class="text-label-sm text-on-surface-variant">75% Complete</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<!-- Module 1: Completed -->
+<div class="px-3">
+<button class="w-full flex items-center gap-3 text-on-surface-variant py-3 px-6 hover:bg-surface-container-highest transition-all duration-200 rounded-lg group">
+<span class="material-symbols-outlined text-tertiary">check_circle</span>
+<span class="font-label-md text-label-md flex-1 text-left">Introduction</span>
+</button>
+</div>
+<!-- Module 1 Foundations: Completed -->
+<div class="px-3">
+<button class="w-full flex items-center gap-3 text-on-surface-variant py-3 px-6 hover:bg-surface-container-highest transition-all duration-200 rounded-lg">
+<span class="material-symbols-outlined text-tertiary">check_circle</span>
+<span class="font-label-md text-label-md flex-1 text-left">Module 1: Foundations</span>
+</button>
+</div>
+<!-- Module 2: Active -->
+<div class="px-3">
+<button class="w-full flex items-center gap-3 bg-primary-container text-on-primary-container rounded-lg py-3 px-6 border-l-4 border-primary shadow-sm transition-all duration-200">
+<span class="material-symbols-outlined">play_circle</span>
+<span class="font-label-md text-label-md flex-1 text-left">Module 2: Advanced Tech</span>
+</button>
+</div>
+<!-- Locked Modules -->
+<div class="px-3">
+<button class="w-full flex items-center gap-3 text-outline py-3 px-6 cursor-not-allowed opacity-60">
+<span class="material-symbols-outlined">lock</span>
+<span class="font-label-md text-label-md flex-1 text-left">Resource Library</span>
+</button>
+</div>
+<div class="px-3">
+<button class="w-full flex items-center gap-3 text-outline py-3 px-6 cursor-not-allowed opacity-60">
+<span class="material-symbols-outlined">lock</span>
+<span class="font-label-md text-label-md flex-1 text-left">Final Assessment</span>
+</button>
+</div>
+</nav>
+<div class="p-6 mt-auto border-t border-outline-variant">
+<button class="w-full bg-primary text-on-primary py-3 px-4 rounded-xl font-label-md text-label-md hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2 group">
+<span class="material-symbols-outlined text-[20px] group-hover:translate-y-0.5 transition-transform">download</span>
+                    Download Syllabus
+                </button>
+<div class="mt-4 flex items-center justify-around">
+<button class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors text-label-sm">
+<span class="material-symbols-outlined text-[18px]">contact_support</span> Support
+                    </button>
+<button class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors text-label-sm">
+<span class="material-symbols-outlined text-[18px]">settings</span> Settings
+                    </button>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 lg:ml-80 transition-all duration-300">
+<div class="max-w-[1100px] mx-auto px-margin-mobile md:px-gutter py-8">
+<!-- Video Player Section -->
+<section class="mb-8">
+<div class="video-container relative rounded-2xl overflow-hidden bg-inverse-surface group cursor-pointer">
+<div class="absolute inset-0 flex items-center justify-center z-10">
+<div class="w-20 h-20 bg-primary/90 text-on-primary rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-300">
+<span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</div>
+</div>
+<div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent z-10">
+<h2 class="text-white font-headline-lg text-headline-lg">Indicateur 1 : Communication sur les prestations</h2>
+<p class="text-white/80 font-label-md text-label-md">Module 2 • Le Référentiel National Qualité</p>
+</div>
+<img class="w-full h-full object-cover opacity-60" data-alt="A clean, cinematic screen capture of an educational video presentation. The presenter is a professional male in a modern, brightly lit office studio with a glass writing board featuring Qualiopi diagrams. The color palette is composed of soft blues, whites, and corporate indigo. The frame is crisp, high-definition, and conveys a premium learning experience." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqX_mpOuH4BkR8SxFRJmbLMJcYXn_vaysV8JmrO2sDgRXUqdkoEydadeBpiSlJYUChkA6XZsMTVkqnDF-d6KMZaQaB06o7KGWu4KMocqxH4apMwKwcqdZfg0Fq1iZ56j2s0pe3JMH9ABZfnPSEHkpSIQJG-TZ5REQJHp2-0G9kwNJJnODsfPtm3MfnzZZ7fJwyztF2m5HRCx_EB_iRKt5EHgY31jWa5HbEfSID0M2S5uZVvZQJuafs"/>
+<!-- Video Controls Overlay (Simulated) -->
+<div class="absolute bottom-0 w-full h-1 bg-white/20 group-hover:h-2 transition-all">
+<div class="h-full bg-primary w-1/3"></div>
+</div>
+</div>
+</section>
+<!-- Tabbed Interface & Right Sidebar Layout -->
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+<!-- Tabs Area -->
+<div class="xl:col-span-2">
+<div class="border-b border-outline-variant mb-6">
+<div class="flex gap-8">
+<button class="pb-4 text-primary font-label-md text-label-md relative transition-all active-tab border-b-2 border-primary" id="tab-notes" onclick="switchTab('notes')">
+                                    Notes
+                                </button>
+<button class="pb-4 text-on-surface-variant hover:text-primary font-label-md text-label-md transition-all" id="tab-ressources" onclick="switchTab('ressources')">
+                                    Ressources
+                                </button>
+<button class="pb-4 text-on-surface-variant hover:text-primary font-label-md text-label-md transition-all" id="tab-transcripteur" onclick="switchTab('transcripteur')">
+                                    Transcripteur IA
+                                </button>
+</div>
+</div>
+<!-- Tab Content: Notes (Default) -->
+<div class="space-y-6" id="content-notes">
+<div class="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant shadow-sm">
+<textarea class="w-full bg-transparent border-none focus:ring-0 text-on-surface resize-none h-24 font-body-md" placeholder="Prendre une note pour ce cours..." style="outline: none;"></textarea>
+<div class="flex justify-between items-center mt-4 pt-4 border-t border-outline-variant">
+<div class="flex gap-2">
+<button class="p-2 hover:bg-surface-container rounded-lg text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined">format_bold</span>
+</button>
+<button class="p-2 hover:bg-surface-container rounded-lg text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined">attachment</span>
+</button>
+</div>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-full font-label-md text-label-md shadow-md hover:bg-primary-container transition-all">Enregistrer la note</button>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex gap-4 p-4 rounded-xl hover:bg-surface-container-low transition-colors group">
+<span class="text-primary font-bold font-label-sm mt-1">04:12</span>
+<div>
+<p class="font-body-md text-on-surface">L'indicateur 1 précise l'obligation de diffusion d'informations sur les résultats obtenus.</p>
+<div class="flex gap-3 mt-2">
+<button class="text-label-sm text-primary hover:underline">Modifier</button>
+<button class="text-label-sm text-error hover:underline opacity-0 group-hover:opacity-100 transition-opacity">Supprimer</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Tab Content: Ressources (Hidden) -->
+<div class="hidden space-y-4" id="content-ressources">
+<div class="flex items-center justify-between p-4 bg-surface-container-lowest border border-outline-variant rounded-xl hover:shadow-md transition-all cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-error/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-error">picture_as_pdf</span>
+</div>
+<div>
+<h4 class="font-label-md text-on-surface">Guide de Lecture RNQ.pdf</h4>
+<p class="text-label-sm text-on-surface-variant">2.4 MB • Mis à jour hier</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant">download</span>
+</div>
+<div class="flex items-center justify-between p-4 bg-surface-container-lowest border border-outline-variant rounded-xl hover:shadow-md transition-all cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">description</span>
+</div>
+<div>
+<h4 class="font-label-md text-on-surface">Checklist Conformité Indicateur 1.docx</h4>
+<p class="text-label-sm text-on-surface-variant">850 KB</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant">download</span>
+</div>
+</div>
+<!-- Tab Content: AI Transcriber (Hidden) -->
+<div class="hidden" id="content-transcripteur">
+<div class="bg-surface-container-low p-6 rounded-2xl border border-dashed border-primary/30">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-primary animate-pulse">psychology</span>
+<h4 class="font-headline-md text-label-md text-primary">Transcription Assistée par IA</h4>
+</div>
+<div class="space-y-4 font-body-md text-on-surface-variant leading-relaxed">
+<p><span class="text-primary font-bold">[00:00]</span> Bienvenue dans ce nouveau module consacré au Référentiel National Qualité. Nous allons débuter par l'indicateur 1...</p>
+<p><span class="text-primary font-bold">[00:45]</span> La transparence est le maître-mot ici. Le prestataire doit mettre à disposition du public des résultats clairs et chiffrés...</p>
+<p class="italic text-outline">Génération de la suite de la transcription en cours...</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Sidebar Widgets -->
+<div class="space-y-8">
+<!-- Next Lesson Card -->
+<div class="bg-primary text-on-primary p-6 rounded-2xl shadow-xl relative overflow-hidden group">
+<div class="absolute top-0 right-0 opacity-10 -rotate-12 translate-x-4 -translate-y-4">
+<span class="material-symbols-outlined text-[120px]">play_circle</span>
+</div>
+<h4 class="text-label-sm font-label-sm uppercase tracking-wider opacity-80 mb-2">Prochaine leçon</h4>
+<p class="font-headline-md text-label-md mb-4 leading-tight">Indicateur 2 : Identification précise des objectifs</p>
+<button class="w-full bg-white text-primary py-3 rounded-xl font-label-md text-label-md flex items-center justify-center gap-2 group-hover:scale-[1.02] transition-transform">
+                                Suivant <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+<!-- Mini Quiz Widget -->
+<div class="bg-surface-container-high p-6 rounded-2xl border border-outline-variant">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-tertiary">quiz</span>
+<h4 class="font-label-md text-on-surface font-bold">Vérification Rapide</h4>
+</div>
+<p class="text-label-md text-on-surface mb-6">L'indicateur 1 concerne-t-il uniquement les nouveaux clients ?</p>
+<div class="space-y-3">
+<button class="w-full p-4 bg-surface-container-lowest border border-outline-variant rounded-xl text-left hover:border-primary hover:bg-primary/5 transition-all text-label-md">
+                                    Oui, c'est une nouveauté 2024.
+                                </button>
+<button class="w-full p-4 bg-surface-container-lowest border border-outline-variant rounded-xl text-left hover:border-primary hover:bg-primary/5 transition-all text-label-md">
+                                    Non, il concerne tout public.
+                                </button>
+</div>
+<div class="mt-6 flex justify-center">
+<span class="text-label-sm text-on-surface-variant">Question 1 sur 3</span>
+</div>
+</div>
+<!-- Help/Support Bubble -->
+<div class="p-6 rounded-2xl border border-outline-variant bg-surface flex items-center gap-4 hover:shadow-md transition-shadow cursor-pointer">
+<div class="w-12 h-12 rounded-full bg-tertiary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary">contact_support</span>
+</div>
+<div>
+<p class="text-label-md font-bold text-on-surface">Besoin d'aide ?</p>
+<p class="text-label-sm text-on-surface-variant">Discutez avec un tuteur Qualiopi</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Mobile FAB (Relevance Check) -->
+<button class="fixed bottom-6 right-6 lg:hidden w-14 h-14 bg-primary text-on-primary rounded-full shadow-2xl flex items-center justify-center z-50">
+<span class="material-symbols-outlined">menu_book</span>
+</button>
+<script>
+        function switchTab(tabName) {
+            // Hide all contents
+            document.getElementById('content-notes').classList.add('hidden');
+            document.getElementById('content-ressources').classList.add('hidden');
+            document.getElementById('content-transcripteur').classList.add('hidden');
+            
+            // Remove active classes from buttons
+            const buttons = ['tab-notes', 'tab-ressources', 'tab-transcripteur'];
+            buttons.forEach(id => {
+                const btn = document.getElementById(id);
+                btn.classList.remove('text-primary', 'border-b-2', 'border-primary');
+                btn.classList.add('text-on-surface-variant');
+            });
+
+            // Show current content
+            document.getElementById('content-' + tabName).classList.remove('hidden');
+            
+            // Add active class to clicked button
+            const activeBtn = document.getElementById('tab-' + tabName);
+            activeBtn.classList.remove('text-on-surface-variant');
+            activeBtn.classList.add('text-primary', 'border-b-2', 'border-primary');
+        }
+
+        // Add some subtle parallax or micro-interactions if needed
+        document.addEventListener('mousemove', (e) => {
+            const panels = document.querySelectorAll('.hover-tilt');
+            panels.forEach(panel => {
+                const rect = panel.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                // Interaction logic here if wanted
+            });
+        });
+    </script>
+</body></html>

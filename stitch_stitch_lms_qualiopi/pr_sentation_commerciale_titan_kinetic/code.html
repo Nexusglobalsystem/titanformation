@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Titan Kinetic - Le LMS de nouvelle génération</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@500&amp;family=Hanken+Grotesk:wght@600;700&amp;family=Inter:wght@400&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "deep-navy": "#003366",
+                        "on-secondary": "#3c2f00",
+                        "error": "#ffb4ab",
+                        "surface-light": "#F8F9FA",
+                        "on-surface-variant": "#c3c6d1",
+                        "surface": "#121317",
+                        "titan-gold": "#D4AF37",
+                        "inverse-surface": "#e2e2e7",
+                        "surface-container": "#1e2023",
+                        "on-surface": "#e2e2e7",
+                        "primary-fixed": "#d5e3ff",
+                        "surface-container-high": "#282a2e",
+                        "primary-container": "#003366",
+                        "on-secondary-container": "#342800",
+                        "surface-variant": "#333539",
+                        "surface-container-low": "#1a1c1f",
+                        "inverse-primary": "#3a5f94",
+                        "surface-dark": "#050C14",
+                        "on-tertiary-container": "#d8885c",
+                        "on-secondary-fixed-variant": "#574500",
+                        "on-tertiary-fixed-variant": "#723610",
+                        "on-secondary-fixed": "#241a00",
+                        "on-background": "#e2e2e7",
+                        "surface-bright": "#38393d",
+                        "tertiary": "#ffb690",
+                        "tertiary-container": "#592300",
+                        "tertiary-fixed-dim": "#ffb690",
+                        "on-error-container": "#ffdad6",
+                        "outline-variant": "#43474f",
+                        "on-error": "#690005",
+                        "primary-fixed-dim": "#a7c8ff",
+                        "secondary-fixed-dim": "#e9c349",
+                        "background": "#121317",
+                        "on-primary-fixed": "#001b3c",
+                        "on-primary-fixed-variant": "#1f477b",
+                        "on-primary-container": "#799dd6",
+                        "error-container": "#93000a",
+                        "inverse-on-surface": "#2f3034",
+                        "primary": "#a7c8ff",
+                        "on-tertiary": "#552100",
+                        "surface-container-highest": "#333539",
+                        "surface-tint": "#a7c8ff",
+                        "outline": "#8d919a",
+                        "surface-dim": "#121317",
+                        "secondary": "#e9c349",
+                        "on-primary": "#003061",
+                        "surface-container-lowest": "#0c0e12",
+                        "tertiary-fixed": "#ffdbca",
+                        "on-tertiary-fixed": "#341100",
+                        "secondary-fixed": "#ffe088",
+                        "secondary-container": "#af8d11"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "container-max": "1440px",
+                        "margin-desktop": "40px",
+                        "margin-mobile": "16px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-md-mobile": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "body-base": ["Inter"],
+                        "label-mono": ["Geist"],
+                        "body-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-md": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-base": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-mono": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        /* Custom utilities for strict design adherence */
+        .glass-panel {
+            background-color: rgba(30, 32, 35, 0.6); /* surface-container with opacity */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .text-gradient-gold {
+            background: linear-gradient(135deg, #D4AF37 0%, #e9c349 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-base text-body-base antialiased selection:bg-titan-gold/30 selection:text-titan-gold min-h-screen flex flex-col">
+<!-- Marketing Navigation (Custom for Landing Page, suppressing internal app JSON components) -->
+<header class="fixed top-0 w-full z-50 glass-panel border-b border-outline-variant/30">
+<div class="max-w-[1440px] mx-auto px-margin-mobile md:px-margin-desktop h-16 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-titan-gold" style="font-variation-settings: 'FILL' 1;">hexagon</span>
+<span class="font-headline-md-mobile md:font-headline-md text-headline-md-mobile md:text-headline-md font-bold tracking-tight">Titan Kinetic</span>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="font-label-mono text-label-mono text-on-surface-variant hover:text-titan-gold transition-colors uppercase" href="#modules">Modules</a>
+<a class="font-label-mono text-label-mono text-on-surface-variant hover:text-titan-gold transition-colors uppercase" href="#ia">Innovation IA</a>
+<a class="font-label-mono text-label-mono text-on-surface-variant hover:text-titan-gold transition-colors uppercase" href="#conformite">Conformité</a>
+</nav>
+<div class="flex items-center gap-4">
+<a class="hidden md:inline-flex font-label-mono text-label-mono text-on-surface hover:text-titan-gold uppercase transition-colors" href="#">Se connecter</a>
+<button class="bg-titan-gold text-on-secondary px-6 py-2.5 rounded hover:bg-secondary transition-colors font-label-mono text-label-mono uppercase tracking-wide flex items-center gap-2 border border-transparent shadow-[0_0_15px_rgba(212,175,55,0.15)]">
+                    Request Demo
+                    <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</header>
+<main class="flex-grow pt-16">
+<!-- Hero Section -->
+<section class="relative min-h-[90vh] flex items-center overflow-hidden border-b border-outline-variant/20">
+<!-- Background Element -->
+<div class="absolute inset-0 z-0">
+<div class="absolute inset-0 bg-gradient-to-br from-deep-navy/20 to-surface-dark/90 mix-blend-multiply z-10"></div>
+<div class="w-full h-full bg-cover bg-center" data-alt="A highly abstract, premium technological background suitable for a corporate landing page in dark mode. It features very subtle, glowing geometric grid lines and deep navy blue ambient lighting fading into deep black. Occasional minimal accents of brushed gold dust or particle light float softly. The aesthetic is strictly 'Mission Control' minimal, high-end enterprise software, conveying stability, precision, and data processing. Uncluttered and sophisticated." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDBe2DExd-WA4xdobC6kNDxQpOYfGslpPV-4Xirw3kSLOhwhIklewAvNAmf0qyiDbNPKS5GO-oXeONLHuzFSjW_aRBBt7CWanCiFRDSmrxi7fvF7nbiq-px20XSQnMJ7E02l2MWO5ZGUulCnBuC_FT_96y64GqQjsCpL61OxtUlt3iwzLkL5JBvCMNhDyUxveRLUHbMG799ZYX9P7NRTLwm3pISApgfwdGaUnFR70JNShrSeOC3cNkT')"></div>
+</div>
+<div class="max-w-[1440px] w-full mx-auto px-margin-mobile md:px-margin-desktop relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-gutter items-center pt-12 pb-24">
+<div class="lg:col-span-8 flex flex-col gap-6">
+<div class="inline-flex items-center gap-2 border border-titan-gold/30 bg-titan-gold/10 px-3 py-1 rounded-full w-fit">
+<span class="material-symbols-outlined text-titan-gold text-[14px]">bolt</span>
+<span class="font-label-mono text-label-mono text-titan-gold uppercase tracking-wider">Enterprise Grade LMS</span>
+</div>
+<h1 class="font-display-lg text-display-lg text-on-surface max-w-4xl leading-tight">
+                        Le LMS SaaS de <span class="text-gradient-gold">nouvelle génération</span> pour l'excellence Qualiopi.
+                    </h1>
+<p class="font-body-base text-body-base text-on-surface-variant max-w-2xl mt-4">
+                        Titan Kinetic architecture votre stratégie de formation. Une plateforme conçue pour la conformité rigoureuse, propulsée par l'intelligence artificielle pour optimiser chaque parcours d'apprentissage institutionnel.
+                    </p>
+<div class="flex flex-wrap items-center gap-4 mt-8">
+<button class="bg-titan-gold text-on-secondary px-8 py-4 rounded hover:bg-secondary transition-colors font-label-mono text-label-mono uppercase tracking-wide flex items-center gap-2 shadow-[0_0_20px_rgba(212,175,55,0.2)] border border-titan-gold/50">
+                            Request Demo
+                        </button>
+<button class="bg-transparent text-on-surface border border-outline-variant px-8 py-4 rounded hover:bg-surface-variant transition-colors font-label-mono text-label-mono uppercase tracking-wide">
+                            Découvrir la plateforme
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Key Modules (Bento Grid) -->
+<section class="py-24 bg-surface-dark border-b border-outline-variant/20" id="modules">
+<div class="max-w-[1440px] mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="mb-16">
+<h2 class="font-headline-md-mobile md:font-headline-md text-headline-md-mobile md:text-headline-md text-on-surface mb-4">Architecture Modulaire Intégrée</h2>
+<p class="font-body-base text-body-base text-on-surface-variant max-w-2xl">Une suite d'outils interconnectés pour gérer l'intégralité du cycle de vie de la formation professionnelle.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-gutter h-auto md:h-[600px]">
+<!-- Compliance Hub (Large) -->
+<div class="md:col-span-2 md:row-span-2 bg-surface-container-low border border-outline-variant rounded-xl p-8 flex flex-col relative overflow-hidden group hover:border-titan-gold/50 transition-colors">
+<div class="absolute top-0 right-0 w-64 h-64 bg-deep-navy/10 blur-3xl rounded-full -mr-20 -mt-20 group-hover:bg-deep-navy/20 transition-all"></div>
+<div class="bg-deep-navy w-12 h-12 rounded flex items-center justify-center border border-titan-gold/20 mb-6 relative z-10">
+<span class="material-symbols-outlined text-titan-gold">verified_user</span>
+</div>
+<h3 class="font-headline-md-mobile text-headline-md-mobile text-on-surface mb-3 relative z-10">Compliance Hub</h3>
+<p class="font-body-base text-body-base text-on-surface-variant flex-grow relative z-10">
+                            Le cœur de votre conformité Qualiopi. Suivi automatisé des indicateurs, génération de rapports d'audit en un clic, et tableaux de bord de pilotage qualité en temps réel.
+                        </p>
+<div class="mt-8 flex gap-2 relative z-10">
+<span class="px-3 py-1 bg-surface-variant rounded-full font-label-mono text-label-mono text-on-surface-variant">Indicateurs 1-32</span>
+<span class="px-3 py-1 bg-surface-variant rounded-full font-label-mono text-label-mono text-on-surface-variant">Rapports BPF</span>
+</div>
+</div>
+<!-- Course Builder -->
+<div class="md:col-span-1 md:row-span-1 bg-surface-container-low border border-outline-variant rounded-xl p-6 flex flex-col hover:border-titan-gold/30 transition-colors">
+<div class="bg-surface-variant w-10 h-10 rounded flex items-center justify-center border border-outline-variant mb-4">
+<span class="material-symbols-outlined text-on-surface">architecture</span>
+</div>
+<h3 class="font-headline-md-mobile text-headline-md-mobile text-on-surface mb-2">Course Builder</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                            Création de modules e-learning et blended structurés, SCORM compliant, avec gestion fine des ressources et évaluations.
+                        </p>
+</div>
+<!-- AI Assistant -->
+<div class="md:col-span-1 md:row-span-1 bg-surface-container-low border border-outline-variant rounded-xl p-6 flex flex-col hover:border-titan-gold/30 transition-colors">
+<div class="bg-surface-variant w-10 h-10 rounded flex items-center justify-center border border-outline-variant mb-4">
+<span class="material-symbols-outlined text-titan-gold">psychology</span>
+</div>
+<h3 class="font-headline-md-mobile text-headline-md-mobile text-on-surface mb-2">AI Assistant</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                            Copilote intelligent pour la génération de quiz, la suggestion de contenus pédagogiques et l'analyse sémantique des retours apprenants.
+                        </p>
+</div>
+<!-- Client Portal -->
+<div class="md:col-span-2 md:row-span-1 bg-surface-container-low border border-outline-variant rounded-xl p-6 flex items-center justify-between hover:border-titan-gold/30 transition-colors overflow-hidden relative">
+<div class="relative z-10 max-w-md">
+<div class="bg-surface-variant w-10 h-10 rounded flex items-center justify-center border border-outline-variant mb-4">
+<span class="material-symbols-outlined text-on-surface">door_front</span>
+</div>
+<h3 class="font-headline-md-mobile text-headline-md-mobile text-on-surface mb-2">Client Portal (B2B)</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                                Espace dédié pour vos clients entreprises. Suivi de l'assiduité, téléchargement des attestations et facturation centralisée.
+                            </p>
+</div>
+<!-- Abstract decorative graphic for client portal -->
+<div class="absolute right-0 top-0 h-full w-1/3 opacity-30 flex items-center justify-end pr-8">
+<span class="material-symbols-outlined text-[120px] text-outline-variant">hub</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Innovation IA Section (Asymmetric Layout) -->
+<section class="py-32 bg-surface border-b border-outline-variant/20 relative overflow-hidden" id="ia">
+<div class="absolute -left-[20%] top-1/4 w-[40%] h-[50%] bg-deep-navy/10 blur-[100px] rounded-full"></div>
+<div class="max-w-[1440px] mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
+<div class="order-2 lg:order-1 relative rounded-xl overflow-hidden border border-outline-variant shadow-2xl h-[500px]">
+<div class="w-full h-full bg-cover bg-center" data-alt="A futuristic, high-tech abstract visualization representing Artificial Intelligence data processing in a dark mode corporate setting. Glowing golden nodes and deep navy blue neural network pathways connect dynamically across the frame. The style is pristine, sharp, and strictly professional enterprise software aesthetic, conveying intelligent analysis and structured data structuring without looking chaotic. High contrast, clean lighting." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCJUdLJehsgKwkDSiV4QE81xevtGBPPzmgrrRZ7y8iE_zXZrjBXaVVjX9lhLFwT3MU2kudwMm80mTufEHO3FnaPEfV8XwnRJErvXzmjGwwHXOsb1OdHC8yZmD6eJHwZFZiWjnQ7BRUpIS3whhU1w9nwwr-dx5X9ujP5yi4HB5vz8jTvnMauwCOAl_CnVw_mBGp0lWXqOLYZLwZWmUpSbBnRafy2v_WrXa_LkePb-54fuM63xcW2UyB_')"></div>
+<!-- Overlay UI Element -->
+<div class="absolute bottom-6 left-6 right-6 glass-panel border border-outline-variant/50 rounded-lg p-4 flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-titan-gold/20 flex items-center justify-center border border-titan-gold/30">
+<span class="material-symbols-outlined text-titan-gold text-sm">memory</span>
+</div>
+<div>
+<p class="font-label-mono text-label-mono text-on-surface uppercase">Analyse Sémantique Active</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Génération de contenu pédagogique optimisée.</p>
+</div>
+</div>
+</div>
+<div class="order-1 lg:order-2 flex flex-col gap-6">
+<span class="font-label-mono text-label-mono text-titan-gold uppercase tracking-widest">Innovation IA</span>
+<h2 class="font-headline-md-mobile md:font-headline-md text-headline-md-mobile md:text-headline-md text-on-surface">L'intelligence artificielle au service de la pédagogie.</h2>
+<p class="font-body-base text-body-base text-on-surface-variant">
+                        Passez de la gestion administrative à l'ingénierie pédagogique augmentée. Notre assistant IA analyse vos documents bruts pour structurer automatiquement des modules, générer des évaluations pertinentes et suggérer des parcours de remédiation individualisés.
+                    </p>
+<ul class="mt-4 flex flex-col gap-4">
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-titan-gold mt-1">check_circle</span>
+<div>
+<strong class="font-body-base text-body-base font-bold text-on-surface block">Génération Automatique de Quiz</strong>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Créez des évaluations formatives en quelques secondes à partir de vos supports PDF ou vidéo.</span>
+</div>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-titan-gold mt-1">check_circle</span>
+<div>
+<strong class="font-body-base text-body-base font-bold text-on-surface block">Analyse des Feedbacks</strong>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Synthèse automatique des enquêtes de satisfaction (Indicateur 30) pour une amélioration continue.</span>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Conformité Simplifiée (Data Dense Layout) -->
+<section class="py-32 bg-surface-container-low border-b border-outline-variant/20" id="conformite">
+<div class="max-w-[1440px] mx-auto px-margin-mobile md:px-margin-desktop text-center mb-16">
+<span class="font-label-mono text-label-mono text-titan-gold uppercase tracking-widest block mb-4">Conformité Simplifiée</span>
+<h2 class="font-headline-md-mobile md:font-headline-md text-headline-md-mobile md:text-headline-md text-on-surface max-w-3xl mx-auto">Préparez vos audits Qualiopi avec une sérénité absolue.</h2>
+</div>
+<div class="max-w-[1000px] mx-auto bg-surface border border-outline-variant rounded-xl shadow-2xl overflow-hidden">
+<!-- Mock UI Header -->
+<div class="border-b border-outline-variant bg-surface-container px-6 py-4 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant">fact_check</span>
+<span class="font-label-mono text-label-mono text-on-surface uppercase">Tableau de bord de conformité</span>
+</div>
+<div class="flex gap-2">
+<div class="w-3 h-3 rounded-full bg-error/50 border border-error"></div>
+<div class="w-3 h-3 rounded-full bg-secondary/50 border border-secondary"></div>
+<div class="w-3 h-3 rounded-full bg-primary/50 border border-primary"></div>
+</div>
+</div>
+<!-- Mock Data Density Table -->
+<div class="p-6">
+<div class="grid grid-cols-12 font-label-mono text-label-mono text-on-surface-variant uppercase pb-3 border-b border-outline-variant/50 mb-3">
+<div class="col-span-2">Critère</div>
+<div class="col-span-5">Indicateur</div>
+<div class="col-span-3">Statut Preuve</div>
+<div class="col-span-2 text-right">Action</div>
+</div>
+<div class="grid grid-cols-12 items-center py-3 border-b border-outline-variant/30 hover:bg-surface-variant/30 transition-colors">
+<div class="col-span-2 font-body-sm text-body-sm text-on-surface font-bold">Critère 1</div>
+<div class="col-span-5 font-body-sm text-body-sm text-on-surface-variant truncate pr-4">Conditions d'information du public</div>
+<div class="col-span-3">
+<span class="inline-flex items-center gap-1 px-2 py-1 bg-deep-navy/30 border border-deep-navy text-primary-fixed-dim rounded text-[10px] font-label-mono uppercase">
+<span class="material-symbols-outlined text-[12px]">check</span> Validé
+                            </span>
+</div>
+<div class="col-span-2 text-right">
+<button class="text-on-surface-variant hover:text-titan-gold"><span class="material-symbols-outlined text-[18px]">visibility</span></button>
+</div>
+</div>
+<div class="grid grid-cols-12 items-center py-3 border-b border-outline-variant/30 hover:bg-surface-variant/30 transition-colors">
+<div class="col-span-2 font-body-sm text-body-sm text-on-surface font-bold">Critère 2</div>
+<div class="col-span-5 font-body-sm text-body-sm text-on-surface-variant truncate pr-4">Identification précise des objectifs</div>
+<div class="col-span-3">
+<span class="inline-flex items-center gap-1 px-2 py-1 bg-titan-gold/10 border border-titan-gold/30 text-titan-gold rounded text-[10px] font-label-mono uppercase">
+<span class="material-symbols-outlined text-[12px]">sync</span> En révision
+                            </span>
+</div>
+<div class="col-span-2 text-right">
+<button class="text-on-surface-variant hover:text-titan-gold"><span class="material-symbols-outlined text-[18px]">visibility</span></button>
+</div>
+</div>
+<div class="grid grid-cols-12 items-center py-3 border-b border-outline-variant/30 hover:bg-surface-variant/30 transition-colors">
+<div class="col-span-2 font-body-sm text-body-sm text-on-surface font-bold">Critère 3</div>
+<div class="col-span-5 font-body-sm text-body-sm text-on-surface-variant truncate pr-4">Adaptation aux publics bénéficiaires</div>
+<div class="col-span-3">
+<span class="inline-flex items-center gap-1 px-2 py-1 bg-error/10 border border-error/30 text-error rounded text-[10px] font-label-mono uppercase">
+<span class="material-symbols-outlined text-[12px]">warning</span> Preuve manquante
+                            </span>
+</div>
+<div class="col-span-2 text-right">
+<button class="text-on-surface-variant hover:text-titan-gold"><span class="material-symbols-outlined text-[18px]">visibility</span></button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Expérience Apprenant -->
+<section class="py-32 bg-surface border-b border-outline-variant/20 relative">
+<div class="max-w-[1440px] mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+<div class="flex flex-col gap-6">
+<span class="font-label-mono text-label-mono text-titan-gold uppercase tracking-widest">Expérience Apprenant</span>
+<h2 class="font-headline-md-mobile md:font-headline-md text-headline-md-mobile md:text-headline-md text-on-surface">Un portail fluide, conçu pour l'engagement.</h2>
+<p class="font-body-base text-body-base text-on-surface-variant">
+                        Au-delà de l'administration, Titan Kinetic offre une interface apprenant épurée et sans friction. Accessibilité optimale, progression gamifiée subtile, et accès centralisé aux ressources et signatures électroniques.
+                    </p>
+<a class="inline-flex items-center gap-2 text-titan-gold hover:text-secondary transition-colors font-label-mono text-label-mono uppercase mt-4 border-b border-titan-gold/30 hover:border-secondary pb-1 w-fit" href="#">
+                        Explorer le portail apprenant <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+<div class="relative rounded-xl overflow-hidden border border-outline-variant shadow-lg h-[400px]">
+<div class="w-full h-full bg-cover bg-center" data-alt="A clean, minimalist UI dashboard mockup displayed on a sleek laptop screen or angled glass panel, set against a dark, moody studio background. The UI shows an e-learning progress tracker with crisp, corporate typography, subtle charts in navy and muted gold tones. It represents a premium 'Learner Experience'. The aesthetic is modern, professional, high-fidelity UI design photography in dark mode." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDft96XjRK87JtRho37nqRBC2iORoOlz4snp793zDt-9sTDQqruGfQ_dPm6ELTSqGzw49q1MrDrRHqDemdNFwH5_xnc6qZNqSvNdOoTgXYpjlH3qc5DSOxrIDuE_c3QIEyy2sr-yRsc_h8rOUaz0jHseFO20t1gVwk6aV5nr5dRwa0K1gqmOmPLLU-SzJJBgFiXjWS5HcVYkDJEj409QUCA0nNJ0q2yoKA4NUyq0w9yvjEDiAREMtFG')"></div>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="py-32 bg-surface-dark relative overflow-hidden text-center">
+<div class="absolute inset-0 flex justify-center items-center opacity-10 pointer-events-none">
+<span class="material-symbols-outlined text-[400px] text-titan-gold">hexagon</span>
+</div>
+<div class="max-w-3xl mx-auto px-margin-mobile relative z-10">
+<h2 class="font-display-lg text-display-lg text-on-surface mb-6">Prêt à transformer votre gestion de formation ?</h2>
+<p class="font-body-base text-body-base text-on-surface-variant mb-10">
+                    Rejoignez les organismes de formation d'excellence qui utilisent Titan Kinetic pour garantir leur conformité et scaler leur activité.
+                </p>
+<button class="bg-titan-gold text-on-secondary px-10 py-5 rounded hover:bg-secondary transition-colors font-label-mono text-label-mono uppercase tracking-widest flex items-center gap-3 mx-auto shadow-[0_0_30px_rgba(212,175,55,0.2)] border border-titan-gold">
+                    Request Demo
+                    <span class="material-symbols-outlined">rocket_launch</span>
+</button>
+</div>
+</section>
+</main>
+<footer class="bg-surface-container border-t border-outline-variant/30 py-12">
+<div class="max-w-[1440px] mx-auto px-margin-mobile md:px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-titan-gold" style="font-variation-settings: 'FILL' 1;">hexagon</span>
+<span class="font-headline-md-mobile text-headline-md-mobile font-bold tracking-tight text-on-surface">Titan Kinetic</span>
+</div>
+<div class="flex gap-8">
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-titan-gold transition-colors" href="#">Mentions Légales</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-titan-gold transition-colors" href="#">Politique de Confidentialité</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-titan-gold transition-colors" href="#">Contact</a>
+</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant/50">
+                © 2024 Titan Kinetic. Tous droits réservés.
+            </div>
+</div>
+</footer>
+</body></html>

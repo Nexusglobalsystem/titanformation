@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+
+<html class="light dark" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>EduMastery - Quiz Engine</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Geist:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-variant": "#d3e4fe",
+                    "inverse-on-surface": "#eaf1ff",
+                    "secondary-fixed": "#dae2fd",
+                    "tertiary-fixed": "#6ffbbe",
+                    "on-primary-fixed": "#07006c",
+                    "on-primary-fixed-variant": "#2f2ebe",
+                    "on-surface-variant": "#464554",
+                    "surface-container": "#e5eeff",
+                    "surface-container-high": "#dce9ff",
+                    "on-primary-container": "#fffbff",
+                    "primary-fixed-dim": "#c0c1ff",
+                    "on-secondary": "#ffffff",
+                    "on-secondary-container": "#5c647a",
+                    "inverse-primary": "#c0c1ff",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-tint": "#494bd6",
+                    "surface-container-low": "#eff4ff",
+                    "outline": "#767586",
+                    "tertiary-fixed-dim": "#4edea3",
+                    "inverse-surface": "#213145",
+                    "surface-bright": "#f8f9ff",
+                    "secondary": "#565e74",
+                    "error-container": "#ffdad6",
+                    "error": "#ba1a1a",
+                    "surface-container-highest": "#d3e4fe",
+                    "secondary-fixed-dim": "#bec6e0",
+                    "primary-container": "#6063ee",
+                    "on-secondary-fixed-variant": "#3f465c",
+                    "on-error-container": "#93000a",
+                    "tertiary": "#006c49",
+                    "tertiary-container": "#00885d",
+                    "on-error": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "on-background": "#0b1c30",
+                    "on-secondary-fixed": "#131b2e",
+                    "primary": "#4648d4",
+                    "on-tertiary-fixed": "#002113",
+                    "surface-dim": "#cbdbf5",
+                    "primary-fixed": "#e1e0ff",
+                    "on-tertiary": "#ffffff",
+                    "surface": "#f8f9ff",
+                    "outline-variant": "#c7c4d7",
+                    "on-tertiary-fixed-variant": "#005236",
+                    "on-surface": "#0b1c30",
+                    "secondary-container": "#dae2fd",
+                    "on-tertiary-container": "#000703",
+                    "background": "#f8f9ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "unit": "4px",
+                    "container-max": "1440px",
+                    "margin-desktop": "48px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Inter"],
+                    "label-md": ["Geist"],
+                    "display": ["Inter"],
+                    "label-sm": ["Geist"],
+                    "headline-lg-mobile": ["Inter"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "label-md": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .option-card {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .option-card:active {
+            transform: scale(0.98);
+        }
+        .glass-header {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-question {
+            animation: slideIn 0.4s ease-out forwards;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-md overflow-x-hidden dark:bg-background dark:text-on-background">
+<!-- Top AppBar (JSON Component Map: TopAppBar Small) -->
+<header class="fixed top-0 w-full z-40 bg-surface/80 dark:bg-inverse-surface/80 backdrop-blur-md flex items-center justify-between px-margin-mobile h-16 w-full dark:border-b dark:border-outline-variant/20">
+<div class="flex items-center gap-4">
+<button class="active:opacity-70 transition-opacity p-2 -ml-2">
+<span class="material-symbols-outlined text-primary">close</span>
+</button>
+<h1 class="font-headline-md-mobile text-headline-md-mobile font-bold text-primary">EduMastery</h1>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex flex-col items-end">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Temps restant</span>
+<span class="font-label-md text-label-md text-primary font-bold">14:52</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-surface-container overflow-hidden border-2 border-primary-container/20">
+<img class="w-full h-full object-cover" data-alt="Close-up portrait of a young professional learner in a bright, modern educational setting. The style is clean and corporate with soft, natural lighting highlighting their focused expression. The background is slightly blurred with subtle hints of indigo and white design elements, creating a premium academic atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8Qn4QtxYPu_jrD35CH-IHmbJox8FRBTiyEZ0ElFgc9fhuTY9W5Rrvf07j5k9RyGlGdSzhk2YBzetMzMPWq3o9OToNkbJF7wC_evLfcli1wRJn_Y6krYwA8oVx4THlmjpa17cCqGknq4gLsQ_AaAdkCIdvG3mwBeN9eAutZQWLDpSp41s4K2O951hg1VvTbxpKr9DpacQ9K5lV2ISbU2dZ2CEFJAYQdk42ec4PIi8rp4U4iqr28Klw"/>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 mt-16 pb-32 px-margin-mobile max-w-lg mx-auto w-full">
+<!-- Progress Section -->
+<div class="py-6 space-y-3">
+<div class="flex justify-between items-end">
+<p class="font-label-md text-label-md text-on-surface-variant">Question <span class="text-primary font-bold">04</span> sur 12</p>
+<p class="font-label-sm text-label-sm text-outline">33% Complété</p>
+</div>
+<!-- Thick 8px Rounded Bar for Course Progress -->
+<div class="h-2 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary w-1/3 rounded-full transition-all duration-700 ease-in-out"></div>
+</div>
+</div>
+<!-- Question Area -->
+<div class="animate-question space-y-6">
+<!-- LMS Card for Question -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-6 shadow-sm dark:bg-surface-container-low dark:border-outline-variant/20">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-tertiary/10 text-tertiary mb-4">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">stars</span>
+<span class="font-label-sm text-label-sm">Intermédiaire • 200 pts</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface leading-tight">
+                    Dans le cadre de la certification Qualiopi, quel indicateur concerne spécifiquement la qualification des intervenants ?
+                </h2>
+</div>
+<!-- Options List -->
+<div class="space-y-3" id="quiz-options">
+<!-- Option A -->
+<button class="option-card w-full text-left p-4 rounded-xl border border-outline-variant/50 bg-surface-container-low hover:border-primary/50 hover:bg-surface-container group flex items-center gap-4 focus:ring-2 focus:ring-primary/20 outline-none dark:bg-surface-container-lowest dark:border-outline-variant/30 dark:hover:bg-surface-container-low" onclick="selectOption(this)">
+<div class="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-lg bg-surface-container-lowest border border-outline-variant group-hover:border-primary group-hover:text-primary transition-colors font-bold">A</div>
+<p class="font-body-md text-body-md text-on-surface">L'indicateur 21 : Compétences des personnels</p>
+</button>
+<!-- Option B (Selected State Example) -->
+<button class="option-card w-full text-left p-4 rounded-xl border-2 border-primary bg-primary-container/10 group flex items-center gap-4 focus:ring-2 focus:ring-primary/20 outline-none dark:bg-primary-container/20 dark:border-primary" onclick="selectOption(this)">
+<div class="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-lg bg-primary text-on-primary font-bold">B</div>
+<p class="font-body-md text-body-md text-on-surface font-medium">L'indicateur 22 : Développement des compétences des intervenants</p>
+<span class="material-symbols-outlined text-primary ml-auto" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</button>
+<!-- Option C -->
+<button class="option-card w-full text-left p-4 rounded-xl border border-outline-variant/50 bg-surface-container-low hover:border-primary/50 hover:bg-surface-container group flex items-center gap-4 focus:ring-2 focus:ring-primary/20 outline-none dark:bg-surface-container-lowest dark:border-outline-variant/30 dark:hover:bg-surface-container-low" onclick="selectOption(this)">
+<div class="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-lg bg-surface-container-lowest border border-outline-variant group-hover:border-primary group-hover:text-primary transition-colors font-bold">C</div>
+<p class="font-body-md text-body-md text-on-surface">L'indicateur 17 : Moyens techniques et pédagogiques</p>
+</button>
+<!-- Option D -->
+<button class="option-card w-full text-left p-4 rounded-xl border border-outline-variant/50 bg-surface-container-low hover:border-primary/50 hover:bg-surface-container group flex items-center gap-4 focus:ring-2 focus:ring-primary/20 outline-none dark:bg-surface-container-lowest dark:border-outline-variant/30 dark:hover:bg-surface-container-low" onclick="selectOption(this)">
+<div class="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-lg bg-surface-container-lowest border border-outline-variant group-hover:border-primary group-hover:text-primary transition-colors font-bold">D</div>
+<p class="font-body-md text-body-md text-on-surface">L'indicateur 30 : Recueil des appréciations</p>
+</button>
+</div>
+</div>
+<!-- Visual Context (Bento Style Tip Card) -->
+<div class="mt-8 p-6 rounded-2xl bg-secondary-container/30 border border-secondary-fixed/50 flex gap-4 items-start dark:bg-secondary-container/10 dark:border-secondary-fixed/30">
+<div class="p-3 bg-surface-container-lowest rounded-xl text-primary shadow-sm">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">lightbulb</span>
+</div>
+<div>
+<h4 class="font-label-md text-label-md text-on-secondary-container font-bold mb-1">Astuce d'apprentissage</h4>
+<p class="font-label-sm text-label-sm text-on-surface-variant leading-relaxed">Pensez au critère 5 qui traite de la qualification et du développement des connaissances et compétences des personnels.</p>
+</div>
+</div>
+</main>
+<!-- Floating Action Bottom Bar -->
+<footer class="fixed bottom-0 w-full z-50 bg-surface/90 backdrop-blur-xl border-t border-outline-variant/20 h-24 flex items-center px-margin-mobile pb-safe dark:bg-surface/90 dark:border-outline-variant/30">
+<div class="max-w-lg mx-auto w-full flex gap-4">
+<button class="flex-1 flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-label-md text-label-md font-bold text-outline border border-outline-variant bg-surface-container-lowest active:scale-95 transition-transform duration-150 dark:bg-surface-container-low dark:text-outline-variant dark:border-outline-variant/30">
+<span class="material-symbols-outlined">skip_next</span>
+                Passer
+            </button>
+<button class="flex-[2] flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-label-md text-label-md font-bold text-on-primary bg-primary shadow-lg shadow-primary/25 active:scale-95 transition-transform duration-150">
+                Valider la réponse
+                <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</footer>
+<!-- Interactive Logic -->
+<script>
+        function selectOption(element) {
+            const options = document.querySelectorAll('.option-card');
+            options.forEach(opt => {
+                // Reset styling
+                opt.classList.remove('border-2', 'border-primary', 'bg-primary-container/10');
+                opt.classList.add('border', 'border-outline-variant/50', 'bg-surface-container-low');
+                
+                // Reset circle letter
+                const circle = opt.querySelector('div');
+                circle.classList.remove('bg-primary', 'text-on-primary');
+                circle.classList.add('bg-surface-container-lowest', 'border', 'border-outline-variant');
+                
+                // Remove checkmark if exists
+                const check = opt.querySelector('span.material-symbols-outlined.ml-auto');
+                if (check) check.remove();
+                
+                // Reset font weight
+                opt.querySelector('p').classList.remove('font-medium');
+            });
+
+            // Apply selected styling
+            element.classList.remove('border', 'border-outline-variant/50', 'bg-surface-container-low');
+            element.classList.add('border-2', 'border-primary', 'bg-primary-container/10');
+            
+            const circle = element.querySelector('div');
+            circle.classList.remove('bg-surface-container-lowest', 'border', 'border-outline-variant');
+            circle.classList.add('bg-primary', 'text-on-primary');
+
+            element.querySelector('p').classList.add('font-medium');
+            
+            // Add checkmark
+            const checkIcon = document.createElement('span');
+            checkIcon.className = 'material-symbols-outlined text-primary ml-auto';
+            checkIcon.style.fontVariationSettings = "'FILL' 1";
+            checkIcon.textContent = 'check_circle';
+            element.appendChild(checkIcon);
+
+            // Light vibration/haptic feel (if supported)
+            if (window.navigator.vibrate) {
+                window.navigator.vibrate(5);
+            }
+        }
+    </script>
+</body></html>

@@ -1,0 +1,30 @@
+{
+  "name": "@titan-kinetic/core",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./supabase/client": "./src/supabase/client.ts",
+    "./supabase/admin": "./src/supabase/admin.ts",
+    "./schemas": "./src/schemas/index.ts",
+    "./database.types": "./src/database.types.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "seed": "tsx src/scripts/seed.ts"
+  },
+  "dependencies": {
+    "@supabase/ssr": "^0.12.4",
+    "@supabase/supabase-js": "^2.47.10",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "dotenv": "^16.4.7",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.4"
+  }
+}

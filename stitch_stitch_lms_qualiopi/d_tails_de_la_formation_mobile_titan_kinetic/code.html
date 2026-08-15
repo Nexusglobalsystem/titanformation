@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Titan Kinetic - Course Details</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@500&amp;family=Hanken+Grotesk:wght@600;700&amp;family=Inter:wght@400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container": "#1e2023",
+                      "on-tertiary-container": "#d8885c",
+                      "surface-container-low": "#1a1c1f",
+                      "on-secondary": "#3c2f00",
+                      "surface-variant": "#333539",
+                      "inverse-primary": "#3a5f94",
+                      "tertiary-container": "#592300",
+                      "primary-container": "#003366",
+                      "on-tertiary-fixed-variant": "#723610",
+                      "on-error-container": "#ffdad6",
+                      "primary": "#a7c8ff",
+                      "tertiary-fixed-dim": "#ffb690",
+                      "error": "#ffb4ab",
+                      "tertiary": "#ffb690",
+                      "outline": "#8d919a",
+                      "on-secondary-container": "#342800",
+                      "surface-dark": "#050C14",
+                      "surface-container-high": "#282a2e",
+                      "deep-navy": "#003366",
+                      "inverse-on-surface": "#2f3034",
+                      "on-primary-fixed": "#001b3c",
+                      "on-primary-fixed-variant": "#1f477b",
+                      "tertiary-fixed": "#ffdbca",
+                      "surface-container-lowest": "#0c0e12",
+                      "inverse-surface": "#e2e2e7",
+                      "titan-gold": "#D4AF37",
+                      "on-surface": "#e2e2e7",
+                      "on-secondary-fixed-variant": "#574500",
+                      "error-container": "#93000a",
+                      "on-surface-variant": "#c3c6d1",
+                      "primary-fixed-dim": "#a7c8ff",
+                      "surface-light": "#F8F9FA",
+                      "secondary-fixed-dim": "#e9c349",
+                      "on-primary-container": "#799dd6",
+                      "surface-container-highest": "#333539",
+                      "on-primary": "#003061",
+                      "secondary-fixed": "#ffe088",
+                      "secondary": "#e9c349",
+                      "primary-fixed": "#d5e3ff",
+                      "outline-variant": "#43474f",
+                      "secondary-container": "#af8d11",
+                      "on-secondary-fixed": "#241a00",
+                      "on-tertiary-fixed": "#341100",
+                      "on-tertiary": "#552100",
+                      "on-background": "#e2e2e7",
+                      "surface-dim": "#121317",
+                      "background": "#121317",
+                      "surface-bright": "#38393d",
+                      "surface-tint": "#a7c8ff",
+                      "surface": "#121317",
+                      "on-error": "#690005"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "container-max": "1440px",
+                      "margin-desktop": "40px",
+                      "margin-mobile": "16px",
+                      "unit": "4px",
+                      "gutter": "24px"
+              },
+              "fontFamily": {
+                      "label-mono": [
+                              "Geist"
+                      ],
+                      "headline-md-mobile": [
+                              "Hanken Grotesk"
+                      ],
+                      "headline-md": [
+                              "Hanken Grotesk"
+                      ],
+                      "body-base": [
+                              "Inter"
+                      ],
+                      "display-lg": [
+                              "Hanken Grotesk"
+                      ],
+                      "body-sm": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "label-mono": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-md-mobile": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-md": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-base": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-sm": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+            },
+          }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+          font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
+        }
+        
+        /* Hide scrollbar for horizontal scroll areas */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+        
+        /* Accordion transition */
+        .accordion-content {
+            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        .accordion-content.expanded {
+            max-height: 500px;
+            opacity: 1;
+        }
+        .accordion-icon {
+            transition: transform 0.3s ease;
+        }
+        .accordion-icon.expanded {
+            transform: rotate(180deg);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background antialiased pb-24 md:hidden">
+<!-- Top Navigation (Transactional/Details Context - Modified TopAppBar) -->
+<header class="bg-surface-container dark:bg-surface-container w-full top-0 sticky border-b border-surface-variant flex justify-between items-center px-margin-mobile h-16 w-full z-40">
+<button class="text-primary dark:text-primary active:scale-95 duration-150 p-2 -ml-2 rounded-full hover:bg-surface-variant transition-colors" onclick="history.back()">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<span class="font-headline-md-mobile text-headline-md-mobile text-on-surface">Course Details</span>
+<button class="text-primary dark:text-primary active:scale-95 duration-150 p-2 -mr-2 rounded-full hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined" data-icon="share">share</span>
+</button>
+</header>
+<main>
+<!-- Hero Section -->
+<section class="relative w-full h-64 bg-surface-container-high border-b border-surface-variant">
+<div class="w-full h-full bg-cover bg-center absolute inset-0 opacity-60 mix-blend-luminosity" data-alt="A professional corporate training environment. High-end modern office setting with a focused professional engaging in strategic management tasks. Dark, cinematic lighting with gold accents. Premium corporate learning aesthetic, sharp focus, high contrast, deep navy and titanium gold color palette." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCj9Xjyk_WM8rvipErIL2ww4z5iA77E-ThhW8Ny0kaGq236TcEznK_E_WdoHr7WAGFoo9M4Uxq3WwO5wE6Yr_V7YL_sTqllSDDEKGRBggLCQQaA4QUZyq6RX3JqmhBWF5vVbDFPFrxBR-FGYPnTggGHDVXQM6SHI7xYm-TKW2CgtQZIrhhDYU5zKnxvS8t4A7dAvHL3SDPkUF-d-O-joo7Fpo6l9IBjY_RW0iYIb37rq2stSQsJbMGI')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-background to-transparent"></div>
+<div class="absolute bottom-0 left-0 w-full px-margin-mobile pb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="bg-deep-navy border border-titan-gold text-titan-gold font-label-mono text-label-mono px-2 py-1 rounded">MANAGEMENT</span>
+<span class="flex items-center text-titan-gold font-label-mono text-label-mono bg-surface-container-low border border-surface-variant px-2 py-1 rounded">
+<span class="material-symbols-outlined text-[14px] mr-1" data-icon="star" data-weight="fill">star</span> 4.9
+                    </span>
+</div>
+<h1 class="font-headline-md-mobile text-headline-md-mobile text-on-surface mb-2 leading-tight">Expertise Management Qualiopi</h1>
+<p class="font-body-base text-body-base text-on-surface-variant">Master enterprise quality standards and compliance with advanced strategic frameworks.</p>
+</div>
+</section>
+<!-- Quick Stats Bento -->
+<section class="px-margin-mobile py-6 grid grid-cols-2 gap-unit">
+<div class="bg-surface-container border border-surface-variant p-4 rounded-lg flex flex-col items-start">
+<span class="material-symbols-outlined text-titan-gold mb-2" data-icon="schedule">schedule</span>
+<span class="font-label-mono text-label-mono text-on-surface-variant mb-1">DURATION</span>
+<span class="font-body-base text-body-base text-on-surface font-semibold">4 Weeks</span>
+</div>
+<div class="bg-surface-container border border-surface-variant p-4 rounded-lg flex flex-col items-start">
+<span class="material-symbols-outlined text-titan-gold mb-2" data-icon="moving">moving</span>
+<span class="font-label-mono text-label-mono text-on-surface-variant mb-1">LEVEL</span>
+<span class="font-body-base text-body-base text-on-surface font-semibold">Advanced</span>
+</div>
+<div class="bg-surface-container border border-surface-variant p-4 rounded-lg flex flex-col items-start">
+<span class="material-symbols-outlined text-titan-gold mb-2" data-icon="language">language</span>
+<span class="font-label-mono text-label-mono text-on-surface-variant mb-1">LANGUAGE</span>
+<span class="font-body-base text-body-base text-on-surface font-semibold">English</span>
+</div>
+<div class="bg-surface-container border border-surface-variant p-4 rounded-lg flex flex-col items-start">
+<span class="material-symbols-outlined text-titan-gold mb-2" data-icon="verified">verified</span>
+<span class="font-label-mono text-label-mono text-on-surface-variant mb-1">CERTIFICATE</span>
+<span class="font-body-base text-body-base text-on-surface font-semibold">Included</span>
+</div>
+</section>
+<!-- Key Objectives -->
+<section class="px-margin-mobile py-6 border-t border-surface-variant">
+<h2 class="font-headline-md-mobile text-headline-md-mobile text-on-surface mb-4">Key Objectives</h2>
+<div class="space-y-4">
+<div class="flex items-start gap-4">
+<div class="bg-surface-container-high p-2 rounded-full border border-surface-variant mt-1">
+<span class="material-symbols-outlined text-primary" data-icon="target">target</span>
+</div>
+<div>
+<h3 class="font-body-base text-body-base font-semibold text-on-surface">Compliance Mastery</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Navigate complex Qualiopi requirements with strategic precision.</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<div class="bg-surface-container-high p-2 rounded-full border border-surface-variant mt-1">
+<span class="material-symbols-outlined text-primary" data-icon="analytics">analytics</span>
+</div>
+<div>
+<h3 class="font-body-base text-body-base font-semibold text-on-surface">Process Optimization</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Implement data-driven quality control frameworks across departments.</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<div class="bg-surface-container-high p-2 rounded-full border border-surface-variant mt-1">
+<span class="material-symbols-outlined text-primary" data-icon="group_work">group_work</span>
+</div>
+<div>
+<h3 class="font-body-base text-body-base font-semibold text-on-surface">Leadership Alignment</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Align team operations with overarching enterprise quality goals.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Target & Prerequisites -->
+<section class="px-margin-mobile py-6 border-t border-surface-variant bg-surface-container-lowest">
+<div class="grid gap-6">
+<div>
+<h2 class="font-headline-md-mobile text-headline-md-mobile text-on-surface mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-titan-gold" data-icon="groups">groups</span> Target Audience
+                    </h2>
+<p class="font-body-base text-body-base text-on-surface-variant">Quality Managers, Operations Directors, and Senior Compliance Officers seeking formal Qualiopi framework expertise.</p>
+</div>
+<div>
+<h2 class="font-headline-md-mobile text-headline-md-mobile text-on-surface mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-titan-gold" data-icon="rule">rule</span> Prerequisites
+                    </h2>
+<ul class="list-disc list-inside font-body-base text-body-base text-on-surface-variant space-y-1">
+<li>3+ years in management or compliance</li>
+<li>Basic understanding of ISO standards</li>
+</ul>
+</div>
+</div>
+</section>
+</main>
+<!-- Sticky Bottom Bar (Transactional Context) -->
+<div class="fixed bottom-0 w-full z-50 bg-surface-container border-t border-surface-variant px-margin-mobile py-4 flex justify-between items-center shadow-[0_-4px_20px_rgba(0,0,0,0.5)]">
+<div>
+<span class="font-label-mono text-label-mono text-on-surface-variant block mb-1">TOTAL INVESTMENT</span>
+<span class="font-headline-md-mobile text-headline-md-mobile text-on-surface">€1,450</span>
+</div>
+<button class="bg-deep-navy text-titan-gold font-body-base text-body-base font-semibold py-3 px-8 rounded-lg border border-titan-gold active:scale-95 transition-transform shadow-[0_0_15px_rgba(212,175,55,0.15)] flex items-center gap-2">
+            Enroll Now <span class="material-symbols-outlined text-[20px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+<script>
+        // Insert material symbols class
+        document.querySelectorAll('[data-icon]').forEach(el => {
+            const iconName = el.getAttribute('data-icon');
+            const weight = el.getAttribute('data-weight');
+            el.textContent = iconName;
+            el.classList.add('material-symbols-outlined');
+            if (weight === 'fill') {
+                el.classList.add('fill');
+            }
+        });
+    </script>
+</body></html>

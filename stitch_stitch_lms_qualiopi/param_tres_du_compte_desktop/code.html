@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Paramètres du Compte | Kinetic LMS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Geist:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error-container": "#ffdad6",
+                    "surface-variant": "#d3e4fe",
+                    "surface-container-high": "#dce9ff",
+                    "surface-container": "#e5eeff",
+                    "secondary-fixed": "#dae2fd",
+                    "secondary": "#565e74",
+                    "background": "#f8f9ff",
+                    "on-error-container": "#93000a",
+                    "on-background": "#0b1c30",
+                    "surface-container-low": "#eff4ff",
+                    "surface": "#f8f9ff",
+                    "tertiary-fixed-dim": "#4edea3",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-container": "#5c647a",
+                    "inverse-surface": "#213145",
+                    "primary-container": "#6063ee",
+                    "on-tertiary-fixed-variant": "#005236",
+                    "on-secondary-fixed": "#131b2e",
+                    "on-tertiary-container": "#000703",
+                    "error": "#ba1a1a",
+                    "primary-fixed-dim": "#c0c1ff",
+                    "secondary-fixed-dim": "#bec6e0",
+                    "surface-dim": "#cbdbf5",
+                    "tertiary-fixed": "#6ffbbe",
+                    "on-secondary-fixed-variant": "#3f465c",
+                    "on-error": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "inverse-primary": "#c0c1ff",
+                    "inverse-on-surface": "#eaf1ff",
+                    "on-primary-fixed-variant": "#2f2ebe",
+                    "outline": "#767586",
+                    "on-tertiary-fixed": "#002113",
+                    "tertiary": "#006c49",
+                    "surface-container-highest": "#d3e4fe",
+                    "on-primary-container": "#fffbff",
+                    "on-surface-variant": "#464554",
+                    "primary": "#4648d4",
+                    "outline-variant": "#c7c4d7",
+                    "on-primary-fixed": "#07006c",
+                    "on-surface": "#0b1c30",
+                    "surface-bright": "#f8f9ff",
+                    "secondary-container": "#dae2fd",
+                    "primary-fixed": "#e1e0ff",
+                    "on-primary": "#ffffff",
+                    "surface-tint": "#494bd6",
+                    "tertiary-container": "#00885d"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "4px",
+                    "margin-mobile": "16px",
+                    "container-max": "1440px",
+                    "margin-desktop": "48px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Inter"],
+                    "label-sm": ["Geist"],
+                    "headline-md": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "label-md": ["Geist"],
+                    "display": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass-sidebar { backdrop-filter: blur(12px); }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-tab {
+            box-shadow: inset 2px 0 0 0 #4648d4;
+        }
+        input:focus { outline: none; border-color: #4648d4; box-shadow: 0 0 0 4px rgba(70, 72, 212, 0.1); }
+        /* Smooth transitions */
+        .transition-all { transition: all 0.2s ease-in-out; }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen">
+<!-- SideNavBar Component -->
+<aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-lowest dark:bg-inverse-surface border-r border-outline-variant dark:border-outline shadow-sm z-50 flex flex-col py-8 px-4 transition-all glass-sidebar">
+<div class="mb-10 px-2 flex items-center gap-3">
+<div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white shadow-md">
+<span class="material-symbols-outlined">bolt</span>
+</div>
+<div>
+<h1 class="font-display text-headline-md text-primary dark:text-primary-fixed-dim leading-none">Kinetic LMS</h1>
+<p class="font-label-sm text-on-surface-variant opacity-70">Gestion B2B</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-secondary-container hover:bg-surface-container-low transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">dashboard</span>
+<span class="font-label-md">Tableau de bord</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-secondary-container hover:bg-surface-container-low transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">payments</span>
+<span class="font-label-md">Budgets</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-secondary-container hover:bg-surface-container-low transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">receipt_long</span>
+<span class="font-label-md">Facturation</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-secondary-container hover:bg-surface-container-low transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">credit_card</span>
+<span class="font-label-md">Paiements</span>
+</a>
+<!-- Active Navigation -->
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-primary font-bold border-l-4 border-primary bg-primary-fixed dark:bg-primary-container scale-[0.98] transition-transform" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md">Paramètres</span>
+</a>
+</nav>
+<div class="mt-auto pt-6 border-t border-outline-variant space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-secondary-container hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-md">Aide</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-error hover:bg-error-container/20 transition-colors" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label-md">Déconnexion</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<div class="ml-64 min-h-screen flex flex-col">
+<!-- TopNavBar Component -->
+<header class="sticky top-0 w-full z-40 bg-surface/70 backdrop-blur-md border-b border-outline-variant flex justify-between items-center h-16 px-12 max-w-container-max mx-auto shadow-sm">
+<div class="flex items-center gap-4">
+<h2 class="font-headline-md text-on-surface font-bold">Gestion Budgétaire</h2>
+<nav class="hidden md:flex gap-6 ml-8">
+<a class="font-label-sm text-secondary hover:text-primary transition-opacity" href="#">Vue Globale</a>
+<a class="font-label-sm text-secondary hover:text-primary transition-opacity" href="#">Analytique</a>
+<a class="font-label-sm text-secondary hover:text-primary transition-opacity" href="#">Export</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative group">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline text-lg">search</span>
+<input class="pl-10 pr-4 py-2 bg-surface-container-low border-none rounded-full text-label-md focus:ring-2 focus:ring-primary/20 w-64 transition-all" placeholder="Rechercher..." type="text"/>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant">
+<button class="hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity">
+<img class="w-8 h-8 rounded-full object-cover ring-2 ring-primary/10" data-alt="A professional portrait of a senior corporate administrator in a bright, modern office setting. High-quality corporate photography with soft, natural lighting, featuring a clean and minimalist aesthetic. The subject is smiling warmly, wearing business casual attire. Background is slightly blurred, showing a high-end architectural space with indigo accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDaEEB3N7ERIoIoJZV3HmRMi7L_Zu0sV659HxRehBVz0nX9PyyKsO6iFLnA-7cd_FjhdwelJ9GSFgP5YKUSkrF2ZvDu8ZjrlHyfeWlqD16_JZQ6ozP_aWAGohBCyuhMGBMOFy99PFsKwvYt8gHafaDuPP9HKsYAqOHIZPjzq4n6me4vHIeFHavBKOrktOqhR-H4TJUUYDhzo0gPtdl4tb9Hs_i1LBQA-tDCwd0AX4SI5LIFVOurwcqM"/>
+<span class="material-symbols-outlined">account_circle</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="flex-1 px-12 py-8 max-w-container-max mx-auto w-full">
+<div class="flex flex-col md:flex-row gap-gutter">
+<!-- Vertical Settings Menu (The Filter) -->
+<nav class="w-full md:w-72 space-y-2">
+<button class="settings-tab-btn active w-full flex items-center gap-3 px-4 py-4 rounded-xl text-left bg-surface-container-lowest shadow-sm border border-outline-variant hover:border-primary transition-all active-tab" id="tab-btn-profil" onclick="switchTab('profil')">
+<span class="material-symbols-outlined text-primary">domain</span>
+<div>
+<p class="font-label-md font-bold text-on-surface">Profil Organisation</p>
+<p class="text-[11px] text-on-surface-variant opacity-70">Identité et coordonnées</p>
+</div>
+</button>
+<button class="settings-tab-btn w-full flex items-center gap-3 px-4 py-4 rounded-xl text-left bg-surface-container-lowest border border-transparent hover:border-outline-variant transition-all" id="tab-btn-notifications" onclick="switchTab('notifications')">
+<span class="material-symbols-outlined text-secondary">notifications_active</span>
+<div>
+<p class="font-label-md font-medium text-on-surface">Notifications</p>
+<p class="text-[11px] text-on-surface-variant opacity-70">Alertes et communications</p>
+</div>
+</button>
+<button class="settings-tab-btn w-full flex items-center gap-3 px-4 py-4 rounded-xl text-left bg-surface-container-lowest border border-transparent hover:border-outline-variant transition-all" id="tab-btn-securite" onclick="switchTab('securite')">
+<span class="material-symbols-outlined text-secondary">security</span>
+<div>
+<p class="font-label-md font-medium text-on-surface">Sécurité &amp; Accès</p>
+<p class="text-[11px] text-on-surface-variant opacity-70">MFA et mots de passe</p>
+</div>
+</button>
+<button class="settings-tab-btn w-full flex items-center gap-3 px-4 py-4 rounded-xl text-left bg-surface-container-lowest border border-transparent hover:border-outline-variant transition-all" id="tab-btn-integrations" onclick="switchTab('integrations')">
+<span class="material-symbols-outlined text-secondary">hub</span>
+<div>
+<p class="font-label-md font-medium text-on-surface">Intégrations</p>
+<p class="text-[11px] text-on-surface-variant opacity-70">Connexions API et outils</p>
+</div>
+</button>
+</nav>
+<!-- Content Area -->
+<div class="flex-1 bg-surface-container-lowest rounded-2xl border border-outline-variant shadow-sm p-8 min-h-[600px]">
+<!-- Section: Profil Organisation -->
+<div class="settings-content space-y-8 animate-in fade-in duration-500" id="content-profil">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-headline-md text-on-surface">Profil de l'Organisation</h3>
+<p class="font-body-md text-on-surface-variant">Configurez les informations visibles sur vos factures et certificats.</p>
+</div>
+<button class="bg-primary text-white px-6 py-2 rounded-lg font-label-md hover:bg-primary-container transition-colors shadow-md active:scale-95">Enregistrer</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-6 border-t border-outline-variant">
+<div class="space-y-6">
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-on-surface">Nom de l'entreprise</label>
+<input class="w-full px-4 py-2 bg-background border border-outline-variant rounded-lg font-body-md" type="text" value="Kinetic Global Services"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-on-surface">Adresse du siège</label>
+<textarea class="w-full px-4 py-2 bg-background border border-outline-variant rounded-lg font-body-md" rows="3">12 Rue de la Performance, 75008 Paris, France</textarea>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-on-surface">Contact Principal</label>
+<div class="flex gap-2">
+<input class="flex-1 px-4 py-2 bg-background border border-outline-variant rounded-lg font-body-md" type="text" value="Jean Dupont"/>
+<input class="flex-1 px-4 py-2 bg-background border border-outline-variant rounded-lg font-body-md" type="email" value="j.dupont@kinetic.com"/>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-center justify-center p-8 border-2 border-dashed border-outline-variant rounded-2xl bg-surface-container-low group cursor-pointer hover:border-primary transition-colors">
+<div class="w-24 h-24 bg-surface-container-highest rounded-xl flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-primary text-4xl">upload_file</span>
+</div>
+<p class="font-label-md text-on-surface">Charger le logo</p>
+<p class="text-[12px] text-on-surface-variant mt-1 text-center">PNG ou SVG. Max 2MB.<br/>Recommandé : 400x400px</p>
+</div>
+</div>
+</div>
+<!-- Section: Notifications (Hidden by default) -->
+<div class="settings-content hidden space-y-8 animate-in fade-in duration-500" id="content-notifications">
+<div>
+<h3 class="font-headline-md text-on-surface">Préférences de Notification</h3>
+<p class="font-body-md text-on-surface-variant">Contrôlez quand et comment vous êtes informé des activités importantes.</p>
+</div>
+<div class="space-y-4 pt-6 border-t border-outline-variant">
+<div class="flex items-center justify-between p-4 bg-background rounded-xl">
+<div class="flex gap-4 items-center">
+<span class="material-symbols-outlined text-primary">payments</span>
+<div>
+<p class="font-label-md font-bold">Alertes de facturation</p>
+<p class="text-[12px] text-on-surface-variant">Notifications lors de l'émission d'une facture ou d'un échec de paiement.</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="flex items-center justify-between p-4 bg-background rounded-xl">
+<div class="flex gap-4 items-center">
+<span class="material-symbols-outlined text-tertiary">verified</span>
+<div>
+<p class="font-label-md font-bold">Rappels de conformité (Qualiopi)</p>
+<p class="text-[12px] text-on-surface-variant">Alertes sur les documents manquants ou les audits à venir.</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="flex items-center justify-between p-4 bg-background rounded-xl">
+<div class="flex gap-4 items-center">
+<span class="material-symbols-outlined text-secondary">trending_up</span>
+<div>
+<p class="font-label-md font-bold">Progression des apprenants</p>
+<p class="text-[12px] text-on-surface-variant">Rapport hebdomadaire sur le taux de complétion des modules.</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+</div>
+<!-- Section: Sécurité -->
+<div class="settings-content hidden space-y-8 animate-in fade-in duration-500" id="content-securite">
+<div>
+<h3 class="font-headline-md text-on-surface">Sécurité &amp; Accès</h3>
+<p class="font-body-md text-on-surface-variant">Gérez la sécurité de votre compte et surveillez les accès récents.</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 pt-6 border-t border-outline-variant">
+<div class="space-y-6">
+<div class="p-6 rounded-2xl bg-primary/5 border border-primary/20">
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">vibration</span>
+<h4 class="font-label-md font-bold">Authentification Forte (MFA)</h4>
+</div>
+<span class="px-3 py-1 bg-tertiary/10 text-tertiary rounded-full text-[10px] font-bold uppercase tracking-wider">Activé</span>
+</div>
+<p class="text-[13px] text-on-surface-variant mb-4">Votre compte est protégé par une validation via Google Authenticator.</p>
+<button class="text-primary font-label-sm hover:underline">Modifier les paramètres MFA</button>
+</div>
+<div class="space-y-4">
+<h4 class="font-label-md font-bold">Changer le mot de passe</h4>
+<div class="space-y-3">
+<input class="w-full px-4 py-2 bg-background border border-outline-variant rounded-lg font-body-md" placeholder="Mot de passe actuel" type="password"/>
+<input class="w-full px-4 py-2 bg-background border border-outline-variant rounded-lg font-body-md" placeholder="Nouveau mot de passe" type="password"/>
+<button class="w-full bg-surface-container-high text-on-surface py-2 rounded-lg font-label-md hover:bg-surface-container-highest transition-colors">Mettre à jour le mot de passe</button>
+</div>
+</div>
+</div>
+<div class="space-y-4">
+<h4 class="font-label-md font-bold">Sessions Actives</h4>
+<div class="divide-y divide-outline-variant">
+<div class="py-3 flex justify-between items-center">
+<div class="flex gap-3 items-center">
+<span class="material-symbols-outlined text-on-surface-variant opacity-60">desktop_windows</span>
+<div>
+<p class="text-[13px] font-bold">Chrome sur macOS</p>
+<p class="text-[11px] text-on-surface-variant">Paris, France • Actuel</p>
+</div>
+</div>
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+</div>
+<div class="py-3 flex justify-between items-center">
+<div class="flex gap-3 items-center">
+<span class="material-symbols-outlined text-on-surface-variant opacity-60">smartphone</span>
+<div>
+<p class="text-[13px] font-bold">App Kinetic sur iOS</p>
+<p class="text-[11px] text-on-surface-variant">Lyon, France • Il y a 2h</p>
+</div>
+</div>
+<button class="text-error text-[11px] font-bold hover:underline">Déconnecter</button>
+</div>
+</div>
+<button class="w-full text-center py-2 text-outline text-[12px] font-medium hover:text-on-surface transition-colors">Déconnecter toutes les autres sessions</button>
+</div>
+</div>
+</div>
+<!-- Section: Intégrations -->
+<div class="settings-content hidden space-y-8 animate-in fade-in duration-500" id="content-integrations">
+<div class="flex justify-between items-end">
+<div>
+<h3 class="font-headline-md text-on-surface">Intégrations &amp; API</h3>
+<p class="font-body-md text-on-surface-variant">Connectez vos outils RH et de gestion à Kinetic LMS.</p>
+</div>
+<button class="flex items-center gap-2 border border-outline-variant px-4 py-2 rounded-lg font-label-sm hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-lg">add</span>
+                                Nouvelle Intégration
+                            </button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-6 border-t border-outline-variant">
+<!-- Integration Card 1 -->
+<div class="p-6 rounded-2xl border border-outline-variant hover:shadow-md transition-all group">
+<div class="flex items-start justify-between mb-4">
+<div class="w-12 h-12 bg-indigo-50 rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-indigo-600">cloud_sync</span>
+</div>
+<div class="h-6 px-2 bg-tertiary/10 text-tertiary rounded flex items-center text-[10px] font-bold">CONNECTÉ</div>
+</div>
+<h4 class="font-label-md font-bold mb-1">Slack Connect</h4>
+<p class="text-[12px] text-on-surface-variant mb-6">Recevez les rapports de progression directement dans vos canaux Slack.</p>
+<button class="w-full text-center py-2 border border-outline-variant rounded-lg text-label-sm hover:bg-error-container/10 hover:text-error hover:border-error transition-all">Configurer</button>
+</div>
+<!-- Integration Card 2 -->
+<div class="p-6 rounded-2xl border border-outline-variant hover:shadow-md transition-all group bg-surface-container-low/50 border-dashed">
+<div class="flex items-start justify-between mb-4">
+<div class="w-12 h-12 bg-surface-container-high rounded-lg flex items-center justify-center opacity-40">
+<span class="material-symbols-outlined text-secondary">api</span>
+</div>
+</div>
+<h4 class="font-label-md font-bold mb-1">Zapier</h4>
+<p class="text-[12px] text-on-surface-variant mb-6">Automatisez vos workflows entre plus de 5000 applications.</p>
+<button class="w-full text-center py-2 bg-primary text-white rounded-lg text-label-sm hover:bg-primary-container transition-all shadow-sm">Activer l'extension</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Micro-interactions Script -->
+<script>
+        function switchTab(tabId) {
+            // Hide all content
+            const contents = document.querySelectorAll('.settings-content');
+            contents.forEach(content => content.classList.add('hidden'));
+
+            // Show selected content
+            document.getElementById('content-' + tabId).classList.remove('hidden');
+
+            // Update buttons styling
+            const buttons = document.querySelectorAll('.settings-tab-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('active-tab', 'border-primary');
+                btn.classList.add('border-transparent');
+                
+                const label = btn.querySelector('p');
+                const icon = btn.querySelector('.material-symbols-outlined');
+                
+                label.classList.remove('font-bold', 'text-on-surface');
+                label.classList.add('font-medium', 'text-on-surface-variant');
+                icon.classList.remove('text-primary');
+                icon.classList.add('text-secondary');
+            });
+
+            // Highlight active button
+            const activeBtn = document.getElementById('tab-btn-' + tabId);
+            activeBtn.classList.add('active-tab', 'border-primary');
+            activeBtn.classList.remove('border-transparent');
+            
+            const activeLabel = activeBtn.querySelector('p');
+            const activeIcon = activeBtn.querySelector('.material-symbols-outlined');
+            
+            activeLabel.classList.add('font-bold', 'text-on-surface');
+            activeIcon.classList.add('text-primary');
+            activeIcon.classList.remove('text-secondary');
+        }
+
+        // Search Bar Focus Effect
+        const searchInput = document.querySelector('input[type="text"]');
+        searchInput.addEventListener('focus', () => {
+            searchInput.parentElement.classList.add('scale-105');
+        });
+        searchInput.addEventListener('blur', () => {
+            searchInput.parentElement.classList.remove('scale-105');
+        });
+    </script>
+</body></html>

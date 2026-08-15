@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+
+<html lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EduMastery - Expérience d'apprentissage</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Geist:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "error-container": "#ffdad6",
+                      "secondary-fixed-dim": "#bec6e0",
+                      "on-tertiary-container": "#000703",
+                      "on-secondary": "#ffffff",
+                      "on-tertiary-fixed-variant": "#005236",
+                      "on-secondary-fixed": "#131b2e",
+                      "inverse-on-surface": "#eaf1ff",
+                      "on-surface": "#0b1c30",
+                      "secondary-fixed": "#dae2fd",
+                      "on-secondary-container": "#5c647a",
+                      "inverse-primary": "#c0c1ff",
+                      "surface-variant": "#d3e4fe",
+                      "surface-tint": "#494bd6",
+                      "primary-fixed": "#e1e0ff",
+                      "background": "#f8f9ff",
+                      "on-primary": "#ffffff",
+                      "on-error": "#ffffff",
+                      "tertiary-container": "#00885d",
+                      "surface-container-lowest": "#ffffff",
+                      "on-primary-fixed": "#07006c",
+                      "on-primary-fixed-variant": "#2f2ebe",
+                      "surface-bright": "#f8f9ff",
+                      "primary-fixed-dim": "#c0c1ff",
+                      "surface-dim": "#cbdbf5",
+                      "on-tertiary-fixed": "#002113",
+                      "on-tertiary": "#ffffff",
+                      "on-secondary-fixed-variant": "#3f465c",
+                      "outline-variant": "#c7c4d7",
+                      "secondary": "#565e74",
+                      "outline": "#767586",
+                      "surface-container-high": "#dce9ff",
+                      "on-surface-variant": "#464554",
+                      "on-error-container": "#93000a",
+                      "primary": "#4648d4",
+                      "surface": "#f8f9ff",
+                      "tertiary-fixed-dim": "#4edea3",
+                      "surface-container-low": "#eff4ff",
+                      "error": "#ba1a1a",
+                      "secondary-container": "#dae2fd",
+                      "surface-container-highest": "#d3e4fe",
+                      "tertiary-fixed": "#6ffbbe",
+                      "on-primary-container": "#fffbff",
+                      "tertiary": "#006c49",
+                      "surface-container": "#e5eeff",
+                      "inverse-surface": "#213145",
+                      "on-background": "#0b1c30",
+                      "primary-container": "#6063ee"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "container-max": "1440px",
+                      "margin-desktop": "48px",
+                      "gutter": "24px",
+                      "unit": "4px",
+                      "margin-mobile": "16px"
+              },
+              "fontFamily": {
+                      "headline-lg": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "body-md": ["Inter"],
+                      "label-sm": ["Geist"],
+                      "headline-md": ["Inter"],
+                      "label-md": ["Geist"],
+                      "display": ["Inter"]
+              },
+              "fontSize": {
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "label-sm": ["12px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                      "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                      "label-md": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                      "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .video-gradient {
+            background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.8) 100%);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c7c4d7;
+            border-radius: 10px;
+        }
+        .glass-panel {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .course-accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .course-accordion-item.active .course-accordion-content {
+            max-height: 500px;
+        }
+        .course-accordion-item.active .chevron-icon {
+            transform: rotate(180deg);
+        }
+    </style>
+<style>
+        body {
+          min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen transition-colors duration-300 font-body-md">
+<!-- Top AppBar -->
+<header class="bg-surface/70 dark:bg-surface-dim/70 backdrop-blur-md text-primary dark:text-primary-fixed-dim fixed top-0 w-full z-50 border-b border-outline-variant/30 dark:border-outline/20 shadow-sm">
+<div class="flex items-center justify-between px-margin-desktop mobile:px-margin-mobile h-16 w-full max-w-container-max mx-auto">
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined p-2 hover:bg-surface-variant/50 transition-colors duration-200 active:scale-95 transition-transform" data-icon="menu">menu</button>
+<h1 class="font-display text-headline-md tracking-tight text-primary dark:text-primary-fixed">EduMastery</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-surface-variant/50 transition-colors duration-200 rounded-full" id="themeToggle" title="Basculer le mode sombre">
+<span class="material-symbols-outlined">dark_mode</span>
+</button>
+<button class="material-symbols-outlined p-2 hover:bg-surface-variant/50 transition-colors duration-200 active:scale-95 transition-transform" data-icon="search">search</button>
+<div class="hidden md:flex items-center gap-6 ml-4">
+<span class="text-primary font-semibold font-label-md cursor-pointer">Apprentissage</span>
+<span class="text-on-surface-variant font-medium font-label-md hover:bg-surface-variant/50 transition-colors duration-200 px-3 py-1 rounded-full cursor-pointer">Catalogue</span>
+</div>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-20 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Main Content Area: Video Player & Header -->
+<div class="lg:col-span-8 space-y-6">
+<!-- Video Player Section -->
+<div class="relative aspect-video rounded-xl overflow-hidden bg-on-surface shadow-xl group">
+<div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="Une image cinématographique haute définition d'une vidéo éducative sur le business. Un instructeur professionnel se tient dans un bureau moderne et minimaliste." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCGLJChyoEMQ7G_DQZr0o1uhr1Zx4Qcuymcj7BsmoN-J7jIPSFbQ8QlIzdKPWaa3i4tYBv6Jqcoq1C0f2lVINvEh1yWExnxwoso2gcoyolkXWBnR4fq8q01ZIIEUPkToKFSOX32wG1x0BWvpUGlP51zihkB5R0inZqQAWB6vH71vfYwBKYk5tIogNSd00L_KbehSfAqOTaAgNNENcniJKsp3M5coOT9Rp1Bh6D95gSAwyEkf_RsF6wn')"></div>
+<!-- Video Controls Overlay -->
+<div class="absolute inset-0 video-gradient opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+<div class="w-full h-1 bg-surface-variant/30 rounded-full mb-4 relative overflow-hidden">
+<div class="absolute top-0 left-0 h-full bg-primary w-2/3"></div>
+</div>
+<div class="flex items-center justify-between text-white">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined cursor-pointer hover:scale-110 transition-transform">play_arrow</span>
+<span class="material-symbols-outlined cursor-pointer hover:scale-110 transition-transform">volume_up</span>
+<span class="font-label-sm">12:45 / 18:30</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined cursor-pointer hover:scale-110 transition-transform">settings</span>
+<span class="material-symbols-outlined cursor-pointer hover:scale-110 transition-transform">fullscreen</span>
+</div>
+</div>
+</div>
+<!-- Play Button Center -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="w-20 h-20 bg-primary/90 text-white rounded-full flex items-center justify-center glass-panel shadow-2xl transform scale-90 group-hover:scale-100 transition-transform duration-300">
+<span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</div>
+</div>
+</div>
+<!-- Lesson Info & Actions -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 py-2 border-b border-outline-variant/30">
+<div>
+<span class="text-primary font-label-md uppercase tracking-wider">Module 3 : Stratégie d'entreprise</span>
+<h2 class="font-headline-lg mobile:font-headline-lg-mobile text-on-surface mt-1">Comprendre la chaîne de valeur</h2>
+</div>
+<button class="bg-primary hover:bg-primary-container text-white px-8 py-3 rounded-full font-label-md flex items-center justify-center gap-2 transition-all shadow-md active:scale-95">
+<span>Terminer &amp; Suivant</span>
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+<!-- Tabs: Course Content & Resources -->
+<div class="space-y-6 pt-4">
+<div class="flex gap-8 border-b border-outline-variant/30">
+<button class="pb-4 border-b-2 border-primary text-primary font-label-md px-1" id="tab-content">Contenu du cours</button>
+<button class="pb-4 border-b-2 border-transparent text-on-surface-variant font-label-md hover:text-primary transition-colors px-1" id="tab-resources">Ressources</button>
+</div>
+<!-- Tab Panels -->
+<div class="space-y-4" id="panel-content">
+<!-- Accordion Item 1 -->
+<div class="course-accordion-item active border border-outline-variant/30 rounded-xl overflow-hidden bg-surface-container-low transition-all">
+<button class="w-full flex items-center justify-between p-4 hover:bg-surface-variant/20 transition-colors text-left" onclick="toggleAccordion(this)">
+<div class="flex items-center gap-3">
+<span class="bg-primary/10 text-primary w-8 h-8 rounded-full flex items-center justify-center font-label-sm">01</span>
+<span class="font-label-md font-semibold text-on-surface">Fondements de la logistique moderne</span>
+</div>
+<span class="material-symbols-outlined chevron-icon transition-transform duration-300">expand_more</span>
+</button>
+<div class="course-accordion-content px-4 pb-4">
+<div class="space-y-1 ml-11">
+<div class="flex items-center justify-between p-2 rounded-lg bg-primary-container/20 text-primary">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">play_circle</span>
+<span class="text-label-md">Introduction aux chaînes</span>
+</div>
+<span class="text-label-sm">04:20</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded-lg hover:bg-surface-variant/20 cursor-pointer">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">play_circle</span>
+<span class="text-label-md">Définitions clés</span>
+</div>
+<span class="text-label-sm">08:15</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Accordion Item 2 -->
+<div class="course-accordion-item border border-outline-variant/30 rounded-xl overflow-hidden bg-surface-container-low transition-all">
+<button class="w-full flex items-center justify-between p-4 hover:bg-surface-variant/20 transition-colors text-left" onclick="toggleAccordion(this)">
+<div class="flex items-center gap-3">
+<span class="bg-on-surface-variant/10 text-on-surface-variant w-8 h-8 rounded-full flex items-center justify-center font-label-sm">02</span>
+<span class="font-label-md font-semibold text-on-surface">Analyse de l'avantage concurrentiel</span>
+</div>
+<span class="material-symbols-outlined chevron-icon transition-transform duration-300">expand_more</span>
+</button>
+<div class="course-accordion-content px-4 pb-4">
+<div class="space-y-1 ml-11">
+<div class="flex items-center justify-between p-2 rounded-lg hover:bg-surface-variant/20 cursor-pointer">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">play_circle</span>
+<span class="text-label-md">Le cadre de Michael Porter</span>
+</div>
+<span class="text-label-sm">12:30</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded-lg hover:bg-surface-variant/20 cursor-pointer">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">edit_note</span>
+<span class="text-label-md">Feuille de travail d'analyse</span>
+</div>
+<span class="material-symbols-outlined text-sm">download</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Resources Panel -->
+<div class="hidden grid grid-cols-1 md:grid-cols-2 gap-4" id="panel-resources">
+<div class="p-4 border border-outline-variant/30 rounded-xl flex items-center gap-4 hover:border-primary transition-colors cursor-pointer bg-surface-container-low">
+<div class="bg-error-container text-error p-3 rounded-lg">
+<span class="material-symbols-outlined">picture_as_pdf</span>
+</div>
+<div>
+<p class="font-label-md font-bold text-on-surface">Diagramme Chaîne Valeur.pdf</p>
+<p class="text-label-sm text-on-surface-variant">2.4 Mo • Lecture essentielle</p>
+</div>
+</div>
+<div class="p-4 border border-outline-variant/30 rounded-xl flex items-center gap-4 hover:border-primary transition-colors cursor-pointer bg-surface-container-low">
+<div class="bg-tertiary-container text-white p-3 rounded-lg">
+<span class="material-symbols-outlined">table_chart</span>
+</div>
+<div>
+<p class="font-label-md font-bold text-on-surface">Matrice Opérationnelle.xlsx</p>
+<p class="text-label-sm text-on-surface-variant">1.1 Mo • Modèle d'exercice</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Sidebar: Stats & Progress -->
+<aside class="lg:col-span-4 space-y-gutter">
+<!-- Course Progress Card -->
+<div class="p-6 bg-surface-container rounded-3xl border border-outline-variant/20 shadow-sm">
+<h3 class="font-headline-md text-on-surface mb-4">Progression</h3>
+<div class="relative h-2 w-full bg-surface-variant/50 rounded-full mb-2">
+<div class="absolute h-full bg-primary rounded-full" style="width: 68%;"></div>
+</div>
+<div class="flex justify-between font-label-sm text-on-surface-variant">
+<span>68% Terminé</span>
+<span>12 / 18 Leçons</span>
+</div>
+<div class="mt-8 grid grid-cols-2 gap-4">
+<div class="p-3 bg-surface-bright rounded-2xl border border-outline-variant/10 text-center">
+<p class="text-on-surface-variant text-label-sm">Temps passé</p>
+<p class="text-on-surface font-bold text-headline-md">4.2h</p>
+</div>
+<div class="p-3 bg-surface-bright rounded-2xl border border-outline-variant/10 text-center">
+<p class="text-on-surface-variant text-label-sm">Certificats</p>
+<p class="text-on-surface font-bold text-headline-md">2</p>
+</div>
+</div>
+</div>
+<!-- Bento Card: Instructor -->
+<div class="p-6 bg-primary-container/10 border border-primary/20 rounded-3xl relative overflow-hidden group">
+<div class="relative z-10 flex items-center gap-4 mb-4">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-primary shadow-lg border-2 border-white">
+<img class="w-full h-full object-cover" data-alt="Portrait de Dr. Elena Vance" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDO5zL1q5lD4mG6-Y-h2xr9kKcWa12VKvV0dLRm0PZTsfkb7nV_3fhIrNd9lKLLzgb_to1MAVI-9V8OcIyFi_s8i8EnL4R6hk9aLa1UvoChmRn3NRrMDAgTYgO3CLTNPB2hpsflLfpvPVgl2efu6ajUF2sWAWyjLTgW_-0h06Mij5hF3p1SZ3l18ZLyFJRBs8pR7WIs8POi7i-ByForH0vmWRzMRtNjGuhzNx2oGuDyggOkk81QZQav"/>
+</div>
+<div>
+<p class="font-label-md font-bold text-on-surface">Dr Elena Vance</p>
+<p class="text-label-sm text-on-surface-variant">Architecte Stratégique Principal</p>
+</div>
+</div>
+<p class="text-body-md text-on-surface/80 relative z-10">"Maîtriser la chaîne de valeur est l'étape la plus importante de la transformation organisationnelle."</p>
+<div class="absolute -right-4 -bottom-4 w-32 h-32 bg-primary/5 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700"></div>
+</div>
+<!-- Notes Quick Entry -->
+<div class="p-6 bg-surface-container-high rounded-3xl border border-outline-variant/20">
+<div class="flex items-center justify-between mb-4">
+<h4 class="font-label-md font-bold text-on-surface">Notes rapides</h4>
+<span class="material-symbols-outlined text-primary text-sm cursor-pointer">add</span>
+</div>
+<textarea class="w-full bg-surface-bright/50 border border-outline-variant/30 rounded-xl p-3 text-label-md focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none" placeholder="Prendre une note à 12:45..." rows="3"></textarea>
+</div>
+</aside>
+</main>
+<!-- AI Assistant Floating Bubble -->
+<div class="fixed bottom-8 right-8 z-[70]">
+<div class="hidden absolute bottom-20 right-0 w-80 h-96 bg-surface dark:bg-surface-container-high rounded-3xl shadow-2xl border border-outline-variant/30 flex flex-col overflow-hidden glass-panel" id="ai-chat">
+<div class="p-4 bg-primary text-white flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined">smart_toy</span>
+<span class="font-label-md font-bold">Assistant de cours</span>
+</div>
+<button class="material-symbols-outlined" onclick="toggleChat()">close</button>
+</div>
+<div class="flex-1 p-4 overflow-y-auto space-y-4 custom-scrollbar">
+<div class="bg-surface-variant/30 p-3 rounded-2xl rounded-tl-none">
+<p class="text-label-md">Bonjour Alex ! Je vois que vous regardez 'Comprendre la chaîne de valeur'. Souhaitez-vous que je résume les activités principales pour vous ?</p>
+</div>
+</div>
+<div class="p-4 border-t border-outline-variant/20 bg-surface-container-low">
+<div class="relative">
+<input class="w-full bg-surface border-outline-variant/30 rounded-full py-2 px-4 text-label-md pr-10 focus:ring-2 focus:ring-primary outline-none" placeholder="Poser une question..." type="text"/>
+<span class="material-symbols-outlined absolute right-3 top-2 text-primary">send</span>
+</div>
+</div>
+</div>
+<button class="w-16 h-16 bg-primary text-white rounded-full shadow-xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all duration-300" onclick="toggleChat()">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+</button>
+</div>
+<!-- Mobile Navigation -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-lg border-t border-outline-variant/20 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] flex justify-around items-center px-4 py-3 md:hidden">
+<div class="flex flex-col items-center justify-center text-on-surface-variant opacity-70 hover:opacity-100 transition-opacity active:scale-90 duration-150">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm">Accueil</span>
+</div>
+<div class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed bg-primary-container/30 rounded-xl px-4 py-1 active:scale-90 duration-150">
+<span class="material-symbols-outlined">school</span>
+<span class="font-label-sm">Cours</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant opacity-70 hover:opacity-100 transition-opacity active:scale-90 duration-150">
+<span class="material-symbols-outlined">verified_user</span>
+<span class="font-label-sm">Conformité</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant opacity-70 hover:opacity-100 transition-opacity active:scale-90 duration-150">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm">Profil</span>
+</div>
+</nav>
+<script>
+    // Tab switching logic
+    const contentBtn = document.getElementById('tab-content');
+    const resourcesBtn = document.getElementById('tab-resources');
+    const contentPanel = document.getElementById('panel-content');
+    const resourcesPanel = document.getElementById('panel-resources');
+
+    contentBtn.addEventListener('click', () => {
+        contentBtn.classList.add('border-primary', 'text-primary');
+        contentBtn.classList.remove('border-transparent', 'text-on-surface-variant');
+        resourcesBtn.classList.add('border-transparent', 'text-on-surface-variant');
+        resourcesBtn.classList.remove('border-primary', 'text-primary');
+        contentPanel.classList.remove('hidden');
+        resourcesPanel.classList.add('hidden');
+    });
+
+    resourcesBtn.addEventListener('click', () => {
+        resourcesBtn.classList.add('border-primary', 'text-primary');
+        resourcesBtn.classList.remove('border-transparent', 'text-on-surface-variant');
+        contentBtn.classList.add('border-transparent', 'text-on-surface-variant');
+        contentBtn.classList.remove('border-primary', 'text-primary');
+        resourcesPanel.classList.remove('hidden');
+        contentPanel.classList.add('hidden');
+    });
+
+    // Accordion toggle
+    function toggleAccordion(element) {
+        const item = element.parentElement;
+        const isActive = item.classList.contains('active');
+        
+        document.querySelectorAll('.course-accordion-item').forEach(i => i.classList.remove('active'));
+        
+        if (!isActive) {
+            item.classList.add('active');
+        }
+    }
+
+    // Chat Toggle
+    function toggleChat() {
+        const chat = document.getElementById('ai-chat');
+        chat.classList.toggle('hidden');
+        if(!chat.classList.contains('hidden')) {
+            chat.classList.add('animate-in', 'fade-in', 'slide-in-from-bottom-4', 'duration-300');
+        }
+    }
+
+    // Dark Mode Toggle
+    const themeToggle = document.getElementById('themeToggle');
+    themeToggle.addEventListener('click', () => {
+        document.documentElement.classList.toggle('dark');
+        const icon = themeToggle.querySelector('.material-symbols-outlined');
+        icon.textContent = document.documentElement.classList.contains('dark') ? 'light_mode' : 'dark_mode';
+    });
+
+    // Micro-interaction for buttons
+    document.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('mousedown', () => btn.classList.add('scale-95'));
+        btn.addEventListener('mouseup', () => btn.classList.remove('scale-95'));
+        btn.addEventListener('mouseleave', () => btn.classList.remove('scale-95'));
+    });
+</script>
+</body></html>

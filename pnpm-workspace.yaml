@@ -1,0 +1,31 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+allowBuilds:
+  esbuild: true
+  unrs-resolver: true
+minimumReleaseAgeExclude:
+  - '@expo/cli@57.0.15'
+  - '@expo/config-plugins@57.0.8'
+  - '@expo/prebuild-config@57.0.12'
+  - '@expo/router-server@57.0.6'
+  - '@next/env@16.3.1'
+  - '@next/eslint-plugin-next@16.3.1'
+  - '@next/swc-darwin-arm64@16.3.1'
+  - '@next/swc-darwin-x64@16.3.1'
+  - '@next/swc-linux-arm64-gnu@16.3.1'
+  - '@next/swc-linux-arm64-musl@16.3.1'
+  - '@next/swc-linux-x64-gnu@16.3.1'
+  - '@next/swc-linux-x64-musl@16.3.1'
+  - '@next/swc-win32-arm64-msvc@16.3.1'
+  - '@next/swc-win32-x64-msvc@16.3.1'
+  - babel-preset-expo@57.0.7
+  - eslint-config-next@16.3.1
+  - expo-asset@57.0.11
+  - expo-constants@57.0.11
+  - expo-file-system@57.0.3
+  - expo-modules-autolinking@57.0.10
+  - expo-modules-core@57.0.11
+  - expo-server@57.0.3
+  - expo@57.0.13
+  - next@16.3.1

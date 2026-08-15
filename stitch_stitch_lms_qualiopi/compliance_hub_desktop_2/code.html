@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Centre de Conformité | EduMastery</title>
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Geist:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error-container": "#93000a",
+                    "on-secondary-fixed-variant": "#3f465c",
+                    "tertiary": "#006c49",
+                    "surface-bright": "#f8f9ff",
+                    "on-tertiary-fixed": "#002113",
+                    "surface-dim": "#cbdbf5",
+                    "surface": "#f8f9ff",
+                    "secondary": "#565e74",
+                    "error-container": "#ffdad6",
+                    "tertiary-container": "#00885d",
+                    "outline": "#767586",
+                    "tertiary-fixed-dim": "#4edea3",
+                    "on-surface-variant": "#464554",
+                    "on-secondary-fixed": "#131b2e",
+                    "surface-container-highest": "#d3e4fe",
+                    "tertiary-fixed": "#6ffbbe",
+                    "primary-fixed-dim": "#c0c1ff",
+                    "on-secondary": "#ffffff",
+                    "inverse-primary": "#c0c1ff",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-high": "#dce9ff",
+                    "on-primary-fixed-variant": "#2f2ebe",
+                    "on-primary-container": "#fffbff",
+                    "inverse-surface": "#213145",
+                    "secondary-fixed": "#dae2fd",
+                    "primary-container": "#6063ee",
+                    "primary": "#4648d4",
+                    "inverse-on-surface": "#eaf1ff",
+                    "secondary-container": "#dae2fd",
+                    "secondary-fixed-dim": "#bec6e0",
+                    "background": "#f8f9ff",
+                    "surface-container": "#e5eeff",
+                    "error": "#ba1a1a",
+                    "on-primary": "#ffffff",
+                    "surface-tint": "#494bd6",
+                    "on-tertiary": "#ffffff",
+                    "outline-variant": "#c7c4d7",
+                    "on-tertiary-container": "#000703",
+                    "surface-variant": "#d3e4fe",
+                    "on-surface": "#0b1c30",
+                    "surface-container-low": "#eff4ff",
+                    "on-secondary-container": "#5c647a",
+                    "on-tertiary-fixed-variant": "#005236",
+                    "on-error": "#ffffff",
+                    "primary-fixed": "#e1e0ff",
+                    "on-background": "#0b1c30",
+                    "on-primary-fixed": "#07006c"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container-max": "1440px",
+                    "margin-desktop": "48px",
+                    "margin-mobile": "16px",
+                    "unit": "4px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "label-md": ["Geist"],
+                    "headline-lg-mobile": ["Inter"],
+                    "display": ["Inter"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "label-sm": ["Geist"],
+                    "headline-md": ["Inter"],
+                    "headline-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "label-md": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-nav {
+            backdrop-filter: blur(12px);
+            background-color: rgba(248, 249, 255, 0.7);
+        }
+        .sidebar-active-pill::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 24px;
+            background-color: #4648d4;
+            border-radius: 0 4px 4px 0;
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d3e4fe; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-x-hidden">
+<!-- Shell Layout (Desktop Sidebar + Main Content) -->
+<div class="flex min-h-screen">
+<!-- Navigation Drawer (SideNav) -->
+<aside class="fixed left-0 top-0 h-full z-[60] flex flex-col p-4 w-80 bg-surface dark:bg-surface-container-low bg-surface-container-low shadow-xl transition-all duration-300" id="main-sidebar">
+<!-- Header Section -->
+<div class="mb-8 px-4 flex items-center space-x-3">
+<div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined">school</span>
+</div>
+<h1 class="font-display text-headline-md text-primary tracking-tight">EduMastery</h1>
+</div>
+<!-- Profile Widget -->
+<div class="mb-8 p-4 rounded-xl bg-surface-container flex items-center space-x-3">
+<img class="w-12 h-12 rounded-full object-cover" data-alt="A professional close-up portrait of a mid-40s male administrator" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIcdAp5s2NMZh6X_UndrhZQNXzBWUN4TshFt3U3O6tLQmmvaGxgjXXuhBvHeHHRyL5p7KEbtTG6oRJ9cyTEflGBBcEpT7UYbYRBHM8FaRQbXIcPCsArjCVCenFq0rEMw-LIQSzzODvoU2vUCPd8ywRwhFVVhudHmJHXStvKcsltlsa4oy_ziad6Vz55gO9apbHJFdLcLtOuSbk8MMVEvuXNHm6Rl6MNrWhZxS_6qbTasdZbpWJY9Us"/>
+<div class="flex-1 overflow-hidden">
+<p class="font-label-md text-label-md text-on-surface truncate">Alex Morgan</p>
+<p class="text-on-surface-variant text-xs truncate">Responsable Qualiopi</p>
+</div>
+</div>
+<!-- Nav Links -->
+<nav class="flex-1 space-y-2">
+<a class="flex items-center space-x-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant rounded-full transition-all font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">home</span>
+<span>Accueil</span>
+</a>
+<a class="flex items-center space-x-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant rounded-full transition-all font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">school</span>
+<span>Cours</span>
+</a>
+<!-- Active Link: Compliance -->
+<a class="sidebar-active-pill relative flex items-center space-x-3 px-4 py-3 bg-primary-container text-on-primary-container font-bold rounded-full transition-all font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+<span>Conformité</span>
+</a>
+<a class="flex items-center space-x-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant rounded-full transition-all font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">domain</span>
+<span>Campus Principal</span>
+</a>
+<div class="pt-4 mt-4 border-t border-outline-variant/30">
+<a class="flex items-center space-x-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant rounded-full transition-all font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Paramètres Admin</span>
+</a>
+</div>
+</nav>
+<!-- Bottom Actions -->
+<div class="mt-auto p-4 bg-surface-container-low rounded-xl">
+<div class="flex items-center justify-between text-xs text-on-surface-variant mb-2">
+<span>Mode Audit</span>
+<span class="px-2 py-0.5 bg-tertiary-container text-on-tertiary-container rounded-full font-semibold">Actif</span>
+</div>
+<div class="w-full bg-outline-variant/30 h-1 rounded-full overflow-hidden">
+<div class="bg-tertiary w-3/4 h-full"></div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 ml-80 min-w-0 bg-background flex flex-col">
+<!-- TopAppBar / Header -->
+<header class="sticky top-0 z-50 glass-nav border-b border-outline-variant/30 shadow-sm flex items-center justify-between px-margin-desktop h-16 w-full">
+<div class="flex items-center space-x-4">
+<div class="flex items-center space-x-2 text-on-surface-variant text-sm font-label-sm">
+<span>Tableau de bord</span>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="text-on-surface font-semibold">Centre de Conformité</span>
+</div>
+</div>
+<div class="flex-1 max-w-md mx-8">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">search</span>
+<input class="w-full bg-surface-container-low border-outline-variant/40 rounded-xl pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="Rechercher des indicateurs ou des preuves..." type="text"/>
+</div>
+</div>
+<div class="flex items-center space-x-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-variant p-2 rounded-full transition-colors">notifications</button>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-xl font-label-md text-label-md hover:opacity-90 active:scale-95 transition-all shadow-sm flex items-center space-x-2">
+<span class="material-symbols-outlined text-sm">bolt</span>
+<span>Lancer l'Audit</span>
+</button>
+</div>
+</header>
+<!-- Page Content -->
+<div class="p-margin-desktop space-y-gutter">
+<!-- Page Title -->
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Conformité &amp; Qualité</h2>
+<p class="text-on-surface-variant mt-1">Gérez vos indicateurs du référentiel Qualiopi et vos dépôts de preuves.</p>
+</div>
+<!-- KPI Overview Row -->
+<div class="grid grid-cols-3 gap-gutter">
+<!-- Metric 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 p-6 rounded-xl shadow-sm flex items-center space-x-6">
+<div class="relative w-20 h-20">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-surface-container" cx="40" cy="40" fill="transparent" r="36" stroke="currentColor" stroke-width="6"></circle>
+<circle class="text-tertiary transition-all duration-1000 ease-out" cx="40" cy="40" fill="transparent" r="36" stroke="currentColor" stroke-dasharray="226.2" stroke-dashoffset="18" stroke-width="6"></circle>
+</svg>
+<span class="absolute inset-0 flex items-center justify-center font-bold text-lg text-on-surface">92%</span>
+</div>
+<div>
+<p class="text-label-sm text-on-surface-variant uppercase tracking-wider">Santé globale</p>
+<p class="font-headline-md text-headline-md text-on-surface">Certifié</p>
+<p class="text-xs text-tertiary flex items-center mt-1">
+<span class="material-symbols-outlined text-xs mr-1">trending_up</span>
+                                +2% depuis le mois dernier
+                            </p>
+</div>
+</div>
+<!-- Metric 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 p-6 rounded-xl shadow-sm flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="p-2 bg-primary-container/20 text-primary rounded-lg material-symbols-outlined">verified</span>
+<span class="text-xs font-semibold text-on-surface-variant px-2 py-1 bg-surface-container rounded-md">Qualiopi V2</span>
+</div>
+<div class="mt-4">
+<p class="text-label-sm text-on-surface-variant uppercase tracking-wider">Indicateurs certifiés</p>
+<div class="flex items-end space-x-2">
+<p class="font-display text-4xl text-on-surface">29</p>
+<p class="text-on-surface-variant pb-1">/ 32</p>
+</div>
+</div>
+<div class="w-full bg-surface-container h-1.5 rounded-full mt-3 overflow-hidden">
+<div class="bg-primary w-[90%] h-full rounded-full"></div>
+</div>
+</div>
+<!-- Metric 3 -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 p-6 rounded-xl shadow-sm flex flex-col justify-between group cursor-pointer hover:border-error/40 transition-colors">
+<div class="flex justify-between items-start">
+<span class="p-2 bg-error-container text-error rounded-lg material-symbols-outlined">warning</span>
+<span class="text-xs font-semibold text-error px-2 py-1 bg-error-container/30 rounded-md">Attention</span>
+</div>
+<div class="mt-4">
+<p class="text-label-sm text-on-surface-variant uppercase tracking-wider">Preuves critiques manquantes</p>
+<p class="font-display text-4xl text-error">03</p>
+</div>
+<p class="text-xs text-on-surface-variant mt-2 group-hover:text-error transition-colors">Vérifier les indicateurs 4, 12, et 21 →</p>
+</div>
+</div>
+<!-- Main Content Grid -->
+<div class="grid grid-cols-10 gap-gutter">
+<!-- Content (70%) -->
+<div class="col-span-7 space-y-gutter">
+<!-- Standard Indicators Table -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl shadow-sm overflow-hidden">
+<div class="p-6 border-b border-outline-variant/30 flex items-center justify-between bg-surface-container-low/50">
+<h3 class="font-headline-md text-headline-md text-on-surface">Indicateurs du référentiel</h3>
+<div class="flex space-x-2">
+<button class="flex items-center space-x-1 px-3 py-1.5 border border-outline-variant text-xs font-semibold rounded-lg hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-sm">filter_list</span>
+<span>Filtrer</span>
+</button>
+<button class="flex items-center space-x-1 px-3 py-1.5 border border-outline-variant text-xs font-semibold rounded-lg hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-sm">download</span>
+<span>Exporter</span>
+</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low/30 border-b border-outline-variant/30">
+<tr>
+<th class="px-6 py-4 text-label-sm text-on-surface-variant uppercase">Indicateur</th>
+<th class="px-6 py-4 text-label-sm text-on-surface-variant uppercase">Description</th>
+<th class="px-6 py-4 text-label-sm text-on-surface-variant uppercase text-center">Statut</th>
+<th class="px-6 py-4 text-label-sm text-on-surface-variant uppercase text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-low/40 transition-colors group">
+<td class="px-6 py-5 align-top">
+<div class="flex items-center space-x-3">
+<span class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center font-bold text-xs text-on-surface">01</span>
+<span class="font-semibold text-on-surface">Information publique</span>
+</div>
+</td>
+<td class="px-6 py-5 text-sm text-on-surface-variant align-top max-w-xs">
+                                                Transparence de l'offre de formation, des prérequis et des méthodes d'évaluation.
+                                            </td>
+<td class="px-6 py-5 text-center align-top">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-tertiary-container/20 text-tertiary">
+                                                    Certifié
+                                                </span>
+</td>
+<td class="px-6 py-5 text-right align-top">
+<button class="text-primary hover:underline font-semibold text-sm">Gérer les preuves</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-low/40 transition-colors group">
+<td class="px-6 py-5 align-top">
+<div class="flex items-center space-x-3">
+<span class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center font-bold text-xs text-on-surface">04</span>
+<span class="font-semibold text-on-surface">Analyse des besoins</span>
+</div>
+</td>
+<td class="px-6 py-5 text-sm text-on-surface-variant align-top max-w-xs">
+                                                Le prestataire définit les objectifs et adapte le contenu au public visé.
+                                            </td>
+<td class="px-6 py-5 text-center align-top">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary-container text-on-secondary-container">
+                                                    Action requise
+                                                </span>
+</td>
+<td class="px-6 py-5 text-right align-top">
+<button class="text-primary hover:underline font-semibold text-sm">Gérer les preuves</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-low/40 transition-colors group">
+<td class="px-6 py-5 align-top">
+<div class="flex items-center space-x-3">
+<span class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center font-bold text-xs text-on-surface">12</span>
+<span class="font-semibold text-on-surface">Ressources pédagogiques</span>
+</div>
+</td>
+<td class="px-6 py-5 text-sm text-on-surface-variant align-top max-w-xs">
+                                                Mise à disposition des ressources éducatives, techniques et humaines pour les apprenants.
+                                            </td>
+<td class="px-6 py-5 text-center align-top">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-error-container text-error">
+                                                    Preuve manquante
+                                                </span>
+</td>
+<td class="px-6 py-5 text-right align-top">
+<button class="text-primary hover:underline font-semibold text-sm">Gérer les preuves</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container-low/40 transition-colors group border-b-0">
+<td class="px-6 py-5 align-top">
+<div class="flex items-center space-x-3">
+<span class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center font-bold text-xs text-on-surface">21</span>
+<span class="font-semibold text-on-surface">Compétence du personnel</span>
+</div>
+</td>
+<td class="px-6 py-5 text-sm text-on-surface-variant align-top max-w-xs">
+                                                Suivi du développement des compétences des formateurs et des membres du personnel.
+                                            </td>
+<td class="px-6 py-5 text-center align-top">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-tertiary-container/20 text-tertiary">
+                                                    Certifié
+                                                </span>
+</td>
+<td class="px-6 py-5 text-right align-top">
+<button class="text-primary hover:underline font-semibold text-sm">Gérer les preuves</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-4 bg-surface-container-low/20 text-center">
+<button class="text-on-surface-variant text-sm font-semibold hover:text-primary transition-colors">Voir les 32 indicateurs</button>
+</div>
+</div>
+<!-- Recent Activity -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl shadow-sm p-6">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-6">Activité de conformité récente</h3>
+<div class="space-y-6">
+<div class="flex space-x-4">
+<div class="relative">
+<div class="w-10 h-10 rounded-full bg-primary-container/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">upload_file</span>
+</div>
+<div class="absolute top-10 left-1/2 -translate-x-1/2 w-0.5 h-6 bg-outline-variant/30"></div>
+</div>
+<div>
+<p class="text-sm font-semibold text-on-surface">Nouvelle preuve chargée</p>
+<p class="text-xs text-on-surface-variant mt-0.5">Alex Morgan a chargé <span class="text-primary font-medium">Certificats_Formateurs_2024.pdf</span> pour l'Indicateur 21.</p>
+<p class="text-[10px] text-outline mt-1 font-medium">IL Y A 2 HEURES</p>
+</div>
+</div>
+<div class="flex space-x-4">
+<div class="relative">
+<div class="w-10 h-10 rounded-full bg-tertiary-container/20 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined">verified</span>
+</div>
+<div class="absolute top-10 left-1/2 -translate-x-1/2 w-0.5 h-6 bg-outline-variant/30"></div>
+</div>
+<div>
+<p class="text-sm font-semibold text-on-surface">Audit interne validé</p>
+<p class="text-xs text-on-surface-variant mt-0.5">L'Indicateur 01 est marqué comme <span class="text-tertiary font-medium">Certifié</span> après vérification automatique.</p>
+<p class="text-[10px] text-outline mt-1 font-medium">HIER</p>
+</div>
+</div>
+<div class="flex space-x-4">
+<div class="w-10 h-10 rounded-full bg-error-container/20 flex items-center justify-center text-error">
+<span class="material-symbols-outlined">assignment_late</span>
+</div>
+<div>
+<p class="text-sm font-semibold text-on-surface">Preuve expirée</p>
+<p class="text-xs text-on-surface-variant mt-0.5">Le certificat de sécurité pour <span class="text-error font-medium">Division Nord</span> a expiré le 1er oct.</p>
+<p class="text-[10px] text-outline mt-1 font-medium">IL Y A 3 JOURS</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Sidebar Panels (30%) -->
+<div class="col-span-3 space-y-gutter">
+<!-- Audit Readiness Widget -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl shadow-sm p-6 text-center">
+<h4 class="font-label-md text-label-md text-on-surface mb-4">Préparation à l'audit</h4>
+<div class="relative inline-flex items-center justify-center mb-4">
+<svg class="w-40 h-40 transform -rotate-90">
+<circle class="text-surface-container" cx="80" cy="80" fill="transparent" r="70" stroke="currentColor" stroke-width="12"></circle>
+<circle class="text-primary transition-all duration-700 ease-in-out" cx="80" cy="80" fill="transparent" r="70" stroke="currentColor" stroke-dasharray="439.8" stroke-dashoffset="65" stroke-linecap="round" stroke-width="12"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-3xl font-display text-on-surface">85%</span>
+<span class="text-xs text-on-surface-variant font-medium">Prêt</span>
+</div>
+</div>
+<p class="text-xs text-on-surface-variant px-4">Votre couverture documentaire est élevée. Résolvez les preuves manquantes pour atteindre 100%.</p>
+<button class="mt-6 w-full py-2 bg-surface-container hover:bg-surface-variant text-on-surface text-sm font-semibold rounded-lg transition-colors">Scorecard détaillée</button>
+</div>
+<!-- Next Deadline Card -->
+<div class="bg-primary-container/10 border border-primary/20 rounded-xl shadow-sm p-6 overflow-hidden relative">
+<div class="absolute top-[-20%] right-[-10%] w-32 h-32 bg-primary/5 rounded-full blur-2xl"></div>
+<div class="relative z-10">
+<div class="flex items-center justify-between mb-4">
+<span class="p-2 bg-primary/10 text-primary rounded-lg material-symbols-outlined">event</span>
+<span class="text-[10px] font-bold text-primary uppercase tracking-tighter">À VENIR</span>
+</div>
+<p class="text-label-sm text-primary uppercase tracking-widest">Prochaine échéance</p>
+<h4 class="font-headline-md text-headline-md text-on-surface mt-1">Audit de surveillance</h4>
+<p class="text-2xl font-display text-on-surface-variant mt-2">24 oct. 2024</p>
+<p class="text-xs text-on-surface-variant mt-1">18 jours restants</p>
+<button class="mt-4 w-full py-2 bg-primary text-on-primary text-sm font-semibold rounded-lg hover:opacity-90 transition-all flex items-center justify-center space-x-2">
+<span class="material-symbols-outlined text-sm">sync</span>
+<span>Synchroniser le calendrier</span>
+</button>
+</div>
+</div>
+<!-- Quick Actions -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl shadow-sm p-6">
+<h4 class="font-label-md text-label-md text-on-surface mb-4">Actions rapides</h4>
+<div class="space-y-2">
+<button class="w-full flex items-center justify-between p-3 rounded-xl border border-outline-variant/30 hover:bg-surface-variant hover:border-outline-variant transition-all group">
+<div class="flex items-center space-x-3">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">cloud_upload</span>
+<span class="text-sm font-medium text-on-surface">Charger une preuve</span>
+</div>
+<span class="material-symbols-outlined text-xs text-outline">chevron_right</span>
+</button>
+<button class="w-full flex items-center justify-between p-3 rounded-xl border border-outline-variant/30 hover:bg-surface-variant hover:border-outline-variant transition-all group">
+<div class="flex items-center space-x-3">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:scale-110 transition-transform">picture_as_pdf</span>
+<span class="text-sm font-medium text-on-surface">Générer un export PDF</span>
+</div>
+<span class="material-symbols-outlined text-xs text-outline">chevron_right</span>
+</button>
+<button class="w-full flex items-center justify-between p-3 rounded-xl border border-outline-variant/30 hover:bg-surface-variant hover:border-outline-variant transition-all group">
+<div class="flex items-center space-x-3">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:scale-110 transition-transform">share</span>
+<span class="text-sm font-medium text-on-surface">Inviter un auditeur externe</span>
+</div>
+<span class="material-symbols-outlined text-xs text-outline">chevron_right</span>
+</button>
+<button class="w-full flex items-center justify-between p-3 rounded-xl border border-outline-variant/30 hover:bg-surface-variant hover:border-outline-variant transition-all group">
+<div class="flex items-center space-x-3">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:scale-110 transition-transform">history_edu</span>
+<span class="text-sm font-medium text-on-surface">Historique des versions</span>
+</div>
+<span class="material-symbols-outlined text-xs text-outline">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Content Area spacer -->
+<div class="h-20"></div>
+</main>
+</div>
+<!-- Micro-interactions Script -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Placeholder for interactivity like search focus or modal triggers
+            const searchInput = document.querySelector('input[type="text"]');
+            if (searchInput) {
+                searchInput.addEventListener('focus', () => {
+                    searchInput.parentElement.classList.add('ring-2', 'ring-primary/20');
+                });
+                searchInput.addEventListener('blur', () => {
+                    searchInput.parentElement.classList.remove('ring-2', 'ring-primary/20');
+                });
+            }
+
+            // Smooth entrance for KPI cards
+            const cards = document.querySelectorAll('.grid > div');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(10px)';
+                setTimeout(() => {
+                    card.style.transition = 'all 0.5s ease-out';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 100 * index);
+            });
+        });
+    </script>
+</body></html>

@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LMS Premium - Espace Formateur</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Geist:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error": "#ffffff",
+                    "on-background": "#0b1c30",
+                    "on-primary-container": "#fffbff",
+                    "on-primary": "#ffffff",
+                    "inverse-on-surface": "#eaf1ff",
+                    "inverse-primary": "#c0c1ff",
+                    "surface-variant": "#d3e4fe",
+                    "surface-container-highest": "#d3e4fe",
+                    "primary-fixed": "#e1e0ff",
+                    "on-secondary-fixed": "#131b2e",
+                    "primary": "#4648d4",
+                    "outline": "#767586",
+                    "surface-tint": "#494bd6",
+                    "surface-dim": "#cbdbf5",
+                    "on-tertiary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "on-tertiary-fixed-variant": "#005236",
+                    "on-secondary-container": "#5c647a",
+                    "error-container": "#ffdad6",
+                    "secondary": "#565e74",
+                    "on-surface-variant": "#464554",
+                    "primary-container": "#6063ee",
+                    "on-surface": "#0b1c30",
+                    "on-secondary": "#ffffff",
+                    "surface": "#f8f9ff",
+                    "secondary-fixed": "#dae2fd",
+                    "on-error-container": "#93000a",
+                    "secondary-fixed-dim": "#bec6e0",
+                    "tertiary-container": "#00885d",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-fixed-dim": "#c0c1ff",
+                    "on-tertiary-container": "#000703",
+                    "on-secondary-fixed-variant": "#3f465c",
+                    "secondary-container": "#dae2fd",
+                    "tertiary": "#006c49",
+                    "background": "#f8f9ff",
+                    "outline-variant": "#c7c4d7",
+                    "on-primary-fixed-variant": "#2f2ebe",
+                    "surface-bright": "#f8f9ff",
+                    "surface-container": "#e5eeff",
+                    "inverse-surface": "#213145",
+                    "on-tertiary-fixed": "#002113",
+                    "on-primary-fixed": "#07006c",
+                    "surface-container-low": "#eff4ff",
+                    "tertiary-fixed-dim": "#4edea3",
+                    "tertiary-fixed": "#6ffbbe",
+                    "surface-container-high": "#dce9ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-desktop": "48px",
+                    "gutter": "24px",
+                    "container-max": "1440px",
+                    "margin-mobile": "16px",
+                    "unit": "4px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Inter"],
+                    "display": ["Inter"],
+                    "label-md": ["Geist"],
+                    "body-md": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "label-sm": ["Geist"]
+            },
+            "fontSize": {
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "1.2", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #f8f9ff;
+            color: #0b1c30;
+            overflow-x: hidden;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(118, 117, 134, 0.1);
+        }
+        .dark .glass-card {
+            background: rgba(33, 49, 69, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- Side Navigation Shell -->
+<aside class="fixed left-0 top-0 h-screen w-64 bg-surface-container-low backdrop-blur-md shadow-sm z-50 flex flex-col py-margin-desktop">
+<div class="px-6 mb-12">
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-inverse-primary">LMS Premium</h1>
+<p class="text-label-sm font-label-sm text-on-surface-variant">Portail Formateur</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-primary border-l-4 border-primary bg-primary-container/10 transition-all duration-200 active:scale-95" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Tableau de bord</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">event_seat</span>
+<span class="font-label-md text-label-md">Sessions</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-md text-label-md">Apprenants</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-label-md text-label-md">Catalogues</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">verified</span>
+<span class="font-label-md text-label-md">Qualiopi</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Paramètres</span>
+</a>
+</nav>
+<div class="px-6 mt-auto">
+<button class="w-full py-3 px-4 bg-primary text-on-primary font-label-md text-label-md rounded-xl shadow-md hover:bg-primary-container transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">add</span>
+                Nouvelle Session
+            </button>
+</div>
+</aside>
+<!-- Top App Bar Shell -->
+<header class="sticky top-0 z-40 w-full backdrop-blur-xl border-b border-outline-variant/30 bg-surface/70 flex justify-between items-center px-margin-desktop py-4 h-20 ml-64 max-w-[calc(100%-16rem)]">
+<div class="flex items-center gap-4 bg-surface-container rounded-full px-4 py-2 w-96">
+<span class="material-symbols-outlined text-outline">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-label-md font-label-md w-full" placeholder="Rechercher une session, un document..." type="text"/>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex gap-6">
+<a class="text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all" href="#">Aide</a>
+<a class="text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all" href="#">Support</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-surface-container rounded-full transition-all duration-300">
+<span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+</button>
+<div class="h-10 w-10 rounded-full overflow-hidden border-2 border-primary-container">
+<img class="w-full h-full object-cover" data-alt="Professional studio portrait of a university professor in a light grey blazer, smiling warmly against a minimalist, high-end architectural background. The lighting is soft and corporate, following a premium light-mode aesthetic with subtle indigo accents in the surroundings to match the brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3mNKyWDFe07c1y5Cj1oH1eXhw06cD19Lt7fjAaAw0wMUIB-L37rS2y7-TOgmlchrioNfI10WG-SWLpbdE2yKNmA9xG1YPv2GU2czn4qldXJ75rcQ_KXTqyW8ErIha2_dyB6u3f-AuB-TYUIJO0wOqvkngU31Krx7sEp1IJ_D--n13-MZauoscNVxwBPFur3xw8_WKi3QS6IbLgeTPuJAs6o6CtG03ABe4FyBeYY9xR9z8JYfAuoga"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="ml-64 p-margin-desktop min-h-screen">
+<!-- Dashboard Header -->
+<section class="mb-10">
+<div class="flex justify-between items-end">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-background mb-2">Bonjour, Marc-Antoine</h2>
+<p class="text-body-lg font-body-lg text-on-surface-variant">Prêt pour vos 3 interventions de la journée ?</p>
+</div>
+<div class="flex gap-3">
+<button class="px-6 py-2.5 rounded-xl border border-outline-variant text-primary font-label-md text-label-md glass-card hover:bg-surface-container-high transition-all">
+                        Exporter le planning
+                    </button>
+</div>
+</div>
+</section>
+<!-- Bento Grid Dashboard -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Weekly Schedule (Large Span) -->
+<div class="col-span-8 glass-card rounded-[1.5rem] p-6 shadow-sm">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline-md text-headline-md text-on-surface">Planning Hebdomadaire</h3>
+<div class="flex items-center gap-2 text-label-sm font-label-sm text-outline">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span>
+                        Semaine du 14 Octobre
+                    </div>
+</div>
+<div class="grid grid-cols-5 gap-4 h-80">
+<!-- Day Columns -->
+<div class="space-y-4">
+<span class="block text-center font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Lun 14</span>
+<div class="bg-primary-container/10 p-3 rounded-xl border-l-4 border-primary">
+<span class="block text-xs font-bold text-primary mb-1">09:00 - 12:30</span>
+<span class="block text-sm font-semibold">UX Design Avancé</span>
+</div>
+</div>
+<div class="space-y-4">
+<span class="block text-center font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Mar 15</span>
+<div class="bg-secondary-container/20 p-3 rounded-xl border-l-4 border-secondary opacity-50">
+<span class="block text-xs font-bold text-secondary mb-1">14:00 - 17:30</span>
+<span class="block text-sm font-semibold">Design Thinking</span>
+</div>
+</div>
+<div class="space-y-4">
+<span class="block text-center font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Mer 16</span>
+<div class="bg-tertiary-container/10 p-3 rounded-xl border-l-4 border-tertiary">
+<span class="block text-xs font-bold text-tertiary mb-1">10:00 - 16:00</span>
+<span class="block text-sm font-semibold">Workshop FIGMA</span>
+</div>
+</div>
+<div class="space-y-4">
+<span class="block text-center font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Jeu 17</span>
+<div class="border-2 border-dashed border-outline-variant/30 h-32 rounded-xl flex items-center justify-center">
+<span class="material-symbols-outlined text-outline-variant">add_circle</span>
+</div>
+</div>
+<div class="space-y-4">
+<span class="block text-center font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Ven 18</span>
+<div class="bg-primary-container/10 p-3 rounded-xl border-l-4 border-primary">
+<span class="block text-xs font-bold text-primary mb-1">09:00 - 12:30</span>
+<span class="block text-sm font-semibold">Psychologie Cognitive</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Access Support Material -->
+<div class="col-span-4 glass-card rounded-[1.5rem] p-6 shadow-sm overflow-hidden flex flex-col">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-6">Supports de cours</h3>
+<div class="space-y-4 flex-1 overflow-y-auto pr-2 scrollbar-hide">
+<div class="group flex items-center gap-4 p-3 rounded-xl hover:bg-primary-container/5 cursor-pointer transition-all border border-transparent hover:border-outline-variant/30">
+<div class="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-red-600">picture_as_pdf</span>
+</div>
+<div class="flex-1">
+<p class="font-label-md text-label-md text-on-surface">Guide UX Design.pdf</p>
+<p class="text-xs text-on-surface-variant">Dernière modif: Hier</p>
+</div>
+<span class="material-symbols-outlined text-outline opacity-0 group-hover:opacity-100 transition-opacity">download</span>
+</div>
+<div class="group flex items-center gap-4 p-3 rounded-xl hover:bg-primary-container/5 cursor-pointer transition-all border border-transparent hover:border-outline-variant/30">
+<div class="w-12 h-12 bg-amber-100 dark:bg-amber-900/30 rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-amber-600">slideshow</span>
+</div>
+<div class="flex-1">
+<p class="font-label-md text-label-md text-on-surface">Presentation_S2.pptx</p>
+<p class="text-xs text-on-surface-variant">24 Mo • 45 Slides</p>
+</div>
+<span class="material-symbols-outlined text-outline opacity-0 group-hover:opacity-100 transition-opacity">download</span>
+</div>
+<div class="group flex items-center gap-4 p-3 rounded-xl hover:bg-primary-container/5 cursor-pointer transition-all border border-transparent hover:border-outline-variant/30">
+<div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-blue-600">video_library</span>
+</div>
+<div class="flex-1">
+<p class="font-label-md text-label-md text-on-surface">Demo_Figma_AutoLayout.mp4</p>
+<p class="text-xs text-on-surface-variant">80% visionné</p>
+</div>
+<span class="material-symbols-outlined text-outline opacity-0 group-hover:opacity-100 transition-opacity">play_circle</span>
+</div>
+</div>
+<button class="mt-4 w-full py-2 text-primary font-label-sm text-label-sm hover:underline flex items-center justify-center gap-2">
+                    Voir toute la bibliothèque
+                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<!-- Learner Skills Validation (Full Width) -->
+<div class="col-span-12 glass-card rounded-[1.5rem] p-8 shadow-sm">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Validation des Compétences</h3>
+<p class="text-label-md text-on-surface-variant">Module : Psychologie de l'utilisateur (Groupe A1)</p>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex -space-x-3">
+<img class="w-8 h-8 rounded-full border-2 border-surface" data-alt="Circular avatar of a young female student with glasses and a friendly expression, soft lighting, minimalist design aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUHgxmVJOyzAeEKUwFW03Hy6A311YeA5IV55_VU6n_jYhBR_r5hMN5abYGXg-3efLdFk4XU6I_nLBfIIFMfSA_isQbRAyQRPqTEyAqlUonCct9BMzDnVgeRqMzVx8FdWoyk5fU85mt1baMF8pwxw-iL3jcaarTO2q9uJMsOGiRIZqUih6PmqtzpwEGJvPl452SdN26Xy6Tc0IkGhta74XE0f70C-F3CEHYCn7uK4flRyf2w0tEaO_f"/>
+<img class="w-8 h-8 rounded-full border-2 border-surface" data-alt="Circular avatar of a male student with short hair, clean professional studio lighting, soft color palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOsNRN-y0ebnD7-Qfo579Gz2xKCNV9qIvg7h5wdb_RuQd-T-YaqyrqNeWIjADyL9EQ-pP8PUDtS-aO3cBaAi3FuVegWYAePr41EztEAZlpjqf4hE8Ga3xkZs7OZy2lBtm9u1Q2bdxb6qg7TV4ytox6zcPKtbiFuzgg-h4RjVe8qzrMzX7ayPMq7_547s_VFCQk_HsrR1d_FRzIX5S8z3Xc17NUFtkR5RgEdWiE8xtWnf5VSUOLemCG"/>
+<img class="w-8 h-8 rounded-full border-2 border-surface" data-alt="Circular avatar of a diverse group of students, small scale, professional quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnf25ficM3CsGB7qzyrnDU6UU9e8z1wdErJh1KoLrniG10WcUVZmYUPISaEHMbgHNN4nk73QPV2BY4yw0Q5_SWr_YxA15_T79-3IoZZan-W61LI4ipKxpABR9lxHB7WZ5GotEgXkaJhgc6mmMNeX_-FcNsuh7JI_47_xHNYdxzElF-a6BFg5bEKVcYVwQJqqaDXDuk5qD0zZCHdBjNG7Qx0YgLfpwR9CZmvwlYDwlC89r_8Cl09pLC"/>
+<div class="w-8 h-8 rounded-full border-2 border-surface bg-surface-container-high flex items-center justify-center text-[10px] font-bold">+12</div>
+</div>
+<button class="bg-primary text-on-primary px-5 py-2 rounded-lg font-label-sm text-label-sm">Valider tout le groupe</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-surface-container-low/50">
+<th class="py-4 px-4 font-label-sm text-label-sm text-on-surface-variant rounded-l-xl">APPRENANT</th>
+<th class="py-4 px-4 font-label-sm text-label-sm text-on-surface-variant">ASSIDUITÉ</th>
+<th class="py-4 px-4 font-label-sm text-label-sm text-on-surface-variant">ACQUIS VISÉ #1</th>
+<th class="py-4 px-4 font-label-sm text-label-sm text-on-surface-variant">ACQUIS VISÉ #2</th>
+<th class="py-4 px-4 font-label-sm text-label-sm text-on-surface-variant rounded-r-xl">ACTION</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<tr>
+<td class="py-5 px-4 flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-primary font-bold text-xs">LD</div>
+<span class="font-body-md text-on-surface">Lucas Dubois</span>
+</td>
+<td class="py-5 px-4">
+<div class="flex items-center gap-2">
+<div class="w-24 h-2 bg-outline-variant/20 rounded-full overflow-hidden">
+<div class="bg-emerald-500 h-full" style="width: 95%;"></div>
+</div>
+<span class="text-xs font-semibold text-on-surface-variant">95%</span>
+</div>
+</td>
+<td class="py-5 px-4">
+<select class="bg-surface-container-low border-none rounded-lg text-xs font-label-md focus:ring-primary">
+<option>Acquis</option>
+<option>En cours</option>
+<option>Non acquis</option>
+</select>
+</td>
+<td class="py-5 px-4">
+<select class="bg-surface-container-low border-none rounded-lg text-xs font-label-md focus:ring-primary">
+<option>Acquis</option>
+<option>En cours</option>
+<option>Non acquis</option>
+</select>
+</td>
+<td class="py-5 px-4">
+<button class="p-2 hover:bg-primary/10 text-primary rounded-lg transition-colors">
+<span class="material-symbols-outlined">send</span>
+</button>
+</td>
+</tr>
+<tr>
+<td class="py-5 px-4 flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-xs">AM</div>
+<span class="font-body-md text-on-surface">Alice Martin</span>
+</td>
+<td class="py-5 px-4">
+<div class="flex items-center gap-2">
+<div class="w-24 h-2 bg-outline-variant/20 rounded-full overflow-hidden">
+<div class="bg-emerald-500 h-full" style="width: 82%;"></div>
+</div>
+<span class="text-xs font-semibold text-on-surface-variant">82%</span>
+</div>
+</td>
+<td class="py-5 px-4">
+<select class="bg-surface-container-low border-none rounded-lg text-xs font-label-md focus:ring-primary">
+<option>En cours</option>
+<option selected="">Acquis</option>
+<option>Non acquis</option>
+</select>
+</td>
+<td class="py-5 px-4">
+<select class="bg-surface-container-low border-none rounded-lg text-xs font-label-md focus:ring-primary">
+<option selected="">En cours</option>
+<option>Acquis</option>
+<option>Non acquis</option>
+</select>
+</td>
+<td class="py-5 px-4">
+<button class="p-2 hover:bg-primary/10 text-primary rounded-lg transition-colors">
+<span class="material-symbols-outlined">send</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Stats Module -->
+<div class="col-span-12 grid grid-cols-4 gap-6">
+<div class="glass-card p-6 rounded-[1.5rem] flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-primary-container/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">school</span>
+</div>
+<div>
+<p class="text-xs text-on-surface-variant font-label-sm">Total Apprenants</p>
+<p class="text-2xl font-bold">142</p>
+</div>
+</div>
+<div class="glass-card p-6 rounded-[1.5rem] flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-tertiary-container/20 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined">schedule</span>
+</div>
+<div>
+<p class="text-xs text-on-surface-variant font-label-sm">Heures ce mois</p>
+<p class="text-2xl font-bold">48h</p>
+</div>
+</div>
+<div class="glass-card p-6 rounded-[1.5rem] flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-error-container/20 flex items-center justify-center text-error">
+<span class="material-symbols-outlined">pending_actions</span>
+</div>
+<div>
+<p class="text-xs text-on-surface-variant font-label-sm">Alertes Qualiopi</p>
+<p class="text-2xl font-bold">2</p>
+</div>
+</div>
+<div class="glass-card p-6 rounded-[1.5rem] flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-secondary-container/20 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined">star</span>
+</div>
+<div>
+<p class="text-xs text-on-surface-variant font-label-sm">Note Moyenne</p>
+<p class="text-2xl font-bold">4.8/5</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating Tooltip for Microinteractions -->
+<div class="fixed hidden bg-inverse-surface text-inverse-on-surface text-xs px-3 py-1.5 rounded-md pointer-events-none z-[100] shadow-xl" id="tooltip"></div>
+<script>
+        // Dark Mode Detection & Toggle Logic
+        const themeToggle = () => {
+            if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        };
+        themeToggle();
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', themeToggle);
+
+        // Simple Tooltip logic
+        const tooltip = document.getElementById('tooltip');
+        document.querySelectorAll('[title]').forEach(el => {
+            el.addEventListener('mouseenter', (e) => {
+                tooltip.textContent = e.target.getAttribute('title');
+                tooltip.classList.remove('hidden');
+                updateTooltipPos(e);
+            });
+            el.addEventListener('mousemove', updateTooltipPos);
+            el.addEventListener('mouseleave', () => {
+                tooltip.classList.add('hidden');
+            });
+        });
+
+        function updateTooltipPos(e) {
+            tooltip.style.left = e.pageX + 10 + 'px';
+            tooltip.style.top = e.pageY + 10 + 'px';
+        }
+
+        // Table interaction simulation
+        document.querySelectorAll('select').forEach(select => {
+            select.addEventListener('change', (e) => {
+                const parentRow = e.target.closest('tr');
+                parentRow.classList.add('bg-primary-container/5');
+                setTimeout(() => {
+                    parentRow.classList.remove('bg-primary-container/5');
+                }, 1000);
+            });
+        });
+    </script>
+</body></html>

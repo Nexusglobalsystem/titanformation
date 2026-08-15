@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EduMastery - Recrutement & Inscription</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Geist:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .dark .glass-card {
+            background: rgba(20, 26, 38, 0.7);
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c7c4d7;
+            border-radius: 10px;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary": "#006c49",
+                    "on-surface": "#0b1c30",
+                    "on-secondary-fixed-variant": "#3f465c",
+                    "secondary-container": "#dae2fd",
+                    "surface-container-low": "#eff4ff",
+                    "error-container": "#ffdad6",
+                    "primary-fixed-dim": "#c0c1ff",
+                    "inverse-on-surface": "#eaf1ff",
+                    "on-secondary": "#ffffff",
+                    "on-primary-container": "#fffbff",
+                    "on-secondary-container": "#5c647a",
+                    "surface-container-highest": "#d3e4fe",
+                    "tertiary-fixed": "#6ffbbe",
+                    "outline": "#767586",
+                    "surface-tint": "#494bd6",
+                    "surface-container": "#e5eeff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-container": "#000703",
+                    "on-tertiary-fixed": "#002113",
+                    "tertiary-container": "#00885d",
+                    "surface": "#f8f9ff",
+                    "on-secondary-fixed": "#131b2e",
+                    "secondary-fixed": "#dae2fd",
+                    "surface-dim": "#cbdbf5",
+                    "on-primary-fixed-variant": "#2f2ebe",
+                    "inverse-primary": "#c0c1ff",
+                    "primary-fixed": "#e1e0ff",
+                    "on-error": "#ffffff",
+                    "secondary": "#565e74",
+                    "on-tertiary": "#ffffff",
+                    "primary-container": "#6063ee",
+                    "on-background": "#0b1c30",
+                    "on-tertiary-fixed-variant": "#005236",
+                    "primary": "#4648d4",
+                    "background": "#f8f9ff",
+                    "on-primary": "#ffffff",
+                    "secondary-fixed-dim": "#bec6e0",
+                    "inverse-surface": "#213145",
+                    "error": "#ba1a1a",
+                    "surface-bright": "#f8f9ff",
+                    "on-primary-fixed": "#07006c",
+                    "tertiary-fixed-dim": "#4edea3",
+                    "on-surface-variant": "#464554",
+                    "surface-container-high": "#dce9ff",
+                    "outline-variant": "#c7c4d7",
+                    "on-error-container": "#93000a",
+                    "surface-variant": "#d3e4fe"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "4px",
+                    "margin-mobile": "16px",
+                    "margin-desktop": "48px",
+                    "container-max": "1440px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "headline-lg-mobile": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-sm": ["Geist"],
+                    "label-md": ["Geist"],
+                    "display": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "label-md": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md min-h-screen pb-24">
+<!-- Top App Bar (Shared Component Logic) -->
+<header class="fixed top-0 w-full z-50 bg-surface/70 dark:bg-surface-dim/70 backdrop-blur-md border-b border-outline-variant/30 dark:border-outline/20 shadow-sm">
+<div class="flex items-center justify-between px-margin-mobile h-16 w-full max-w-container-max mx-auto">
+<div class="flex items-center gap-3">
+<button class="p-2 hover:bg-surface-variant/50 transition-colors duration-200 rounded-full active:scale-95">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim">menu</span>
+</button>
+<h1 class="font-display text-headline-md tracking-tight text-primary dark:text-primary-fixed">EduMastery</h1>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 hover:bg-surface-variant/50 transition-colors duration-200 rounded-full active:scale-95">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim">search</span>
+</button>
+<button class="p-2 hover:bg-surface-variant/50 transition-colors duration-200 rounded-full active:scale-95" id="theme-toggle">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim">dark_mode</span>
+</button>
+</div>
+</div>
+</header>
+<main class="pt-20 px-margin-mobile max-w-md mx-auto">
+<!-- Admission Stats Section -->
+<section class="mb-8 mt-4">
+<h2 class="font-headline-md-mobile text-headline-md-mobile text-on-surface mb-4">Pipeline d'Admissions</h2>
+<div class="grid grid-cols-2 gap-4">
+<div class="glass-card p-4 rounded-xl border border-outline-variant/20 shadow-sm">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Candidats</p>
+<p class="font-headline-lg-mobile text-headline-lg-mobile text-primary">128</p>
+<div class="mt-2 flex items-center text-tertiary text-xs">
+<span class="material-symbols-outlined text-xs mr-1">trending_up</span>
+<span>+12% vs mois dernier</span>
+</div>
+</div>
+<div class="glass-card p-4 rounded-xl border border-outline-variant/20 shadow-sm">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Admis</p>
+<p class="font-headline-lg-mobile text-headline-lg-mobile text-tertiary">42</p>
+<div class="mt-2 w-full bg-surface-container rounded-full h-1.5">
+<div class="bg-tertiary h-1.5 rounded-full" style="width: 33%"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Pipeline Filter Tabs -->
+<div class="flex overflow-x-auto gap-2 pb-4 no-scrollbar">
+<button class="px-5 py-2 bg-primary text-on-primary rounded-full font-label-md text-label-md whitespace-nowrap shadow-md shadow-primary/20">Tout</button>
+<button class="px-5 py-2 bg-surface-container text-on-surface-variant rounded-full font-label-md text-label-md whitespace-nowrap border border-outline-variant/30">Candidature</button>
+<button class="px-5 py-2 bg-surface-container text-on-surface-variant rounded-full font-label-md text-label-md whitespace-nowrap border border-outline-variant/30">Entretien</button>
+<button class="px-5 py-2 bg-surface-container text-on-surface-variant rounded-full font-label-md text-label-md whitespace-nowrap border border-outline-variant/30">Admis</button>
+</div>
+<!-- Candidate Cards Pipeline -->
+<div class="space-y-4">
+<!-- Candidate 1: Entretien -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-2xl p-4 shadow-sm group active:scale-[0.98] transition-all">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full overflow-hidden border-2 border-primary/20">
+<img class="w-full h-full object-cover" data-alt="A professional studio portrait of a smiling young candidate for a masters program. The person is wearing a clean navy blazer over a white shirt, positioned against a soft-focus office background with natural lighting. The aesthetic is clean, professional, and bright, reflecting a modern corporate educational environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWnMVnszRHCGzH8ckbwbqGpyw9jWZAgkEPxKTx8AUPcujzXnhXPUbllkuhzg3DYlfVkK-hCEf03Xhst59bVThAlJ3fAancnY_UW0pfw-bL2Q8v2gQKJiawhkPtaeqCbn0IVmZXtwg20yBdDzbS6m3YaQQ183xDXLhw93220Jcbo1-MutJTmthYRXqYOl84AJQz4_QsHb9Qa2pBh9F2m_SszH51GGjBryODRJjTSPYQkXR4TjEFepLV"/>
+</div>
+<div>
+<h3 class="font-label-md text-label-md text-on-surface">Lucas Dubois</h3>
+<p class="text-xs text-on-surface-variant">Master Management Digital</p>
+</div>
+</div>
+<span class="px-2 py-1 bg-secondary-container text-on-secondary-container text-[10px] font-bold rounded uppercase">Entretien</span>
+</div>
+<div class="flex items-center gap-4 py-3 border-y border-outline-variant/20 mb-3">
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">event</span>
+<span class="text-xs">Demain, 14:00</span>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">description</span>
+<span class="text-xs">Dossier complet</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<button class="flex items-center justify-center gap-2 py-2.5 bg-surface-container text-on-surface font-label-sm text-label-sm rounded-xl hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-sm">close</span>
+                        Refuser
+                    </button>
+<button class="flex items-center justify-center gap-2 py-2.5 bg-primary text-on-primary font-label-sm text-label-sm rounded-xl shadow-sm active:opacity-90">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+                        Admettre
+                    </button>
+</div>
+</div>
+<!-- Candidate 2: Candidature -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-2xl p-4 shadow-sm active:scale-[0.98] transition-all">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full overflow-hidden border-2 border-secondary-fixed/20">
+<img class="w-full h-full object-cover" data-alt="Close-up headshot of a female applicant in her late 20s with a thoughtful expression. She has short dark hair and is wearing stylish glasses, looking directly at the camera. The background is a minimalist, airy workspace with soft pastel colors and a hint of green from a desk plant. High-end, clean UI photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZqLjHhHO97TR3PxoJ5DwKHjrAvaIwlOPS-t91tvwp6isqcwOW34RjW-Nqzo1HG7rPf9Mp1rZk0S6betDx6_KXUc81pWZ7hx5Y11hpGWnaAA846-KcsStz2Iho-L5XSKNIxb3HanwxGFiGewhS39X1We8_EjU65TUxxiVwDub3cxqXGAAhfn1I21xYGo3-7mzhIe5GJXKVKvFCdPVM0deiIn83Ef4QNW6UCOwA5AVrzARADy8yj-Pe"/>
+</div>
+<div>
+<h3 class="font-label-md text-label-md text-on-surface">Sarah Benali</h3>
+<p class="text-xs text-on-surface-variant">Bachelor UX Design</p>
+</div>
+</div>
+<span class="px-2 py-1 bg-surface-container-high text-on-surface-variant text-[10px] font-bold rounded uppercase">Candidature</span>
+</div>
+<div class="bg-primary-container/10 p-3 rounded-lg mb-3">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-sm">info</span>
+<span class="text-xs font-semibold">Test technique à évaluer</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<button class="flex items-center justify-center gap-2 py-2.5 border border-outline-variant/40 text-on-surface font-label-sm text-label-sm rounded-xl">
+                        Voir tests
+                    </button>
+<button class="flex items-center justify-center gap-2 py-2.5 bg-primary-container text-on-primary-container font-label-sm text-label-sm rounded-xl">
+                        Planifier entretien
+                    </button>
+</div>
+</div>
+<!-- Candidate 3: Admis -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-2xl p-4 shadow-sm opacity-80">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full overflow-hidden border-2 border-tertiary/20">
+<img class="w-full h-full object-cover" data-alt="Portrait of a young male student in a bright, modern learning environment. He is wearing a minimalist grey sweatshirt and has a friendly, confident demeanor. The lighting is bright and clean with a high-key aesthetic typical of premium educational marketing. Soft focus architectural elements are visible in the background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwpdAs944Ky3O0O6oKHWoataHe96moyW6__IJWhrN8uCvSuY4_FqXOQfoeoMD5mwdL7tSVyVNm4ytaBCStGz81_X2a_DjiwoNKjxeHSxLZQJTnkOD7QvrdST4iqBAlTSAYgygsyAxoRvOZJjmt3zutc8STPw7UTxadlJr214WV_BeFPexjyhI8HGx6h7PBy_FkASycr07W4j52RQJpcuH5OzA6AeqB_OKg5Kl3b3EL9HQYMdtiX8Z0"/>
+</div>
+<div>
+<h3 class="font-label-md text-label-md text-on-surface">Marc Lefebvre</h3>
+<p class="text-xs text-on-surface-variant">MBA Executive</p>
+</div>
+</div>
+<span class="px-2 py-1 bg-tertiary-container/20 text-tertiary text-[10px] font-bold rounded uppercase">Admis</span>
+</div>
+<p class="text-xs text-on-surface-variant mb-3">Inscription finalisée le 12 Oct.</p>
+<button class="w-full py-2.5 bg-surface-container text-on-surface-variant font-label-sm text-label-sm rounded-xl flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">visibility</span>
+                    Consulter le dossier
+                </button>
+</div>
+</div>
+<!-- Empty State / Load More -->
+<div class="py-8 text-center">
+<button class="text-primary font-label-md text-label-md hover:underline">Afficher plus de candidats</button>
+</div>
+</main>
+<!-- FAB for New Registration -->
+<button class="fixed bottom-24 right-6 w-14 h-14 bg-primary text-on-primary rounded-full shadow-2xl flex items-center justify-center active:scale-90 transition-transform z-40">
+<span class="material-symbols-outlined" style="font-variation-settings: 'wght' 600;">add</span>
+</button>
+<!-- Bottom Nav Bar (Shared Component Logic) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 md:hidden bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-lg border-t border-outline-variant/20 rounded-t-xl shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+<div class="flex flex-col items-center justify-center text-on-surface-variant opacity-70 hover:opacity-100 transition-opacity cursor-pointer">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant opacity-70 hover:opacity-100 transition-opacity cursor-pointer">
+<span class="material-symbols-outlined">school</span>
+<span class="font-label-sm text-label-sm">Courses</span>
+</div>
+<div class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed bg-primary-container/30 rounded-xl px-4 py-1 active:scale-90 duration-150 transition-all cursor-pointer">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+<span class="font-label-sm text-label-sm">Compliance</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant opacity-70 hover:opacity-100 transition-opacity cursor-pointer">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</div>
+</nav>
+<script>
+        // Theme Toggle Logic
+        const themeToggle = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+        
+        themeToggle.addEventListener('click', () => {
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                themeToggle.innerHTML = '<span class="material-symbols-outlined text-primary">dark_mode</span>';
+            } else {
+                html.classList.add('dark');
+                themeToggle.innerHTML = '<span class="material-symbols-outlined text-primary-fixed-dim">light_mode</span>';
+            }
+        });
+
+        // Simple touch feedback for cards
+        document.querySelectorAll('.active\\:scale-\\[0\\.98\\]').forEach(card => {
+            card.addEventListener('touchstart', () => {
+                card.classList.add('scale-[0.98]');
+            });
+            card.addEventListener('touchend', () => {
+                card.classList.remove('scale-[0.98]');
+            });
+        });
+
+        // Auto-detect system dark mode
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            html.classList.add('dark');
+            themeToggle.innerHTML = '<span class="material-symbols-outlined text-primary-fixed-dim">light_mode</span>';
+        }
+    </script>
+</body></html>

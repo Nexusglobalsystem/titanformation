@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Course Builder - Digital Transformation Strategy</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Geist:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .notion-tree-line::before {
+            content: '';
+            position: absolute;
+            left: 11px;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background-color: theme('colors.outline-variant/40');
+        }
+        .active-tab-indicator {
+            view-transition-name: active-tab;
+        }
+        .glass-header {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error-container": "#ffdad6",
+                    "secondary-fixed-dim": "#bec6e0",
+                    "on-tertiary-container": "#000703",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary-fixed-variant": "#005236",
+                    "on-secondary-fixed": "#131b2e",
+                    "inverse-on-surface": "#eaf1ff",
+                    "on-surface": "#0b1c30",
+                    "secondary-fixed": "#dae2fd",
+                    "on-secondary-container": "#5c647a",
+                    "inverse-primary": "#c0c1ff",
+                    "surface-variant": "#d3e4fe",
+                    "surface-tint": "#494bd6",
+                    "primary-fixed": "#e1e0ff",
+                    "background": "#f8f9ff",
+                    "on-primary": "#ffffff",
+                    "on-error": "#ffffff",
+                    "tertiary-container": "#00885d",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary-fixed": "#07006c",
+                    "on-primary-fixed-variant": "#2f2ebe",
+                    "surface-bright": "#f8f9ff",
+                    "primary-fixed-dim": "#c0c1ff",
+                    "surface-dim": "#cbdbf5",
+                    "on-tertiary-fixed": "#002113",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-fixed-variant": "#3f465c",
+                    "outline-variant": "#c7c4d7",
+                    "secondary": "#565e74",
+                    "outline": "#767586",
+                    "surface-container-high": "#dce9ff",
+                    "on-surface-variant": "#464554",
+                    "on-error-container": "#93000a",
+                    "primary": "#4648d4",
+                    "surface": "#f8f9ff",
+                    "tertiary-fixed-dim": "#4edea3",
+                    "surface-container-low": "#eff4ff",
+                    "error": "#ba1a1a",
+                    "secondary-container": "#dae2fd",
+                    "surface-container-highest": "#d3e4fe",
+                    "tertiary-fixed": "#6ffbbe",
+                    "on-primary-container": "#fffbff",
+                    "tertiary": "#006c49",
+                    "surface-container": "#e5eeff",
+                    "inverse-surface": "#213145",
+                    "on-background": "#0b1c30",
+                    "primary-container": "#6063ee"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container-max": "1440px",
+                    "margin-desktop": "48px",
+                    "gutter": "24px",
+                    "unit": "4px",
+                    "margin-mobile": "16px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-sm": ["Geist"],
+                    "headline-md": ["Inter"],
+                    "label-md": ["Geist"],
+                    "display": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "label-md": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface font-body-md text-on-surface overflow-x-hidden pb-24">
+<!-- Top App Bar -->
+<header class="fixed top-0 w-full z-50 bg-surface/70 backdrop-blur-md border-b border-outline-variant/30 shadow-sm flex items-center justify-between px-margin-mobile h-16">
+<div class="flex items-center gap-3">
+<button class="p-2 hover:bg-surface-variant/50 transition-colors duration-200 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+<h1 class="font-display text-headline-md-mobile tracking-tight text-primary">EduMastery</h1>
+</div>
+<div class="flex items-center gap-1">
+<button class="p-2 hover:bg-surface-variant/50 transition-colors duration-200 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-on-surface-variant">search</span>
+</button>
+<button class="p-2 hover:bg-surface-variant/50 transition-colors duration-200 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-on-surface-variant">more_vert</span>
+</button>
+</div>
+</header>
+<main class="mt-16 pt-6 px-margin-mobile">
+<!-- Course Header -->
+<div class="mb-8">
+<div class="flex items-center gap-2 mb-2">
+<span class="bg-tertiary-container/20 text-tertiary px-2 py-0.5 rounded-full font-label-sm text-label-sm">DRAFT</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">Updated 2h ago</span>
+</div>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-2">Digital Transformation Strategy</h2>
+<p class="text-on-surface-variant font-body-md text-body-md leading-relaxed">Mastering the shift to agile digital frameworks in enterprise environments.</p>
+</div>
+<!-- Segmented Tab Control -->
+<div class="flex bg-surface-container-low p-1 rounded-xl mb-8">
+<button class="flex-1 py-2 rounded-lg font-label-md text-label-md transition-all duration-300 bg-primary text-on-primary shadow-sm active-tab-indicator" id="tab-builder" onclick="switchTab('builder')">
+                Structure
+            </button>
+<button class="flex-1 py-2 rounded-lg font-label-md text-label-md transition-all duration-300 text-on-surface-variant hover:bg-surface-variant/50" id="tab-settings" onclick="switchTab('settings')">
+                Settings
+            </button>
+</div>
+<!-- Builder Content -->
+<div class="space-y-6" id="content-builder">
+<!-- Module 1 -->
+<div class="group">
+<div class="flex items-center justify-between mb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant cursor-grab">drag_indicator</span>
+<h3 class="font-label-md text-label-md font-bold text-on-surface">MODULE 1: INTRODUCTION</h3>
+</div>
+<button class="text-primary p-1">
+<span class="material-symbols-outlined">add_circle</span>
+</button>
+</div>
+<div class="relative pl-6 space-y-4 notion-tree-line">
+<!-- Lesson 1.1 -->
+<div class="bg-surface-container rounded-xl p-4 border border-outline-variant/30 flex items-center gap-4 active:scale-[0.98] transition-transform">
+<div class="w-10 h-10 rounded-lg bg-primary-container/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">play_circle</span>
+</div>
+<div class="flex-1">
+<h4 class="font-label-md text-label-md text-on-surface">Defining Digital Transformation</h4>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Video • 08:45</p>
+</div>
+<span class="material-symbols-outlined text-outline">drag_handle</span>
+</div>
+<!-- Lesson 1.2 -->
+<div class="bg-surface-container rounded-xl p-4 border border-outline-variant/30 flex items-center gap-4 active:scale-[0.98] transition-transform">
+<div class="w-10 h-10 rounded-lg bg-tertiary-container/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary">quiz</span>
+</div>
+<div class="flex-1">
+<h4 class="font-label-md text-label-md text-on-surface">Baseline Assessment</h4>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Quiz • 10 Questions</p>
+</div>
+<span class="material-symbols-outlined text-outline">drag_handle</span>
+</div>
+</div>
+</div>
+<!-- Module 2 -->
+<div class="group">
+<div class="flex items-center justify-between mb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant cursor-grab">drag_indicator</span>
+<h3 class="font-label-md text-label-md font-bold text-on-surface">MODULE 2: THE ECOSYSTEM</h3>
+</div>
+<button class="text-primary p-1">
+<span class="material-symbols-outlined">add_circle</span>
+</button>
+</div>
+<div class="relative pl-6 space-y-4 notion-tree-line">
+<!-- Lesson 2.1 -->
+<div class="bg-surface-container rounded-xl p-4 border border-outline-variant/30 flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-error-container/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-error">description</span>
+</div>
+<div class="flex-1">
+<h4 class="font-label-md text-label-md text-on-surface">Infrastructure Requirements</h4>
+<p class="font-label-sm text-label-sm text-on-surface-variant">PDF • 12 Pages</p>
+</div>
+<span class="material-symbols-outlined text-outline">drag_handle</span>
+</div>
+<!-- Add placeholder -->
+<button class="w-full py-3 border-2 border-dashed border-outline-variant rounded-xl text-on-surface-variant font-label-md text-label-md flex items-center justify-center gap-2 hover:bg-surface-variant/20 transition-colors">
+<span class="material-symbols-outlined">add</span> Add new lesson
+                    </button>
+</div>
+</div>
+</div>
+<!-- Settings Content (Hidden by default) -->
+<div class="hidden space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-300" id="content-settings">
+<div class="space-y-4">
+<label class="block">
+<span class="text-label-md font-label-md text-on-surface-variant mb-2 block">Course Duration (Hours)</span>
+<input class="w-full bg-surface-container-low border-outline-variant focus:border-primary focus:ring-primary rounded-xl px-4 py-3 text-body-md font-body-md outline-none transition-all" type="number" value="12"/>
+</label>
+<label class="block">
+<span class="text-label-md font-label-md text-on-surface-variant mb-2 block">Price (USD)</span>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">$</span>
+<input class="w-full bg-surface-container-low border-outline-variant focus:border-primary focus:ring-primary rounded-xl pl-8 pr-4 py-3 text-body-md font-body-md outline-none transition-all" type="text" value="299.00"/>
+</div>
+</label>
+<div class="flex items-center justify-between p-4 bg-surface-container rounded-xl border border-outline-variant/30">
+<div>
+<h4 class="font-label-md text-label-md text-on-surface">Qualiopi Certification</h4>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Issue official credits upon completion</p>
+</div>
+<button class="w-12 h-6 bg-primary rounded-full relative transition-colors duration-200" id="cert-toggle" onclick="toggleSwitch()">
+<div class="absolute top-1 right-1 w-4 h-4 bg-white rounded-full transition-all duration-200" id="cert-handle"></div>
+</button>
+</div>
+</div>
+<div class="space-y-4">
+<h3 class="font-headline-md text-headline-md-mobile text-on-surface">Visibility</h3>
+<div class="grid grid-cols-2 gap-4">
+<button class="p-4 rounded-xl border-2 border-primary bg-primary/5 text-left">
+<span class="material-symbols-outlined text-primary mb-2">public</span>
+<span class="block font-label-md text-label-md text-primary">Public</span>
+</button>
+<button class="p-4 rounded-xl border border-outline-variant text-left opacity-60">
+<span class="material-symbols-outlined text-on-surface-variant mb-2">lock</span>
+<span class="block font-label-md text-label-md text-on-surface-variant">Private</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating Action Button -->
+<div class="fixed bottom-24 right-6 z-50" id="fab-container">
+<button class="w-14 h-14 bg-primary text-on-primary rounded-full shadow-xl flex items-center justify-center active:scale-90 transition-transform" onclick="toggleFabMenu()">
+<span class="material-symbols-outlined text-[32px]" id="fab-icon">add</span>
+</button>
+<!-- Mini Menu -->
+<div class="hidden absolute bottom-16 right-0 w-48 bg-surface-container-highest shadow-2xl rounded-2xl p-2 border border-outline-variant/40 animate-in fade-in slide-in-from-bottom-2" id="fab-menu">
+<button class="w-full flex items-center gap-3 p-3 hover:bg-surface-variant/50 rounded-xl transition-colors">
+<span class="material-symbols-outlined text-primary">video_library</span>
+<span class="font-label-md text-label-md">Add Video</span>
+</button>
+<button class="w-full flex items-center gap-3 p-3 hover:bg-surface-variant/50 rounded-xl transition-colors">
+<span class="material-symbols-outlined text-tertiary">quiz</span>
+<span class="font-label-md text-label-md">Add Quiz</span>
+</button>
+<button class="w-full flex items-center gap-3 p-3 hover:bg-surface-variant/50 rounded-xl transition-colors">
+<span class="material-symbols-outlined text-error">description</span>
+<span class="font-label-md text-label-md">Add PDF</span>
+</button>
+</div>
+</div>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-surface/80 backdrop-blur-lg border-t border-outline-variant/20 flex justify-around items-center px-4 py-3 md:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-70" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary bg-primary-container/30 rounded-xl px-4 py-1" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">school</span>
+<span class="font-label-sm text-label-sm">Courses</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-70" href="#">
+<span class="material-symbols-outlined">verified_user</span>
+<span class="font-label-sm text-label-sm">Compliance</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-70" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</a>
+</nav>
+<script>
+        function switchTab(tab) {
+            const builderBtn = document.getElementById('tab-builder');
+            const settingsBtn = document.getElementById('tab-settings');
+            const builderContent = document.getElementById('content-builder');
+            const settingsContent = document.getElementById('content-settings');
+            const fab = document.getElementById('fab-container');
+
+            if (tab === 'builder') {
+                builderBtn.classList.add('bg-primary', 'text-on-primary', 'shadow-sm');
+                builderBtn.classList.remove('text-on-surface-variant');
+                settingsBtn.classList.remove('bg-primary', 'text-on-primary', 'shadow-sm');
+                settingsBtn.classList.add('text-on-surface-variant');
+                
+                builderContent.classList.remove('hidden');
+                settingsContent.classList.add('hidden');
+                fab.classList.remove('hidden');
+            } else {
+                settingsBtn.classList.add('bg-primary', 'text-on-primary', 'shadow-sm');
+                settingsBtn.classList.remove('text-on-surface-variant');
+                builderBtn.classList.remove('bg-primary', 'text-on-primary', 'shadow-sm');
+                builderBtn.classList.add('text-on-surface-variant');
+
+                settingsContent.classList.remove('hidden');
+                builderContent.classList.add('hidden');
+                fab.classList.add('hidden');
+            }
+        }
+
+        let fabOpen = false;
+        function toggleFabMenu() {
+            const menu = document.getElementById('fab-menu');
+            const icon = document.getElementById('fab-icon');
+            fabOpen = !fabOpen;
+            
+            if (fabOpen) {
+                menu.classList.remove('hidden');
+                icon.innerText = 'close';
+            } else {
+                menu.classList.add('hidden');
+                icon.innerText = 'add';
+            }
+        }
+
+        let certEnabled = true;
+        function toggleSwitch() {
+            const toggle = document.getElementById('cert-toggle');
+            const handle = document.getElementById('cert-handle');
+            certEnabled = !certEnabled;
+            
+            if (certEnabled) {
+                toggle.classList.replace('bg-outline', 'bg-primary');
+                handle.style.left = 'auto';
+                handle.style.right = '4px';
+            } else {
+                toggle.classList.replace('bg-primary', 'bg-outline');
+                handle.style.right = 'auto';
+                handle.style.left = '4px';
+            }
+        }
+
+        // Close FAB menu when clicking outside
+        document.addEventListener('click', (e) => {
+            const container = document.getElementById('fab-container');
+            if (!container.contains(e.target) && fabOpen) {
+                toggleFabMenu();
+            }
+        });
+    </script>
+</body></html>

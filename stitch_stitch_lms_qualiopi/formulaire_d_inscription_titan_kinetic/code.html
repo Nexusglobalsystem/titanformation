@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Course Registration - Titan Kinetic</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@500&amp;family=Hanken+Grotesk:wght@600;700&amp;family=Inter:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS with Config -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#ffb690",
+                        "on-primary-fixed-variant": "#1f477b",
+                        "surface-container-low": "#1a1c1f",
+                        "titan-gold": "#D4AF37",
+                        "outline-variant": "#43474f",
+                        "secondary": "#e9c349",
+                        "primary-fixed": "#d5e3ff",
+                        "deep-navy": "#003366",
+                        "on-secondary": "#3c2f00",
+                        "surface-variant": "#333539",
+                        "on-tertiary-fixed-variant": "#723610",
+                        "on-tertiary-container": "#d8885c",
+                        "surface-dark": "#050C14",
+                        "primary-fixed-dim": "#a7c8ff",
+                        "tertiary-fixed": "#ffdbca",
+                        "on-secondary-fixed": "#241a00",
+                        "surface-container": "#1e2023",
+                        "primary-container": "#003366",
+                        "outline": "#8d919a",
+                        "on-secondary-fixed-variant": "#574500",
+                        "inverse-on-surface": "#2f3034",
+                        "surface-bright": "#38393d",
+                        "on-tertiary-fixed": "#341100",
+                        "surface-container-lowest": "#0c0e12",
+                        "tertiary-container": "#592300",
+                        "on-surface-variant": "#c3c6d1",
+                        "inverse-primary": "#3a5f94",
+                        "on-surface": "#e2e2e7",
+                        "on-error": "#690005",
+                        "surface-container-highest": "#333539",
+                        "on-primary": "#003061",
+                        "surface-tint": "#a7c8ff",
+                        "surface": "#121317",
+                        "error-container": "#93000a",
+                        "tertiary-fixed-dim": "#ffb690",
+                        "secondary-container": "#af8d11",
+                        "secondary-fixed": "#ffe088",
+                        "background": "#121317",
+                        "on-primary-fixed": "#001b3c",
+                        "primary": "#a7c8ff",
+                        "on-background": "#e2e2e7",
+                        "surface-container-high": "#282a2e",
+                        "surface-light": "#F8F9FA",
+                        "on-secondary-container": "#342800",
+                        "on-tertiary": "#552100",
+                        "inverse-surface": "#e2e2e7",
+                        "surface-dim": "#121317",
+                        "error": "#ffb4ab",
+                        "secondary-fixed-dim": "#e9c349",
+                        "on-primary-container": "#799dd6",
+                        "on-error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "container-max": "1440px",
+                        "gutter": "24px",
+                        "unit": "4px",
+                        "margin-desktop": "40px"
+                    },
+                    "fontFamily": {
+                        "label-mono": ["Geist"],
+                        "body-base": ["Inter"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "body-sm": ["Inter"],
+                        "headline-md-mobile": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "label-mono": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "body-base": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-md-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-md": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #050C14; }
+        ::-webkit-scrollbar-thumb { background: #333539; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #43474f; }
+        
+        /* Hide steps by default */
+        .form-step { display: none; }
+        .form-step.active { display: block; animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-surface-dark text-on-surface font-body-base min-h-screen flex flex-col antialiased">
+<!-- Top Navigation (Transactional Overrides applied for focused checkout flow) -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-margin-desktop py-4 max-w-container-max mx-auto border-b border-outline-variant bg-surface-dark">
+<div class="flex items-center gap-gutter">
+<div class="font-headline-md text-headline-md font-bold text-titan-gold tracking-tight">Titan Kinetic</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="font-label-mono text-label-mono text-on-surface-variant hover:text-titan-gold transition-colors duration-200 flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]" data-icon="close">close</span>
+                Cancel Registration
+             </button>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 mt-[80px] w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-12">
+<div class="flex flex-col lg:flex-row gap-gutter">
+<!-- Left Sidebar: Course Summary -->
+<aside class="w-full lg:w-1/3">
+<div class="bg-surface-container border border-outline-variant rounded-xl overflow-hidden sticky top-[100px]">
+<div class="h-48 w-full bg-surface-variant relative">
+<img alt="Course Header" class="absolute inset-0 w-full h-full object-cover opacity-80" data-alt="A highly detailed, cinematic shot of a modern industrial robotics arm operating in a clean, high-tech manufacturing facility. Dark mood with striking warm gold and cool blue lighting highlighting the metallic surfaces. The environment looks secure, established, and innovative, fitting a premium corporate training context." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-SvH3EbM2EDfUc1PIZkX7XE4JRQt_Q6R8e7J6mXudlt_bTIUSDCtbh0qIRaa-EzejjhtjxogX09tMc2vSoApPhc0cfKzwBVOxduobuFqyvJlMETAkvdnW5B46_Ay5POXmdCsxczFKhMhVKea50LvT6bE7b618bjMx71zCcNtXca_yIplo33mHyamNE9PAXdalhomwQiIL8hLJYehOSbsJr6moBBdxmpgouVsPM-gYyr7K8RxpwMUL"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container to-transparent"></div>
+<div class="absolute bottom-4 left-6">
+<span class="inline-block bg-deep-navy border border-titan-gold text-titan-gold font-label-mono text-label-mono px-2 py-1 rounded">PUBLIC COURSE</span>
+</div>
+</div>
+<div class="p-6">
+<h2 class="font-headline-md-mobile text-headline-md-mobile text-on-surface mb-2">Advanced Industrial Automation Strategy</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-6 pb-6 border-b border-outline-variant">Master the deployment of autonomous systems within enterprise manufacturing environments.</p>
+<div class="space-y-4">
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-titan-gold mt-1" data-icon="calendar_month">calendar_month</span>
+<div>
+<div class="font-label-mono text-label-mono text-on-surface-variant uppercase tracking-wider">Date &amp; Time</div>
+<div class="font-body-base text-body-base text-on-surface">Oct 15 - Oct 17, 2024<br/>09:00 - 17:00 CET</div>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-titan-gold mt-1" data-icon="location_on">location_on</span>
+<div>
+<div class="font-label-mono text-label-mono text-on-surface-variant uppercase tracking-wider">Location</div>
+<div class="font-body-base text-body-base text-on-surface">Titan Innovation Center<br/>Geneva, Switzerland</div>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-titan-gold mt-1" data-icon="payments">payments</span>
+<div>
+<div class="font-label-mono text-label-mono text-on-surface-variant uppercase tracking-wider">Tuition</div>
+<div class="font-body-base text-body-base text-on-surface font-medium">€2,450.00 <span class="font-body-sm text-body-sm text-on-surface-variant font-normal">excl. VAT</span></div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-low p-4 border-t border-outline-variant flex items-center justify-between">
+<span class="font-label-mono text-label-mono text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]" data-icon="lock">lock</span> Secure Checkout
+                         </span>
+</div>
+</div>
+</aside>
+<!-- Right Column: Registration Form -->
+<section class="w-full lg:w-2/3">
+<div class="bg-surface-container border border-outline-variant rounded-xl p-6 md:p-10">
+<!-- Stepper -->
+<div class="mb-10 relative">
+<div class="absolute top-1/2 left-0 w-full h-[2px] bg-outline-variant -z-10 transform -translate-y-1/2"></div>
+<div class="flex justify-between relative z-0">
+<!-- Step 1 -->
+<div class="flex flex-col items-center gap-2 w-1/4">
+<div class="w-8 h-8 rounded-full bg-deep-navy border-2 border-titan-gold text-titan-gold flex items-center justify-center font-label-mono text-label-mono z-10" id="indicator-1">1</div>
+<span class="font-label-mono text-label-mono text-titan-gold text-center hidden md:block">Personal Info</span>
+</div>
+<!-- Step 2 -->
+<div class="flex flex-col items-center gap-2 w-1/4">
+<div class="w-8 h-8 rounded-full bg-surface-dark border-2 border-outline-variant text-on-surface-variant flex items-center justify-center font-label-mono text-label-mono z-10" id="indicator-2">2</div>
+<span class="font-label-mono text-label-mono text-on-surface-variant text-center hidden md:block">Professional</span>
+</div>
+<!-- Step 3 -->
+<div class="flex flex-col items-center gap-2 w-1/4">
+<div class="w-8 h-8 rounded-full bg-surface-dark border-2 border-outline-variant text-on-surface-variant flex items-center justify-center font-label-mono text-label-mono z-10" id="indicator-3">3</div>
+<span class="font-label-mono text-label-mono text-on-surface-variant text-center hidden md:block">Funding</span>
+</div>
+<!-- Step 4 -->
+<div class="flex flex-col items-center gap-2 w-1/4">
+<div class="w-8 h-8 rounded-full bg-surface-dark border-2 border-outline-variant text-on-surface-variant flex items-center justify-center font-label-mono text-label-mono z-10" id="indicator-4">4</div>
+<span class="font-label-mono text-label-mono text-on-surface-variant text-center hidden md:block">Review</span>
+</div>
+</div>
+</div>
+<!-- Form Container -->
+<form id="registration-form" onsubmit="event.preventDefault();">
+<!-- STEP 1: Personal Info -->
+<div class="form-step active" id="step-1">
+<h3 class="font-headline-md-mobile text-headline-md-mobile text-on-surface mb-6">Personal Information</h3>
+<div class="space-y-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="flex flex-col gap-2">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase" for="firstName">First Name</label>
+<input class="bg-surface-container-low border border-outline-variant text-on-surface rounded focus:ring-2 focus:ring-titan-gold focus:border-titan-gold outline-none px-4 py-3 font-body-base transition-all duration-200" id="firstName" placeholder="e.g. Jane" type="text"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase" for="lastName">Last Name</label>
+<input class="bg-surface-container-low border border-outline-variant text-on-surface rounded focus:ring-2 focus:ring-titan-gold focus:border-titan-gold outline-none px-4 py-3 font-body-base transition-all duration-200" id="lastName" placeholder="e.g. Doe" type="text"/>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase" for="email">Email Address</label>
+<input class="bg-surface-container-low border border-outline-variant text-on-surface rounded focus:ring-2 focus:ring-titan-gold focus:border-titan-gold outline-none px-4 py-3 font-body-base transition-all duration-200" id="email" placeholder="jane.doe@example.com" type="email"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase" for="phone">Phone Number</label>
+<input class="bg-surface-container-low border border-outline-variant text-on-surface rounded focus:ring-2 focus:ring-titan-gold focus:border-titan-gold outline-none px-4 py-3 font-body-base transition-all duration-200" id="phone" placeholder="+1 (555) 000-0000" type="tel"/>
+</div>
+</div>
+</div>
+<!-- STEP 2: Professional Profile -->
+<div class="form-step" id="step-2">
+<h3 class="font-headline-md-mobile text-headline-md-mobile text-on-surface mb-6">Professional Profile</h3>
+<div class="space-y-6">
+<div class="flex flex-col gap-2">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase" for="company">Company Name</label>
+<input class="bg-surface-container-low border border-outline-variant text-on-surface rounded focus:ring-2 focus:ring-titan-gold focus:border-titan-gold outline-none px-4 py-3 font-body-base transition-all duration-200" id="company" placeholder="Enter your company" type="text"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase" for="position">Job Position</label>
+<input class="bg-surface-container-low border border-outline-variant text-on-surface rounded focus:ring-2 focus:ring-titan-gold focus:border-titan-gold outline-none px-4 py-3 font-body-base transition-all duration-200" id="position" placeholder="e.g. Operations Manager" type="text"/>
+</div>
+<div class="flex flex-col gap-2 mt-4">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase mb-2">Industry Sector</label>
+<select class="bg-surface-container-low border border-outline-variant text-on-surface rounded focus:ring-2 focus:ring-titan-gold focus:border-titan-gold outline-none px-4 py-3 font-body-base appearance-none cursor-pointer">
+<option disabled="" selected="" value="">Select an industry...</option>
+<option value="manufacturing">Manufacturing</option>
+<option value="logistics">Logistics &amp; Supply Chain</option>
+<option value="energy">Energy &amp; Utilities</option>
+<option value="other">Other</option>
+</select>
+</div>
+</div>
+</div>
+<!-- STEP 3: Funding Method -->
+<div class="form-step" id="step-3">
+<h3 class="font-headline-md-mobile text-headline-md-mobile text-on-surface mb-6">Funding Method</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-6">Select how you will finance your participation in this training.</p>
+<div class="space-y-4">
+<!-- Option 1: Company -->
+<label class="relative flex cursor-pointer rounded-lg border border-outline-variant bg-surface-container-low p-4 focus:outline-none hover:bg-surface-container-high transition-colors">
+<input checked="" class="peer sr-only" name="funding" type="radio" value="company"/>
+<div class="flex w-full items-center justify-between">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant peer-checked:text-titan-gold" data-icon="domain">domain</span>
+<div>
+<div class="font-body-base text-body-base text-on-surface font-medium">Company Funded</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Invoice will be sent to your employer</div>
+</div>
+</div>
+<div class="h-5 w-5 rounded-full border-2 border-outline-variant peer-checked:border-titan-gold peer-checked:bg-titan-gold flex items-center justify-center">
+<div class="h-2 w-2 rounded-full bg-deep-navy opacity-0 peer-checked:opacity-100"></div>
+</div>
+</div>
+<div class="absolute inset-0 rounded-lg border-2 border-transparent peer-checked:border-titan-gold pointer-events-none"></div>
+</label>
+<!-- Option 2: CPF (France context implied by prompt language) -->
+<label class="relative flex cursor-pointer rounded-lg border border-outline-variant bg-surface-container-low p-4 focus:outline-none hover:bg-surface-container-high transition-colors">
+<input class="peer sr-only" name="funding" type="radio" value="cpf"/>
+<div class="flex w-full items-center justify-between">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant peer-checked:text-titan-gold" data-icon="account_balance">account_balance</span>
+<div>
+<div class="font-body-base text-body-base text-on-surface font-medium">Mon Compte Formation (CPF)</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Use your public training credits</div>
+</div>
+</div>
+<div class="h-5 w-5 rounded-full border-2 border-outline-variant peer-checked:border-titan-gold peer-checked:bg-titan-gold flex items-center justify-center">
+<div class="h-2 w-2 rounded-full bg-deep-navy opacity-0 peer-checked:opacity-100"></div>
+</div>
+</div>
+<div class="absolute inset-0 rounded-lg border-2 border-transparent peer-checked:border-titan-gold pointer-events-none"></div>
+</label>
+<!-- Option 3: Personal -->
+<label class="relative flex cursor-pointer rounded-lg border border-outline-variant bg-surface-container-low p-4 focus:outline-none hover:bg-surface-container-high transition-colors">
+<input class="peer sr-only" name="funding" type="radio" value="personal"/>
+<div class="flex w-full items-center justify-between">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant peer-checked:text-titan-gold" data-icon="credit_card">credit_card</span>
+<div>
+<div class="font-body-base text-body-base text-on-surface font-medium">Personal Payment</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Pay via credit card or wire transfer</div>
+</div>
+</div>
+<div class="h-5 w-5 rounded-full border-2 border-outline-variant peer-checked:border-titan-gold peer-checked:bg-titan-gold flex items-center justify-center">
+<div class="h-2 w-2 rounded-full bg-deep-navy opacity-0 peer-checked:opacity-100"></div>
+</div>
+</div>
+<div class="absolute inset-0 rounded-lg border-2 border-transparent peer-checked:border-titan-gold pointer-events-none"></div>
+</label>
+</div>
+</div>
+<!-- STEP 4: Review -->
+<div class="form-step" id="step-4">
+<h3 class="font-headline-md-mobile text-headline-md-mobile text-on-surface mb-6">Review &amp; Confirm</h3>
+<div class="bg-surface-container-low border border-outline-variant rounded-lg p-6 mb-8">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-8">
+<div>
+<h4 class="font-label-mono text-label-mono text-on-surface-variant uppercase tracking-wider mb-3">Applicant</h4>
+<div class="font-body-base text-body-base text-on-surface">Jane Doe</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">jane.doe@example.com</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">+1 (555) 000-0000</div>
+</div>
+<div>
+<h4 class="font-label-mono text-label-mono text-on-surface-variant uppercase tracking-wider mb-3">Professional</h4>
+<div class="font-body-base text-body-base text-on-surface">Acme Corporation</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Operations Manager</div>
+</div>
+<div class="md:col-span-2 pt-4 border-t border-outline-variant">
+<h4 class="font-label-mono text-label-mono text-on-surface-variant uppercase tracking-wider mb-3">Billing &amp; Funding</h4>
+<div class="flex items-center gap-2 font-body-base text-body-base text-on-surface">
+<span class="material-symbols-outlined text-[20px] text-titan-gold" data-icon="domain">domain</span>
+                                            Company Funded
+                                        </div>
+</div>
+</div>
+</div>
+<div class="flex items-start gap-3 mb-8">
+<input class="mt-1 bg-surface-container-low border-outline-variant rounded text-titan-gold focus:ring-titan-gold cursor-pointer" id="terms" type="checkbox"/>
+<label class="font-body-sm text-body-sm text-on-surface-variant cursor-pointer" for="terms">
+                                    I confirm that the information provided is accurate and I agree to the <a class="text-titan-gold hover:underline" href="#">Terms of Service</a> and <a class="text-titan-gold hover:underline" href="#">Cancellation Policy</a>.
+                                </label>
+</div>
+</div>
+<!-- Form Actions -->
+<div class="mt-10 pt-6 border-t border-outline-variant flex justify-between items-center">
+<button class="font-body-sm text-body-sm font-medium text-on-surface-variant hover:text-on-surface transition-colors duration-200 hidden" id="btn-prev" type="button">
+                                ← Back
+                            </button>
+<div class="flex-1"></div> <!-- Spacer -->
+<button class="bg-surface-container-high text-on-surface border border-outline-variant hover:bg-surface-container-highest px-6 py-2.5 rounded transition-all duration-200 font-body-sm text-body-sm font-medium" id="btn-next" type="button">
+                                Next Step
+                            </button>
+<button class="bg-deep-navy text-titan-gold border border-titan-gold hover:bg-surface-dark px-8 py-2.5 rounded transition-all duration-200 font-body-base text-body-base font-bold hidden flex items-center gap-2" id="btn-submit" type="button">
+                                Valider l'inscription
+                                <span class="material-symbols-outlined text-[20px]" data-icon="check_circle">check_circle</span>
+</button>
+</div>
+</form>
+</div>
+</section>
+</div>
+</main>
+<!-- Simple Script for Stepper Logic -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let currentStep = 1;
+            const totalSteps = 4;
+            
+            const btnPrev = document.getElementById('btn-prev');
+            const btnNext = document.getElementById('btn-next');
+            const btnSubmit = document.getElementById('btn-submit');
+            
+            function updateUI() {
+                // Update Steps visibility
+                for (let i = 1; i <= totalSteps; i++) {
+                    const stepEl = document.getElementById(`step-${i}`);
+                    if (i === currentStep) {
+                        stepEl.classList.add('active');
+                    } else {
+                        stepEl.classList.remove('active');
+                    }
+                }
+                
+                // Update Indicators
+                for (let i = 1; i <= totalSteps; i++) {
+                    const indEl = document.getElementById(`indicator-${i}`);
+                    if (i < currentStep) {
+                        // Completed
+                        indEl.className = 'w-8 h-8 rounded-full bg-deep-navy border-2 border-titan-gold text-titan-gold flex items-center justify-center font-label-mono text-label-mono z-10';
+                        indEl.innerHTML = '<span class="material-symbols-outlined text-[16px]" data-icon="check">check</span>';
+                    } else if (i === currentStep) {
+                        // Active
+                        indEl.className = 'w-8 h-8 rounded-full bg-deep-navy border-2 border-titan-gold text-titan-gold flex items-center justify-center font-label-mono text-label-mono z-10';
+                        indEl.innerHTML = i;
+                    } else {
+                        // Upcoming
+                        indEl.className = 'w-8 h-8 rounded-full bg-surface-dark border-2 border-outline-variant text-on-surface-variant flex items-center justify-center font-label-mono text-label-mono z-10';
+                        indEl.innerHTML = i;
+                    }
+                }
+                
+                // Update Buttons
+                if (currentStep === 1) {
+                    btnPrev.classList.add('hidden');
+                } else {
+                    btnPrev.classList.remove('hidden');
+                }
+                
+                if (currentStep === totalSteps) {
+                    btnNext.classList.add('hidden');
+                    btnSubmit.classList.remove('hidden');
+                } else {
+                    btnNext.classList.remove('hidden');
+                    btnSubmit.classList.add('hidden');
+                }
+            }
+            
+            btnNext.addEventListener('click', () => {
+                if (currentStep < totalSteps) {
+                    currentStep++;
+                    updateUI();
+                }
+            });
+            
+            btnPrev.addEventListener('click', () => {
+                if (currentStep > 1) {
+                    currentStep--;
+                    updateUI();
+                }
+            });
+            
+            // Initialize
+            updateUI();
+        });
+    </script>
+</body></html>

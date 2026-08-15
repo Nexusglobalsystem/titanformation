@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>QualioPro - Gestion des Certifications</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Geist:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-variant": "#d3e4fe",
+                    "surface-container-high": "#dce9ff",
+                    "error-container": "#ffdad6",
+                    "on-error-container": "#93000a",
+                    "tertiary": "#006c49",
+                    "secondary": "#565e74",
+                    "on-secondary-fixed-variant": "#3f465c",
+                    "on-secondary-fixed": "#131b2e",
+                    "secondary-container": "#dae2fd",
+                    "outline": "#767586",
+                    "outline-variant": "#c7c4d7",
+                    "on-primary": "#ffffff",
+                    "on-tertiary-fixed-variant": "#005236",
+                    "on-tertiary-fixed": "#002113",
+                    "secondary-fixed": "#dae2fd",
+                    "surface-container-highest": "#d3e4fe",
+                    "on-error": "#ffffff",
+                    "primary-container": "#6063ee",
+                    "error": "#ba1a1a",
+                    "tertiary-fixed": "#6ffbbe",
+                    "secondary-fixed-dim": "#bec6e0",
+                    "background": "#f8f9ff",
+                    "primary-fixed-dim": "#c0c1ff",
+                    "tertiary-container": "#00885d",
+                    "surface-bright": "#f8f9ff",
+                    "inverse-surface": "#213145",
+                    "on-surface-variant": "#464554",
+                    "surface-container-low": "#eff4ff",
+                    "inverse-on-surface": "#eaf1ff",
+                    "on-tertiary-container": "#000703",
+                    "on-primary-fixed": "#07006c",
+                    "tertiary-fixed-dim": "#4edea3",
+                    "on-primary-fixed-variant": "#2f2ebe",
+                    "on-primary-container": "#fffbff",
+                    "inverse-primary": "#c0c1ff",
+                    "surface": "#f8f9ff",
+                    "surface-container": "#e5eeff",
+                    "on-surface": "#0b1c30",
+                    "on-secondary": "#ffffff",
+                    "on-background": "#0b1c30",
+                    "primary": "#4648d4",
+                    "surface-tint": "#494bd6",
+                    "surface-dim": "#cbdbf5",
+                    "on-secondary-container": "#5c647a",
+                    "primary-fixed": "#e1e0ff",
+                    "on-tertiary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-desktop": "48px",
+                    "gutter": "24px",
+                    "container-max": "1440px",
+                    "margin-mobile": "16px",
+                    "unit": "4px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Inter"],
+                    "label-sm": ["Geist"],
+                    "body-md": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "display": ["Inter"],
+                    "label-md": ["Geist"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c7c4d7;
+            border-radius: 4px;
+        }
+        .dark ::webkit-scrollbar-thumb {
+            background: #3f465c;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen font-body-md transition-colors duration-300">
+<!-- SideNavBar Overlay -->
+<aside class="fixed left-0 top-0 h-screen w-64 bg-surface/70 dark:bg-inverse-surface/70 backdrop-blur-md border-r border-outline-variant/30 shadow-sm flex flex-col py-margin-desktop z-50">
+<div class="px-6 mb-10">
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">QualioPro</h1>
+<p class="font-label-md text-label-md text-on-surface-variant">Certified Training</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant/50 dark:hover:bg-on-secondary-fixed-variant/20 transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-primary dark:text-primary-fixed-dim bg-primary-container/10 border-l-4 border-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+<span class="font-label-md text-label-md">Compliance Hub</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant/50 dark:hover:bg-on-secondary-fixed-variant/20 transition-colors" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-label-md text-label-md">Course Builder</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant/50 dark:hover:bg-on-secondary-fixed-variant/20 transition-colors" href="#">
+<span class="material-symbols-outlined">person_apron</span>
+<span class="font-label-md text-label-md">Trainer Portal</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant/50 dark:hover:bg-on-secondary-fixed-variant/20 transition-colors" href="#">
+<span class="material-symbols-outlined">settings_account_box</span>
+<span class="font-label-md text-label-md">Admin Settings</span>
+</a>
+</nav>
+<div class="px-6 mb-6">
+<button class="w-full py-3 bg-primary text-on-primary rounded-xl font-label-md shadow-lg hover:opacity-90 active:scale-95 transition-all">
+                New Training
+            </button>
+</div>
+<div class="border-t border-outline-variant/20 pt-4">
+<a class="flex items-center gap-3 px-6 py-2 text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">help</span>
+<span class="font-label-md text-label-md">Support</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-2 text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="font-label-md text-label-md">Notifications</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-64 min-h-screen">
+<!-- TopAppBar -->
+<header class="sticky top-0 z-40 w-full bg-surface/80 dark:bg-inverse-surface/80 backdrop-blur-md border-b border-outline-variant/20 h-16 px-margin-desktop flex justify-between items-center">
+<div class="flex items-center gap-6 flex-1">
+<div class="relative w-96 group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-full pl-11 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary/20 transition-all outline-none" placeholder="Rechercher un certificat, un apprenant..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-on-surface-variant hover:bg-surface-variant rounded-full transition-colors">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-variant rounded-full transition-colors relative">
+<span class="material-symbols-outlined">notifications_none</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="ml-2 px-4 py-1.5 bg-primary/10 text-primary border border-primary/20 rounded-lg font-label-md hover:bg-primary/20 transition-all">
+                    Go Live
+                </button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant/50 cursor-pointer">
+<img class="w-full h-full object-cover" data-alt="Corporate headshot of a middle-aged professional administrator with a warm and focused expression, wearing a navy blue suit against a clean, minimalist architectural background with soft natural lighting and a premium high-end aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDdppU0LllaTeZvQk4FcwroklT3i7OhZ_ZbtmWMluJHD4pMKUnIK6s2UEZO0roqpM2CxO5fwOBOaWeGy7FzBSU3BsQTjNCNsO1nfs6wbHFY10J79A-RZ23eTWnmwDHp10HiTrfdemWp1S4Lu-m1CTsNxyFdlyBsD-6KKfU3eIciTT9YYsEns9TH6Hw9kCcOeYl9BIDV1oevrM4gK7kfFWmLwj8-Tm89qIiOWhJQS4P4XTfrbnFdL4pX"/>
+</div>
+</div>
+</header>
+<!-- Content Canvas -->
+<div class="p-margin-desktop max-w-container-max mx-auto">
+<!-- Page Header -->
+<div class="flex justify-between items-end mb-8">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-2">Gestion des Certifications</h2>
+<p class="text-on-surface-variant font-body-md">Configurez vos modèles Qualiopi et suivez la délivrance des attestations.</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-5 py-2.5 bg-surface border border-outline-variant rounded-xl font-label-md hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined text-[20px]">download</span>
+                        Exporter le registre
+                    </button>
+<button class="flex items-center gap-2 px-5 py-2.5 bg-primary text-on-primary rounded-xl font-label-md shadow-lg shadow-primary/20 hover:opacity-90 transition-all">
+<span class="material-symbols-outlined text-[20px]">add</span>
+                        Nouveau Modèle
+                    </button>
+</div>
+</div>
+<!-- Dashboard Overview Bento Grid -->
+<div class="grid grid-cols-12 gap-gutter mb-8">
+<div class="col-span-12 lg:col-span-4 bg-surface p-6 rounded-[1.5rem] border border-outline-variant/40 shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<div class="w-12 h-12 rounded-xl bg-primary-container/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">verified</span>
+</div>
+<span class="text-tertiary font-label-sm">+12% vs mois dernier</span>
+</div>
+<p class="text-on-surface-variant font-label-md mb-1">Certificats Émis</p>
+<h3 class="text-display font-display text-on-surface">1,284</h3>
+</div>
+<div class="col-span-12 lg:col-span-4 bg-surface p-6 rounded-[1.5rem] border border-outline-variant/40 shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<div class="w-12 h-12 rounded-xl bg-secondary-container/20 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined">schedule</span>
+</div>
+<span class="text-on-surface-variant font-label-sm">En attente</span>
+</div>
+<p class="text-on-surface-variant font-label-md mb-1">Validation requise</p>
+<h3 class="text-display font-display text-on-surface">42</h3>
+</div>
+<div class="col-span-12 lg:col-span-4 bg-surface p-6 rounded-[1.5rem] border border-outline-variant/40 shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<div class="w-12 h-12 rounded-xl bg-tertiary-container/10 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined">task_alt</span>
+</div>
+<span class="text-on-surface-variant font-label-sm">Taux de réussite</span>
+</div>
+<p class="text-on-surface-variant font-label-md mb-1">Conformité Qualiopi</p>
+<h3 class="text-display font-display text-on-surface">98.2%</h3>
+</div>
+</div>
+<!-- Main Sections: Templates & List -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Certificate Templates -->
+<section class="col-span-12 lg:col-span-4 space-y-6">
+<h3 class="font-headline-md text-headline-md text-on-surface">Modèles Actifs</h3>
+<div class="group relative bg-surface-container-lowest rounded-[1.5rem] border border-outline-variant/30 overflow-hidden shadow-sm hover:shadow-md transition-all cursor-pointer">
+<div class="h-32 bg-slate-100 flex items-center justify-center relative">
+<div class="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary to-transparent"></div>
+<span class="material-symbols-outlined text-4xl text-outline-variant">description</span>
+</div>
+<div class="p-5">
+<h4 class="font-headline-md text-[18px] mb-1">Diplôme d'Expertise</h4>
+<p class="text-sm text-on-surface-variant mb-4">Utilisé pour les parcours certifiants RNCP.</p>
+<div class="flex justify-between items-center">
+<span class="px-2 py-1 bg-surface-variant text-on-surface-variant text-[10px] uppercase tracking-wider font-bold rounded">Qualiopi V2</span>
+<button class="text-primary font-label-md flex items-center gap-1 hover:underline">
+                                    Éditer <span class="material-symbols-outlined text-sm">edit</span>
+</button>
+</div>
+</div>
+</div>
+<div class="group relative bg-surface-container-lowest rounded-[1.5rem] border border-outline-variant/30 overflow-hidden shadow-sm hover:shadow-md transition-all cursor-pointer">
+<div class="h-32 bg-slate-100 flex items-center justify-center relative">
+<div class="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary to-transparent"></div>
+<span class="material-symbols-outlined text-4xl text-outline-variant">card_membership</span>
+</div>
+<div class="p-5">
+<h4 class="font-headline-md text-[18px] mb-1">Attestation de Fin</h4>
+<p class="text-sm text-on-surface-variant mb-4">Généré automatiquement après l'examen final.</p>
+<div class="flex justify-between items-center">
+<span class="px-2 py-1 bg-surface-variant text-on-surface-variant text-[10px] uppercase tracking-wider font-bold rounded">Standard</span>
+<button class="text-primary font-label-md flex items-center gap-1 hover:underline">
+                                    Éditer <span class="material-symbols-outlined text-sm">edit</span>
+</button>
+</div>
+</div>
+</div>
+<div class="p-6 border-2 border-dashed border-outline-variant/40 rounded-[1.5rem] flex flex-col items-center justify-center text-center group hover:border-primary/40 transition-all cursor-pointer">
+<span class="material-symbols-outlined text-3xl text-outline-variant group-hover:text-primary mb-2">add_circle</span>
+<p class="font-label-md text-on-surface-variant group-hover:text-primary">Créer un nouveau design</p>
+</div>
+</section>
+<!-- Certification Tracking List -->
+<section class="col-span-12 lg:col-span-8">
+<div class="bg-surface rounded-[1.5rem] border border-outline-variant/40 shadow-sm overflow-hidden">
+<!-- List Filters -->
+<div class="p-6 border-b border-outline-variant/20 flex flex-wrap gap-4 items-center justify-between bg-surface-container-low/30">
+<h3 class="font-headline-md text-headline-md text-on-surface">Registre des Émissions</h3>
+<div class="flex gap-2">
+<select class="bg-surface border-outline-variant text-sm rounded-lg py-1.5 pl-3 pr-8 focus:ring-primary focus:border-primary">
+<option>Toutes les sessions</option>
+<option>UX Design - Q3</option>
+<option>DevOps - Sept 24</option>
+</select>
+<select class="bg-surface border-outline-variant text-sm rounded-lg py-1.5 pl-3 pr-8 focus:ring-primary focus:border-primary">
+<option>Tous les statuts</option>
+<option>Délivré</option>
+<option>En cours</option>
+<option>Échec</option>
+</select>
+</div>
+</div>
+<!-- Data Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-surface-container-low/50">
+<tr>
+<th class="px-6 py-4 font-label-sm text-on-surface-variant uppercase tracking-wider">Apprenant</th>
+<th class="px-6 py-4 font-label-sm text-on-surface-variant uppercase tracking-wider">Formation</th>
+<th class="px-6 py-4 font-label-sm text-on-surface-variant uppercase tracking-wider">Date d'émission</th>
+<th class="px-6 py-4 font-label-sm text-on-surface-variant uppercase tracking-wider">Statut</th>
+<th class="px-6 py-4 font-label-sm text-on-surface-variant uppercase tracking-wider">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<tr class="hover:bg-surface-variant/10 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs">JD</div>
+<div>
+<div class="font-label-md text-on-surface">Jean Dupont</div>
+<div class="text-[12px] text-on-surface-variant">jean.d@example.com</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-on-surface">Master UX Design</td>
+<td class="px-6 py-4 text-sm text-on-surface-variant">12 Oct 2024</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-tertiary-fixed text-on-tertiary-fixed text-[12px] font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> Délivré
+                                            </span>
+</td>
+<td class="px-6 py-4">
+<button class="p-2 hover:bg-surface-variant rounded-lg transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">visibility</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-variant/10 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center text-secondary font-bold text-xs">SM</div>
+<div>
+<div class="font-label-md text-on-surface">Sarah Miller</div>
+<div class="text-[12px] text-on-surface-variant">s.miller@web.com</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-on-surface">Marketing Digital Pro</td>
+<td class="px-6 py-4 text-sm text-on-surface-variant">14 Oct 2024</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary-fixed text-on-primary-fixed text-[12px] font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span> Envoi auto
+                                            </span>
+</td>
+<td class="px-6 py-4">
+<button class="p-2 hover:bg-surface-variant rounded-lg transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">visibility</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-variant/10 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-tertiary/10 flex items-center justify-center text-tertiary font-bold text-xs">AL</div>
+<div>
+<div class="font-label-md text-on-surface">Antoine Legrand</div>
+<div class="text-[12px] text-on-surface-variant">alegrand@mail.fr</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-on-surface">Cybersécurité Avancée</td>
+<td class="px-6 py-4 text-sm text-on-surface-variant">--</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-error-container text-on-error-container text-[12px] font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span> Validation Échouée
+                                            </span>
+</td>
+<td class="px-6 py-4">
+<button class="p-2 hover:bg-surface-variant rounded-lg transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">replay</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-variant/10 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant font-bold text-xs">EL</div>
+<div>
+<div class="font-label-md text-on-surface">Emma Lambert</div>
+<div class="text-[12px] text-on-surface-variant">e.lambert@univ.edu</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-on-surface">Expertise Qualiopi</td>
+<td class="px-6 py-4 text-sm text-on-surface-variant">15 Oct 2024</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-tertiary-fixed text-on-tertiary-fixed text-[12px] font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> Délivré
+                                            </span>
+</td>
+<td class="px-6 py-4">
+<button class="p-2 hover:bg-surface-variant rounded-lg transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">visibility</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Pagination -->
+<div class="p-6 border-t border-outline-variant/20 flex items-center justify-between">
+<p class="text-sm text-on-surface-variant">Affichage de 1 à 10 sur 1,284 certificats</p>
+<div class="flex gap-2">
+<button class="px-3 py-1 border border-outline-variant rounded-md hover:bg-surface-variant/20 disabled:opacity-50" disabled="">Précédent</button>
+<button class="px-3 py-1 bg-primary text-on-primary rounded-md">1</button>
+<button class="px-3 py-1 border border-outline-variant rounded-md hover:bg-surface-variant/20">2</button>
+<button class="px-3 py-1 border border-outline-variant rounded-md hover:bg-surface-variant/20">3</button>
+<span class="px-2">...</span>
+<button class="px-3 py-1 border border-outline-variant rounded-md hover:bg-surface-variant/20">Suivant</button>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+</main>
+<!-- Micro-interaction Script for Dark Mode & Tabs -->
+<script>
+        // Automatic Theme Switcher Logic (Simulated)
+        const themeToggle = () => {
+            const html = document.documentElement;
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+            } else {
+                html.classList.add('dark');
+            }
+        };
+
+        // Listen for system theme changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+
+        // Initialize theme based on system preference
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
+</body></html>

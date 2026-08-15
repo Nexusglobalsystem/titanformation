@@ -1,0 +1,161 @@
+/*
+ * Tokens de design Titan Kinetic — extraits de
+ * stitch_stitch_lms_qualiopi/titan_kinetic/DESIGN.md
+ *
+ * Contraste AA vérifié (WCAG, ratio de luminance relative) :
+ *   - or #D4AF37 sur marine #003366 (dark mode)      → 6.0:1  (passe, texte normal)
+ *   - marine #003366 sur clair #F8F9FA (light mode)   → 11.9:1 (passe largement)
+ *   - or #D4AF37 sur clair #F8F9FA (light mode)       → 2.0:1  (ÉCHOUE)
+ *     → variante assombrie --color-accent-text-on-light (#8A6D23) utilisée à la
+ *       place de l'or brut chaque fois que l'accent sert de COULEUR DE TEXTE sur
+ *       fond clair (ex. prix, libellés). L'or brut reste utilisable en fond,
+ *       bordure ou icône sur fond clair (pas de contrainte de contraste de texte).
+ */
+
+:root {
+  /* Marque */
+  --color-deep-navy: #003366;
+  --color-titan-gold: #d4af37;
+  --color-titan-gold-on-light: #8a6d23; /* variante assombrie, cf. note de contraste */
+
+  /*
+   * Rouge plein, invariant par thème (comme --color-primary) : réservé aux
+   * actions destructrices (fond de bouton plein), jamais utilisé comme
+   * couleur de TEXTE. --color-error, lui, varie par thème car il sert de
+   * couleur de texte/icône sur une surface teintée (badge, message d'erreur)
+   * et doit s'éclaircir en mode sombre pour rester lisible.
+   */
+  --color-danger: #b3261e;
+
+  /* Surfaces (clair, par défaut) */
+  --color-background: #f8f9fa;
+  --color-surface: #ffffff;
+  --color-surface-elevated: #ffffff;
+  --color-border: #dde3ea;
+
+  /* Texte (clair) */
+  --color-foreground: #0b1c30;
+  --color-foreground-muted: #4b5b6e;
+
+  /* Rôles sémantiques (clair) */
+  --color-primary: var(--color-deep-navy);
+  --color-on-primary: #ffffff;
+  --color-accent: var(--color-titan-gold);
+  --color-accent-text: var(--color-titan-gold-on-light);
+  --color-on-accent: #1a1400;
+
+  --color-success: #1b7a43;
+  --color-success-bg: #e5f4ea;
+  --color-warning: #8a5a00;
+  --color-warning-bg: #fdf1dc;
+  --color-error: #b3261e;
+  --color-error-bg: #fbe9e7;
+
+  /* Échelle de gris pour tableaux zébrés, etc. */
+  --color-surface-zebra: #f2f4f7;
+
+  /* Typographie */
+  --font-display: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono-label: "Geist Mono", ui-monospace, monospace;
+
+  /* Espacement — rythme base 4px */
+  --spacing-unit: 4px;
+  --spacing-gutter: 24px;
+  --spacing-margin-desktop: 40px;
+  --spacing-margin-mobile: 16px;
+  --spacing-container-max: 1440px;
+
+  /* Rayons */
+  --radius-sm: 0.125rem;
+  --radius-DEFAULT: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-full: 9999px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-background: #050c14;
+    --color-surface: #0c1622;
+    --color-surface-elevated: #101e30;
+    --color-border: #1c2b3c;
+
+    --color-foreground: #e7eaf0;
+    --color-foreground-muted: #a9b4c4;
+
+    --color-primary: var(--color-deep-navy);
+    --color-on-primary: #ffffff;
+    --color-accent: var(--color-titan-gold);
+    --color-accent-text: var(--color-titan-gold); /* passe l'AA en dark, cf. note */
+    --color-on-accent: #1a1400;
+
+    --color-success: #7fd99a;
+    --color-success-bg: #113321;
+    --color-warning: #ffc94d;
+    --color-warning-bg: #3a2a05;
+    --color-error: #ffb4ab;
+    --color-error-bg: #3a1613;
+
+    --color-surface-zebra: #0f1a28;
+  }
+}
+
+/*
+ * Non ancrés à :root (contrairement au bloc @media ci-dessus) : ces deux
+ * règles s'appliquent à n'importe quel élément portant l'attribut, pas
+ * seulement <html>. Nécessaire pour forcer un thème sur un conteneur
+ * imbriqué (ex. page de démonstration comparant les deux thèmes côte à
+ * côte) — les variables CSS personnalisées sont ensuite héritées par les
+ * descendants comme n'importe quelle propriété CSS.
+ */
+[data-theme="dark"] {
+  --color-background: #050c14;
+  --color-surface: #0c1622;
+  --color-surface-elevated: #101e30;
+  --color-border: #1c2b3c;
+
+  --color-foreground: #e7eaf0;
+  --color-foreground-muted: #a9b4c4;
+
+  --color-primary: var(--color-deep-navy);
+  --color-on-primary: #ffffff;
+  --color-accent: var(--color-titan-gold);
+  --color-accent-text: var(--color-titan-gold);
+  --color-on-accent: #1a1400;
+
+  --color-success: #7fd99a;
+  --color-success-bg: #113321;
+  --color-warning: #ffc94d;
+  --color-warning-bg: #3a2a05;
+  --color-error: #ffb4ab;
+  --color-error-bg: #3a1613;
+
+  --color-surface-zebra: #0f1a28;
+}
+
+[data-theme="light"] {
+  --color-background: #f8f9fa;
+  --color-surface: #ffffff;
+  --color-surface-elevated: #ffffff;
+  --color-border: #dde3ea;
+
+  --color-foreground: #0b1c30;
+  --color-foreground-muted: #4b5b6e;
+
+  --color-primary: var(--color-deep-navy);
+  --color-on-primary: #ffffff;
+  --color-accent: var(--color-titan-gold);
+  --color-accent-text: var(--color-titan-gold-on-light);
+  --color-on-accent: #1a1400;
+
+  --color-success: #1b7a43;
+  --color-success-bg: #e5f4ea;
+  --color-warning: #8a5a00;
+  --color-warning-bg: #fdf1dc;
+  --color-error: #b3261e;
+  --color-error-bg: #fbe9e7;
+
+  --color-surface-zebra: #f2f4f7;
+}

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Titan Kinetic - Registration</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@500&amp;family=Hanken+Grotesk:wght@600;700&amp;family=Inter:wght@400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container": "#1e2023",
+                        "on-tertiary-container": "#d8885c",
+                        "surface-container-low": "#1a1c1f",
+                        "on-secondary": "#3c2f00",
+                        "surface-variant": "#333539",
+                        "inverse-primary": "#3a5f94",
+                        "tertiary-container": "#592300",
+                        "primary-container": "#003366",
+                        "on-tertiary-fixed-variant": "#723610",
+                        "on-error-container": "#ffdad6",
+                        "primary": "#a7c8ff",
+                        "tertiary-fixed-dim": "#ffb690",
+                        "error": "#ffb4ab",
+                        "tertiary": "#ffb690",
+                        "outline": "#8d919a",
+                        "on-secondary-container": "#342800",
+                        "surface-dark": "#050C14",
+                        "surface-container-high": "#282a2e",
+                        "deep-navy": "#003366",
+                        "inverse-on-surface": "#2f3034",
+                        "on-primary-fixed": "#001b3c",
+                        "on-primary-fixed-variant": "#1f477b",
+                        "tertiary-fixed": "#ffdbca",
+                        "surface-container-lowest": "#0c0e12",
+                        "inverse-surface": "#e2e2e7",
+                        "titan-gold": "#D4AF37",
+                        "on-surface": "#e2e2e7",
+                        "on-secondary-fixed-variant": "#574500",
+                        "error-container": "#93000a",
+                        "on-surface-variant": "#c3c6d1",
+                        "primary-fixed-dim": "#a7c8ff",
+                        "surface-light": "#F8F9FA",
+                        "secondary-fixed-dim": "#e9c349",
+                        "on-primary-container": "#799dd6",
+                        "surface-container-highest": "#333539",
+                        "on-primary": "#003061",
+                        "secondary-fixed": "#ffe088",
+                        "secondary": "#e9c349",
+                        "primary-fixed": "#d5e3ff",
+                        "outline-variant": "#43474f",
+                        "secondary-container": "#af8d11",
+                        "on-secondary-fixed": "#241a00",
+                        "on-tertiary-fixed": "#341100",
+                        "on-tertiary": "#552100",
+                        "on-background": "#e2e2e7",
+                        "surface-dim": "#121317",
+                        "background": "#121317",
+                        "surface-bright": "#38393d",
+                        "surface-tint": "#a7c8ff",
+                        "surface": "#121317",
+                        "on-error": "#690005"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "container-max": "1440px",
+                        "margin-desktop": "40px",
+                        "margin-mobile": "16px",
+                        "unit": "4px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "label-mono": ["Geist"],
+                        "headline-md-mobile": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "body-base": ["Inter"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "body-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-mono": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-md-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-md": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-base": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #050C14; /* surface-dark */
+            color: #e2e2e7; /* on-surface */
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        /* Input autofill override for dark mode */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus, 
+        input:-webkit-autofill:active{
+            -webkit-box-shadow: 0 0 0 30px #1e2023 inset !important;
+            -webkit-text-fill-color: #e2e2e7 !important;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-screen flex flex-col relative font-body-base text-body-base overflow-x-hidden selection:bg-titan-gold selection:text-surface-dark">
+<!-- Header / Brand Anchor (Adapted from Shared Component for Transactional Flow) -->
+<header class="flex justify-between items-center px-margin-mobile h-16 w-full sticky top-0 bg-surface-dark/90 backdrop-blur-md z-50">
+<button class="text-on-surface-variant hover:text-titan-gold transition-colors active:scale-95 flex items-center justify-center w-10 h-10 -ml-2 rounded-full">
+<span class="material-symbols-outlined">close</span>
+</button>
+<span class="font-headline-md-mobile text-headline-md-mobile font-bold text-titan-gold tracking-tight">Titan Kinetic</span>
+<div class="w-8"></div> <!-- Spacer for optical centering -->
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col px-margin-mobile pt-4 pb-32 max-w-md mx-auto w-full">
+<!-- Progress Indicator -->
+<div class="mb-8">
+<div class="flex gap-2 mb-3">
+<div class="h-1.5 flex-1 bg-titan-gold rounded-full shadow-[0_0_8px_rgba(212,175,55,0.3)]"></div>
+<div class="h-1.5 flex-1 bg-surface-variant rounded-full"></div>
+<div class="h-1.5 flex-1 bg-surface-variant rounded-full"></div>
+<div class="h-1.5 flex-1 bg-surface-variant rounded-full"></div>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-label-mono text-label-mono text-titan-gold uppercase tracking-widest">Étape 1 sur 4</span>
+<span class="font-label-mono text-label-mono text-on-surface-variant">25%</span>
+</div>
+</div>
+<!-- Section Heading -->
+<div class="mb-8">
+<h1 class="font-headline-md-mobile text-headline-md-mobile text-on-surface mb-2">Informations Personnelles</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Veuillez saisir vos coordonnées exactes pour la création de votre profil sécurisé.</p>
+</div>
+<!-- Form Fields -->
+<form class="flex flex-col gap-6">
+<!-- First Name Field -->
+<div class="flex flex-col gap-2">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase ml-1" for="firstName">Prénom</label>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-titan-gold transition-colors">person</span>
+<input class="w-full h-14 bg-surface-container border border-surface-variant rounded-lg text-on-surface pl-12 pr-4 focus:border-titan-gold focus:ring-1 focus:ring-titan-gold outline-none transition-all shadow-sm" id="firstName" name="firstName" placeholder="Entrez votre prénom" type="text"/>
+</div>
+</div>
+<!-- Last Name Field -->
+<div class="flex flex-col gap-2">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase ml-1" for="lastName">Nom de famille</label>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-titan-gold transition-colors">badge</span>
+<input class="w-full h-14 bg-surface-container border border-surface-variant rounded-lg text-on-surface pl-12 pr-4 focus:border-titan-gold focus:ring-1 focus:ring-titan-gold outline-none transition-all shadow-sm" id="lastName" name="lastName" placeholder="Entrez votre nom" type="text"/>
+</div>
+</div>
+<!-- Email Field -->
+<div class="flex flex-col gap-2">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase ml-1" for="email">Adresse E-mail</label>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-titan-gold transition-colors">mail</span>
+<input class="w-full h-14 bg-surface-container border border-surface-variant rounded-lg text-on-surface pl-12 pr-4 focus:border-titan-gold focus:ring-1 focus:ring-titan-gold outline-none transition-all shadow-sm" id="email" name="email" placeholder="nom@entreprise.com" type="email"/>
+</div>
+</div>
+<!-- Phone Field -->
+<div class="flex flex-col gap-2">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase ml-1" for="phone">Numéro de téléphone</label>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-titan-gold transition-colors">phone_iphone</span>
+<input class="w-full h-14 bg-surface-container border border-surface-variant rounded-lg text-on-surface pl-12 pr-4 focus:border-titan-gold focus:ring-1 focus:ring-titan-gold outline-none transition-all shadow-sm" id="phone" name="phone" placeholder="+33 6 12 34 56 78" type="tel"/>
+</div>
+</div>
+</form>
+</main>
+<!-- Fixed Bottom Action Bar -->
+<div class="fixed bottom-0 left-0 w-full px-margin-mobile py-4 bg-surface-dark/95 backdrop-blur border-t border-surface-variant z-40">
+<div class="max-w-md mx-auto">
+<button class="w-full h-14 bg-titan-gold text-surface-dark rounded-lg flex items-center justify-center gap-3 active:scale-[0.98] transition-all hover:brightness-110 shadow-[0_4px_12px_rgba(212,175,55,0.2)]">
+<span class="font-label-mono text-label-mono font-bold uppercase tracking-wider">Étape Suivante</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'wght' 600;">arrow_forward</span>
+</button>
+</div>
+</div>
+</body></html>

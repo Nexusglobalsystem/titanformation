@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>QualioPro - Recrutement &amp; Inscription</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Geist:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c7c4d7;
+            border-radius: 10px;
+        }
+        .glass-panel {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .pipeline-gradient {
+            background: linear-gradient(90deg, rgba(70, 72, 212, 0.05) 0%, rgba(70, 72, 212, 0) 100%);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-variant": "#d3e4fe",
+                        "surface-container-high": "#dce9ff",
+                        "error-container": "#ffdad6",
+                        "on-error-container": "#93000a",
+                        "tertiary": "#006c49",
+                        "secondary": "#565e74",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "on-secondary-fixed": "#131b2e",
+                        "secondary-container": "#dae2fd",
+                        "outline": "#767586",
+                        "surface-container-lowest": "#ffffff",
+                        "outline-variant": "#c7c4d7",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#005236",
+                        "on-tertiary-fixed": "#002113",
+                        "secondary-fixed": "#dae2fd",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-error": "#ffffff",
+                        "primary-container": "#6063ee",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed": "#6ffbbe",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "background": "#f8f9ff",
+                        "primary-fixed-dim": "#c0c1ff",
+                        "tertiary-container": "#00885d",
+                        "surface-bright": "#f8f9ff",
+                        "inverse-surface": "#213145",
+                        "on-surface-variant": "#464554",
+                        "surface-container-low": "#eff4ff",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-tertiary-container": "#000703",
+                        "on-primary-fixed": "#07006c",
+                        "tertiary-fixed-dim": "#4edea3",
+                        "on-primary-fixed-variant": "#2f2ebe",
+                        "on-primary-container": "#fffbff",
+                        "inverse-primary": "#c0c1ff",
+                        "surface": "#f8f9ff",
+                        "surface-container": "#e5eeff",
+                        "on-surface": "#0b1c30",
+                        "on-secondary": "#ffffff",
+                        "on-background": "#0b1c30",
+                        "primary": "#4648d4",
+                        "surface-tint": "#494bd6",
+                        "surface-dim": "#cbdbf5",
+                        "on-secondary-container": "#5c647a",
+                        "primary-fixed": "#e1e0ff",
+                        "on-tertiary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "48px",
+                        "gutter": "24px",
+                        "container-max": "1440px",
+                        "margin-mobile": "16px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Inter"],
+                        "label-sm": ["Geist"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "display": ["Inter"],
+                        "label-md": ["Geist"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-md": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md transition-colors duration-300">
+<!-- Sidebar Navigation -->
+<aside class="fixed left-0 top-0 h-screen w-64 bg-surface/70 dark:bg-inverse-surface/70 backdrop-blur-md border-r border-outline-variant/30 shadow-sm flex flex-col py-8 z-50">
+<div class="px-6 mb-10">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary font-bold text-3xl">school</span>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary leading-none">QualioPro</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant opacity-70">Certified Training</p>
+</div>
+</div>
+</div>
+<nav class="flex-grow px-2 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant/50 dark:hover:bg-on-secondary-fixed-variant/20 transition-colors rounded-xl group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">dashboard</span>
+<span class="font-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-primary dark:text-primary-fixed-dim bg-primary-container/10 border-l-4 border-primary rounded-r-xl" href="#">
+<span class="material-symbols-outlined">person_search</span>
+<span class="font-label-md">Recrutement</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant/50 transition-colors rounded-xl" href="#">
+<span class="material-symbols-outlined">verified_user</span>
+<span class="font-label-md">Compliance Hub</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant/50 transition-colors rounded-xl" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-label-md">Course Builder</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant/50 transition-colors rounded-xl" href="#">
+<span class="material-symbols-outlined">person_apron</span>
+<span class="font-label-md">Trainer Portal</span>
+</a>
+</nav>
+<div class="mt-auto px-2 space-y-1">
+<button class="w-full flex items-center gap-3 px-4 py-3 mb-4 bg-primary text-white rounded-xl shadow-md hover:opacity-90 transition-all active:scale-95">
+<span class="material-symbols-outlined">add</span>
+<span class="font-label-md">New Training</span>
+</button>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant/50 transition-colors rounded-xl" href="#">
+<span class="material-symbols-outlined text-xl">help</span>
+<span class="font-label-sm">Support</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant dark:text-outline-variant hover:bg-surface-variant/50 transition-colors rounded-xl" href="#">
+<span class="material-symbols-outlined text-xl">settings_account_box</span>
+<span class="font-label-sm">Admin Settings</span>
+</a>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="ml-64 min-h-screen flex flex-col">
+<!-- Top Navigation -->
+<header class="sticky top-0 z-40 w-full bg-surface/80 dark:bg-inverse-surface/80 backdrop-blur-md border-b border-outline-variant/20 shadow-sm flex justify-between items-center h-16 px-margin-desktop">
+<div class="flex items-center gap-4 flex-1">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-full pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary/20 transition-all" placeholder="Rechercher un candidat..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-on-surface-variant hover:bg-surface-variant rounded-full transition-all">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-variant rounded-full transition-all relative">
+<span class="material-symbols-outlined">notifications_none</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<div class="h-8 w-[1px] bg-outline-variant mx-2"></div>
+<button class="flex items-center gap-2 px-4 py-2 bg-primary-container/10 text-primary font-label-sm rounded-full hover:bg-primary-container/20 transition-all">
+<span class="material-symbols-outlined text-lg">videocam</span>
+<span>Go Live</span>
+</button>
+<div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center overflow-hidden border border-outline-variant/30">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a corporate administrator in a modern office, soft bokeh background with glass partitions, wearing a stylish navy suit, neutral colors, minimalist lighting, 8k resolution." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmWIbMw11s0xajkd9ZvyWYKf2BDNkzDbuZjMIRsD3U7KDWmJQ4ErbD9d5DXRWcLVdtg8xw-KBaOpLibpIwD6gNzxV4p5ZXD2dy2C0BiBhAXgNxE-xIMUJGnBUAEUzmUQ0bEx_BtDyl-3OO6qOWSb8IlBJ_O3YRP-mYXbIieIbRvt4V0yiHseWxZmZ_a8Q-L_o3KEd53NR_uw9Cr2pzySwUw15uXX7NmhajWaJ-EzTn735RyQGgypA7"/>
+</div>
+</div>
+</header>
+<!-- Dashboard Canvas -->
+<div class="p-margin-desktop space-y-gutter flex-1">
+<!-- Welcome Header -->
+<div class="flex justify-between items-end">
+<div>
+<nav class="flex items-center gap-2 text-on-surface-variant text-sm mb-2">
+<span class="font-label-sm">Recrutement</span>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="text-primary font-label-sm">Pipeline Admission 2024</span>
+</nav>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Gestion des Admissions</h2>
+<p class="text-on-surface-variant mt-1">Suivez les 128 dossiers actifs pour la session de Septembre.</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-6 py-2.5 border border-outline-variant rounded-xl text-on-surface font-label-md hover:bg-surface-container-high transition-all">
+<span class="material-symbols-outlined">filter_list</span>
+<span>Filtrer</span>
+</button>
+<button class="flex items-center gap-2 px-6 py-2.5 bg-primary text-on-primary rounded-xl font-label-md shadow-lg shadow-primary/20 hover:opacity-95 active:scale-95 transition-all">
+<span class="material-symbols-outlined">person_add</span>
+<span>Inscrire un candidat</span>
+</button>
+</div>
+</div>
+<!-- Stats Overview - Bento Grid Style -->
+<div class="grid grid-cols-4 gap-gutter">
+<div class="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/30 shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-primary/10 text-primary rounded-lg">
+<span class="material-symbols-outlined">group</span>
+</div>
+<span class="text-tertiary text-xs font-label-sm bg-tertiary/10 px-2 py-1 rounded">+12%</span>
+</div>
+<p class="text-on-surface-variant text-sm font-label-md">Total Candidats</p>
+<h3 class="text-3xl font-bold text-on-surface mt-1">452</h3>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/30 shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-tertiary/10 text-tertiary rounded-lg">
+<span class="material-symbols-outlined">verified</span>
+</div>
+<span class="text-tertiary text-xs font-label-sm bg-tertiary/10 px-2 py-1 rounded">Excellent</span>
+</div>
+<p class="text-on-surface-variant text-sm font-label-md">Taux de Conversion</p>
+<h3 class="text-3xl font-bold text-on-surface mt-1">68%</h3>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/30 shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-secondary/10 text-secondary rounded-lg">
+<span class="material-symbols-outlined">schedule</span>
+</div>
+<span class="text-on-surface-variant text-xs font-label-sm bg-surface-variant px-2 py-1 rounded">Normal</span>
+</div>
+<p class="text-on-surface-variant text-sm font-label-md">Délai Moyen (Jours)</p>
+<h3 class="text-3xl font-bold text-on-surface mt-1">4.5</h3>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/30 shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-error/10 text-error rounded-lg">
+<span class="material-symbols-outlined">pending_actions</span>
+</div>
+<span class="text-error text-xs font-label-sm bg-error/10 px-2 py-1 rounded">Action requise</span>
+</div>
+<p class="text-on-surface-variant text-sm font-label-md">Dossiers Incomplets</p>
+<h3 class="text-3xl font-bold text-on-surface mt-1">14</h3>
+</div>
+</div>
+<!-- Pipeline Steps Container -->
+<div class="grid grid-cols-4 gap-6 min-h-[600px]">
+<!-- Stage 1: Candidature -->
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between px-2">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-outline"></span>
+<h4 class="font-label-md uppercase tracking-wider text-xs text-on-surface-variant">Candidature</h4>
+<span class="bg-surface-variant text-[10px] px-1.5 py-0.5 rounded font-bold">24</span>
+</div>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-lg">more_horiz</span>
+</button>
+</div>
+<div class="flex flex-col gap-3">
+<!-- Candidate Card -->
+<div class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 shadow-sm hover:shadow-md transition-all cursor-pointer group">
+<div class="flex items-start justify-between mb-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex-shrink-0 border border-outline-variant/20 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close up portrait of a young professional student, smiling warmly, soft natural lighting, high-end editorial photography style, minimalist background with light grey tones, 8k." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8kfPGhaL0Deg5iWUR_I8E-jOK7TNqMJk4RoD3EZrk5KCzBQ0v0Yr9zeS9WRMpJ69V0GqoKumQGWNqampZ-Q4fwaJsCYbOH-UA5hImox7SpYnT17IRYCeG3V9MPXzWKzU_HnZecOZmfyFrbcMXZl30Y1JBR0mc89rWeK_uQoLZ_iDTgLIb24j3Bg_J968UC7-eM7_qFb5DFKmz0SNn12ykUpuwd1YL8_pfGTeuXhaNOi7kb70jwxQ1"/>
+</div>
+<div>
+<h5 class="font-label-md text-on-surface group-hover:text-primary transition-colors">Lucas Bernard</h5>
+<p class="text-[11px] text-on-surface-variant">Bachelor Marketing</p>
+</div>
+</div>
+</div>
+<div class="flex flex-wrap gap-1.5 mb-3">
+<span class="px-2 py-0.5 bg-primary/5 text-primary text-[10px] rounded border border-primary/10">Nouveau</span>
+<span class="px-2 py-0.5 bg-surface-variant text-on-surface-variant text-[10px] rounded">Externat</span>
+</div>
+<div class="flex items-center justify-between pt-3 border-t border-outline-variant/20 text-[11px] text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">calendar_today</span>Il y a 2h</span>
+<span class="material-symbols-outlined text-sm">attachment</span>
+</div>
+</div>
+<!-- Candidate Card -->
+<div class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 shadow-sm hover:shadow-md transition-all cursor-pointer group">
+<div class="flex items-start justify-between mb-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex-shrink-0 border border-outline-variant/20 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Headshot of a diverse female professional candidate with a confident expression, professional studio lighting, neutral business environment background, high resolution, soft focus." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3sQ9G895cnWI8zWDWjvFmcYeSqDmXeM4v2TVBHPQWrmny4gmmbm-DynM3qk4LC9w2QKHyX7sqPnwG-C11hQUgzyqH_UdiTP7ShqweM1ejgk8i9RAkoRpg5OkWwXVxHKurLi_PTDKrxvkIHSk91PA_ktOEZH6XjsE5PyTjUrpS0x_Q_QZw0QfjgbW_ZnI44wv-Dib5e-XXSxyfacyAQoCslSQp0PDHU47XqjXgzyFr2vt8hcfZJoX6"/>
+</div>
+<div>
+<h5 class="font-label-md text-on-surface group-hover:text-primary transition-colors">Sarah Khalil</h5>
+<p class="text-[11px] text-on-surface-variant">Master Management</p>
+</div>
+</div>
+</div>
+<div class="flex flex-wrap gap-1.5 mb-3">
+<span class="px-2 py-0.5 bg-surface-variant text-on-surface-variant text-[10px] rounded">Alternance</span>
+</div>
+<div class="flex items-center justify-between pt-3 border-t border-outline-variant/20 text-[11px] text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">calendar_today</span>Il y a 1j</span>
+<div class="flex -space-x-2">
+<div class="w-5 h-5 rounded-full border-2 border-surface bg-primary/20 text-[8px] flex items-center justify-center font-bold">JD</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Stage 2: Entretien -->
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between px-2">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary-container"></span>
+<h4 class="font-label-md uppercase tracking-wider text-xs text-on-surface-variant">Entretien</h4>
+<span class="bg-surface-variant text-[10px] px-1.5 py-0.5 rounded font-bold">12</span>
+</div>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-lg">more_horiz</span>
+</button>
+</div>
+<div class="flex flex-col gap-3">
+<div class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 shadow-sm border-l-4 border-l-primary-container relative">
+<div class="absolute top-4 right-4 p-1 bg-primary-container/10 text-primary-container rounded">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">videocam</span>
+</div>
+<div class="flex items-start justify-between mb-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex-shrink-0 border border-outline-variant/20 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Portrait of an aspiring male student, looking intellectual and determined, minimalist workspace background with plants and books, high definition, bright and airy lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgfsHT_rFBrDomhZ21IRsrnHVF3wcL_jw4ZJC2EHKPdIOoywf9oXj46GH4HjJwLn7OiLwcLi5cRcUDHJf1jA4YS_NWcb7RPOS760vL0BJlPtYhOGXfhj5Z6qSGjalBFVUp_zUt_SpFurkO5RooLGTjFFlKHBh4H4pS1PRlE9-wiAPLMlYgfcAXdd9-Gz20K9FZOMgvqCtRqQXlkRcnM8FwRcA0dqOs71MfMTSsfJSz9oFsgZkNk91h"/>
+</div>
+<div>
+<h5 class="font-label-md text-on-surface">Thomas Mercier</h5>
+<p class="text-[11px] text-on-surface-variant">MBA Finance</p>
+</div>
+</div>
+</div>
+<div class="bg-primary-container/5 rounded-lg p-2.5 mb-3 border border-primary-container/10">
+<p class="text-[11px] font-bold text-primary-container flex items-center gap-1 uppercase tracking-tight">
+<span class="material-symbols-outlined text-xs">event</span>
+                                    Aujourd'hui, 14:30
+                                </p>
+</div>
+<div class="flex items-center justify-between text-[11px] text-on-surface-variant">
+<span class="flex items-center gap-1">Entretien Jury 2</span>
+<div class="flex -space-x-2">
+<div class="w-5 h-5 rounded-full border-2 border-surface bg-secondary-container"></div>
+<div class="w-5 h-5 rounded-full border-2 border-surface bg-surface-variant"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Stage 3: Dossier Complet -->
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between px-2">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<h4 class="font-label-md uppercase tracking-wider text-xs text-on-surface-variant">Dossier Complet</h4>
+<span class="bg-surface-variant text-[10px] px-1.5 py-0.5 rounded font-bold">42</span>
+</div>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-lg">more_horiz</span>
+</button>
+</div>
+<div class="flex flex-col gap-3">
+<div class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 shadow-sm">
+<div class="flex items-start justify-between mb-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex-shrink-0 border border-outline-variant/20 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Detailed headshot of a female applicant for an executive program, sophisticated professional look, elegant corporate office background with blurred architectural elements, warm inviting lighting, ultra high quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlLfA5UYwSmu5f7_yHYJN5XcJ3PfHlvlA1ErYfIBvK7dc9Ntce7dBiPbKnZdvlISN-A4D2eskgEPeVTAEUgU8dFP-S4xZIK32BVJv0qjOqShtOR248gUsWK0el425HXrUXi2mV2bbg9DgpCmmEhLVjfbxZfDSy9zB13fPHtnG8u02Wrr4m0gPi-hXsq1kmRgx_i32ve3UfsLgKJqz4GkPbdybXtdFjgLzhsYQqetD0nKxr87QeQvE5"/>
+</div>
+<div>
+<h5 class="font-label-md text-on-surface">Marie Dupont</h5>
+<p class="text-[11px] text-on-surface-variant">BTS Communication</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-tertiary text-lg">task_alt</span>
+</div>
+<div class="w-full bg-surface-variant h-1 rounded-full mb-3">
+<div class="bg-tertiary w-full h-full rounded-full"></div>
+</div>
+<div class="flex items-center justify-between text-[11px] text-on-surface-variant">
+<span>Score Admission: 17/20</span>
+<span class="bg-tertiary/10 text-tertiary px-1.5 py-0.5 rounded font-bold">A+</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 shadow-sm opacity-80">
+<div class="flex items-start justify-between mb-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex-shrink-0 border border-outline-variant/20 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Portrait of a young male international student, cheerful and expressive, high key modern photography, bright workspace background, clean aesthetics, professional grade image." src="https://lh3.googleusercontent.com/aida-public/AB6AXuACrl9023umBftESS_PJeYtRQkbspkhuPn8c54xAmm1S6eC2ppm5xK_emyox1GSm1Ga6vpJjigxMPL9JrDe9_Hp5nLzHbpd4bzHMF9eE8V-jqC5SC--GOlaALMvITaiocoT46qLLMF0X5rX4iKhhrRCpbDG22Z00ff11WS02gahgYtsxHvHcc0_WrcleZnR7gva4tfHLMwQ_Cu72RGa0Ubi76KeaLKNqFtLrVhrUpy2Xd_qOh-fYwjx"/>
+</div>
+<div>
+<h5 class="font-label-md text-on-surface">Kevin Zhang</h5>
+<p class="text-[11px] text-on-surface-variant">BSc Data Science</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-tertiary text-lg">task_alt</span>
+</div>
+<div class="w-full bg-surface-variant h-1 rounded-full mb-3">
+<div class="bg-tertiary w-full h-full rounded-full"></div>
+</div>
+<div class="flex items-center justify-between text-[11px] text-on-surface-variant">
+<span>Score Admission: 14/20</span>
+<span class="bg-secondary/10 text-secondary px-1.5 py-0.5 rounded font-bold">B</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Stage 4: Admis -->
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between px-2">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-tertiary-container"></span>
+<h4 class="font-label-md uppercase tracking-wider text-xs text-on-surface-variant">Admis</h4>
+<span class="bg-surface-variant text-[10px] px-1.5 py-0.5 rounded font-bold">50</span>
+</div>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-lg">more_horiz</span>
+</button>
+</div>
+<div class="flex flex-col gap-3">
+<!-- Final Success Card -->
+<div class="bg-tertiary-container/5 p-4 rounded-xl border border-tertiary-container/30 shadow-sm relative overflow-hidden">
+<div class="absolute -right-2 -bottom-2 opacity-10">
+<span class="material-symbols-outlined text-6xl text-tertiary-container">stars</span>
+</div>
+<div class="flex items-start justify-between mb-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex-shrink-0 border border-outline-variant/20 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Radiant female student in professional attire, holding a tablet, corporate educational background, bright daylight, high fashion corporate style, high detail." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkUDOnBFDwAf9Gem1NDASbaaMBVwlWa58Ok3lhzmCp7vD2CZvW2t-lUgkEVOybbF9BUiW9kWCqqMLGtBO8bzUPDwmcBud2sy43QWIlO6CNzWzGtPPbVc637Lc4jQPN5v54hUaYSBU6ru3gPo2NIHkdU1xicuoa8vt3tkK7UOZ4RX_ByZn7RwMEt7fbIjoKvmrAnouxNHds65JhUCC5FZq46fj7aCJEQZb9j_gvJoqvvNURFpBOguos"/>
+</div>
+<div>
+<h5 class="font-label-md text-on-surface">Camille Roux</h5>
+<p class="text-[11px] text-on-surface-variant">Master RH</p>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-2 mb-3">
+<span class="px-2 py-0.5 bg-tertiary/10 text-tertiary text-[10px] rounded font-bold uppercase">Contrat Signé</span>
+</div>
+<div class="flex items-center justify-between text-[11px] text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">mail_outline</span>Envoyé hier</span>
+<button class="text-primary hover:underline">Voir le contrat</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Activity Table Section -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 shadow-sm overflow-hidden">
+<div class="p-6 border-b border-outline-variant/20 flex justify-between items-center">
+<div>
+<h4 class="font-headline-md text-headline-md text-on-surface">Historique des Actions</h4>
+<p class="text-on-surface-variant text-sm">Dernières modifications sur les dossiers.</p>
+</div>
+<button class="text-primary font-label-md hover:underline">Voir tout l'historique</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low border-b border-outline-variant/20">
+<tr>
+<th class="px-6 py-4 font-label-sm text-on-surface-variant uppercase tracking-wider text-xs">Candidat</th>
+<th class="px-6 py-4 font-label-sm text-on-surface-variant uppercase tracking-wider text-xs">Formation</th>
+<th class="px-6 py-4 font-label-sm text-on-surface-variant uppercase tracking-wider text-xs">Action</th>
+<th class="px-6 py-4 font-label-sm text-on-surface-variant uppercase tracking-wider text-xs">Utilisateur</th>
+<th class="px-6 py-4 font-label-sm text-on-surface-variant uppercase tracking-wider text-xs text-right">Date</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-variant"></div>
+<span class="font-label-md">Lucas Bernard</span>
+</div>
+</td>
+<td class="px-6 py-4 text-on-surface-variant text-sm">Bachelor Marketing</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-surface-variant text-on-surface-variant text-[10px] rounded-full font-bold">PIPELINE CHANGE</span>
+</td>
+<td class="px-6 py-4 text-sm font-label-md">Admin Jean</td>
+<td class="px-6 py-4 text-sm text-on-surface-variant text-right">14:05</td>
+</tr>
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-variant"></div>
+<span class="font-label-md">Marie Dupont</span>
+</div>
+</td>
+<td class="px-6 py-4 text-on-surface-variant text-sm">BTS Communication</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-tertiary/10 text-tertiary text-[10px] rounded-full font-bold">DOCS VALIDATED</span>
+</td>
+<td class="px-6 py-4 text-sm font-label-md">Admin Julie</td>
+<td class="px-6 py-4 text-sm text-on-surface-variant text-right">11:32</td>
+</tr>
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-variant"></div>
+<span class="font-label-md">Kevin Zhang</span>
+</div>
+</td>
+<td class="px-6 py-4 text-on-surface-variant text-sm">BSc Data Science</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-primary/10 text-primary text-[10px] rounded-full font-bold">INTERVIEW SCHEDULED</span>
+</td>
+<td class="px-6 py-4 text-sm font-label-md">Admin Jean</td>
+<td class="px-6 py-4 text-sm text-on-surface-variant text-right">09:15</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Footer / Global Bottom -->
+<footer class="mt-auto p-margin-desktop border-t border-outline-variant/10 text-center">
+<p class="text-on-surface-variant text-xs opacity-60">© 2024 QualioPro LMS. Système certifié conforme Qualiopi. Sécurisé avec AES-256.</p>
+</footer>
+</main>
+<!-- Contextual FAB (Only for Home/Main Dashboard as per instructions) -->
+<!-- Not visible here as this is a specific recruitment sub-page context -->
+<script>
+        // Micro-interaction for candidate cards
+        document.querySelectorAll('.cursor-pointer').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-2px)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Dark mode simulation listener (Auto-detection)
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            // document.documentElement.classList.add('dark');
+        }
+    </script>
+</body></html>

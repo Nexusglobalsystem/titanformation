@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Catalogue de Formation | Titan Kinetic</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@500&amp;family=Inter:wght@400&amp;family=Hanken+Grotesk:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#ffb690",
+                        "on-primary-fixed-variant": "#1f477b",
+                        "surface-container-low": "#1a1c1f",
+                        "titan-gold": "#D4AF37",
+                        "outline-variant": "#43474f",
+                        "secondary": "#e9c349",
+                        "primary-fixed": "#d5e3ff",
+                        "deep-navy": "#003366",
+                        "on-secondary": "#3c2f00",
+                        "surface-variant": "#333539",
+                        "on-tertiary-fixed-variant": "#723610",
+                        "on-tertiary-container": "#d8885c",
+                        "surface-dark": "#050C14",
+                        "primary-fixed-dim": "#a7c8ff",
+                        "tertiary-fixed": "#ffdbca",
+                        "on-secondary-fixed": "#241a00",
+                        "surface-container": "#1e2023",
+                        "primary-container": "#003366",
+                        "outline": "#8d919a",
+                        "on-secondary-fixed-variant": "#574500",
+                        "inverse-on-surface": "#2f3034",
+                        "surface-bright": "#38393d",
+                        "on-tertiary-fixed": "#341100",
+                        "surface-container-lowest": "#0c0e12",
+                        "tertiary-container": "#592300",
+                        "on-surface-variant": "#c3c6d1",
+                        "inverse-primary": "#3a5f94",
+                        "on-surface": "#e2e2e7",
+                        "on-error": "#690005",
+                        "surface-container-highest": "#333539",
+                        "on-primary": "#003061",
+                        "surface-tint": "#a7c8ff",
+                        "surface": "#121317",
+                        "error-container": "#93000a",
+                        "tertiary-fixed-dim": "#ffb690",
+                        "secondary-container": "#af8d11",
+                        "secondary-fixed": "#ffe088",
+                        "background": "#121317",
+                        "on-primary-fixed": "#001b3c",
+                        "primary": "#a7c8ff",
+                        "on-background": "#e2e2e7",
+                        "surface-container-high": "#282a2e",
+                        "surface-light": "#F8F9FA",
+                        "on-secondary-container": "#342800",
+                        "on-tertiary": "#552100",
+                        "inverse-surface": "#e2e2e7",
+                        "surface-dim": "#121317",
+                        "error": "#ffb4ab",
+                        "secondary-fixed-dim": "#e9c349",
+                        "on-primary-container": "#799dd6",
+                        "on-error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "container-max": "1440px",
+                        "gutter": "24px",
+                        "unit": "4px",
+                        "margin-desktop": "40px"
+                    },
+                    "fontFamily": {
+                        "label-mono": ["Geist"],
+                        "body-base": ["Inter"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "body-sm": ["Inter"],
+                        "headline-md-mobile": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "label-mono": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "body-base": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-md-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-md": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+                    }
+                },
+            }
+        }
+    </script>
+<style>
+        .hero-pattern {
+            background-color: #050C14;
+            background-image: radial-gradient(circle at 100% 150%, #003366 24%, transparent 24%),
+            radial-gradient(circle at 0% -50%, #003366 24%, transparent 24%);
+            background-size: 100px 100px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-base">
+<!-- TopNavBar (From JSON) -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto border-b border-outline-variant bg-surface-dark shadow-sm">
+<div class="flex items-center gap-4">
+<span class="font-headline-md-mobile md:font-headline-md text-headline-md-mobile md:text-headline-md font-bold text-titan-gold tracking-tight">Titan Kinetic</span>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-titan-gold border-b-2 border-titan-gold pb-1 font-bold font-body-base text-body-base transition-colors duration-200" href="#">Catalog</a>
+<a class="text-on-surface-variant hover:text-titan-gold transition-colors duration-200 font-body-base text-body-base" href="#">About</a>
+<a class="text-on-surface-variant hover:text-titan-gold transition-colors duration-200 font-body-base text-body-base" href="#">Membership</a>
+<a class="text-on-surface-variant hover:text-titan-gold transition-colors duration-200 font-body-base text-body-base" href="#">FAQ</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="hidden md:block px-4 py-2 text-titan-gold hover:bg-surface-container-high rounded transition-all duration-300 font-body-sm text-body-sm focus:outline-none ring-2 ring-transparent focus:ring-titan-gold">Login</button>
+<button class="bg-deep-navy text-titan-gold border border-titan-gold px-6 py-2 rounded hover:bg-surface-container-high transition-all duration-300 font-body-base text-body-base active:scale-95 ease-in-out focus:outline-none ring-2 ring-transparent focus:ring-titan-gold">Enroll Now</button>
+<!-- Mobile Menu Toggle -->
+<button class="md:hidden text-titan-gold p-2 hover:bg-surface-container-high rounded transition-colors duration-200">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">menu</span>
+</button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow pt-24 pb-12">
+<!-- Hero Section -->
+<section class="relative w-full py-20 px-margin-mobile md:px-margin-desktop mb-12 overflow-hidden border-b border-outline-variant bg-surface-dark">
+<div class="absolute inset-0 hero-pattern z-0 pointer-events-none"></div>
+<div class="relative z-10 max-w-container-max mx-auto flex flex-col md:flex-row items-center gap-gutter">
+<div class="md:w-1/2 flex flex-col items-start space-y-6">
+<span class="inline-block px-3 py-1 bg-surface-container-low text-titan-gold font-label-mono text-label-mono border border-outline-variant rounded">FORMATION EXECUTIVE</span>
+<h1 class="font-display-lg text-display-lg text-on-surface">Propulsez votre carrière vers l'excellence.</h1>
+<p class="font-body-base text-body-base text-on-surface-variant max-w-xl">
+                        Des programmes intensifs conçus pour les leaders de demain. Maîtrisez les stratégies industrielles, la conformité de pointe et les technologies émergentes avec Titan Kinetic.
+                    </p>
+</div>
+<div class="md:w-1/2 mt-8 md:mt-0 relative">
+<img alt="Titan Kinetic Training" class="w-full h-auto rounded border border-outline-variant shadow-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCHBBCyPeAGNnGyFgVx9-tHlt8zDRVNzkNuLt4qhE3ip0HRGVOaOjPENCFpjROLAYloM5zrejBurBny-GXkvYI15UfPRv4BPyd5pqHIamG5T8juVK9BI_tn0TmidGykOsl1VF-za0F-Uiy4SE4QDvoDEljjMaK4gOndiRrOJ-yAuMUlzAJNIgPoXEcw2jfErv5jCUBWoy-wbWxBCIW8ifobVCEdQZYnH2P6TSmJ2fCY6N1Uj0rKfJQ-3JhBk-U81iang" style="object-fit: cover;"/>
+</div>
+</div>
+</section>
+<!-- Search & Filter Container -->
+<section class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop mb-12">
+<div class="bg-surface-container border border-outline-variant rounded p-6 shadow-sm flex flex-col md:flex-row gap-6 items-center">
+<!-- Search Input -->
+<div class="relative w-full md:w-1/3">
+<span class="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-on-surface-variant" style="font-variation-settings: 'FILL' 0;">search</span>
+<input class="w-full bg-surface text-on-surface border border-outline-variant rounded pl-10 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-titan-gold focus:border-transparent font-body-base text-body-base transition-all duration-200" placeholder="Rechercher une formation..." type="text"/>
+</div>
+<!-- Filters -->
+<div class="flex flex-wrap gap-4 w-full md:w-2/3 items-center">
+<div class="flex-grow md:flex-grow-0 relative">
+<select class="w-full appearance-none bg-surface text-on-surface border border-outline-variant rounded pl-4 pr-10 py-3 focus:outline-none focus:ring-2 focus:ring-titan-gold font-body-base text-body-base cursor-pointer">
+<option value="">Catégorie : Toutes</option>
+<option value="management">Management Stratégique</option>
+<option value="compliance">Conformité &amp; Sécurité</option>
+<option value="tech">Technologies Industrielles</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 transform -translate-y-1/2 text-on-surface-variant pointer-events-none" style="font-variation-settings: 'FILL' 0;">arrow_drop_down</span>
+</div>
+<div class="flex-grow md:flex-grow-0 relative">
+<select class="w-full appearance-none bg-surface text-on-surface border border-outline-variant rounded pl-4 pr-10 py-3 focus:outline-none focus:ring-2 focus:ring-titan-gold font-body-base text-body-base cursor-pointer">
+<option value="">Durée : Toutes</option>
+<option value="short">Courte (&lt; 20h)</option>
+<option value="medium">Moyenne (20h - 50h)</option>
+<option value="long">Longue (&gt; 50h)</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 transform -translate-y-1/2 text-on-surface-variant pointer-events-none" style="font-variation-settings: 'FILL' 0;">arrow_drop_down</span>
+</div>
+<button class="md:ml-auto px-6 py-3 bg-surface-container-high text-on-surface hover:text-titan-gold border border-outline-variant rounded transition-all duration-300 font-body-base text-body-base flex items-center gap-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">tune</span>
+                        Filtres Avancés
+                    </button>
+</div>
+</div>
+</section>
+<!-- Course Grid -->
+<section class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Card 1 -->
+<article class="bg-surface-container-low border border-outline-variant rounded overflow-hidden flex flex-col group hover:bg-surface-container transition-colors duration-300">
+<div class="h-48 bg-surface-variant relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-t from-surface-dark to-transparent opacity-60"></div>
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A professional corporate training session in a modern, dark-themed boardroom. Bright screens display charts. Serious tone, deep navy and gold accents in lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAG1zVEcNRUfROFSNtaJi08RGMlUqUCwEm0kmBOZXzpoOHPLgz7Ejz3aLxx85edFSyh6fgasYap_Bas1z5poHULQ_UK8GAdF0kYwYIaTBZa-imVoX2nsTAjdgnys9yBhXBiAfJqfUHYG5qwOGdyDf2sb-5D60z3D3ntkMdZ3PrGvyEuje8MTpEus7ozB5HclVflFSXMYfqGlVFXd5Slgy8Xxn4t3mN05JesIbytozoDkk0tHQCo3qRN"/>
+<div class="absolute top-4 left-4 bg-deep-navy text-titan-gold border border-titan-gold px-2 py-1 rounded font-label-mono text-label-mono">MANAGEMENT</div>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<h3 class="font-headline-md-mobile text-headline-md-mobile text-on-surface mb-2">Leadership Stratégique Industriel</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-6 line-clamp-2">Développez les compétences nécessaires pour diriger des opérations à grande échelle dans des environnements complexes.</p>
+<div class="flex flex-wrap gap-4 mt-auto mb-6">
+<div class="flex items-center gap-1 text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-titan-gold text-[18px]" style="font-variation-settings: 'FILL' 0;">schedule</span>
+                                45h
+                            </div>
+<div class="flex items-center gap-1 text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-titan-gold text-[18px]" style="font-variation-settings: 'FILL' 0;">school</span>
+                                Expert
+                            </div>
+<div class="flex items-center gap-1 text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-titan-gold text-[18px]" style="font-variation-settings: 'FILL' 0;">location_on</span>
+                                Hybride
+                            </div>
+</div>
+<button class="w-full bg-transparent text-titan-gold border border-titan-gold py-2 rounded hover:bg-titan-gold hover:text-deep-navy transition-colors duration-300 font-body-base text-body-base font-medium">Découvrir</button>
+</div>
+</article>
+<!-- Card 2 -->
+<article class="bg-surface-container-low border border-outline-variant rounded overflow-hidden flex flex-col group hover:bg-surface-container transition-colors duration-300 relative">
+<!-- Featured Badge -->
+<div class="absolute top-0 right-0 z-10 w-16 h-16 overflow-hidden">
+<div class="absolute top-0 right-0 w-[141%] h-6 bg-titan-gold text-deep-navy text-center font-label-mono text-[10px] leading-6 font-bold transform rotate-45 translate-x-4 -translate-y-4 shadow-sm">NOUVEAU</div>
+</div>
+<div class="h-48 bg-surface-variant relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-t from-surface-dark to-transparent opacity-60"></div>
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="Close up of a technical industrial blueprint being reviewed on a digital tablet. Dark modern industrial aesthetic. Crisp lighting, deep navy background with warm amber/gold UI elements on the screen." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcJ85mco3AVfdx6tfvkWM9i1Ix-PCzFDSu_xsTB5_fVpd8fbnHuEEmyV3IgFg7Vu-tHJPAWyXnMIoPKG1sgKiEO3hmFtgCthzJsi9ICp5KJQXKcYAm4ZrBFIntG3dk6ewCJpzOoddlHTcISPsfOE6mQ8ecDEhqDICMZWFPvBEtPL2DNV-zcp4HD54_deK6JuU4FevGXzjg2xq8qB5h3DvI4tkze2nqHzrJPE6uYnGgx2DWDUWhBWR5"/>
+<div class="absolute top-4 left-4 bg-deep-navy text-titan-gold border border-titan-gold px-2 py-1 rounded font-label-mono text-label-mono">TECH</div>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<h3 class="font-headline-md-mobile text-headline-md-mobile text-on-surface mb-2">Automatisation &amp; Systèmes Cyber-Physiques</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-6 line-clamp-2">Maîtrisez l'intégration des systèmes automatisés et la gestion des données industrielles en temps réel.</p>
+<div class="flex flex-wrap gap-4 mt-auto mb-6">
+<div class="flex items-center gap-1 text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-titan-gold text-[18px]" style="font-variation-settings: 'FILL' 0;">schedule</span>
+                                60h
+                            </div>
+<div class="flex items-center gap-1 text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-titan-gold text-[18px]" style="font-variation-settings: 'FILL' 0;">school</span>
+                                Avancé
+                            </div>
+</div>
+<button class="w-full bg-transparent text-titan-gold border border-titan-gold py-2 rounded hover:bg-titan-gold hover:text-deep-navy transition-colors duration-300 font-body-base text-body-base font-medium">Découvrir</button>
+</div>
+</article>
+<!-- Card 3 -->
+<article class="bg-surface-container-low border border-outline-variant rounded overflow-hidden flex flex-col group hover:bg-surface-container transition-colors duration-300">
+<div class="h-48 bg-surface-variant relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-t from-surface-dark to-transparent opacity-60"></div>
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A secure server room or data center, subtly lit with cool blue lights. A glowing golden padlock icon floating conceptually over the servers. Corporate security aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-XlFu5XVBCI-nwTLfefM90hcV5Zdj-u5zwFtzHhvwvtID-XRB9ZWtl4PQwNfSox8M6XmMsMliYSR3l9pHS_pEnlWJG7JN-6XNToDDCFud0qNQYnmPaEd6WDMm5nfmqF5uXt-m6j7ppi0iTYliYhYbtYyWsPIeZEOzW-OvgixQU9bePE2yLFdO2y4PnYjGdCDnBBdxlXq5kbVzGsHmSO1Rp-u0VK2aApfREkIto8ryyfeTLchIoywK"/>
+<div class="absolute top-4 left-4 bg-deep-navy text-titan-gold border border-titan-gold px-2 py-1 rounded font-label-mono text-label-mono">COMPLIANCE</div>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<h3 class="font-headline-md-mobile text-headline-md-mobile text-on-surface mb-2">Conformité ISO 27001 &amp; Cyber-résilience</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-6 line-clamp-2">Préparez votre organisation aux audits stricts et sécurisez vos infrastructures critiques contre les menaces.</p>
+<div class="flex flex-wrap gap-4 mt-auto mb-6">
+<div class="flex items-center gap-1 text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-titan-gold text-[18px]" style="font-variation-settings: 'FILL' 0;">schedule</span>
+                                35h
+                            </div>
+<div class="flex items-center gap-1 text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-titan-gold text-[18px]" style="font-variation-settings: 'FILL' 0;">school</span>
+                                Intermédiaire
+                            </div>
+<div class="flex items-center gap-1 text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-titan-gold text-[18px]" style="font-variation-settings: 'FILL' 0;">desktop_windows</span>
+                                En ligne
+                            </div>
+</div>
+<button class="w-full bg-transparent text-titan-gold border border-titan-gold py-2 rounded hover:bg-titan-gold hover:text-deep-navy transition-colors duration-300 font-body-base text-body-base font-medium">Découvrir</button>
+</div>
+</article>
+</div>
+<!-- Pagination (Simple) -->
+<div class="mt-12 flex justify-center items-center gap-2">
+<button class="w-10 h-10 flex items-center justify-center border border-outline-variant rounded text-on-surface-variant hover:text-titan-gold hover:border-titan-gold transition-colors duration-200" disabled="">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">chevron_left</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center border border-titan-gold bg-deep-navy text-titan-gold rounded font-label-mono text-label-mono font-bold">1</button>
+<button class="w-10 h-10 flex items-center justify-center border border-outline-variant rounded text-on-surface-variant hover:text-titan-gold hover:border-titan-gold transition-colors duration-200 font-label-mono text-label-mono">2</button>
+<button class="w-10 h-10 flex items-center justify-center border border-outline-variant rounded text-on-surface-variant hover:text-titan-gold hover:border-titan-gold transition-colors duration-200 font-label-mono text-label-mono">3</button>
+<button class="w-10 h-10 flex items-center justify-center border border-outline-variant rounded text-on-surface-variant hover:text-titan-gold hover:border-titan-gold transition-colors duration-200">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">chevron_right</span>
+</button>
+</div>
+</section>
+</main>
+<!-- Footer (From JSON) -->
+<footer class="w-full px-margin-mobile md:px-margin-desktop py-12 flex flex-col md:flex-row justify-between items-center gap-gutter border-t border-outline-variant bg-surface-container-lowest">
+<div class="flex flex-col items-center md:items-start gap-2">
+<span class="font-headline-md-mobile text-headline-md-mobile font-bold text-on-surface">Titan Kinetic</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">© 2024 Titan Kinetic Industrial Learning Systems. All rights reserved.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-6 mt-6 md:mt-0">
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-titan-gold transition-colors duration-200 focus:outline-none ring-2 ring-transparent focus:ring-titan-gold" href="#">Privacy Policy</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-titan-gold transition-colors duration-200 focus:outline-none ring-2 ring-transparent focus:ring-titan-gold" href="#">Terms of Service</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-titan-gold transition-colors duration-200 focus:outline-none ring-2 ring-transparent focus:ring-titan-gold" href="#">Accreditation</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-titan-gold transition-colors duration-200 focus:outline-none ring-2 ring-transparent focus:ring-titan-gold" href="#">Security Compliance</a>
+</div>
+</footer>
+</body></html>

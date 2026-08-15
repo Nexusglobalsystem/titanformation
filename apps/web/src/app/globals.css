@@ -1,0 +1,50 @@
+@import "tailwindcss";
+@import "@titan-kinetic/ui/styles/tokens.css";
+
+@source "../../../../packages/ui/src";
+
+@theme inline {
+  --color-background: var(--color-background);
+  --color-surface: var(--color-surface);
+  --color-surface-elevated: var(--color-surface-elevated);
+  --color-surface-zebra: var(--color-surface-zebra);
+  --color-border: var(--color-border);
+
+  --color-foreground: var(--color-foreground);
+  --color-foreground-muted: var(--color-foreground-muted);
+
+  --color-primary: var(--color-primary);
+  --color-on-primary: var(--color-on-primary);
+  --color-accent: var(--color-accent);
+  --color-accent-text: var(--color-accent-text);
+  --color-on-accent: var(--color-on-accent);
+
+  --color-success: var(--color-success);
+  --color-success-bg: var(--color-success-bg);
+  --color-warning: var(--color-warning);
+  --color-warning-bg: var(--color-warning-bg);
+  --color-error: var(--color-error);
+  --color-error-bg: var(--color-error-bg);
+  --color-danger: var(--color-danger);
+
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-mono-label: var(--font-mono-label);
+
+  --radius-sm: var(--radius-sm);
+  --radius-DEFAULT: var(--radius-DEFAULT);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-full: var(--radius-full);
+
+  --spacing-gutter: var(--spacing-gutter);
+  --spacing-margin-desktop: var(--spacing-margin-desktop);
+  --spacing-margin-mobile: var(--spacing-margin-mobile);
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-body);
+}

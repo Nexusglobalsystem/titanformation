@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Suivi de Progression - LMS Analytics</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Geist:wght@500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed": "#002113",
+                        "on-primary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed": "#6ffbbe",
+                        "surface-container-highest": "#d3e4fe",
+                        "surface-tint": "#494bd6",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "tertiary-fixed-dim": "#4edea3",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed-variant": "#2f2ebe",
+                        "primary": "#4648d4",
+                        "surface-dim": "#cbdbf5",
+                        "outline": "#767586",
+                        "on-surface-variant": "#464554",
+                        "outline-variant": "#c7c4d7",
+                        "tertiary-container": "#00885d",
+                        "on-tertiary-container": "#000703",
+                        "secondary": "#565e74",
+                        "surface-container": "#e5eeff",
+                        "primary-container": "#6063ee",
+                        "on-primary-fixed": "#07006c",
+                        "inverse-surface": "#213145",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-surface": "#0b1c30",
+                        "error-container": "#ffdad6",
+                        "surface-container-low": "#eff4ff",
+                        "surface-container-high": "#dce9ff",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-container": "#dae2fd",
+                        "on-primary-container": "#fffbff",
+                        "inverse-primary": "#c0c1ff",
+                        "secondary-fixed": "#dae2fd",
+                        "primary-fixed-dim": "#c0c1ff",
+                        "on-error-container": "#93000a",
+                        "on-error": "#ffffff",
+                        "on-secondary-container": "#5c647a",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "tertiary": "#006c49",
+                        "surface-bright": "#f8f9ff",
+                        "surface": "#f8f9ff",
+                        "surface-variant": "#d3e4fe",
+                        "on-tertiary-fixed-variant": "#005236",
+                        "on-background": "#0b1c30",
+                        "background": "#f8f9ff",
+                        "on-secondary-fixed": "#131b2e",
+                        "primary-fixed": "#e1e0ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1440px",
+                        "margin-mobile": "16px",
+                        "gutter": "24px",
+                        "margin-desktop": "48px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Geist"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Geist"],
+                        "headline-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "display": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+        }
+        .glass-header {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .circular-progress {
+            transform: rotate(-90deg);
+        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen pb-24">
+<!-- Top Navigation Bar -->
+<header class="bg-surface/70 backdrop-blur-md font-headline-md text-headline-md md:font-headline-lg md:text-headline-lg docked full-width top-0 sticky z-50 shadow-sm">
+<div class="flex justify-between items-center w-full px-margin-mobile py-unit max-w-container-max mx-auto h-16">
+<div class="flex items-center gap-3">
+<span class="font-display text-headline-md text-primary">LMS Analytics</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-high/50 transition-colors rounded-full">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-primary-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional high-end corporate headshot of a female education administrator. She is wearing a modern charcoal blazer over a crisp white shirt, looking directly at the camera with a confident and helpful expression. The background is a soft-focus minimalist office with clean architectural lines in cool slate and indigo tones, echoing a premium fintech aesthetic. The lighting is soft, diffuse, and flattering." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrjpDiFPLgQHfhyYKOnNogR15oIYDg6gTDXVUMs-MnxOw94uz4xg05k06AEwJ0_nBgAa_DdOwDIqHKWzYPYx1ijFYI_uXbG3Ku7qktonNolaMYsE2O_8sMU1gt8JqzpK1v82CBTvQETEgFyUGdPEu1n5Q3qqlp4H8Ba2EjdrhXBD2tCkkKILJ2dHQXM9DJxq5dwPGdny8Q8kLPjidyrI6e9ToBPAsvvRp0WldQjqVI4s3C_Ir4G_m9"/>
+</div>
+</div>
+</div>
+</header>
+<main class="px-margin-mobile mt-6 space-y-8 max-w-container-max mx-auto">
+<!-- KPIs Section: Bento Style -->
+<section class="grid grid-cols-2 gap-4">
+<div class="bg-surface-container-low p-5 rounded-[1.5rem] border border-outline-variant/30 shadow-sm flex flex-col justify-between h-40">
+<div class="flex justify-between items-start">
+<span class="text-on-surface-variant font-label-md">Progression Moyenne</span>
+<span class="material-symbols-outlined text-primary">trending_up</span>
+</div>
+<div>
+<div class="text-[32px] font-bold text-primary">74.2%</div>
+<div class="text-label-sm text-tertiary-container flex items-center mt-1">
+<span class="material-symbols-outlined text-[14px] mr-1">arrow_upward</span>
+                        +5.4% ce mois
+                    </div>
+</div>
+</div>
+<div class="bg-surface-container-low p-5 rounded-[1.5rem] border border-outline-variant/30 shadow-sm flex flex-col justify-between h-40">
+<div class="flex justify-between items-start">
+<span class="text-on-surface-variant font-label-md">Taux de Réussite</span>
+<span class="material-symbols-outlined text-tertiary">verified</span>
+</div>
+<div>
+<div class="text-[32px] font-bold text-on-surface">88.5%</div>
+<div class="text-label-sm text-secondary flex items-center mt-1">
+                        Stabilité (Qualiopi)
+                    </div>
+</div>
+</div>
+</section>
+<!-- Formations Actives -->
+<section>
+<div class="flex items-center justify-between mb-4">
+<h2 class="font-headline-md text-headline-md text-on-surface">Formations Actives</h2>
+<button class="text-primary font-label-md">Voir tout</button>
+</div>
+<div class="flex overflow-x-auto gap-4 pb-4 hide-scrollbar">
+<!-- Course Card 1 -->
+<div class="flex-shrink-0 w-64 bg-surface-container-lowest p-5 rounded-[1.5rem] border border-outline-variant/30 shadow-sm">
+<div class="flex justify-between items-start mb-6">
+<div class="relative w-14 h-14">
+<svg class="circular-progress w-full h-full" viewbox="0 0 36 36">
+<path class="stroke-surface-container-high" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-width="3"></path>
+<path class="stroke-primary" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-dasharray="82, 100" stroke-linecap="round" stroke-width="3"></path>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center text-label-sm font-bold text-primary">82%</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant">more_vert</span>
+</div>
+<h3 class="font-label-md text-on-surface mb-1">Audit Qualiopi v2</h3>
+<p class="text-label-sm text-on-surface-variant">42 Apprenants actifs</p>
+</div>
+<!-- Course Card 2 -->
+<div class="flex-shrink-0 w-64 bg-surface-container-lowest p-5 rounded-[1.5rem] border border-outline-variant/30 shadow-sm">
+<div class="flex justify-between items-start mb-6">
+<div class="relative w-14 h-14">
+<svg class="circular-progress w-full h-full" viewbox="0 0 36 36">
+<path class="stroke-surface-container-high" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-width="3"></path>
+<path class="stroke-tertiary" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-dasharray="45, 100" stroke-linecap="round" stroke-width="3"></path>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center text-label-sm font-bold text-tertiary">45%</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant">more_vert</span>
+</div>
+<h3 class="font-label-md text-on-surface mb-1">Management Agile</h3>
+<p class="text-label-sm text-on-surface-variant">18 Apprenants actifs</p>
+</div>
+</div>
+</section>
+<!-- Focus Apprenant -->
+<section class="bg-surface-container-low rounded-[1.5rem] p-6 border border-outline-variant/20">
+<div class="flex items-center gap-4 mb-6">
+<div class="w-16 h-16 rounded-full ring-4 ring-primary/10 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A close-up portrait of a professional young man, 'Jean Dupont', in a high-stakes educational environment. He is wearing a minimalist navy sweater, sitting in a modern glass-walled library. His expression is focused and diligent. The photography uses a shallow depth of field, with soft blue and silver background lighting that emphasizes a clean, premium digital learning aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAp0Gd7fc5NATtgLhWO2Wps75CTtlh9opJu5TtYXuUE72uAHThVt8RJSptdtzqANfO7bnEa_MEFMjSZEXK_DwPr7w_XVbe8SI9jGgGi_A73GVSwrGSYBalTaqQEp2tQZwHQ5ICQ-9wisa_y2f_cTf6K9Tq3xnPFhl6sbE-UkLz0yvPWUz6em5FX-j-X1nz_5_dfHVL7Tkl9NKX7WNLyKVaSg5dIaqaUmkWjkIQgMaMptiEaCnIANUEL"/>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Jean Dupont</h3>
+<p class="text-label-md text-on-surface-variant">Apprenant Senior • Groupe Paris</p>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-6">
+<div class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30">
+<div class="text-label-sm text-secondary mb-1">Dernier Score</div>
+<div class="text-headline-md font-bold text-tertiary">92%</div>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30">
+<div class="text-label-sm text-secondary mb-1">Temps Passé</div>
+<div class="text-headline-md font-bold text-on-surface">14h 25m</div>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between items-center text-label-md">
+<span class="text-on-surface">Progression du parcours</span>
+<span class="font-bold text-primary">68%</span>
+</div>
+<div class="w-full h-3 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full transition-all duration-1000 ease-out" style="width: 68%"></div>
+</div>
+</div>
+<button class="mt-6 w-full py-4 bg-primary text-white rounded-xl font-label-md shadow-lg shadow-primary/20 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[20px]">assignment</span>
+                Voir le dossier complet
+            </button>
+</section>
+</main>
+<!-- Floating Action Button -->
+<button class="fixed bottom-24 right-6 w-14 h-14 bg-primary-container text-on-primary-container rounded-2xl shadow-xl flex items-center justify-center transition-transform active:scale-95 z-40">
+<span class="material-symbols-outlined text-[28px]">campaign</span>
+<!-- Badge for notification -->
+<span class="absolute -top-1 -right-1 w-5 h-5 bg-error text-white text-[10px] flex items-center justify-center rounded-full border-2 border-background">12</span>
+</button>
+<!-- Bottom Navigation Bar (Predicted from JSON) -->
+<nav class="fixed bottom-0 w-full flex justify-around items-center px-4 py-2 border-t border-outline-variant/20 bg-surface/80 backdrop-blur-lg md:hidden z-50 shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 font-label-sm" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span>Accueil</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl p-2 font-label-sm" href="#">
+<span class="material-symbols-outlined" data-icon="query_stats" style="font-variation-settings: 'FILL' 1;">query_stats</span>
+<span>Suivi</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 font-label-sm" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span>KPIs</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 font-label-sm" href="#">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+<span>Plus</span>
+</a>
+</nav>
+<script>
+        // Simple Interaction logic
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                // Clear active states
+                document.querySelectorAll('nav a').forEach(l => {
+                    l.classList.remove('bg-primary-container', 'text-on-primary-container', 'rounded-xl');
+                    l.classList.add('text-on-surface-variant');
+                    const icon = l.querySelector('.material-symbols-outlined');
+                    if(icon) icon.style.fontVariationSettings = "'FILL' 0";
+                });
+                // Set active
+                e.currentTarget.classList.add('bg-primary-container', 'text-on-primary-container', 'rounded-xl');
+                e.currentTarget.classList.remove('text-on-surface-variant');
+                const activeIcon = e.currentTarget.querySelector('.material-symbols-outlined');
+                if(activeIcon) activeIcon.style.fontVariationSettings = "'FILL' 1";
+            });
+        });
+
+        // FAB Animation
+        const fab = document.querySelector('button.fixed.bottom-24');
+        fab.addEventListener('click', () => {
+            alert('Envoi de rappels à 12 apprenants inactifs...');
+        });
+    </script>
+</body></html>

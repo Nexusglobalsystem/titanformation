@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Qualiopi LMS | Corporate Client Portal</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Geist:wght@400;500;600&amp;family=Hanken+Grotesk:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Design System Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-surface": "#d4e4fa",
+                    "on-surface-variant": "#c7c4d7",
+                    "on-tertiary-container": "#1f2a3c",
+                    "on-primary-fixed": "#07006c",
+                    "inverse-on-surface": "#233143",
+                    "surface-container-low": "#0d1c2d",
+                    "on-primary-container": "#0d0096",
+                    "tertiary-fixed-dim": "#bcc7de",
+                    "on-primary-fixed-variant": "#2f2ebe",
+                    "inverse-primary": "#494bd6",
+                    "surface": "#051424",
+                    "on-surface": "#d4e4fa",
+                    "surface-container": "#122131",
+                    "on-secondary": "#283044",
+                    "on-background": "#d4e4fa",
+                    "primary": "#c0c1ff",
+                    "surface-dim": "#051424",
+                    "surface-tint": "#c0c1ff",
+                    "on-secondary-container": "#adb4ce",
+                    "primary-fixed": "#e1e0ff",
+                    "on-tertiary": "#263143",
+                    "surface-variant": "#273647",
+                    "error-container": "#93000a",
+                    "surface-container-high": "#1c2b3c",
+                    "on-error-container": "#ffdad6",
+                    "tertiary": "#bcc7de",
+                    "secondary": "#bec6e0",
+                    "secondary-container": "#3f465c",
+                    "outline": "#908fa0",
+                    "on-secondary-fixed": "#131b2e",
+                    "on-secondary-fixed-variant": "#3f465c",
+                    "surface-container-lowest": "#010f1f",
+                    "on-primary": "#1000a9",
+                    "outline-variant": "#464554",
+                    "on-tertiary-fixed": "#111c2d",
+                    "on-tertiary-fixed-variant": "#3c475a",
+                    "secondary-fixed": "#dae2fd",
+                    "surface-container-highest": "#273647",
+                    "on-error": "#690005",
+                    "primary-container": "#8083ff",
+                    "secondary-fixed-dim": "#bec6e0",
+                    "tertiary-fixed": "#d8e3fb",
+                    "error": "#ffb4ab",
+                    "primary-fixed-dim": "#c0c1ff",
+                    "background": "#051424",
+                    "surface-bright": "#2c3a4c",
+                    "tertiary-container": "#8691a7"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "unit": "4px",
+                    "container-max": "1440px",
+                    "gutter": "24px",
+                    "margin-desktop": "40px",
+                    "margin-mobile": "16px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Hanken Grotesk"],
+                    "headline-md": ["Hanken Grotesk"],
+                    "headline-md-mobile": ["Hanken Grotesk"],
+                    "body-sm": ["Inter"],
+                    "body-base": ["Inter"],
+                    "label-mono": ["Geist"]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-md-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "body-base": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-mono": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .lms-card-shadow {
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+        }
+        .dark .lms-card-shadow {
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3);
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c7c4d7;
+            border-radius: 10px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #464554;
+        }
+    </style>
+</head>
+<body class="bg-[#f8f9ff] dark:bg-background text-[#0b1c30] dark:text-on-surface font-body-base overflow-x-hidden transition-colors duration-200">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#f8f9ff]/70 dark:bg-surface/70 backdrop-blur-md shadow-sm border-b border-[#c7c4d7]/20 dark:border-outline-variant/20">
+<div class="flex justify-between items-center w-full px-margin-desktop h-16 max-w-container-max mx-auto">
+<div class="flex items-center gap-8">
+<span class="font-headline-md text-2xl font-bold text-[#4648d4] dark:text-primary">LMS Master</span>
+<nav class="hidden md:flex gap-6 items-center">
+<a class="text-[#4648d4] dark:text-primary font-bold border-b-2 border-[#4648d4] dark:border-primary py-5 text-sm" href="#">Dashboard</a>
+<a class="text-[#464554] dark:text-on-surface-variant hover:text-[#4648d4] dark:hover:text-primary transition-colors py-5 text-sm" href="#">Team</a>
+<a class="text-[#464554] dark:text-on-surface-variant hover:text-[#4648d4] dark:hover:text-primary transition-colors py-5 text-sm" href="#">Courses</a>
+<a class="text-[#464554] dark:text-on-surface-variant hover:text-[#4648d4] dark:hover:text-primary transition-colors py-5 text-sm" href="#">Billing</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-[#464554] dark:text-on-surface-variant hover:bg-[#eff4ff] dark:hover:bg-surface-container-low rounded-full transition-colors active:scale-95" id="dark-mode-toggle">
+<span class="material-symbols-outlined">dark_mode</span>
+</button>
+<button class="p-2 text-[#464554] dark:text-on-surface-variant hover:bg-[#eff4ff] dark:hover:bg-surface-container-low rounded-full transition-colors active:scale-95">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-[#c7c4d7] dark:border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional corporate headshot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPoGsUsWWWKZ7ky3RicHdf_kWoVrAqZTh0PWdBLJ2GQ7xh1-dWx5d3Y2jYib8eWf8P_uxDGkejR5Q0-lVTzTgbfIFMee6WvDOLirGqnKtnOlD9rQMXSRtgpGGPmSRZbZ_5WD7ABaySGRDqLrYhD0DDO3VuBvJtcf7teEdzaz3FtaKFHv97ZoqUMnGaBeUUuUsI-LupI0DpsheEsbpB9CzEli394YeIw6f4ujtmU8r_inuroPDg7FmK"/>
+</div>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-64 z-40 bg-white dark:bg-surface border-r border-[#c7c4d7]/30 dark:border-outline-variant flex flex-col py-8 px-4 hidden lg:flex mt-16 transition-colors duration-200">
+<div class="flex flex-col gap-1 mb-8">
+<div class="flex items-center gap-3 px-2">
+<div class="w-10 h-10 bg-[#6063ee]/10 dark:bg-primary-container/20 rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-[#4648d4] dark:text-primary">school</span>
+</div>
+<div>
+<p class="text-sm font-bold text-[#4648d4] dark:text-primary">Qualiopi LMS</p>
+<p class="text-[10px] text-[#767586] dark:text-outline font-semibold uppercase tracking-wider">Enterprise Admin</p>
+</div>
+</div>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-3 text-[#4648d4] dark:text-primary border-l-4 border-[#4648d4] dark:border-primary bg-[#6063ee]/5 dark:bg-primary/10 rounded-r-lg transition-all text-sm group relative" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#565e74] dark:text-on-secondary-fixed-variant hover:bg-[#d3e4fe]/30 dark:hover:bg-surface-container-highest rounded-lg transition-all text-sm group" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span>Team Management</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#565e74] dark:text-on-secondary-fixed-variant hover:bg-[#d3e4fe]/30 dark:hover:bg-surface-container-highest rounded-lg transition-all text-sm group" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span>Course Library</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#565e74] dark:text-on-secondary-fixed-variant hover:bg-[#d3e4fe]/30 dark:hover:bg-surface-container-highest rounded-lg transition-all text-sm group" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span>Billing &amp; Budget</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#565e74] dark:text-on-secondary-fixed-variant hover:bg-[#d3e4fe]/30 dark:hover:bg-surface-container-highest rounded-lg transition-all text-sm group" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span>Reports</span>
+</a>
+</nav>
+<div class="mt-auto pt-8 border-t border-[#c7c4d7]/30 dark:border-outline-variant flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-3 text-[#565e74] dark:text-on-secondary-fixed-variant hover:bg-[#d3e4fe]/30 dark:hover:bg-surface-container-highest rounded-lg transition-all text-sm" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#565e74] dark:text-on-secondary-fixed-variant hover:bg-[#d3e4fe]/30 dark:hover:bg-surface-container-highest rounded-lg transition-all text-sm" href="#">
+<span class="material-symbols-outlined">contact_support</span>
+<span>Support</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="lg:ml-64 pt-24 pb-20 px-margin-mobile md:px-margin-desktop min-h-screen">
+<div class="max-w-container-max mx-auto">
+<!-- Welcome Header -->
+<div class="mb-10">
+<h1 class="text-3xl font-bold text-[#0b1c30] dark:text-on-surface mb-2">Corporate Overview</h1>
+<p class="text-base text-[#464554] dark:text-on-surface-variant">Monitor your organization's learning performance and training investments.</p>
+</div>
+<!-- Bento Grid KPIs -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter mb-10">
+<!-- Total Learners -->
+<div class="bg-white dark:bg-surface-container-lowest p-6 rounded-xl lms-card-shadow border border-[#c7c4d7]/30 dark:border-outline-variant/30 flex flex-col justify-between h-40 hover:translate-y-[-4px] transition-all duration-300">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-[#4648d4] dark:text-primary bg-[#4648d4]/10 dark:bg-primary/10 p-2 rounded-lg">person</span>
+<span class="text-emerald-600 dark:text-emerald-400 text-xs font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">trending_up</span> +12%
+                    </span>
+</div>
+<div>
+<p class="text-sm font-medium text-[#464554] dark:text-on-surface-variant">Total Learners</p>
+<p class="text-2xl font-bold text-[#0b1c30] dark:text-on-surface">1,284</p>
+</div>
+</div>
+<!-- Average Progress -->
+<div class="bg-white dark:bg-surface-container-lowest p-6 rounded-xl lms-card-shadow border border-[#c7c4d7]/30 dark:border-outline-variant/30 flex flex-col justify-between h-40 hover:translate-y-[-4px] transition-all duration-300">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-[#006c49] dark:text-tertiary bg-[#006c49]/10 dark:bg-tertiary/10 p-2 rounded-lg">speed</span>
+<span class="text-[#464554] dark:text-on-surface-variant text-xs">vs 64% last month</span>
+</div>
+<div>
+<p class="text-sm font-medium text-[#464554] dark:text-on-surface-variant">Average Progress</p>
+<div class="flex items-center gap-3">
+<p class="text-2xl font-bold text-[#0b1c30] dark:text-on-surface">68.4%</p>
+<div class="flex-1 h-2 bg-[#e5eeff] dark:bg-surface-container rounded-full overflow-hidden">
+<div class="bg-[#006c49] dark:bg-tertiary h-full rounded-full" style="width: 68.4%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Active Courses -->
+<div class="bg-white dark:bg-surface-container-lowest p-6 rounded-xl lms-card-shadow border border-[#c7c4d7]/30 dark:border-outline-variant/30 flex flex-col justify-between h-40 hover:translate-y-[-4px] transition-all duration-300">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-[#565e74] dark:text-secondary bg-[#565e74]/10 dark:bg-secondary/10 p-2 rounded-lg">menu_book</span>
+</div>
+<div>
+<p class="text-sm font-medium text-[#464554] dark:text-on-surface-variant">Active Courses</p>
+<p class="text-2xl font-bold text-[#0b1c30] dark:text-on-surface">42</p>
+</div>
+</div>
+<!-- Budget Spent -->
+<div class="bg-white dark:bg-surface-container-lowest p-6 rounded-xl lms-card-shadow border border-[#c7c4d7]/30 dark:border-outline-variant/30 flex flex-col justify-between h-40 hover:translate-y-[-4px] transition-all duration-300">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-[#ba1a1a] dark:text-error bg-[#ba1a1a]/10 dark:bg-error/10 p-2 rounded-lg">account_balance_wallet</span>
+</div>
+<div>
+<p class="text-sm font-medium text-[#464554] dark:text-on-surface-variant">Budget Spent</p>
+<p class="text-2xl font-bold text-[#0b1c30] dark:text-on-surface">€84,200 <span class="text-xs font-normal text-[#767586] dark:text-outline">/ €120k</span></p>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter items-start">
+<!-- Team Progress Table (Wide column) -->
+<div class="lg:col-span-2 bg-white dark:bg-surface-container-lowest rounded-xl lms-card-shadow border border-[#c7c4d7]/30 dark:border-outline-variant/30 overflow-hidden transition-colors duration-200">
+<div class="p-6 border-b border-[#c7c4d7]/20 dark:border-outline-variant/20 flex justify-between items-center">
+<h2 class="text-xl font-bold text-[#0b1c30] dark:text-on-surface">Team Progress</h2>
+<button class="text-[#4648d4] dark:text-primary text-sm font-medium hover:underline">View All Teams</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-[#eff4ff] dark:bg-surface-container-low text-xs text-[#464554] dark:text-on-surface-variant">
+<tr>
+<th class="px-6 py-4 font-semibold uppercase tracking-wider">Department</th>
+<th class="px-6 py-4 font-semibold uppercase tracking-wider">Learners</th>
+<th class="px-6 py-4 font-semibold uppercase tracking-wider">Completion Rate</th>
+<th class="px-6 py-4 font-semibold uppercase tracking-wider text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#c7c4d7]/10 dark:divide-outline-variant/10">
+<tr class="hover:bg-[#e5eeff]/30 dark:hover:bg-surface-container/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-[#4648d4]/5 dark:bg-primary/5 flex items-center justify-center">
+<span class="material-symbols-outlined text-[#4648d4] dark:text-primary text-[18px]">engineering</span>
+</div>
+<span class="text-sm font-medium text-[#0b1c30] dark:text-on-surface">Engineering</span>
+</div>
+</td>
+<td class="px-6 py-4 text-[#464554] dark:text-on-surface-variant text-sm">412 Employees</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="text-xs text-[#0b1c30] dark:text-on-surface">82%</span>
+<div class="w-24 h-1.5 bg-[#e5eeff] dark:bg-surface-container rounded-full overflow-hidden">
+<div class="bg-[#4648d4] dark:bg-primary h-full rounded-full" style="width: 82%"></div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="p-1 hover:bg-[#e5eeff] dark:hover:bg-surface-container rounded-md">
+<span class="material-symbols-outlined text-[#464554] dark:text-on-surface-variant">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-[#e5eeff]/30 dark:hover:bg-surface-container/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-[#006c49]/5 dark:bg-tertiary/5 flex items-center justify-center">
+<span class="material-symbols-outlined text-[#006c49] dark:text-tertiary text-[18px]">payments</span>
+</div>
+<span class="text-sm font-medium text-[#0b1c30] dark:text-on-surface">Finance</span>
+</div>
+</td>
+<td class="px-6 py-4 text-[#464554] dark:text-on-surface-variant text-sm">86 Employees</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="text-xs text-[#0b1c30] dark:text-on-surface">94%</span>
+<div class="w-24 h-1.5 bg-[#e5eeff] dark:bg-surface-container rounded-full overflow-hidden">
+<div class="bg-[#006c49] dark:bg-tertiary h-full rounded-full" style="width: 94%"></div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="p-1 hover:bg-[#e5eeff] dark:hover:bg-surface-container rounded-md">
+<span class="material-symbols-outlined text-[#464554] dark:text-on-surface-variant">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-[#e5eeff]/30 dark:hover:bg-surface-container/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-[#565e74]/5 dark:bg-secondary/5 flex items-center justify-center">
+<span class="material-symbols-outlined text-[#565e74] dark:text-secondary text-[18px]">campaign</span>
+</div>
+<span class="text-sm font-medium text-[#0b1c30] dark:text-on-surface">Marketing</span>
+</div>
+</td>
+<td class="px-6 py-4 text-[#464554] dark:text-on-surface-variant text-sm">154 Employees</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="text-xs text-[#0b1c30] dark:text-on-surface">45%</span>
+<div class="w-24 h-1.5 bg-[#e5eeff] dark:bg-surface-container rounded-full overflow-hidden">
+<div class="bg-[#565e74] dark:bg-secondary h-full rounded-full" style="width: 45%"></div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="p-1 hover:bg-[#e5eeff] dark:hover:bg-surface-container rounded-md">
+<span class="material-symbols-outlined text-[#464554] dark:text-on-surface-variant">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Recent Activity Feed (Narrow column) -->
+<div class="bg-white dark:bg-surface-container-lowest rounded-xl lms-card-shadow border border-[#c7c4d7]/30 dark:border-outline-variant/30 flex flex-col h-full overflow-hidden transition-colors duration-200">
+<div class="p-6 border-b border-[#c7c4d7]/20 dark:border-outline-variant/20">
+<h2 class="text-xl font-bold text-[#0b1c30] dark:text-on-surface">Recent Activity</h2>
+</div>
+<div class="flex-1 overflow-y-auto p-6 flex flex-col gap-6">
+<!-- Activity Item 1 -->
+<div class="flex gap-4">
+<div class="relative">
+<div class="w-10 h-10 rounded-full bg-[#dce9ff] dark:bg-surface-container-high border-2 border-white dark:border-surface flex items-center justify-center z-10 relative overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Employee Headshot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOzWvDCgRgIRdHUNLSNoinfB8UX5gJLZW91ODPNnxceRKWkwP-QKQjwPguh7qCrsCNk1pAXa2BT1TLjKN2cYNH13hCEkyfSPsThtUgqik90nL8tATL2EqnftW4ql2PhbPkEwfEIAfkxALjZv9WcDECUeIEXBBvb2q0ro4QDW0cTw_MTQTSbXJ_S0tWMD-TlDncpXZ137XAfHC-ZUT3nbXFmZBhwosaSUQlA5z7F9uiUjO6s15v4Vi7"/>
+</div>
+<div class="absolute -bottom-1 -right-1 w-5 h-5 bg-[#006c49] dark:bg-tertiary rounded-full border-2 border-white dark:border-surface flex items-center justify-center z-20">
+<span class="material-symbols-outlined text-[12px] text-white dark:text-on-tertiary" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+</div>
+<div class="flex-1">
+<p class="text-sm font-medium text-[#0b1c30] dark:text-on-surface leading-tight mb-1">
+<span class="font-bold">Jean Dupont</span> earned <span class="text-[#4648d4] dark:text-primary font-bold">Data Security Level 1</span>
+</p>
+<p class="text-xs text-[#767586] dark:text-outline">2 minutes ago</p>
+</div>
+</div>
+<!-- Activity Item 2 -->
+<div class="flex gap-4">
+<div class="relative">
+<div class="w-10 h-10 rounded-full bg-[#dce9ff] dark:bg-surface-container-high border-2 border-white dark:border-surface flex items-center justify-center z-10 relative overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Employee Headshot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD99Kyd2mAQtuarMSB1tdUhYUbzIf9OXDePToXdBCFxvm_uV8T5R05bKBLiX7EWNPMXEYbytaPVWoluVAwUp2IloHEYlHblwtNRj-nCS9_vosatrqtkExnz06hiZgL4CNUiYOOb6CpJaZBwChzZKpk1V7fKpXEeOjgvRvi0v37LVyhtWyeYaXReYDFQGFW5AqExhDHiZE5FuOPVN3I-a-qPD7zbxqYaZVbc7PKiK1176ZkYtVjtLW61"/>
+</div>
+<div class="absolute -bottom-1 -right-1 w-5 h-5 bg-[#4648d4] dark:bg-primary rounded-full border-2 border-white dark:border-surface flex items-center justify-center z-20">
+<span class="material-symbols-outlined text-[12px] text-white dark:text-on-primary">play_arrow</span>
+</div>
+</div>
+<div class="flex-1">
+<p class="text-sm font-medium text-[#0b1c30] dark:text-on-surface leading-tight mb-1">
+<span class="font-bold">Sarah Williams</span> started <span class="text-[#4648d4] dark:text-primary font-bold">Leadership Essentials</span>
+</p>
+<p class="text-xs text-[#767586] dark:text-outline">15 minutes ago</p>
+</div>
+</div>
+</div>
+<div class="p-4 bg-[#eff4ff] dark:bg-surface-container-low border-t border-[#c7c4d7]/20 dark:border-outline-variant/20">
+<button class="w-full py-2 bg-white dark:bg-surface text-[#464554] dark:text-on-surface-variant border border-[#c7c4d7] dark:border-outline-variant rounded-lg text-sm hover:bg-[#e5eeff] dark:hover:bg-surface-container transition-colors">
+                        View Full History
+                    </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar for Mobile -->
+<nav class="lg:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-2 pb-safe bg-white/80 dark:bg-surface/80 backdrop-blur-lg border-t border-[#c7c4d7] dark:border-outline-variant z-50 rounded-t-xl shadow-lg transition-colors duration-200">
+<a class="flex flex-col items-center justify-center bg-[#6063ee]/10 dark:bg-primary-container/20 text-[#4648d4] dark:text-primary rounded-xl p-2 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] font-semibold">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#464554] dark:text-on-surface-variant p-2 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">assignment</span>
+<span class="text-[10px] font-semibold">Quizzes</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#464554] dark:text-on-surface-variant p-2 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">psychology</span>
+<span class="text-[10px] font-semibold">AI Tutor</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#464554] dark:text-on-surface-variant p-2 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-semibold">Me</span>
+</a>
+</nav>
+<!-- Micro-interaction & Theme Toggle Script -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const toggleBtn = document.getElementById('dark-mode-toggle');
+        const html = document.documentElement;
+
+        // Toggle functionality
+        toggleBtn.addEventListener('click', () => {
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                html.classList.add('light');
+                toggleBtn.querySelector('span').textContent = 'dark_mode';
+            } else {
+                html.classList.remove('light');
+                html.classList.add('dark');
+                toggleBtn.querySelector('span').textContent = 'light_mode';
+            }
+        });
+
+        // Entrance animation
+        const cards = document.querySelectorAll('.lms-card-shadow');
+        cards.forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'all 0.6s cubic-bezier(0.22, 1, 0.36, 1)';
+            
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, 100 * index);
+        });
+
+        // Scroll behavior
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('shadow-md');
+            } else {
+                header.classList.remove('shadow-md');
+            }
+        });
+    });
+</script>
+</body></html>

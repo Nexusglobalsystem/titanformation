@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Kinetic LMS - Gestion Budgétaire</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Geist:wght@400;500;600&amp;family=Hanken+Grotesk:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Theme Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-surface": "#d4e4fa",
+                    "on-surface-variant": "#c7c4d7",
+                    "on-tertiary-container": "#1f2a3c",
+                    "on-primary-fixed": "#07006c",
+                    "inverse-on-surface": "#233143",
+                    "surface-container-low": "#0d1c2d",
+                    "on-primary-container": "#0d0096",
+                    "tertiary-fixed-dim": "#bcc7de",
+                    "on-primary-fixed-variant": "#2f2ebe",
+                    "inverse-primary": "#494bd6",
+                    "surface": "#051424",
+                    "on-surface": "#d4e4fa",
+                    "surface-container": "#122131",
+                    "on-secondary": "#283044",
+                    "on-background": "#d4e4fa",
+                    "primary": "#c0c1ff",
+                    "surface-dim": "#051424",
+                    "surface-tint": "#c0c1ff",
+                    "on-secondary-container": "#adb4ce",
+                    "primary-fixed": "#e1e0ff",
+                    "on-tertiary": "#263143",
+                    "surface-variant": "#273647",
+                    "error-container": "#93000a",
+                    "surface-container-high": "#1c2b3c",
+                    "on-error-container": "#ffdad6",
+                    "tertiary": "#bcc7de",
+                    "secondary": "#bec6e0",
+                    "secondary-container": "#3f465c",
+                    "outline": "#908fa0",
+                    "on-secondary-fixed": "#131b2e",
+                    "on-secondary-fixed-variant": "#3f465c",
+                    "surface-container-lowest": "#010f1f",
+                    "on-primary": "#1000a9",
+                    "outline-variant": "#464554",
+                    "on-tertiary-fixed": "#111c2d",
+                    "on-tertiary-fixed-variant": "#3c475a",
+                    "secondary-fixed": "#dae2fd",
+                    "surface-container-highest": "#273647",
+                    "on-error": "#690005",
+                    "primary-container": "#8083ff",
+                    "secondary-fixed-dim": "#bec6e0",
+                    "tertiary-fixed": "#d8e3fb",
+                    "error": "#ffb4ab",
+                    "primary-fixed-dim": "#c0c1ff",
+                    "background": "#051424",
+                    "surface-bright": "#2c3a4c",
+                    "tertiary-container": "#8691a7"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "unit": "4px",
+                    "container-max": "1440px",
+                    "gutter": "24px",
+                    "margin-desktop": "40px",
+                    "margin-mobile": "16px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Hanken Grotesk"],
+                    "headline-md": ["Hanken Grotesk"],
+                    "headline-md-mobile": ["Hanken Grotesk"],
+                    "body-sm": ["Inter"],
+                    "body-base": ["Inter"],
+                    "label-mono": ["Geist"]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-md-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "body-base": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-mono": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-effect {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #464554;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #908fa0;
+        }
+    </style>
+</head>
+<body class="bg-[#f8f9ff] dark:bg-background text-[#0b1c30] dark:text-on-surface font-body-base min-h-screen flex overflow-hidden transition-colors duration-300">
+<!-- SideNavBar Anchor -->
+<aside class="fixed left-0 top-0 h-full w-64 bg-white dark:bg-surface-container-lowest shadow-sm border-r border-[#c7c4d7] dark:border-outline-variant flex flex-col py-8 px-4 z-50">
+<div class="mb-10 px-2 flex items-center gap-3">
+<div class="w-10 h-10 bg-[#6063ee] dark:bg-primary-container rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">speed</span>
+</div>
+<div>
+<h1 class="font-headline-md text-[#4648d4] dark:text-primary text-xl font-bold tracking-tight">Kinetic LMS</h1>
+<p class="font-label-mono text-[#565e74] dark:text-secondary text-[10px] uppercase tracking-widest">Gestion B2B</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-[#5c647a] dark:text-on-secondary-container hover:bg-[#eff4ff] dark:hover:bg-surface-container-low transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-sm font-medium">Tableau de bord</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-[#4648d4] dark:text-primary font-bold border-l-4 border-[#4648d4] dark:border-primary bg-[#e1e0ff] dark:bg-primary-fixed" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">payments</span>
+<span class="font-body-sm font-bold">Budgets</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-[#5c647a] dark:text-on-secondary-container hover:bg-[#eff4ff] dark:hover:bg-surface-container-low transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="font-body-sm font-medium">Facturation</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-[#5c647a] dark:text-on-secondary-container hover:bg-[#eff4ff] dark:hover:bg-surface-container-low transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">credit_card</span>
+<span class="font-body-sm font-medium">Paiements</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-[#5c647a] dark:text-on-secondary-container hover:bg-[#eff4ff] dark:hover:bg-surface-container-low transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-sm font-medium">Paramètres</span>
+</a>
+</nav>
+<div class="mt-auto pt-6 border-t border-[#c7c4d7] dark:border-outline-variant">
+<button class="w-full bg-[#4648d4] dark:bg-primary text-white py-3 px-4 rounded-xl font-body-sm font-semibold flex items-center justify-center gap-2 mb-6 hover:opacity-90 active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined">add</span>
+            Nouveau Budget
+        </button>
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-[#5c647a] dark:text-on-secondary-container hover:bg-[#eff4ff] dark:hover:bg-surface-container-low transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-body-sm font-medium">Aide</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-[#5c647a] dark:text-on-secondary-container hover:bg-[#eff4ff] dark:hover:bg-surface-container-low transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-body-sm font-medium">Déconnexion</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 ml-64 flex flex-col h-screen overflow-y-auto">
+<!-- TopNavBar Anchor -->
+<header class="sticky top-0 w-full z-40 bg-white/70 dark:bg-surface/70 backdrop-blur-md border-b border-[#c7c4d7] dark:border-outline-variant px-margin-desktop h-16 flex justify-between items-center transition-colors">
+<div class="flex items-center gap-4">
+<h2 class="font-headline-md text-xl md:text-2xl font-bold text-[#0b1c30] dark:text-on-surface">Gestion Budgétaire</h2>
+<nav class="hidden md:flex gap-6 ml-8">
+<a class="text-sm font-semibold text-[#4648d4] dark:text-primary border-b-2 border-[#4648d4] dark:border-primary pb-2" href="#">Vue Globale</a>
+<a class="text-sm font-medium text-[#565e74] dark:text-secondary hover:text-[#4648d4] dark:hover:text-primary pb-2 transition-colors" href="#">Analytique</a>
+<a class="text-sm font-medium text-[#565e74] dark:text-secondary hover:text-[#4648d4] dark:hover:text-primary pb-2 transition-colors" href="#">Export</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden lg:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#767586] dark:text-outline">search</span>
+<input class="bg-[#e5eeff] dark:bg-surface-container border-none rounded-full pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-[#4648d4] dark:focus:ring-primary w-64 text-[#0b1c30] dark:text-on-surface placeholder-[#767586] dark:placeholder-outline" placeholder="Rechercher..." type="text"/>
+</div>
+<button class="material-symbols-outlined p-2 text-[#464554] dark:text-on-surface-variant hover:bg-[#e5eeff] dark:hover:bg-surface-container rounded-full transition-colors">notifications</button>
+<div class="flex items-center gap-3 pl-4 border-l border-[#c7c4d7] dark:border-outline-variant">
+<div class="text-right">
+<p class="text-xs font-bold leading-tight text-[#0b1c30] dark:text-on-surface">Admin Kinetic</p>
+<p class="text-[10px] text-[#565e74] dark:text-secondary">Entreprise Alpha</p>
+</div>
+<div class="w-8 h-8 rounded-full bg-[#dae2fd] dark:bg-secondary-container overflow-hidden ring-1 ring-[#c7c4d7] dark:ring-outline-variant">
+<img alt="Admin headshot" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAG9QrQTh9M2zVl952YJi-UlX1gvJ9pA2F1NxmXf-i79LFslJ8eu2GJC6fv6Tp9HVszJFMLn2kq2iBUBHer4Dt_6ROZKpGpbXMXcIlVgGfPJ3VkQbAv2GGiNtbLVKdwFed5rHh_nM9qah3NYokyUlKjoJQVcZLS0W3WiV7_5c8TRgSb6ER_lC4Zqn6E_raxXgfiodXyC9lUoUN_a5992-dZqyECU_OFedrKgfI27v1fql0nek3m_DK8"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Page Content -->
+<div class="p-margin-desktop max-w-container-max mx-auto w-full space-y-8">
+<!-- KPI Section -->
+<section class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-gutter">
+<!-- Main Budget Summary -->
+<div class="lg:col-span-2 bg-white dark:bg-surface-container-lowest p-6 rounded-2xl shadow-sm border border-[#c7c4d7] dark:border-outline-variant relative overflow-hidden group transition-colors">
+<div class="flex justify-between items-start mb-6">
+<div>
+<h3 class="text-[#565e74] dark:text-secondary font-body-sm font-medium mb-1">Budget Total Consommé</h3>
+<p class="text-3xl font-headline-md font-bold text-[#0b1c30] dark:text-on-surface">142 850,00 €</p>
+</div>
+<span class="px-3 py-1 bg-[#00885d] dark:bg-tertiary-container text-white rounded-full text-[10px] font-bold">SOUS CONTRÔLE</span>
+</div>
+<div class="space-y-4">
+<div class="w-full bg-[#e5eeff] dark:bg-surface-container rounded-full h-3">
+<div class="bg-[#4648d4] dark:bg-primary h-3 rounded-full relative transition-all duration-1000" style="width: 71.4%;">
+<div class="absolute -right-1 -top-1 w-5 h-5 bg-white dark:bg-on-surface border-2 border-[#4648d4] dark:border-primary rounded-full shadow-md"></div>
+</div>
+</div>
+<div class="flex justify-between font-body-sm text-[#767586] dark:text-outline">
+<span>Utilisé: 71.4%</span>
+<span>Plafond: 200 000,00 €</span>
+</div>
+</div>
+<div class="absolute -right-8 -bottom-8 opacity-[0.05] dark:opacity-[0.03] group-hover:scale-110 transition-transform duration-500">
+<span class="material-symbols-outlined text-[120px] text-[#0b1c30] dark:text-on-surface">account_balance_wallet</span>
+</div>
+</div>
+<!-- KPI: Credits -->
+<div class="bg-white dark:bg-surface-container-lowest p-6 rounded-2xl shadow-sm border border-[#c7c4d7] dark:border-outline-variant flex flex-col justify-between transition-colors">
+<div class="w-10 h-10 rounded-lg bg-[#6ffbbe] dark:bg-tertiary-fixed flex items-center justify-center text-[#002113] dark:text-on-tertiary-fixed mb-4">
+<span class="material-symbols-outlined">school</span>
+</div>
+<div>
+<h3 class="text-[#565e74] dark:text-secondary font-body-sm font-medium">Crédits Formation</h3>
+<p class="text-2xl font-headline-md font-bold text-[#0b1c30] dark:text-on-surface">42 Units</p>
+<p class="text-xs text-[#006c49] dark:text-tertiary font-medium mt-1">+12 ce mois</p>
+</div>
+</div>
+<!-- KPI: Deadline -->
+<div class="bg-white dark:bg-surface-container-lowest p-6 rounded-2xl shadow-sm border border-[#c7c4d7] dark:border-outline-variant flex flex-col justify-between transition-colors">
+<div class="w-10 h-10 rounded-lg bg-[#dae2fd] dark:bg-secondary-container flex items-center justify-center text-[#131b2e] dark:text-on-secondary-fixed mb-4">
+<span class="material-symbols-outlined">calendar_today</span>
+</div>
+<div>
+<h3 class="text-[#565e74] dark:text-secondary font-body-sm font-medium">Prochaine Échéance</h3>
+<p class="text-2xl font-headline-md font-bold text-[#0b1c30] dark:text-on-surface">12 Oct. 2023</p>
+<p class="text-xs text-[#5c647a] dark:text-on-secondary-container font-medium mt-1">Prélèvement auto.</p>
+</div>
+</div>
+</section>
+<!-- Mid Section: Graph & Payment Methods -->
+<section class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<!-- Spend Evolution Graph -->
+<div class="lg:col-span-2 bg-white dark:bg-surface-container-lowest p-6 rounded-2xl shadow-sm border border-[#c7c4d7] dark:border-outline-variant transition-colors">
+<div class="flex justify-between items-center mb-8">
+<h3 class="font-headline-md text-xl md:text-2xl text-[#0b1c30] dark:text-on-surface">Évolution des Dépenses</h3>
+<select class="bg-[#e5eeff] dark:bg-surface-container border-none rounded-lg text-xs font-semibold px-3 py-1.5 focus:ring-[#4648d4] dark:focus:ring-primary text-[#0b1c30] dark:text-on-surface">
+<option>Année 2023</option>
+<option>Année 2022</option>
+</select>
+</div>
+<div class="h-64 flex items-end justify-between gap-2 px-2 relative">
+<div class="absolute inset-x-0 h-px bg-[#c7c4d7] dark:bg-outline-variant bottom-[25%]"></div>
+<div class="absolute inset-x-0 h-px bg-[#c7c4d7] dark:bg-outline-variant bottom-[50%]"></div>
+<div class="absolute inset-x-0 h-px bg-[#c7c4d7] dark:bg-outline-variant bottom-[75%]"></div>
+<div class="flex-1 bg-[#e1e0ff] dark:bg-primary-fixed hover:bg-[#4648d4] dark:hover:bg-primary transition-colors h-[40%] rounded-t-lg group relative"></div>
+<div class="flex-1 bg-[#e1e0ff] dark:bg-primary-fixed hover:bg-[#4648d4] dark:hover:bg-primary transition-colors h-[55%] rounded-t-lg group relative"></div>
+<div class="flex-1 bg-[#e1e0ff] dark:bg-primary-fixed hover:bg-[#4648d4] dark:hover:bg-primary transition-colors h-[35%] rounded-t-lg group relative"></div>
+<div class="flex-1 bg-[#e1e0ff] dark:bg-primary-fixed hover:bg-[#4648d4] dark:hover:bg-primary transition-colors h-[70%] rounded-t-lg group relative"></div>
+<div class="flex-1 bg-[#e1e0ff] dark:bg-primary-fixed hover:bg-[#4648d4] dark:hover:bg-primary transition-colors h-[60%] rounded-t-lg group relative"></div>
+<div class="flex-1 bg-[#e1e0ff] dark:bg-primary-fixed hover:bg-[#4648d4] dark:hover:bg-primary transition-colors h-[85%] rounded-t-lg group relative"></div>
+<div class="flex-1 bg-[#6063ee] dark:bg-primary-container h-[92%] rounded-t-lg group relative">
+<span class="absolute -top-8 left-1/2 -translate-x-1/2 bg-[#4648d4] dark:bg-primary text-white text-[10px] py-1 px-2 rounded font-bold">28k€</span>
+</div>
+<div class="flex-1 bg-[#e5eeff] dark:bg-surface-container h-[10%] rounded-t-lg"></div>
+<div class="flex-1 bg-[#e5eeff] dark:bg-surface-container h-[10%] rounded-t-lg"></div>
+</div>
+<div class="flex justify-between mt-4 px-2 font-body-sm font-medium text-[#565e74] dark:text-secondary">
+<span>Jan</span><span>Fév</span><span>Mar</span><span>Avr</span><span>Mai</span><span>Juin</span><span class="text-[#4648d4] dark:text-primary font-bold">Juil</span><span>Août</span><span>Sep</span>
+</div>
+</div>
+<!-- Payment Methods Widget -->
+<div class="bg-white dark:bg-surface-container-lowest p-6 rounded-2xl shadow-sm border border-[#c7c4d7] dark:border-outline-variant flex flex-col h-full transition-colors">
+<h3 class="font-headline-md text-xl text-[#0b1c30] dark:text-on-surface mb-6">Moyens de paiement</h3>
+<div class="space-y-4 flex-1">
+<div class="p-4 rounded-xl border border-[#4648d4] dark:border-primary bg-[#e1e0ff]/30 dark:bg-primary-fixed/10 relative overflow-hidden">
+<div class="flex justify-between items-start relative z-10">
+<div>
+<p class="text-[10px] font-bold text-[#4648d4] dark:text-primary uppercase">Principal</p>
+<p class="font-bold text-[#0b1c30] dark:text-on-surface mt-1">Visa Business Platinum</p>
+<p class="text-[#565e74] dark:text-secondary text-sm font-medium">•••• •••• •••• 8842</p>
+</div>
+<span class="material-symbols-outlined text-[#4648d4] dark:text-primary">verified</span>
+</div>
+<div class="mt-4 flex justify-between items-center relative z-10">
+<span class="text-xs text-[#565e74] dark:text-secondary">Expire: 09/27</span>
+<img alt="Visa Logo" class="h-4 opacity-70 dark:invert dark:opacity-50" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYAUC8qoXrBbLcPayokn5PuxCkxDjcbP4NohiQS-Lm5jjROVjZOWdGnXinGzGNdRyb4vMTGFIbBA2iEY4b7AA88XW6NEX9hjPA9Wz9o_4kpD3dU8fuji8GEAV3tTRhasGRtWERREaqEZHFBnPU0amKEv4DCLFHO7NzOY186cqknWPWjViPSsh1qCGViS5Vj-2lp_NhBXAbfvdRwPOd-lkmfkMFvOp0C5Zc473EyrEyIfDmJ6F9hheg"/>
+</div>
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-[#4648d4]/10 dark:bg-primary/5 rounded-full blur-2xl"></div>
+</div>
+<div class="p-4 rounded-xl border border-[#c7c4d7] dark:border-outline-variant hover:border-[#4648d4] dark:hover:border-primary transition-colors cursor-pointer group bg-transparent">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-[#e5eeff] dark:bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[#565e74] dark:text-secondary group-hover:text-[#4648d4] dark:group-hover:text-primary transition-colors">account_balance</span>
+</div>
+<div>
+<p class="font-bold text-[#0b1c30] dark:text-on-surface text-sm">Prélèvement SEPA</p>
+<p class="text-xs text-[#565e74] dark:text-secondary">IBAN FR76 •••• 091</p>
+</div>
+</div>
+</div>
+</div>
+<button class="mt-6 w-full py-3 border-2 border-dashed border-[#c7c4d7] dark:border-outline-variant text-[#565e74] dark:text-secondary font-semibold text-sm rounded-xl hover:bg-[#eff4ff] dark:hover:bg-surface-container-low transition-colors">
+                    + Ajouter un moyen
+                </button>
+</div>
+</section>
+<!-- Bottom Section: Invoice History Table -->
+<section class="bg-white dark:bg-surface-container-lowest rounded-2xl shadow-sm border border-[#c7c4d7] dark:border-outline-variant overflow-hidden transition-colors">
+<div class="p-6 border-b border-[#c7c4d7] dark:border-outline-variant flex justify-between items-center bg-transparent">
+<h3 class="font-headline-md text-xl text-[#0b1c30] dark:text-on-surface">Historique des Factures</h3>
+<div class="flex gap-2">
+<button class="flex items-center gap-2 px-4 py-2 bg-[#e5eeff] dark:bg-surface-container rounded-lg font-body-sm font-semibold text-[#0b1c30] dark:text-on-surface hover:bg-[#dce9ff] dark:hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-sm">filter_list</span>
+                        Filtrer
+                    </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-[#4648d4] dark:bg-primary text-white rounded-lg font-body-sm font-semibold hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-sm">download</span>
+                        Tout télécharger
+                    </button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-[#eff4ff] dark:bg-surface-container-low">
+<th class="px-6 py-4 text-[10px] uppercase tracking-wider font-bold text-[#565e74] dark:text-secondary">N° Facture</th>
+<th class="px-6 py-4 text-[10px] uppercase tracking-wider font-bold text-[#565e74] dark:text-secondary">Date</th>
+<th class="px-6 py-4 text-[10px] uppercase tracking-wider font-bold text-[#565e74] dark:text-secondary">Formation / Service</th>
+<th class="px-6 py-4 text-[10px] uppercase tracking-wider font-bold text-[#565e74] dark:text-secondary">Montant</th>
+<th class="px-6 py-4 text-[10px] uppercase tracking-wider font-bold text-[#565e74] dark:text-secondary">Statut</th>
+<th class="px-6 py-4 text-[10px] uppercase tracking-wider font-bold text-[#565e74] dark:text-secondary text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#c7c4d7] dark:divide-outline-variant">
+<tr class="hover:bg-[#f8f9ff] dark:hover:bg-surface-container transition-colors group">
+<td class="px-6 py-4 font-bold text-[#0b1c30] dark:text-on-surface">INV-2023-0891</td>
+<td class="px-6 py-4 text-[#565e74] dark:text-secondary text-sm">24/07/2023</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-[#e1e0ff] dark:bg-primary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-[#4648d4] dark:text-primary text-sm">code</span>
+</div>
+<span class="font-semibold text-[#0b1c30] dark:text-on-surface text-sm">Fullstack Web Dev (Sprint)</span>
+</div>
+</td>
+<td class="px-6 py-4 font-bold text-[#0b1c30] dark:text-on-surface">12 450,00 €</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#00885d] dark:bg-tertiary-container text-white">Payé</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-[#4648d4] dark:text-primary hover:bg-[#e1e0ff] dark:hover:bg-primary-fixed p-2 rounded-full transition-colors material-symbols-outlined">download</button>
+</td>
+</tr>
+<tr class="hover:bg-[#f8f9ff] dark:hover:bg-surface-container transition-colors group">
+<td class="px-6 py-4 font-bold text-[#0b1c30] dark:text-on-surface">INV-2023-0885</td>
+<td class="px-6 py-4 text-[#565e74] dark:text-secondary text-sm">15/07/2023</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-[#dae2fd] dark:bg-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[#565e74] dark:text-secondary text-sm">psychology</span>
+</div>
+<span class="font-semibold text-[#0b1c30] dark:text-on-surface text-sm">Management Stratégique</span>
+</div>
+</td>
+<td class="px-6 py-4 font-bold text-[#0b1c30] dark:text-on-surface">8 200,00 €</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#e1e0ff] dark:bg-primary-fixed text-[#4648d4] dark:text-primary">En attente</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-[#4648d4] dark:text-primary hover:bg-[#e1e0ff] dark:hover:bg-primary-fixed p-2 rounded-full transition-colors material-symbols-outlined">download</button>
+</td>
+</tr>
+<tr class="hover:bg-[#f8f9ff] dark:hover:bg-surface-container transition-colors group">
+<td class="px-6 py-4 font-bold text-[#0b1c30] dark:text-on-surface">INV-2023-0870</td>
+<td class="px-6 py-4 text-[#565e74] dark:text-secondary text-sm">02/07/2023</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-[#e5eeff] dark:bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[#565e74] dark:text-secondary text-sm">support_agent</span>
+</div>
+<span class="font-semibold text-[#0b1c30] dark:text-on-surface text-sm">Support &amp; Consulting Mensuel</span>
+</div>
+</td>
+<td class="px-6 py-4 font-bold text-[#0b1c30] dark:text-on-surface">2 500,00 €</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#00885d] dark:bg-tertiary-container text-white">Payé</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-[#4648d4] dark:text-primary hover:bg-[#e1e0ff] dark:hover:bg-primary-fixed p-2 rounded-full transition-colors material-symbols-outlined">download</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-6 py-4 bg-[#eff4ff] dark:bg-surface-container-low flex justify-between items-center text-sm text-[#565e74] dark:text-secondary font-medium">
+<p>Affichage de 3 sur 24 factures</p>
+<div class="flex gap-2">
+<button class="p-1 hover:text-[#4648d4] dark:hover:text-primary transition-colors material-symbols-outlined">chevron_left</button>
+<span class="w-8 h-8 rounded-full bg-[#4648d4] dark:bg-primary text-white flex items-center justify-center font-bold">1</span>
+<button class="w-8 h-8 rounded-full hover:bg-[#dce9ff] dark:hover:bg-surface-container-high flex items-center justify-center transition-colors">2</button>
+<button class="w-8 h-8 rounded-full hover:bg-[#dce9ff] dark:hover:bg-surface-container-high flex items-center justify-center transition-colors">3</button>
+<button class="p-1 hover:text-[#4648d4] dark:hover:text-primary transition-colors material-symbols-outlined">chevron_right</button>
+</div>
+</div>
+</section>
+</div>
+<!-- Decorative Subtle Animation Background Element -->
+<div class="fixed top-0 right-0 -z-10 w-1/2 h-full opacity-[0.03] pointer-events-none transition-opacity">
+<svg class="w-full h-full" viewbox="0 0 100 100">
+<circle cx="80" cy="20" fill="url(#grad1)" r="40"></circle>
+<defs>
+<lineargradient id="grad1" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#4648d4;stop-opacity:1"></stop>
+<stop offset="100%" style="stop-color:#006c49;stop-opacity:1"></stop>
+</lineargradient>
+</defs>
+</svg>
+</div>
+</main>
+<!-- Floating Action Button -->
+<button class="fixed bottom-8 right-8 w-14 h-14 bg-[#4648d4] dark:bg-primary text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-50">
+<span class="material-symbols-outlined" style="font-variation-settings: 'wght' 600;">chat_bubble</span>
+</button>
+<script>
+    // System preference theme listener
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
+    }
+    
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+        if (event.matches) {
+            document.documentElement.classList.add('dark');
+            document.documentElement.classList.remove('light');
+        } else {
+            document.documentElement.classList.remove('dark');
+            document.documentElement.classList.add('light');
+        }
+    });
+
+    // Side nav active state micro-interaction
+    document.querySelectorAll('aside nav a').forEach(link => {
+        link.addEventListener('click', function(e) {
+            document.querySelectorAll('aside nav a').forEach(l => {
+                l.className = 'flex items-center gap-3 px-3 py-3 rounded-lg text-[#5c647a] dark:text-on-secondary-container hover:bg-[#eff4ff] dark:hover:bg-surface-container-low transition-colors duration-200';
+                const icon = l.querySelector('.material-symbols-outlined');
+                if (icon) icon.style.fontVariationSettings = "'FILL' 0";
+                const label = l.querySelector('span:not(.material-symbols-outlined)');
+                if (label) label.classList.remove('font-bold');
+                if (label) label.classList.add('font-medium');
+            });
+            this.className = 'flex items-center gap-3 px-3 py-3 rounded-lg text-[#4648d4] dark:text-primary font-bold border-l-4 border-[#4648d4] dark:border-primary bg-[#e1e0ff] dark:bg-primary-fixed';
+            const icon = this.querySelector('.material-symbols-outlined');
+            if (icon) icon.style.fontVariationSettings = "'FILL' 1";
+            const label = this.querySelector('span:not(.material-symbols-outlined)');
+            if (label) label.classList.add('font-bold');
+            if (label) label.classList.remove('font-medium');
+        });
+    });
+
+    // Progress bar animation
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.width = entry.target.getAttribute('data-width');
+            }
+        });
+    }, { threshold: 0.5 });
+
+    document.querySelectorAll('.h-3.rounded-full.relative').forEach(bar => {
+        const currentWidth = bar.style.width;
+        bar.style.width = '0%';
+        bar.setAttribute('data-width', currentWidth);
+        observer.observe(bar);
+    });
+</script>
+</body></html>

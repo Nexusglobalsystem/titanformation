@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EduMastery - Quiz Engine</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Geist:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-variant": "#d3e4fe",
+                    "inverse-on-surface": "#eaf1ff",
+                    "secondary-fixed": "#dae2fd",
+                    "tertiary-fixed": "#6ffbbe",
+                    "on-primary-fixed": "#07006c",
+                    "on-primary-fixed-variant": "#2f2ebe",
+                    "on-surface-variant": "#464554",
+                    "surface-container": "#e5eeff",
+                    "surface-container-high": "#dce9ff",
+                    "on-primary-container": "#fffbff",
+                    "primary-fixed-dim": "#c0c1ff",
+                    "on-secondary": "#ffffff",
+                    "on-secondary-container": "#5c647a",
+                    "inverse-primary": "#c0c1ff",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-tint": "#494bd6",
+                    "surface-container-low": "#eff4ff",
+                    "outline": "#767586",
+                    "tertiary-fixed-dim": "#4edea3",
+                    "inverse-surface": "#213145",
+                    "surface-bright": "#f8f9ff",
+                    "secondary": "#565e74",
+                    "error-container": "#ffdad6",
+                    "error": "#ba1a1a",
+                    "surface-container-highest": "#d3e4fe",
+                    "secondary-fixed-dim": "#bec6e0",
+                    "primary-container": "#6063ee",
+                    "on-secondary-fixed-variant": "#3f465c",
+                    "on-error-container": "#93000a",
+                    "tertiary": "#006c49",
+                    "tertiary-container": "#00885d",
+                    "on-error": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "on-background": "#0b1c30",
+                    "on-secondary-fixed": "#131b2e",
+                    "primary": "#4648d4",
+                    "on-tertiary-fixed": "#002113",
+                    "surface-dim": "#cbdbf5",
+                    "primary-fixed": "#e1e0ff",
+                    "on-tertiary": "#ffffff",
+                    "surface": "#f8f9ff",
+                    "outline-variant": "#c7c4d7",
+                    "on-tertiary-fixed-variant": "#005236",
+                    "on-surface": "#0b1c30",
+                    "secondary-container": "#dae2fd",
+                    "on-tertiary-container": "#000703",
+                    "background": "#f8f9ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "unit": "4px",
+                    "container-max": "1440px",
+                    "margin-desktop": "48px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Inter"],
+                    "label-md": ["Geist"],
+                    "display": ["Inter"],
+                    "label-sm": ["Geist"],
+                    "headline-lg-mobile": ["Inter"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "label-md": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-sidebar {
+            backdrop-filter: blur(12px);
+            background-color: rgba(248, 249, 255, 0.7);
+        }
+        .kinetic-shadow {
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c7c4d7;
+            border-radius: 10px;
+        }
+        @keyframes subtle-float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+        .float-animation {
+            animation: subtle-float 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen overflow-hidden flex flex-col">
+<!-- Top Navigation -->
+<header class="fixed top-0 w-full z-50 bg-surface/70 backdrop-blur-md shadow-sm h-16 flex justify-between items-center px-margin-desktop">
+<div class="flex items-center gap-8">
+<h1 class="font-headline-md text-headline-md font-bold text-primary">EduMastery</h1>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-on-surface-variant font-label-md text-label-md hover:text-primary transition-colors" href="#">Dashboard</a>
+<a class="text-primary font-label-md text-label-md font-bold border-b-2 border-primary py-4" href="#">Quiz Engine</a>
+<a class="text-on-surface-variant font-label-md text-label-md hover:text-primary transition-colors" href="#">Course Builder</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-2 px-4 py-2 text-secondary font-label-md text-label-md hover:bg-surface-container-low rounded-lg transition-all active:scale-95">
+<span class="material-symbols-outlined">visibility</span>
+                Prévisualiser
+            </button>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-lg font-label-md text-label-md shadow-sm hover:opacity-90 transition-all active:scale-95">
+                Publier le Quiz
+            </button>
+<div class="h-8 w-[1px] bg-outline-variant mx-2"></div>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-colors">notifications</span>
+<div class="w-10 h-10 rounded-full border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional studio portrait of a senior educational administrator with a kind and confident expression, wearing modern business attire. The background is a soft, blurred office interior with high-key lighting, maintaining the clean, minimalist aesthetic of a high-end enterprise platform. The lighting is balanced and professional." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_NdKH01r3oSCflSpfZrIov_aJTBtpUFAsmj4oTeKe8nf4ZlwO5F9SPUpFfdKAvicSSHIjz8B4vSnkSjY_9IR92Qc5VpNLxp7L5SI-4WsxBtTSGS_I2hCHZtkt8OruTarObdpHQFWqmMZglqGv_P6ijb5sgvnmvleW2qsAcumeASbweZdKWC0Z5NNCBJ-GVvA1BDNxDYbUYeRu8D-nWReP5mRFZ1Jhy7QiDYMbJ80OS_fG2q6f5ezI"/>
+</div>
+</div>
+</header>
+<!-- Main Workspace -->
+<main class="flex-1 pt-16 flex overflow-hidden">
+<!-- Side Navigation (Left) -->
+<aside class="w-64 glass-sidebar border-r border-outline-variant hidden lg:flex flex-col py-8 px-4 h-full">
+<div class="mb-8">
+<div class="flex items-center gap-3 px-2 mb-2">
+<div class="w-8 h-8 bg-primary-container rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container text-[20px]">psychology</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Module Actuel</p>
+<p class="font-label-md text-label-md font-bold text-on-surface">Physique Quantique</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<div class="text-primary font-label-md text-label-md border-l-4 border-primary bg-primary-container/20 px-3 py-3 rounded-r-lg flex items-center gap-3">
+<span class="material-symbols-outlined">quiz</span>
+                    Quiz Engine
+                </div>
+<a class="flex items-center gap-3 px-3 py-3 text-on-secondary-fixed-variant hover:bg-surface-container-highest rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                    Dashboard
+                </a>
+<a class="flex items-center gap-3 px-3 py-3 text-on-secondary-fixed-variant hover:bg-surface-container-highest rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">edit_note</span>
+                    Course Builder
+                </a>
+<a class="flex items-center gap-3 px-3 py-3 text-on-secondary-fixed-variant hover:bg-surface-container-highest rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">smart_toy</span>
+                    AI Assistant
+                </a>
+<a class="flex items-center gap-3 px-3 py-3 text-on-secondary-fixed-variant hover:bg-surface-container-highest rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">analytics</span>
+                    Analytics
+                </a>
+</nav>
+<div class="mt-auto pt-6 border-t border-outline-variant space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-on-secondary-fixed-variant hover:bg-surface-container-highest rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+                    Paramètres
+                </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-secondary-fixed-variant hover:bg-surface-container-highest rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">contact_support</span>
+                    Support
+                </a>
+</div>
+</aside>
+<!-- Central Workspace (Questions List) -->
+<section class="flex-1 bg-surface-container-low overflow-y-auto p-gutter custom-scrollbar">
+<div class="max-w-3xl mx-auto space-y-6 pb-20">
+<div class="flex justify-between items-end mb-8">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Quiz final : Introduction au Quanta</h2>
+<p class="text-on-surface-variant font-body-md mt-1">Structurez vos questions et définissez les critères de réussite.</p>
+</div>
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-tertiary-container text-on-tertiary-container rounded-full text-label-sm font-label-sm">12 Questions</span>
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-label-sm font-label-sm">Temps: 45 min</span>
+</div>
+</div>
+<!-- Question Card 1 (Active) -->
+<div class="bg-surface-container-lowest border-2 border-primary rounded-xl p-6 kinetic-shadow relative">
+<div class="absolute -left-3 top-6 bg-primary text-on-primary w-8 h-8 rounded-lg flex items-center justify-center font-bold">1</div>
+<div class="flex justify-between items-start mb-4 pl-4">
+<div class="flex-1">
+<input class="w-full font-headline-md text-headline-md border-none focus:ring-0 p-0 mb-2 bg-transparent text-on-surface" placeholder="Saisissez votre question..." type="text" value="Qu'est-ce qu'un photon selon le modèle standard ?"/>
+<p class="text-label-sm text-outline font-label-sm uppercase tracking-wide">Choix Multiples (QCM)</p>
+</div>
+<div class="flex gap-2">
+<button class="p-2 hover:bg-surface-container rounded-lg text-outline transition-colors"><span class="material-symbols-outlined">content_copy</span></button>
+<button class="p-2 hover:bg-error-container hover:text-error rounded-lg text-outline transition-colors"><span class="material-symbols-outlined">delete</span></button>
+</div>
+</div>
+<div class="space-y-3 pl-4">
+<div class="flex items-center gap-3 p-3 bg-surface-container-low rounded-lg border border-outline-variant hover:border-primary transition-all group">
+<div class="w-6 h-6 rounded-full border-2 border-primary flex items-center justify-center bg-primary">
+<span class="material-symbols-outlined text-on-primary text-sm" style="font-variation-settings: 'wght' 700">check</span>
+</div>
+<input class="flex-1 bg-transparent border-none focus:ring-0 p-0 text-body-md text-on-surface" type="text" value="Une particule élémentaire médiatrice de l'interaction électromagnétique."/>
+</div>
+<div class="flex items-center gap-3 p-3 bg-surface-container-lowest rounded-lg border border-outline-variant hover:border-primary transition-all">
+<div class="w-6 h-6 rounded-full border-2 border-outline-variant"></div>
+<input class="flex-1 bg-transparent border-none focus:ring-0 p-0 text-body-md text-on-surface" type="text" value="Une onde sonore de haute fréquence."/>
+</div>
+<div class="flex items-center gap-3 p-3 bg-surface-container-lowest rounded-lg border border-outline-variant hover:border-primary transition-all">
+<div class="w-6 h-6 rounded-full border-2 border-outline-variant"></div>
+<input class="flex-1 bg-transparent border-none focus:ring-0 p-0 text-body-md text-on-surface" type="text" value="Une molécule d'hydrogène excitée."/>
+</div>
+<button class="mt-2 text-primary font-label-md text-label-md flex items-center gap-2 hover:underline">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                            Ajouter une option
+                        </button>
+</div>
+</div>
+<!-- Question Card 2 (Vrai/Faux) -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 kinetic-shadow relative hover:border-primary/50 transition-colors group">
+<div class="absolute -left-3 top-6 bg-outline-variant text-on-surface-variant w-8 h-8 rounded-lg flex items-center justify-center font-bold transition-colors group-hover:bg-primary-container">2</div>
+<div class="flex justify-between items-start mb-4 pl-4">
+<div class="flex-1">
+<h3 class="font-headline-md text-headline-md text-on-surface">Le principe d'incertitude a été formulé par Einstein ?</h3>
+<p class="text-label-sm text-outline font-label-sm uppercase tracking-wide">Vrai / Faux</p>
+</div>
+</div>
+<div class="flex gap-4 pl-4">
+<div class="px-6 py-2 border-2 border-outline-variant rounded-lg font-bold text-on-surface-variant">Vrai</div>
+<div class="px-6 py-2 border-2 border-primary bg-primary/5 rounded-lg font-bold text-primary">Faux</div>
+</div>
+</div>
+<!-- Floating Add Button -->
+<div class="flex justify-center pt-8">
+<button class="bg-primary-container text-on-primary-container px-8 py-4 rounded-full flex items-center gap-3 font-bold shadow-lg hover:scale-105 active:scale-95 transition-all">
+<span class="material-symbols-outlined">add_circle</span>
+                        Nouvelle Question
+                    </button>
+</div>
+</div>
+</section>
+<!-- Right Panel (Editor Options) -->
+<aside class="w-80 bg-surface border-l border-outline-variant flex flex-col h-full overflow-y-auto custom-scrollbar">
+<div class="p-6 border-b border-outline-variant">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-1">Configuration</h3>
+<p class="text-label-sm text-on-surface-variant">Personnalisez la question sélectionnée.</p>
+</div>
+<div class="p-6 space-y-8">
+<!-- Notation Section -->
+<section>
+<h4 class="font-label-md text-label-md font-bold text-on-surface uppercase tracking-wider mb-4">Notation &amp; Scoring</h4>
+<div class="space-y-4">
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-2">Points par réponse correcte</label>
+<div class="flex items-center gap-2">
+<input class="w-full bg-surface-container border-outline-variant rounded-lg focus:ring-primary focus:border-primary px-3 py-2" type="number" value="10"/>
+<span class="text-on-surface-variant">pts</span>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface">Pénalité erreur</span>
+<div class="relative inline-block w-10 h-6">
+<input class="peer opacity-0 w-0 h-0" id="toggle-penalty" type="checkbox"/>
+<label class="absolute cursor-pointer top-0 left-0 right-0 bottom-0 bg-outline-variant transition-all rounded-full before:absolute before:content-[''] before:h-4 before:w-4 before:left-1 before:bottom-1 before:bg-white before:transition-all before:rounded-full peer-checked:bg-primary peer-checked:before:translate-x-4" for="toggle-penalty"></label>
+</div>
+</div>
+</div>
+</section>
+<div class="h-[1px] bg-outline-variant"></div>
+<!-- Feedback Section -->
+<section>
+<h4 class="font-label-md text-label-md font-bold text-on-surface uppercase tracking-wider mb-4">Feedback Immédiat</h4>
+<div class="space-y-4">
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-2">Message de succès</label>
+<textarea class="w-full bg-surface-container border-outline-variant rounded-lg focus:ring-primary focus:border-primary px-3 py-2 h-20 text-body-md" placeholder="Excellent travail ! Vous maîtrisez les bases."></textarea>
+</div>
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-2">Aide / Indice</label>
+<textarea class="w-full bg-surface-container border-outline-variant rounded-lg focus:ring-primary focus:border-primary px-3 py-2 h-20 text-body-md" placeholder="Pensez à la dualité onde-particule..."></textarea>
+</div>
+</div>
+</section>
+<div class="h-[1px] bg-outline-variant"></div>
+<!-- Advanced Options -->
+<section>
+<h4 class="font-label-md text-label-md font-bold text-on-surface uppercase tracking-wider mb-4">Paramètres Avancés</h4>
+<div class="space-y-3">
+<label class="flex items-center gap-3 cursor-pointer">
+<input checked="" class="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/>
+<span class="text-label-md font-label-md text-on-surface">Mélanger les choix</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer">
+<input class="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/>
+<span class="text-label-md font-label-md text-on-surface">Limiter le temps (sec)</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer">
+<input checked="" class="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/>
+<span class="text-label-md font-label-md text-on-surface">Autoriser plusieurs tentatives</span>
+</label>
+</div>
+</section>
+<!-- Media Support -->
+<div class="bg-primary-container/10 p-4 rounded-xl border border-primary-container border-dashed">
+<p class="font-label-md text-label-md font-bold text-primary mb-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]">image</span>
+                        Illustration
+                    </p>
+<div class="aspect-video w-full rounded-lg overflow-hidden relative group">
+<img class="w-full h-full object-cover" data-alt="A highly detailed 3D scientific visualization of an atom with glowing electron probability clouds in shades of indigo and emerald. The background is a clean, dark-blue laboratory aesthetic with subtle grid lines. The lighting is focused and cinematic, creating a sense of advanced academic research." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEn5e1hP1WfUL8sVNKYhAJo-sH5CqaaqtMb-hwX5zwZj5q1L1YXxSuf0BaRFzQSe_nmN5pDcL8ontWVc7xLpJ11QYRRMtP69EJQf42u7jmdhiJYTFlBOoEabCwNLs8lcMKdq18cR3UdEa-hwW2iDOw8F3DjO4Vd3QzUtmlVDSDJRJgLF1wGWqvjP0rJJ8Cw7hIy5KcQZGoBOXqsGOUWKEAHvIX1tZYOOa7t_z-X2tw4o-6IrAKMIFh"/>
+<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity cursor-pointer">
+<span class="text-white font-label-md">Remplacer l'image</span>
+</div>
+</div>
+</div>
+</div>
+</aside>
+</main>
+<!-- Success Notification (Hidden by default, used for interaction) -->
+<div class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface px-6 py-3 rounded-full flex items-center gap-3 shadow-2xl translate-y-20 opacity-0 transition-all duration-500 z-[100]" id="publish-toast">
+<span class="material-symbols-outlined text-tertiary-fixed">check_circle</span>
+<span class="font-label-md">Quiz publié avec succès !</span>
+</div>
+<script>
+        // Simple Interaction logic
+        document.querySelector('button.bg-primary').addEventListener('click', () => {
+            const toast = document.getElementById('publish-toast');
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+            
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+                toast.classList.remove('translate-y-0', 'opacity-100');
+            }, 3000);
+        });
+
+        // Toggle state logic for question selection (simulation)
+        const cards = document.querySelectorAll('.bg-surface-container-lowest');
+        cards.forEach(card => {
+            card.addEventListener('click', () => {
+                cards.forEach(c => {
+                    c.classList.remove('border-primary', 'border-2');
+                    c.classList.add('border', 'border-outline-variant');
+                });
+                card.classList.add('border-primary', 'border-2');
+                card.classList.remove('border-outline-variant', 'border');
+            });
+        });
+    </script>
+</body></html>
