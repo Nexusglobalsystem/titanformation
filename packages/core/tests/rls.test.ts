@@ -132,6 +132,9 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
+  // L'enrollment (et l'attendance auto-créée par trigger) doivent partir
+  // avant la session/le profil : leurs FK sont "on delete restrict".
+  if (enrollmentId) await admin.from("enrollments").delete().eq("id", enrollmentId);
   if (sessionId) await admin.from("sessions").delete().eq("id", sessionId);
   if (trainingId) await admin.from("trainings").delete().eq("id", trainingId);
   if (userAId) await admin.auth.admin.deleteUser(userAId);

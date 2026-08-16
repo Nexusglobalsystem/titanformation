@@ -1347,6 +1347,7 @@ export type Database = {
           access_delay: string
           accessibility_info: string
           assessment_methods: string
+          category: string | null
           certification_name: string | null
           created_at: string
           created_by: string | null
@@ -1376,6 +1377,7 @@ export type Database = {
           access_delay: string
           accessibility_info: string
           assessment_methods: string
+          category?: string | null
           certification_name?: string | null
           created_at?: string
           created_by?: string | null
@@ -1405,6 +1407,7 @@ export type Database = {
           access_delay?: string
           accessibility_info?: string
           assessment_methods?: string
+          category?: string | null
           certification_name?: string | null
           created_at?: string
           created_by?: string | null

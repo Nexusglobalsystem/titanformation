@@ -66,6 +66,11 @@ export async function signInAction(_prev: ActionState, formData: FormData): Prom
   const { data: roleRows } = await supabase.from("user_roles").select("role");
   const roles = (roleRows ?? []).map((r) => r.role as AppRole);
 
+  const next = formData.get("next");
+  if (typeof next === "string" && next.startsWith("/") && !next.startsWith("//")) {
+    redirect(next);
+  }
+
   redirect(homePathForRoles(roles));
 }
 

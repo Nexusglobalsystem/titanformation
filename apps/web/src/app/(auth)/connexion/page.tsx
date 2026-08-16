@@ -1,14 +1,17 @@
 "use client";
 
-import { useActionState } from "react";
+import { Suspense, useActionState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, Input } from "@titan-kinetic/ui";
 import { signInAction, type ActionState } from "../_actions/auth";
 import { SubmitButton } from "../_components/SubmitButton";
 import { FormMessage } from "../_components/FormMessage";
 
-export default function ConnexionPage() {
+function ConnexionForm() {
   const [state, formAction] = useActionState<ActionState, FormData>(signInAction, undefined);
+  const searchParams = useSearchParams();
+  const next = searchParams.get("next");
 
   return (
     <Card>
@@ -18,6 +21,7 @@ export default function ConnexionPage() {
       </CardHeader>
       <CardContent>
         <form action={formAction} className="flex flex-col gap-4">
+          {next && <input type="hidden" name="next" value={next} />}
           <Input label="Email" name="email" type="email" autoComplete="email" required />
           <Input
             label="Mot de passe"
@@ -42,5 +46,13 @@ export default function ConnexionPage() {
         </div>
       </CardContent>
     </Card>
+  );
+}
+
+export default function ConnexionPage() {
+  return (
+    <Suspense fallback={null}>
+      <ConnexionForm />
+    </Suspense>
   );
 }

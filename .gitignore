@@ -44,3 +44,7 @@ Thumbs.db
 
 # TypeScript
 *.tsbuildinfo
+
+# Fichiers d'agent régénérés automatiquement par `next dev`/`next build` (Next.js 16)
+apps/web/AGENTS.md
+apps/web/CLAUDE.md
