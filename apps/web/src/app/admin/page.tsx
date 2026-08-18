@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { SpaceShell } from "@/components/SpaceShell";
 import {
@@ -60,6 +61,18 @@ export default async function AdminPage() {
             <CardTitle>Bienvenue{profile?.first_name ? `, ${profile.first_name}` : ""}</CardTitle>
           </CardHeader>
         </Card>
+
+        <nav className="flex gap-4 border-b border-border pb-2">
+          <Link href="/admin" className="border-b-2 border-accent pb-2 font-body text-sm font-semibold text-accent">
+            Inscriptions
+          </Link>
+          <Link
+            href="/admin/formations"
+            className="pb-2 font-body text-sm text-foreground-muted hover:text-foreground"
+          >
+            Formations
+          </Link>
+        </nav>
 
         <Card>
           <CardHeader>
