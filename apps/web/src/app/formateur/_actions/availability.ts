@@ -128,5 +128,8 @@ export async function updateBookingStatusAction(formData: FormData) {
 
   const supabase = await createClient();
   await supabase.from("bookings").update({ status }).eq("id", id);
+  if (status === "annulee") {
+    await supabase.rpc("notify_booking_event", { p_booking_id: id, p_kind: "cancelled" });
+  }
   revalidatePath("/formateur");
 }

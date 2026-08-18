@@ -32,20 +32,26 @@ export async function createBookingAction(formData: FormData) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const { error } = await supabase.from("bookings").insert({
-    trainer_id: trainerId,
-    learner_id: user!.id,
-    booking_date: bookingDate,
-    start_time: startTime,
-    end_time: endTime,
-    reason,
-    status: "confirmee",
-  });
+  const { data: booking, error } = await supabase
+    .from("bookings")
+    .insert({
+      trainer_id: trainerId,
+      learner_id: user!.id,
+      booking_date: bookingDate,
+      start_time: startTime,
+      end_time: endTime,
+      reason,
+      status: "confirmee",
+    })
+    .select("id")
+    .single();
 
   if (error) {
     const errorCode = error.code === "23505" ? "pris" : "erreur";
     redirect(`/apprenant/reservations?formateur=${trainerId}&error=${errorCode}`);
   }
+
+  await supabase.rpc("notify_booking_event", { p_booking_id: booking.id, p_kind: "created" });
 
   revalidatePath("/apprenant");
   redirect(`/apprenant/reservations?formateur=${trainerId}&success=1`);
@@ -57,6 +63,7 @@ export async function cancelBookingAction(formData: FormData) {
 
   const supabase = await createClient();
   await supabase.from("bookings").update({ status: "annulee" }).eq("id", id);
+  await supabase.rpc("notify_booking_event", { p_booking_id: id, p_kind: "cancelled" });
   revalidatePath("/apprenant");
   revalidatePath("/apprenant/reservations");
 }

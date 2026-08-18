@@ -1,3 +1,4 @@
+import { createClient } from "@/lib/supabase/server";
 import { SignOutButton } from "./SignOutButton";
 import { SpaceNav, type SpaceNavItem } from "./SpaceNav";
 
@@ -9,24 +10,50 @@ const NAV_BY_TITLE: Record<string, SpaceNavItem[]> = {
     { label: "Formations", href: "/admin/formations" },
     { label: "Utilisateurs", href: "/admin/utilisateurs" },
     { label: "Réclamations", href: "/admin/reclamations" },
+    { label: "Statistiques", href: "/admin/statistiques" },
+    { label: "Notifications", href: "/admin/notifications" },
   ],
-  "Espace formateur": [{ label: "Tableau de bord", href: "/formateur" }],
-  "Espace entreprise": [{ label: "Tableau de bord", href: "/entreprise" }],
+  "Espace formateur": [
+    { label: "Tableau de bord", href: "/formateur" },
+    { label: "Notifications", href: "/formateur/notifications" },
+  ],
+  "Espace entreprise": [
+    { label: "Tableau de bord", href: "/entreprise" },
+    { label: "Notifications", href: "/entreprise/notifications" },
+  ],
   "Espace apprenant": [
     { label: "Tableau de bord", href: "/apprenant" },
     { label: "Réserver un rendez-vous", href: "/apprenant/reservations" },
     { label: "Réclamations", href: "/apprenant/reclamations" },
+    { label: "Notifications", href: "/apprenant/notifications" },
   ],
 };
 
-export function SpaceShell({
+export async function SpaceShell({
   title,
   children,
 }: {
   title: string;
   children: React.ReactNode;
 }) {
-  const navItems = NAV_BY_TITLE[title] ?? [];
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  let unreadCount = 0;
+  if (user) {
+    const { count } = await supabase
+      .from("notifications")
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", user.id)
+      .is("read_at", null);
+    unreadCount = count ?? 0;
+  }
+
+  const navItems = (NAV_BY_TITLE[title] ?? []).map((item) =>
+    item.href.endsWith("/notifications") && unreadCount > 0 ? { ...item, badge: unreadCount } : item,
+  );
 
   return (
     <div className="flex min-h-screen bg-background">

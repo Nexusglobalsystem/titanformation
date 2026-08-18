@@ -5,6 +5,13 @@ import { createClient } from "@/lib/supabase/server";
 
 const CLAIM_STATUSES = ["ouverte", "en_cours", "resolue", "refusee"] as const;
 
+const STATUS_LABELS: Record<string, string> = {
+  ouverte: "Ouverte",
+  en_cours: "En cours",
+  resolue: "Résolue",
+  refusee: "Refusée",
+};
+
 export type UpdateClaimState = { error?: string } | undefined;
 
 export async function updateClaimAction(
@@ -27,7 +34,7 @@ export async function updateClaimAction(
   const supabase = await createClient();
   const isResolved = status === "resolue" || status === "refusee";
 
-  const { error } = await supabase
+  const { data: claim, error } = await supabase
     .from("claims")
     .update({
       status: status as (typeof CLAIM_STATUSES)[number],
@@ -36,10 +43,21 @@ export async function updateClaimAction(
         typeof correctiveAction === "string" && correctiveAction.trim() ? correctiveAction.trim() : null,
       resolved_at: isResolved ? new Date().toISOString() : null,
     })
-    .eq("id", claimId);
+    .eq("id", claimId)
+    .select("subject, submitted_by")
+    .single();
 
   if (error) {
     return { error: "Impossible de mettre à jour la réclamation : " + error.message };
+  }
+
+  if (claim.submitted_by) {
+    await supabase.from("notifications").insert({
+      user_id: claim.submitted_by,
+      title: "Réclamation mise à jour",
+      body: `Votre réclamation « ${claim.subject} » est maintenant : ${STATUS_LABELS[status] ?? status}.`,
+      link: "/apprenant/reclamations",
+    });
   }
 
   revalidatePath("/admin/reclamations");

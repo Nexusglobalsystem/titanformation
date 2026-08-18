@@ -15,14 +15,23 @@ export async function confirmEnrollmentAction(
   }
 
   const supabase = await createClient();
-  const { error } = await supabase
+  const { data: enrollment, error } = await supabase
     .from("enrollments")
     .update({ status: "confirme" })
-    .eq("id", enrollmentId);
+    .eq("id", enrollmentId)
+    .select("learner_id")
+    .single();
 
   if (error) {
     return { error: "Impossible de confirmer l'inscription : " + error.message };
   }
+
+  await supabase.from("notifications").insert({
+    user_id: enrollment.learner_id,
+    title: "Inscription confirmée",
+    body: "Votre inscription a été confirmée, vous avez maintenant accès au programme.",
+    link: `/apprenant/formations/${enrollmentId}`,
+  });
 
   revalidatePath("/admin");
 }

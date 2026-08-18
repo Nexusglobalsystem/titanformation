@@ -827,6 +827,44 @@ export type Database = {
           },
         ]
       }
+      notifications: {
+        Row: {
+          body: string | null
+          created_at: string
+          id: string
+          link: string | null
+          read_at: string | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          body?: string | null
+          created_at?: string
+          id?: string
+          link?: string | null
+          read_at?: string | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          body?: string | null
+          created_at?: string
+          id?: string
+          link?: string | null
+          read_at?: string | null
+          title?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notifications_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notifications_log: {
         Row: {
           delivered_at: string | null
@@ -1688,6 +1726,10 @@ export type Database = {
       }
       is_staff: { Args: never; Returns: boolean }
       managed_company_ids: { Args: never; Returns: string[] }
+      notify_booking_event: {
+        Args: { p_booking_id: string; p_kind: string }
+        Returns: undefined
+      }
       taken_slots: {
         Args: { p_from: string; p_to: string; p_trainer_id: string }
         Returns: {
