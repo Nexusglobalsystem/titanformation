@@ -11,6 +11,7 @@ import { NewLessonForm } from "../_components/NewLessonForm";
 import { AttachLessonFileForm } from "../_components/AttachLessonFileForm";
 import { updateTrainingAction } from "../_actions/trainings";
 import { removeTrainerAction } from "../_actions/trainers";
+import { CreateSatisfactionFormButton, RecalculateSatisfactionButton } from "../_components/SatisfactionActions";
 
 const SESSION_STATUS_LABELS: Record<string, string> = {
   brouillon: "Brouillon",
@@ -67,6 +68,22 @@ export default async function EditFormationPage({ params }: { params: Promise<{ 
     .select("id, title, position, lessons(id, title, type, duration_minutes, position, document_path)")
     .eq("training_id", id)
     .order("position", { ascending: true });
+
+  const { data: satisfactionForm } = await supabase
+    .from("evaluation_forms")
+    .select("id")
+    .eq("training_id", id)
+    .eq("kind", "satisfaction_chaud")
+    .maybeSingle();
+
+  let satisfactionResponseCount = 0;
+  if (satisfactionForm) {
+    const { count } = await supabase
+      .from("evaluation_responses")
+      .select("id", { count: "exact", head: true })
+      .eq("form_id", satisfactionForm.id);
+    satisfactionResponseCount = count ?? 0;
+  }
 
   return (
     <SpaceShell title="Espace administration">
@@ -199,6 +216,30 @@ export default async function EditFormationPage({ params }: { params: Promise<{ 
               </div>
             )}
             <NewModuleForm trainingId={training.id} nextPosition={modules?.length ?? 0} />
+          </CardContent>
+        </Card>
+
+        <Card className="max-w-3xl">
+          <CardHeader>
+            <CardTitle>Questionnaire de satisfaction (ind. 2/3)</CardTitle>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-4">
+            <div className="flex flex-wrap gap-2">
+              <Badge variant="neutral">
+                Taux de satisfaction :{" "}
+                {training.satisfaction_rate !== null ? `${training.satisfaction_rate}%` : "non renseigné"}
+              </Badge>
+              {satisfactionForm && (
+                <Badge variant="neutral">
+                  {satisfactionResponseCount} réponse{satisfactionResponseCount > 1 ? "s" : ""}
+                </Badge>
+              )}
+            </div>
+            {satisfactionForm ? (
+              <RecalculateSatisfactionButton trainingId={training.id} />
+            ) : (
+              <CreateSatisfactionFormButton trainingId={training.id} />
+            )}
           </CardContent>
         </Card>
       </div>

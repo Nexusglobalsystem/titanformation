@@ -15,10 +15,13 @@ const LESSON_TYPE_LABELS: Record<string, string> = {
 
 export default async function ApprenantProgrammePage({
   params,
+  searchParams,
 }: {
   params: Promise<{ enrollmentId: string }>;
+  searchParams: Promise<{ satisfaction?: string; error?: string }>;
 }) {
   const { enrollmentId } = await params;
+  const { satisfaction, error } = await searchParams;
   const supabase = await createClient();
 
   const { data: enrollment } = await supabase
@@ -52,6 +55,29 @@ export default async function ApprenantProgrammePage({
     (sum, m) => sum + (m.lessons?.filter((l) => completedLessonIds.has(l.id)).length ?? 0),
     0,
   );
+  const isComplete = totalLessons > 0 && completedLessons === totalLessons;
+
+  let satisfactionFormId: string | null = null;
+  let satisfactionAnswered = false;
+  if (isComplete) {
+    const { data: form } = await supabase
+      .from("evaluation_forms")
+      .select("id")
+      .eq("training_id", training.id)
+      .eq("kind", "satisfaction_chaud")
+      .eq("is_active", true)
+      .maybeSingle();
+    if (form) {
+      satisfactionFormId = form.id;
+      const { data: response } = await supabase
+        .from("evaluation_responses")
+        .select("id")
+        .eq("form_id", form.id)
+        .eq("enrollment_id", enrollmentId)
+        .maybeSingle();
+      satisfactionAnswered = Boolean(response);
+    }
+  }
 
   return (
     <SpaceShell title="Espace apprenant">
@@ -59,6 +85,12 @@ export default async function ApprenantProgrammePage({
         <Link href="/apprenant" className="inline-block font-body text-sm text-accent-text hover:underline">
           ← Retour à mes formations
         </Link>
+        {satisfaction === "merci" && (
+          <p className="font-body text-sm text-success">Merci pour vos réponses !</p>
+        )}
+        {error === "satisfaction" && (
+          <p className="font-body text-sm text-error">Impossible d'enregistrer vos réponses.</p>
+        )}
         <Card className="max-w-3xl">
           <CardHeader className="flex flex-col gap-3">
             <CardTitle>{training.title}</CardTitle>
@@ -69,12 +101,21 @@ export default async function ApprenantProgrammePage({
                 label={`${completedLessons}/${totalLessons} leçons terminées`}
               />
             )}
-            {totalLessons > 0 && completedLessons === totalLessons && (
-              <Link href={`/apprenant/formations/${enrollmentId}/certificat`} className="w-fit">
-                <Button variant="primary" size="sm">
-                  Voir mon certificat
-                </Button>
-              </Link>
+            {isComplete && (
+              <div className="flex flex-wrap gap-3">
+                <Link href={`/apprenant/formations/${enrollmentId}/certificat`} className="w-fit">
+                  <Button variant="primary" size="sm">
+                    Voir mon certificat
+                  </Button>
+                </Link>
+                {satisfactionFormId && !satisfactionAnswered && (
+                  <Link href={`/apprenant/formations/${enrollmentId}/satisfaction`} className="w-fit">
+                    <Button variant="outline" size="sm">
+                      Répondre au questionnaire de satisfaction
+                    </Button>
+                  </Link>
+                )}
+              </div>
             )}
           </CardHeader>
           <CardContent className="flex flex-col gap-6">
