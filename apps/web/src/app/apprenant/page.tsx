@@ -101,6 +101,14 @@ export default async function ApprenantPage() {
           <CardHeader>
             <CardTitle>Bienvenue{profile?.first_name ? `, ${profile.first_name}` : ""}</CardTitle>
           </CardHeader>
+          <CardContent>
+            <Link
+              href="/apprenant/reservations"
+              className="inline-flex h-9 items-center rounded-DEFAULT border border-border px-3 font-body text-sm text-foreground hover:bg-surface-elevated"
+            >
+              Réserver un rendez-vous
+            </Link>
+          </CardContent>
         </Card>
 
         <Card>

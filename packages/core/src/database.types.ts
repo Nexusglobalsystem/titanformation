@@ -1,4 +1,3 @@
-// Généré par `supabase gen types typescript` (projet svenjjuajujnrccmfzkc). Ne pas éditer à la main.
 export type Json =
   | string
   | number
@@ -107,6 +106,95 @@ export type Database = {
           {
             foreignKeyName: "audit_log_actor_id_fkey"
             columns: ["actor_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      availability_exceptions: {
+        Row: {
+          created_at: string
+          end_time: string | null
+          exception_date: string
+          id: string
+          reason: string | null
+          start_time: string | null
+          trainer_id: string
+        }
+        Insert: {
+          created_at?: string
+          end_time?: string | null
+          exception_date: string
+          id?: string
+          reason?: string | null
+          start_time?: string | null
+          trainer_id: string
+        }
+        Update: {
+          created_at?: string
+          end_time?: string | null
+          exception_date?: string
+          id?: string
+          reason?: string | null
+          start_time?: string | null
+          trainer_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "availability_exceptions_trainer_id_fkey"
+            columns: ["trainer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      bookings: {
+        Row: {
+          booking_date: string
+          created_at: string
+          end_time: string
+          id: string
+          learner_id: string
+          reason: string | null
+          start_time: string
+          status: string
+          trainer_id: string
+        }
+        Insert: {
+          booking_date: string
+          created_at?: string
+          end_time: string
+          id?: string
+          learner_id: string
+          reason?: string | null
+          start_time: string
+          status?: string
+          trainer_id: string
+        }
+        Update: {
+          booking_date?: string
+          created_at?: string
+          end_time?: string
+          id?: string
+          learner_id?: string
+          reason?: string | null
+          start_time?: string
+          status?: string
+          trainer_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookings_learner_id_fkey"
+            columns: ["learner_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookings_trainer_id_fkey"
+            columns: ["trainer_id"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
@@ -1304,6 +1392,44 @@ export type Database = {
           },
         ]
       }
+      trainer_availabilities: {
+        Row: {
+          created_at: string
+          end_time: string
+          id: string
+          slot_duration_minutes: number
+          start_time: string
+          trainer_id: string
+          weekday: number
+        }
+        Insert: {
+          created_at?: string
+          end_time: string
+          id?: string
+          slot_duration_minutes?: number
+          start_time: string
+          trainer_id: string
+          weekday: number
+        }
+        Update: {
+          created_at?: string
+          end_time?: string
+          id?: string
+          slot_duration_minutes?: number
+          start_time?: string
+          trainer_id?: string
+          weekday?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trainer_availabilities_trainer_id_fkey"
+            columns: ["trainer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       trainer_credentials: {
         Row: {
           created_at: string
@@ -1526,12 +1652,20 @@ export type Database = {
     }
     Functions: {
       enrolled_session_ids: { Args: never; Returns: string[] }
+      formateur_ids: { Args: never; Returns: string[] }
       has_role: {
         Args: { target: Database["public"]["Enums"]["app_role"] }
         Returns: boolean
       }
       is_staff: { Args: never; Returns: boolean }
       managed_company_ids: { Args: never; Returns: string[] }
+      taken_slots: {
+        Args: { p_from: string; p_to: string; p_trainer_id: string }
+        Returns: {
+          booking_date: string
+          start_time: string
+        }[]
+      }
       trained_session_ids: { Args: never; Returns: string[] }
     }
     Enums: {
@@ -1572,7 +1706,13 @@ export type Database = {
         | "cpf"
         | "france_travail"
         | "interne"
-      lesson_type: "video" | "quiz" | "document" | "live_slot" | "texte" | "audio"
+      lesson_type:
+        | "video"
+        | "quiz"
+        | "document"
+        | "live_slot"
+        | "texte"
+        | "audio"
       order_status:
         | "devis"
         | "en_attente_paiement"

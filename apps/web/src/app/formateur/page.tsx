@@ -1,6 +1,31 @@
 import { createClient } from "@/lib/supabase/server";
 import { SpaceShell } from "@/components/SpaceShell";
-import { Badge, Card, CardContent, CardHeader, CardTitle } from "@titan-kinetic/ui";
+import { Badge, Button, Card, CardContent, CardHeader, CardTitle } from "@titan-kinetic/ui";
+import { NewAvailabilityForm } from "./_components/NewAvailabilityForm";
+import { NewExceptionForm } from "./_components/NewExceptionForm";
+import {
+  deleteAvailabilityAction,
+  deleteExceptionAction,
+  updateBookingStatusAction,
+} from "./_actions/availability";
+
+const WEEKDAY_LABELS = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
+
+const BOOKING_STATUS_LABELS: Record<string, string> = {
+  demandee: "Demandée",
+  confirmee: "Confirmée",
+  annulee: "Annulée",
+  terminee: "Terminée",
+  absent: "Absent",
+};
+
+const BOOKING_STATUS_VARIANTS: Record<string, "neutral" | "success" | "warning" | "error"> = {
+  demandee: "warning",
+  confirmee: "success",
+  annulee: "error",
+  terminee: "success",
+  absent: "error",
+};
 
 const STATUS_LABELS: Record<string, string> = {
   preinscrit: "Préinscrit",
@@ -54,6 +79,27 @@ export default async function FormateurPage() {
   const slots = [...(slotsRaw ?? [])].sort(
     (a, b) => (HALF_DAY_ORDER[a.half_day] ?? 0) - (HALF_DAY_ORDER[b.half_day] ?? 0),
   );
+
+  const { data: availabilitiesRaw } = await supabase
+    .from("trainer_availabilities")
+    .select("id, weekday, start_time, end_time, slot_duration_minutes")
+    .eq("trainer_id", user!.id);
+  const availabilities = [...(availabilitiesRaw ?? [])].sort(
+    (a, b) => a.weekday - b.weekday || a.start_time.localeCompare(b.start_time),
+  );
+
+  const { data: exceptions } = await supabase
+    .from("availability_exceptions")
+    .select("id, exception_date, start_time, end_time, reason")
+    .eq("trainer_id", user!.id)
+    .order("exception_date", { ascending: true });
+
+  const { data: bookings } = await supabase
+    .from("bookings")
+    .select("id, booking_date, start_time, end_time, reason, status, profiles!bookings_learner_id_fkey(first_name, last_name, email)")
+    .eq("trainer_id", user!.id)
+    .order("booking_date", { ascending: true })
+    .order("start_time", { ascending: true });
 
   return (
     <SpaceShell title="Espace formateur">
@@ -164,6 +210,136 @@ export default async function FormateurPage() {
                         );
                       })
                     )}
+                  </div>
+                );
+              })
+            )}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Mes disponibilités</CardTitle>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-6">
+            <div className="flex flex-col gap-3">
+              <p className="font-mono-label text-xs font-semibold uppercase tracking-wide text-foreground-muted">
+                Créneaux hebdomadaires
+              </p>
+              {availabilities.length === 0 ? (
+                <p className="font-body text-sm text-foreground-muted">Aucune disponibilité définie.</p>
+              ) : (
+                <div className="flex flex-col gap-2">
+                  {availabilities.map((a) => (
+                    <div
+                      key={a.id}
+                      className="flex items-center justify-between rounded-DEFAULT border border-border p-3"
+                    >
+                      <p className="font-body text-sm text-foreground">
+                        {WEEKDAY_LABELS[a.weekday]} · {a.start_time.slice(0, 5)} – {a.end_time.slice(0, 5)} ·
+                        créneaux de {a.slot_duration_minutes} min
+                      </p>
+                      <form action={deleteAvailabilityAction}>
+                        <input type="hidden" name="id" value={a.id} />
+                        <Button type="submit" variant="ghost" size="sm">
+                          Supprimer
+                        </Button>
+                      </form>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <NewAvailabilityForm />
+            </div>
+
+            <div className="flex flex-col gap-3">
+              <p className="font-mono-label text-xs font-semibold uppercase tracking-wide text-foreground-muted">
+                Exceptions (congés, indisponibilités ponctuelles)
+              </p>
+              {!exceptions || exceptions.length === 0 ? (
+                <p className="font-body text-sm text-foreground-muted">Aucune exception.</p>
+              ) : (
+                <div className="flex flex-col gap-2">
+                  {exceptions.map((e) => (
+                    <div
+                      key={e.id}
+                      className="flex items-center justify-between rounded-DEFAULT border border-border p-3"
+                    >
+                      <p className="font-body text-sm text-foreground">
+                        {new Date(e.exception_date).toLocaleDateString("fr-FR")}
+                        {e.start_time && e.end_time ? ` · ${e.start_time.slice(0, 5)} – ${e.end_time.slice(0, 5)}` : " · journée entière"}
+                        {e.reason ? ` — ${e.reason}` : ""}
+                      </p>
+                      <form action={deleteExceptionAction}>
+                        <input type="hidden" name="id" value={e.id} />
+                        <Button type="submit" variant="ghost" size="sm">
+                          Supprimer
+                        </Button>
+                      </form>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <NewExceptionForm />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Mes rendez-vous</CardTitle>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-3">
+            {!bookings || bookings.length === 0 ? (
+              <p className="font-body text-sm text-foreground-muted">Aucun rendez-vous réservé pour le moment.</p>
+            ) : (
+              bookings.map((booking) => {
+                const learner = booking.profiles;
+                return (
+                  <div
+                    key={booking.id}
+                    className="flex flex-col gap-2 rounded-DEFAULT border border-border p-3 sm:flex-row sm:items-center sm:justify-between"
+                  >
+                    <div>
+                      <p className="font-body text-sm font-semibold text-foreground">
+                        {learner ? `${learner.first_name ?? ""} ${learner.last_name ?? ""}`.trim() : "—"}
+                      </p>
+                      <p className="font-body text-xs text-foreground-muted">
+                        {new Date(booking.booking_date).toLocaleDateString("fr-FR")} ·{" "}
+                        {booking.start_time.slice(0, 5)} – {booking.end_time.slice(0, 5)}
+                        {booking.reason ? ` — ${booking.reason}` : ""}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Badge variant={BOOKING_STATUS_VARIANTS[booking.status] ?? "neutral"}>
+                        {BOOKING_STATUS_LABELS[booking.status] ?? booking.status}
+                      </Badge>
+                      {booking.status === "confirmee" && (
+                        <>
+                          <form action={updateBookingStatusAction}>
+                            <input type="hidden" name="id" value={booking.id} />
+                            <input type="hidden" name="status" value="terminee" />
+                            <Button type="submit" variant="outline" size="sm">
+                              Terminé
+                            </Button>
+                          </form>
+                          <form action={updateBookingStatusAction}>
+                            <input type="hidden" name="id" value={booking.id} />
+                            <input type="hidden" name="status" value="absent" />
+                            <Button type="submit" variant="outline" size="sm">
+                              Absent
+                            </Button>
+                          </form>
+                          <form action={updateBookingStatusAction}>
+                            <input type="hidden" name="id" value={booking.id} />
+                            <input type="hidden" name="status" value="annulee" />
+                            <Button type="submit" variant="ghost" size="sm">
+                              Annuler
+                            </Button>
+                          </form>
+                        </>
+                      )}
+                    </div>
                   </div>
                 );
               })

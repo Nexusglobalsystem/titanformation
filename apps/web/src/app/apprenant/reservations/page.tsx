@@ -1,0 +1,264 @@
+import Link from "next/link";
+import { createClient } from "@/lib/supabase/server";
+import { SpaceShell } from "@/components/SpaceShell";
+import { Badge, Button, Card, CardContent, CardHeader, CardTitle } from "@titan-kinetic/ui";
+import { createBookingAction, cancelBookingAction } from "../_actions/booking";
+
+const WEEKDAY_LABELS = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
+const DAYS_AHEAD = 14;
+
+const BOOKING_STATUS_LABELS: Record<string, string> = {
+  demandee: "Demandée",
+  confirmee: "Confirmée",
+  annulee: "Annulée",
+  terminee: "Terminée",
+  absent: "Absent",
+};
+
+const BOOKING_STATUS_VARIANTS: Record<string, "neutral" | "success" | "warning" | "error"> = {
+  demandee: "warning",
+  confirmee: "success",
+  annulee: "error",
+  terminee: "success",
+  absent: "error",
+};
+
+function toMondayIndex(date: Date) {
+  return (date.getDay() + 6) % 7; // JS: 0 = dimanche → aligné sur 0 = lundi
+}
+
+function addMinutes(time: string, minutes: number) {
+  const [h, m] = time.split(":").map(Number);
+  const total = h * 60 + m + minutes;
+  const hh = Math.floor(total / 60) % 24;
+  const mm = total % 60;
+  return `${String(hh).padStart(2, "0")}:${String(mm).padStart(2, "0")}`;
+}
+
+function formatDateKey(date: Date) {
+  return date.toISOString().slice(0, 10);
+}
+
+export default async function ReservationsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ formateur?: string; error?: string; success?: string }>;
+}) {
+  const { formateur: selectedTrainerId, error, success } = await searchParams;
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const { data: formateurIds } = await supabase.rpc("formateur_ids");
+  const { data: trainersRaw } =
+    formateurIds && formateurIds.length > 0
+      ? await supabase.from("profiles").select("id, first_name, last_name").in("id", formateurIds)
+      : { data: [] as { id: string; first_name: string | null; last_name: string | null }[] };
+  const trainers = trainersRaw ?? [];
+
+  const selectedTrainer = trainers.find((t) => t.id === selectedTrainerId);
+  const slotsByDate: Record<string, { start_time: string; end_time: string }[]> = {};
+
+  if (selectedTrainer) {
+    const today = new Date();
+    const from = formatDateKey(today);
+    const toDateObj = new Date(today);
+    toDateObj.setDate(toDateObj.getDate() + DAYS_AHEAD - 1);
+    const to = formatDateKey(toDateObj);
+
+    const { data: availabilities } = await supabase
+      .from("trainer_availabilities")
+      .select("weekday, start_time, end_time, slot_duration_minutes")
+      .eq("trainer_id", selectedTrainer.id);
+
+    const { data: exceptions } = await supabase
+      .from("availability_exceptions")
+      .select("exception_date, start_time, end_time")
+      .eq("trainer_id", selectedTrainer.id)
+      .gte("exception_date", from)
+      .lte("exception_date", to);
+
+    const { data: taken } = await supabase.rpc("taken_slots", {
+      p_trainer_id: selectedTrainer.id,
+      p_from: from,
+      p_to: to,
+    });
+    const takenSet = new Set((taken ?? []).map((t) => `${t.booking_date}T${t.start_time.slice(0, 5)}`));
+
+    const now = new Date();
+    const nowHm = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+
+    for (let i = 0; i < DAYS_AHEAD; i++) {
+      const date = new Date(today);
+      date.setDate(date.getDate() + i);
+      const dateKey = formatDateKey(date);
+      const weekday = toMondayIndex(date);
+
+      const dayExceptions = (exceptions ?? []).filter((e) => e.exception_date === dateKey);
+      if (dayExceptions.some((e) => !e.start_time)) continue; // journée entière bloquée
+
+      const rulesForDay = (availabilities ?? []).filter((a) => a.weekday === weekday);
+      const daySlots: { start_time: string; end_time: string }[] = [];
+
+      for (const rule of rulesForDay) {
+        let cursor = rule.start_time.slice(0, 5);
+        const end = rule.end_time.slice(0, 5);
+        while (addMinutes(cursor, rule.slot_duration_minutes) <= end) {
+          const slotStart = cursor;
+          const slotEnd = addMinutes(cursor, rule.slot_duration_minutes);
+          cursor = slotEnd;
+
+          const blockedByException = dayExceptions.some(
+            (e) =>
+              e.start_time &&
+              e.end_time &&
+              slotStart < e.end_time.slice(0, 5) &&
+              slotEnd > e.start_time.slice(0, 5),
+          );
+          const isTaken = takenSet.has(`${dateKey}T${slotStart}`);
+          const isPast = i === 0 && slotStart <= nowHm;
+
+          if (!blockedByException && !isTaken && !isPast) {
+            daySlots.push({ start_time: slotStart, end_time: slotEnd });
+          }
+        }
+      }
+
+      if (daySlots.length > 0) slotsByDate[dateKey] = daySlots;
+    }
+  }
+
+  const { data: myBookings } = await supabase
+    .from("bookings")
+    .select("id, booking_date, start_time, end_time, status, profiles!bookings_trainer_id_fkey(first_name, last_name)")
+    .eq("learner_id", user!.id)
+    .order("booking_date", { ascending: true });
+
+  return (
+    <SpaceShell title="Espace apprenant">
+      <div className="flex flex-col gap-6">
+        <Link href="/apprenant" className="inline-block font-body text-sm text-accent-text hover:underline">
+          ← Retour à mon espace
+        </Link>
+
+        <Card className="max-w-3xl">
+          <CardHeader>
+            <CardTitle>Réserver un rendez-vous</CardTitle>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-4">
+            {success && (
+              <p className="font-body text-sm text-success">Rendez-vous confirmé.</p>
+            )}
+            {error === "pris" && (
+              <p className="font-body text-sm text-error">
+                Ce créneau vient d'être réservé par quelqu'un d'autre. Choisissez-en un autre.
+              </p>
+            )}
+            {error === "erreur" && (
+              <p className="font-body text-sm text-error">Impossible de réserver ce créneau.</p>
+            )}
+
+            <div className="flex flex-wrap gap-2">
+              {trainers.length === 0 ? (
+                <p className="font-body text-sm text-foreground-muted">Aucun formateur disponible.</p>
+              ) : (
+                trainers.map((t) => (
+                  <Link
+                    key={t.id}
+                    href={`/apprenant/reservations?formateur=${t.id}`}
+                    className={`inline-flex h-9 items-center rounded-DEFAULT border px-3 font-body text-sm ${
+                      selectedTrainer?.id === t.id
+                        ? "border-primary bg-primary text-on-primary"
+                        : "border-border text-foreground hover:bg-surface-elevated"
+                    }`}
+                  >
+                    {t.first_name} {t.last_name}
+                  </Link>
+                ))
+              )}
+            </div>
+
+            {selectedTrainer && (
+              <div className="flex flex-col gap-4">
+                {Object.keys(slotsByDate).length === 0 ? (
+                  <p className="font-body text-sm text-foreground-muted">
+                    Aucun créneau disponible dans les {DAYS_AHEAD} prochains jours.
+                  </p>
+                ) : (
+                  Object.entries(slotsByDate).map(([dateKey, slots]) => {
+                    const date = new Date(dateKey + "T00:00:00");
+                    return (
+                      <div key={dateKey} className="flex flex-col gap-2">
+                        <p className="font-mono-label text-xs font-semibold uppercase tracking-wide text-foreground-muted">
+                          {WEEKDAY_LABELS[toMondayIndex(date)]} {date.toLocaleDateString("fr-FR")}
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          {slots.map((slot) => (
+                            <form key={slot.start_time} action={createBookingAction}>
+                              <input type="hidden" name="trainer_id" value={selectedTrainer.id} />
+                              <input type="hidden" name="booking_date" value={dateKey} />
+                              <input type="hidden" name="start_time" value={slot.start_time} />
+                              <input type="hidden" name="end_time" value={slot.end_time} />
+                              <Button type="submit" variant="outline" size="sm">
+                                {slot.start_time}
+                              </Button>
+                            </form>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card className="max-w-3xl">
+          <CardHeader>
+            <CardTitle>Mes réservations</CardTitle>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-3">
+            {!myBookings || myBookings.length === 0 ? (
+              <p className="font-body text-sm text-foreground-muted">Aucune réservation pour le moment.</p>
+            ) : (
+              myBookings.map((booking) => {
+                const trainer = booking.profiles;
+                return (
+                  <div
+                    key={booking.id}
+                    className="flex flex-col gap-2 rounded-DEFAULT border border-border p-3 sm:flex-row sm:items-center sm:justify-between"
+                  >
+                    <div>
+                      <p className="font-body text-sm font-semibold text-foreground">
+                        {trainer ? `${trainer.first_name ?? ""} ${trainer.last_name ?? ""}`.trim() : "—"}
+                      </p>
+                      <p className="font-body text-xs text-foreground-muted">
+                        {new Date(booking.booking_date).toLocaleDateString("fr-FR")} ·{" "}
+                        {booking.start_time.slice(0, 5)} – {booking.end_time.slice(0, 5)}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Badge variant={BOOKING_STATUS_VARIANTS[booking.status] ?? "neutral"}>
+                        {BOOKING_STATUS_LABELS[booking.status] ?? booking.status}
+                      </Badge>
+                      {booking.status === "confirmee" && (
+                        <form action={cancelBookingAction}>
+                          <input type="hidden" name="id" value={booking.id} />
+                          <Button type="submit" variant="ghost" size="sm">
+                            Annuler
+                          </Button>
+                        </form>
+                      )}
+                    </div>
+                  </div>
+                );
+              })
+            )}
+          </CardContent>
+        </Card>
+      </div>
+    </SpaceShell>
+  );
+}
