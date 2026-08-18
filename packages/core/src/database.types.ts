@@ -1572,7 +1572,7 @@ export type Database = {
         | "cpf"
         | "france_travail"
         | "interne"
-      lesson_type: "video" | "quiz" | "document" | "live_slot" | "texte"
+      lesson_type: "video" | "quiz" | "document" | "live_slot" | "texte" | "audio"
       order_status:
         | "devis"
         | "en_attente_paiement"
@@ -1757,7 +1757,7 @@ export const Constants = {
         "france_travail",
         "interne",
       ],
-      lesson_type: ["video", "quiz", "document", "live_slot", "texte"],
+      lesson_type: ["video", "quiz", "document", "live_slot", "texte", "audio"],
       order_status: [
         "devis",
         "en_attente_paiement",
