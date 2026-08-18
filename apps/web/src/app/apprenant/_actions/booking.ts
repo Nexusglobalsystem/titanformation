@@ -9,6 +9,7 @@ export async function createBookingAction(formData: FormData) {
   const bookingDate = formData.get("booking_date");
   const startTime = formData.get("start_time");
   const endTime = formData.get("end_time");
+  const reasonRaw = formData.get("reason");
 
   if (
     typeof trainerId !== "string" ||
@@ -17,6 +18,13 @@ export async function createBookingAction(formData: FormData) {
     typeof endTime !== "string"
   ) {
     redirect(`/apprenant/reservations?error=invalide`);
+  }
+
+  const reason = typeof reasonRaw === "string" ? reasonRaw.trim() : "";
+  if (!reason) {
+    redirect(
+      `/apprenant/reservations?formateur=${trainerId}&date=${bookingDate}&heure=${startTime}&error=motif`,
+    );
   }
 
   const supabase = await createClient();
@@ -30,12 +38,13 @@ export async function createBookingAction(formData: FormData) {
     booking_date: bookingDate,
     start_time: startTime,
     end_time: endTime,
+    reason,
     status: "confirmee",
   });
 
   if (error) {
-    const reason = error.code === "23505" ? "pris" : "erreur";
-    redirect(`/apprenant/reservations?formateur=${trainerId}&error=${reason}`);
+    const errorCode = error.code === "23505" ? "pris" : "erreur";
+    redirect(`/apprenant/reservations?formateur=${trainerId}&error=${errorCode}`);
   }
 
   revalidatePath("/apprenant");

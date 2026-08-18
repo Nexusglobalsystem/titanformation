@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { SpaceShell } from "@/components/SpaceShell";
-import { Badge, Button, Card, CardContent, CardHeader, CardTitle } from "@titan-kinetic/ui";
+import { Badge, Button, Card, CardContent, CardHeader, CardTitle, Textarea } from "@titan-kinetic/ui";
 import { createBookingAction, cancelBookingAction } from "../_actions/booking";
 
 const WEEKDAY_LABELS = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
@@ -42,9 +42,16 @@ function formatDateKey(date: Date) {
 export default async function ReservationsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ formateur?: string; error?: string; success?: string }>;
+  searchParams: Promise<{
+    formateur?: string;
+    date?: string;
+    heure?: string;
+    error?: string;
+    success?: string;
+  }>;
 }) {
-  const { formateur: selectedTrainerId, error, success } = await searchParams;
+  const { formateur: selectedTrainerId, date: selectedDate, heure: selectedHeure, error, success } =
+    await searchParams;
   const supabase = await createClient();
   const {
     data: { user },
@@ -131,7 +138,9 @@ export default async function ReservationsPage({
 
   const { data: myBookings } = await supabase
     .from("bookings")
-    .select("id, booking_date, start_time, end_time, status, profiles!bookings_trainer_id_fkey(first_name, last_name)")
+    .select(
+      "id, booking_date, start_time, end_time, status, reason, profiles!bookings_trainer_id_fkey(first_name, last_name)",
+    )
     .eq("learner_id", user!.id)
     .order("booking_date", { ascending: true });
 
@@ -157,6 +166,11 @@ export default async function ReservationsPage({
             )}
             {error === "erreur" && (
               <p className="font-body text-sm text-error">Impossible de réserver ce créneau.</p>
+            )}
+            {error === "motif" && (
+              <p className="font-body text-sm text-error">
+                Indiquez le motif du rendez-vous avant de confirmer.
+              </p>
             )}
 
             <div className="flex flex-wrap gap-2">
@@ -194,22 +208,69 @@ export default async function ReservationsPage({
                           {WEEKDAY_LABELS[toMondayIndex(date)]} {date.toLocaleDateString("fr-FR")}
                         </p>
                         <div className="flex flex-wrap gap-2">
-                          {slots.map((slot) => (
-                            <form key={slot.start_time} action={createBookingAction}>
-                              <input type="hidden" name="trainer_id" value={selectedTrainer.id} />
-                              <input type="hidden" name="booking_date" value={dateKey} />
-                              <input type="hidden" name="start_time" value={slot.start_time} />
-                              <input type="hidden" name="end_time" value={slot.end_time} />
-                              <Button type="submit" variant="outline" size="sm">
+                          {slots.map((slot) => {
+                            const isSelected = selectedDate === dateKey && selectedHeure === slot.start_time;
+                            return (
+                              <Link
+                                key={slot.start_time}
+                                href={`/apprenant/reservations?formateur=${selectedTrainer.id}&date=${dateKey}&heure=${slot.start_time}`}
+                                className={`inline-flex h-9 items-center rounded-DEFAULT border px-3 font-body text-sm ${
+                                  isSelected
+                                    ? "border-accent bg-accent text-on-accent"
+                                    : "border-border text-foreground hover:bg-surface-elevated"
+                                }`}
+                              >
                                 {slot.start_time}
-                              </Button>
-                            </form>
-                          ))}
+                              </Link>
+                            );
+                          })}
                         </div>
                       </div>
                     );
                   })
                 )}
+
+                {selectedDate &&
+                  selectedHeure &&
+                  (() => {
+                    const chosenSlot = slotsByDate[selectedDate]?.find((s) => s.start_time === selectedHeure);
+                    if (!chosenSlot) {
+                      return (
+                        <p className="font-body text-sm text-error">
+                          Ce créneau n'est plus disponible, choisissez-en un autre ci-dessus.
+                        </p>
+                      );
+                    }
+                    const chosenDateFr = new Date(selectedDate + "T00:00:00").toLocaleDateString("fr-FR");
+                    return (
+                      <form
+                        action={createBookingAction}
+                        className="flex flex-col gap-3 rounded-DEFAULT border border-accent bg-surface-elevated p-4"
+                      >
+                        <p className="font-body text-sm text-foreground">
+                          Rendez-vous avec {selectedTrainer.first_name} {selectedTrainer.last_name} le{" "}
+                          {chosenDateFr} à {chosenSlot.start_time}
+                        </p>
+                        <input type="hidden" name="trainer_id" value={selectedTrainer.id} />
+                        <input type="hidden" name="booking_date" value={selectedDate} />
+                        <input type="hidden" name="start_time" value={chosenSlot.start_time} />
+                        <input type="hidden" name="end_time" value={chosenSlot.end_time} />
+                        <Textarea
+                          label="Motif du rendez-vous"
+                          name="reason"
+                          rows={2}
+                          required
+                          placeholder="Ex. point sur mon projet, difficulté sur le module 2…"
+                          hint="Le formateur verra ce motif avant votre rendez-vous."
+                        />
+                        <div>
+                          <Button type="submit" variant="primary" size="sm">
+                            Confirmer la réservation
+                          </Button>
+                        </div>
+                      </form>
+                    );
+                  })()}
               </div>
             )}
           </CardContent>
@@ -238,6 +299,9 @@ export default async function ReservationsPage({
                         {new Date(booking.booking_date).toLocaleDateString("fr-FR")} ·{" "}
                         {booking.start_time.slice(0, 5)} – {booking.end_time.slice(0, 5)}
                       </p>
+                      {booking.reason && (
+                        <p className="font-body text-xs text-foreground-muted">Motif : {booking.reason}</p>
+                      )}
                     </div>
                     <div className="flex items-center gap-2">
                       <Badge variant={BOOKING_STATUS_VARIANTS[booking.status] ?? "neutral"}>
