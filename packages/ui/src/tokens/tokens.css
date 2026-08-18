@@ -54,10 +54,16 @@
   /* Échelle de gris pour tableaux zébrés, etc. */
   --color-surface-zebra: #f2f4f7;
 
-  /* Typographie */
-  --font-display: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
-  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-mono-label: "Geist Mono", ui-monospace, monospace;
+  /*
+   * Typographie : --font-display / --font-body / --font-mono-label sont
+   * volontairement absents d'ici. L'app consommatrice les fournit via
+   * next/font/google sur <html> (voir apps/web/src/app/layout.tsx) — les
+   * définir aussi ici créerait deux déclarations concurrentes de même
+   * spécificité sur le même élément, et selon l'ordre de cascade, le
+   * nom de police brut ("Hanken Grotesk") gagnait sur la variable
+   * next/font réellement chargée, qui retombait alors sur les polices
+   * système sans jamais afficher la police Google chargée.
+   */
 
   /* Espacement — rythme base 4px */
   --spacing-unit: 4px;
