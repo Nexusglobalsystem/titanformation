@@ -48,3 +48,6 @@ Thumbs.db
 # Fichiers d'agent régénérés automatiquement par `next dev`/`next build` (Next.js 16)
 apps/web/AGENTS.md
 apps/web/CLAUDE.md
+
+# État local Claude Code (pas les skills, ceux-ci sont versionnés)
+.claude/scheduled_tasks.lock

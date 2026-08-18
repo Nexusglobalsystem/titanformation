@@ -15,6 +15,7 @@ export async function createSessionAction(
   const endsOn = formData.get("ends_on");
   const minSeats = Number(formData.get("min_seats") ?? 1);
   const maxSeats = Number(formData.get("max_seats") ?? 12);
+  const trainerId = formData.get("trainerId");
 
   if (
     typeof trainingId !== "string" ||
@@ -33,21 +34,31 @@ export async function createSessionAction(
   }
 
   const supabase = await createClient();
-  const { error } = await supabase.from("sessions").insert({
-    training_id: trainingId,
-    reference,
-    status: "ouverte",
-    starts_on: startsOn,
-    ends_on: endsOn,
-    min_seats: minSeats,
-    max_seats: maxSeats,
-  });
+  const { data: session, error } = await supabase
+    .from("sessions")
+    .insert({
+      training_id: trainingId,
+      reference,
+      status: "ouverte",
+      starts_on: startsOn,
+      ends_on: endsOn,
+      min_seats: minSeats,
+      max_seats: maxSeats,
+    })
+    .select("id")
+    .single();
 
   if (error) {
     if (error.code === "23505") {
       return { error: "Cette référence de session est déjà utilisée." };
     }
     return { error: "Impossible de créer la session : " + error.message };
+  }
+
+  if (typeof trainerId === "string" && trainerId && session) {
+    await supabase
+      .from("session_trainers")
+      .insert({ session_id: session.id, trainer_id: trainerId, is_lead: true });
   }
 
   revalidatePath(`/admin/formations/${trainingId}`);

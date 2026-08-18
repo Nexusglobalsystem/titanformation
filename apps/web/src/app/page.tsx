@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { homePathForRoles, type AppRole } from "@titan-kinetic/core";
 import { createClient } from "@/lib/supabase/server";
+import { HomeLanding } from "./_components/HomeLanding";
 
 export default async function Home() {
   const supabase = await createClient();
@@ -14,5 +15,5 @@ export default async function Home() {
     redirect(homePathForRoles(roles));
   }
 
-  redirect("/formations");
+  return <HomeLanding />;
 }

@@ -2,13 +2,15 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { SpaceShell } from "@/components/SpaceShell";
-import { Badge, Card, CardContent, CardHeader, CardTitle } from "@titan-kinetic/ui";
+import { Badge, Button, Card, CardContent, CardHeader, CardTitle } from "@titan-kinetic/ui";
 import { TrainingForm } from "../_components/TrainingForm";
 import { NewSessionForm } from "../_components/NewSessionForm";
+import { AssignTrainerForm } from "../_components/AssignTrainerForm";
 import { NewModuleForm } from "../_components/NewModuleForm";
 import { NewLessonForm } from "../_components/NewLessonForm";
 import { AttachLessonFileForm } from "../_components/AttachLessonFileForm";
 import { updateTrainingAction } from "../_actions/trainings";
+import { removeTrainerAction } from "../_actions/trainers";
 
 const SESSION_STATUS_LABELS: Record<string, string> = {
   brouillon: "Brouillon",
@@ -46,9 +48,19 @@ export default async function EditFormationPage({ params }: { params: Promise<{ 
 
   const { data: sessions } = await supabase
     .from("sessions")
-    .select("id, reference, status, starts_on, ends_on, max_seats")
+    .select(
+      "id, reference, status, starts_on, ends_on, max_seats, session_trainers(trainer_id, profiles(first_name, last_name))",
+    )
     .eq("training_id", id)
     .order("starts_on", { ascending: true });
+
+  const { data: trainerRoles } = await supabase
+    .from("user_roles")
+    .select("user_id, profiles!user_roles_user_id_fkey(id, first_name, last_name)")
+    .eq("role", "formateur");
+  const trainers = (trainerRoles ?? [])
+    .map((t) => t.profiles)
+    .filter((p): p is NonNullable<typeof p> => Boolean(p));
 
   const { data: modules } = await supabase
     .from("modules")
@@ -81,24 +93,53 @@ export default async function EditFormationPage({ params }: { params: Promise<{ 
           <CardContent className="flex flex-col gap-4">
             {sessions && sessions.length > 0 && (
               <div className="flex flex-col gap-2">
-                {sessions.map((session) => (
-                  <div
-                    key={session.id}
-                    className="flex items-center justify-between rounded-DEFAULT border border-border p-3"
-                  >
-                    <div>
-                      <p className="font-body text-sm font-semibold text-foreground">{session.reference}</p>
-                      <p className="font-body text-xs text-foreground-muted">
-                        {new Date(session.starts_on).toLocaleDateString("fr-FR")} –{" "}
-                        {new Date(session.ends_on).toLocaleDateString("fr-FR")} · {session.max_seats} places
-                      </p>
+                {sessions.map((session) => {
+                  const assigned = session.session_trainers ?? [];
+                  const assignedIds = new Set(assigned.map((a) => a.trainer_id));
+                  const availableTrainers = trainers.filter((t) => !assignedIds.has(t.id));
+                  return (
+                    <div key={session.id} className="flex flex-col gap-2 rounded-DEFAULT border border-border p-3">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="font-body text-sm font-semibold text-foreground">{session.reference}</p>
+                          <p className="font-body text-xs text-foreground-muted">
+                            {new Date(session.starts_on).toLocaleDateString("fr-FR")} –{" "}
+                            {new Date(session.ends_on).toLocaleDateString("fr-FR")} · {session.max_seats} places
+                          </p>
+                        </div>
+                        <Badge variant="neutral">{SESSION_STATUS_LABELS[session.status] ?? session.status}</Badge>
+                      </div>
+                      <div className="flex flex-wrap items-center gap-2">
+                        {assigned.map((a) => (
+                          <div
+                            key={a.trainer_id}
+                            className="flex items-center gap-1 rounded-full border border-border bg-surface-elevated py-1 pl-3 pr-1 font-body text-xs text-foreground"
+                          >
+                            {a.profiles?.first_name} {a.profiles?.last_name}
+                            <form action={removeTrainerAction}>
+                              <input type="hidden" name="sessionId" value={session.id} />
+                              <input type="hidden" name="trainingId" value={training.id} />
+                              <input type="hidden" name="trainerId" value={a.trainer_id} />
+                              <Button
+                                type="submit"
+                                variant="ghost"
+                                size="sm"
+                                className="h-5 w-5 rounded-full p-0 text-xs"
+                                aria-label="Retirer ce formateur"
+                              >
+                                ×
+                              </Button>
+                            </form>
+                          </div>
+                        ))}
+                        <AssignTrainerForm sessionId={session.id} trainingId={training.id} trainers={availableTrainers} />
+                      </div>
                     </div>
-                    <Badge variant="neutral">{SESSION_STATUS_LABELS[session.status] ?? session.status}</Badge>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
-            <NewSessionForm trainingId={training.id} />
+            <NewSessionForm trainingId={training.id} trainers={trainers} />
           </CardContent>
         </Card>
 
