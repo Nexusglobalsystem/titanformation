@@ -201,6 +201,35 @@ export type Database = {
           },
         ]
       }
+      certificates: {
+        Row: {
+          certificate_number: string
+          enrollment_id: string
+          id: string
+          issued_at: string
+        }
+        Insert: {
+          certificate_number: string
+          enrollment_id: string
+          id?: string
+          issued_at?: string
+        }
+        Update: {
+          certificate_number?: string
+          enrollment_id?: string
+          id?: string
+          issued_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "certificates_enrollment_id_fkey"
+            columns: ["enrollment_id"]
+            isOneToOne: true
+            referencedRelation: "enrollments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       claims: {
         Row: {
           assigned_to: string | null

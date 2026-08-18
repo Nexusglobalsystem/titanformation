@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { SpaceShell } from "@/components/SpaceShell";
-import { Badge, Card, CardContent, CardHeader, CardTitle, Progress } from "@titan-kinetic/ui";
+import { Badge, Button, Card, CardContent, CardHeader, CardTitle, Progress } from "@titan-kinetic/ui";
 
 const LESSON_TYPE_LABELS: Record<string, string> = {
   texte: "Texte",
@@ -68,6 +68,13 @@ export default async function ApprenantProgrammePage({
                 max={totalLessons}
                 label={`${completedLessons}/${totalLessons} leçons terminées`}
               />
+            )}
+            {totalLessons > 0 && completedLessons === totalLessons && (
+              <Link href={`/apprenant/formations/${enrollmentId}/certificat`} className="w-fit">
+                <Button variant="primary" size="sm">
+                  Voir mon certificat
+                </Button>
+              </Link>
             )}
           </CardHeader>
           <CardContent className="flex flex-col gap-6">
