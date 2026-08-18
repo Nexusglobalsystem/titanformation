@@ -205,6 +205,28 @@ async function main() {
     .insert({ session_id: session.id, trainer_id: formateur1Id, is_lead: true });
   if (trainerError) throw new Error(`Affectation du formateur impossible : ${trainerError.message}`);
 
+  const slotDays = ["2026-09-15", "2026-09-16", "2026-09-17"] as const;
+  const { error: slotsError } = await admin.from("session_slots").insert(
+    slotDays.flatMap((day) => [
+      {
+        session_id: session.id,
+        slot_date: day,
+        half_day: "matin" as const,
+        starts_at: `${day}T07:00:00Z`,
+        ends_at: `${day}T10:30:00Z`,
+      },
+      {
+        session_id: session.id,
+        slot_date: day,
+        half_day: "apres_midi" as const,
+        starts_at: `${day}T12:00:00Z`,
+        ends_at: `${day}T15:30:00Z`,
+      },
+    ]),
+  );
+  if (slotsError) throw new Error(`Création des créneaux impossible : ${slotsError.message}`);
+  console.log(`  ✓ 6 créneaux (3 jours × matin/après-midi)`);
+
   console.log("\nSeed terminé.");
 }
 

@@ -20,6 +20,11 @@ const STATUS_VARIANTS: Record<string, "neutral" | "success" | "warning" | "error
   abandonne: "error",
 };
 
+const HALF_DAY_LABELS: Record<string, string> = {
+  matin: "Matin",
+  apres_midi: "Après-midi",
+};
+
 export default async function FormateurPage() {
   const supabase = await createClient();
   const {
@@ -37,6 +42,18 @@ export default async function FormateurPage() {
       "id, reference, status, starts_on, ends_on, trainings(title), enrollments(id, status, profiles(first_name, last_name, email))",
     )
     .order("starts_on", { ascending: true });
+
+  const { data: slotsRaw } = await supabase
+    .from("session_slots")
+    .select(
+      "id, slot_date, half_day, sessions(reference, trainings(title)), attendances(id, signed_at, present, enrollments(profiles(first_name, last_name)))",
+    )
+    .order("slot_date", { ascending: true });
+
+  const HALF_DAY_ORDER: Record<string, number> = { matin: 0, apres_midi: 1 };
+  const slots = [...(slotsRaw ?? [])].sort(
+    (a, b) => (HALF_DAY_ORDER[a.half_day] ?? 0) - (HALF_DAY_ORDER[b.half_day] ?? 0),
+  );
 
   return (
     <SpaceShell title="Espace formateur">
@@ -98,6 +115,54 @@ export default async function FormateurPage() {
                           );
                         })}
                       </div>
+                    )}
+                  </div>
+                );
+              })
+            )}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Émargement</CardTitle>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-4">
+            {!slots || slots.length === 0 ? (
+              <p className="font-body text-sm text-foreground-muted">Aucun créneau pour le moment.</p>
+            ) : (
+              slots.map((slot) => {
+                const attendances = slot.attendances ?? [];
+                return (
+                  <div key={slot.id} className="flex flex-col gap-2 rounded-DEFAULT border border-border p-4">
+                    <p className="font-body text-sm font-semibold text-foreground">
+                      {slot.sessions?.trainings?.title ?? "Formation"} —{" "}
+                      {new Date(slot.slot_date).toLocaleDateString("fr-FR")} ·{" "}
+                      {HALF_DAY_LABELS[slot.half_day] ?? slot.half_day}
+                    </p>
+                    {attendances.length === 0 ? (
+                      <p className="font-body text-xs text-foreground-muted">Aucun inscrit sur ce créneau.</p>
+                    ) : (
+                      attendances.map((attendance) => {
+                        const learner = attendance.enrollments?.profiles;
+                        return (
+                          <div
+                            key={attendance.id}
+                            className="flex items-center justify-between border-t border-border pt-2 first:border-t-0 first:pt-0"
+                          >
+                            <span className="font-body text-sm text-foreground">
+                              {learner ? `${learner.first_name ?? ""} ${learner.last_name ?? ""}`.trim() : "—"}
+                            </span>
+                            {attendance.signed_at ? (
+                              <Badge variant="success">
+                                Signé le {new Date(attendance.signed_at).toLocaleString("fr-FR")}
+                              </Badge>
+                            ) : (
+                              <Badge variant="warning">Non signé</Badge>
+                            )}
+                          </div>
+                        );
+                      })
                     )}
                   </div>
                 );

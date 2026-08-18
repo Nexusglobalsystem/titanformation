@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { SpaceShell } from "@/components/SpaceShell";
 import { Badge, Card, CardContent, CardHeader, CardTitle } from "@titan-kinetic/ui";
+import { SignAttendanceButton } from "./_components/SignAttendanceButton";
 
 const STATUS_LABELS: Record<string, string> = {
   preinscrit: "Préinscrit",
@@ -20,6 +21,11 @@ const STATUS_VARIANTS: Record<string, "neutral" | "success" | "warning" | "error
   abandonne: "error",
 };
 
+const HALF_DAY_LABELS: Record<string, string> = {
+  matin: "Matin",
+  apres_midi: "Après-midi",
+};
+
 export default async function ApprenantPage() {
   const supabase = await createClient();
   const {
@@ -36,6 +42,22 @@ export default async function ApprenantPage() {
     .select("id, status, created_at, sessions(reference, starts_on, ends_on, trainings(title, slug))")
     .eq("learner_id", user!.id)
     .order("created_at", { ascending: false });
+
+  const { data: attendancesRaw } = await supabase
+    .from("attendances")
+    .select(
+      "id, signed_at, present, session_slots(slot_date, half_day, sessions(reference, trainings(title)))",
+    );
+
+  const HALF_DAY_ORDER: Record<string, number> = { matin: 0, apres_midi: 1 };
+  const attendances = [...(attendancesRaw ?? [])].sort((a, b) => {
+    const dateDiff = (a.session_slots?.slot_date ?? "").localeCompare(b.session_slots?.slot_date ?? "");
+    if (dateDiff !== 0) return dateDiff;
+    return (
+      (HALF_DAY_ORDER[a.session_slots?.half_day ?? ""] ?? 0) -
+      (HALF_DAY_ORDER[b.session_slots?.half_day ?? ""] ?? 0)
+    );
+  });
 
   return (
     <SpaceShell title="Espace apprenant">
@@ -82,6 +104,49 @@ export default async function ApprenantPage() {
                     <Badge variant={STATUS_VARIANTS[enrollment.status] ?? "neutral"}>
                       {STATUS_LABELS[enrollment.status] ?? enrollment.status}
                     </Badge>
+                  </div>
+                );
+              })
+            )}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Émargement</CardTitle>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-3">
+            {!attendances || attendances.length === 0 ? (
+              <p className="font-body text-sm text-foreground-muted">
+                Aucun créneau d'émargement pour le moment.
+              </p>
+            ) : (
+              attendances.map((attendance) => {
+                const slot = attendance.session_slots;
+                const session = slot?.sessions;
+                return (
+                  <div
+                    key={attendance.id}
+                    className="flex flex-col gap-2 rounded-DEFAULT border border-border p-4 sm:flex-row sm:items-center sm:justify-between"
+                  >
+                    <div>
+                      <p className="font-body text-sm font-semibold text-foreground">
+                        {session?.trainings?.title ?? "Formation"}
+                      </p>
+                      {slot && (
+                        <p className="font-body text-xs text-foreground-muted">
+                          {new Date(slot.slot_date).toLocaleDateString("fr-FR")} ·{" "}
+                          {HALF_DAY_LABELS[slot.half_day] ?? slot.half_day}
+                        </p>
+                      )}
+                    </div>
+                    {attendance.signed_at ? (
+                      <Badge variant="success">
+                        Signé le {new Date(attendance.signed_at).toLocaleString("fr-FR")}
+                      </Badge>
+                    ) : (
+                      <SignAttendanceButton attendanceId={attendance.id} />
+                    )}
                   </div>
                 );
               })
