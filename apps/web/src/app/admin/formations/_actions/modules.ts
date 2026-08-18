@@ -76,3 +76,42 @@ export async function createLessonAction(
 
   revalidatePath(`/admin/formations/${trainingId}`);
 }
+
+export type AttachFileState = { error?: string } | undefined;
+
+export async function attachLessonFileAction(
+  _prev: AttachFileState,
+  formData: FormData,
+): Promise<AttachFileState> {
+  const lessonId = formData.get("lessonId");
+  const trainingId = formData.get("trainingId");
+  const file = formData.get("file");
+
+  if (typeof lessonId !== "string" || typeof trainingId !== "string") {
+    return { error: "Formulaire invalide." };
+  }
+  if (!(file instanceof File) || file.size === 0) {
+    return { error: "Sélectionnez un fichier." };
+  }
+
+  const supabase = await createClient();
+  const path = `lessons/${lessonId}/${file.name}`;
+  const { error: uploadError } = await supabase.storage
+    .from("lesson-files")
+    .upload(path, file, { upsert: true });
+
+  if (uploadError) {
+    return { error: "Échec de l'envoi : " + uploadError.message };
+  }
+
+  const { error: updateError } = await supabase
+    .from("lessons")
+    .update({ document_path: path })
+    .eq("id", lessonId);
+
+  if (updateError) {
+    return { error: "Fichier envoyé mais échec de l'enregistrement : " + updateError.message };
+  }
+
+  revalidatePath(`/admin/formations/${trainingId}`);
+}

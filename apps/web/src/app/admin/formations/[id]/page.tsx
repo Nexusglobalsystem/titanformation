@@ -7,6 +7,7 @@ import { TrainingForm } from "../_components/TrainingForm";
 import { NewSessionForm } from "../_components/NewSessionForm";
 import { NewModuleForm } from "../_components/NewModuleForm";
 import { NewLessonForm } from "../_components/NewLessonForm";
+import { AttachLessonFileForm } from "../_components/AttachLessonFileForm";
 import { updateTrainingAction } from "../_actions/trainings";
 
 const SESSION_STATUS_LABELS: Record<string, string> = {
@@ -51,7 +52,7 @@ export default async function EditFormationPage({ params }: { params: Promise<{ 
 
   const { data: modules } = await supabase
     .from("modules")
-    .select("id, title, position, lessons(id, title, type, duration_minutes, position)")
+    .select("id, title, position, lessons(id, title, type, duration_minutes, position, document_path)")
     .eq("training_id", id)
     .order("position", { ascending: true });
 
@@ -119,17 +120,26 @@ export default async function EditFormationPage({ params }: { params: Promise<{ 
                         {lessons.map((lesson) => (
                           <div
                             key={lesson.id}
-                            className="flex items-center justify-between rounded-DEFAULT border border-border p-3"
+                            className="flex flex-col gap-3 rounded-DEFAULT border border-border p-3"
                           >
-                            <div>
-                              <p className="font-body text-sm text-foreground">{lesson.title}</p>
-                              <p className="font-body text-xs text-foreground-muted">
-                                {lesson.duration_minutes} min
-                              </p>
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <p className="font-body text-sm text-foreground">{lesson.title}</p>
+                                <p className="font-body text-xs text-foreground-muted">
+                                  {lesson.duration_minutes} min
+                                </p>
+                              </div>
+                              <Badge variant={LESSON_TYPE_VARIANTS[lesson.type] ?? "neutral"}>
+                                {LESSON_TYPE_LABELS[lesson.type] ?? lesson.type}
+                              </Badge>
                             </div>
-                            <Badge variant={LESSON_TYPE_VARIANTS[lesson.type] ?? "neutral"}>
-                              {LESSON_TYPE_LABELS[lesson.type] ?? lesson.type}
-                            </Badge>
+                            {(lesson.type === "audio" || lesson.type === "document") && (
+                              <AttachLessonFileForm
+                                lessonId={lesson.id}
+                                trainingId={training.id}
+                                currentPath={lesson.document_path}
+                              />
+                            )}
                           </div>
                         ))}
                         <NewLessonForm moduleId={module.id} trainingId={training.id} />

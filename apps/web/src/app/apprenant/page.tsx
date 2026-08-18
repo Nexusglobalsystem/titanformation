@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { SpaceShell } from "@/components/SpaceShell";
 import { Badge, Card, CardContent, CardHeader, CardTitle } from "@titan-kinetic/ui";
@@ -84,6 +85,7 @@ export default async function ApprenantPage() {
               enrollments.map((enrollment) => {
                 const session = enrollment.sessions;
                 const training = session?.trainings;
+                const canAccessProgramme = ["confirme", "termine"].includes(enrollment.status);
                 return (
                   <div
                     key={enrollment.id}
@@ -101,9 +103,19 @@ export default async function ApprenantPage() {
                         </p>
                       )}
                     </div>
-                    <Badge variant={STATUS_VARIANTS[enrollment.status] ?? "neutral"}>
-                      {STATUS_LABELS[enrollment.status] ?? enrollment.status}
-                    </Badge>
+                    <div className="flex items-center gap-3">
+                      <Badge variant={STATUS_VARIANTS[enrollment.status] ?? "neutral"}>
+                        {STATUS_LABELS[enrollment.status] ?? enrollment.status}
+                      </Badge>
+                      {canAccessProgramme && (
+                        <Link
+                          href={`/apprenant/formations/${enrollment.id}`}
+                          className="inline-flex h-8 items-center rounded border border-border px-3 font-body text-xs font-medium text-foreground hover:bg-surface-elevated"
+                        >
+                          Voir le programme
+                        </Link>
+                      )}
+                    </div>
                   </div>
                 );
               })
