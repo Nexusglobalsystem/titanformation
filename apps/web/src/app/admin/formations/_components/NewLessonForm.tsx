@@ -19,6 +19,7 @@ const TYPE_LABELS: Record<string, string> = {
   video: "Vidéo",
   audio: "Audio",
   document: "Document",
+  quiz: "Quiz",
 };
 
 function SubmitButton() {
@@ -90,6 +91,12 @@ export function NewLessonForm({ moduleId, trainingId }: { moduleId: string; trai
           placeholder="lessons/documents/exemple.pdf"
           hint="Chemin dans le bucket privé Supabase Storage."
         />
+      )}
+
+      {type === "quiz" && (
+        <p className="font-body text-xs text-foreground-muted">
+          Les questions se configurent après la création, depuis le bouton « Gérer le QCM ».
+        </p>
       )}
 
       {state?.error && (

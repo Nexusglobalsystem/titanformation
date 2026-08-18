@@ -140,6 +140,14 @@ export default async function EditFormationPage({ params }: { params: Promise<{ 
                                 currentPath={lesson.document_path}
                               />
                             )}
+                            {lesson.type === "quiz" && (
+                              <Link
+                                href={`/admin/formations/${training.id}/lecons/${lesson.id}/quiz`}
+                                className="font-body text-xs text-accent-text hover:underline"
+                              >
+                                Gérer le QCM →
+                              </Link>
+                            )}
                           </div>
                         ))}
                         <NewLessonForm moduleId={module.id} trainingId={training.id} />

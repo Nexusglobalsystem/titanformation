@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { SpaceShell } from "@/components/SpaceShell";
-import { Badge, Card, CardContent, CardHeader, CardTitle } from "@titan-kinetic/ui";
+import { Badge, Card, CardContent, CardHeader, CardTitle, Progress } from "@titan-kinetic/ui";
 
 const LESSON_TYPE_LABELS: Record<string, string> = {
   texte: "Texte",
@@ -47,6 +47,12 @@ export default async function ApprenantProgrammePage({
     (progressRows ?? []).filter((p) => p.completed_at).map((p) => p.lesson_id),
   );
 
+  const totalLessons = (modules ?? []).reduce((sum, m) => sum + (m.lessons?.length ?? 0), 0);
+  const completedLessons = (modules ?? []).reduce(
+    (sum, m) => sum + (m.lessons?.filter((l) => completedLessonIds.has(l.id)).length ?? 0),
+    0,
+  );
+
   return (
     <SpaceShell title="Espace apprenant">
       <div className="flex flex-col gap-6">
@@ -54,8 +60,15 @@ export default async function ApprenantProgrammePage({
           ← Retour à mes formations
         </Link>
         <Card className="max-w-3xl">
-          <CardHeader>
+          <CardHeader className="flex flex-col gap-3">
             <CardTitle>{training.title}</CardTitle>
+            {totalLessons > 0 && (
+              <Progress
+                value={completedLessons}
+                max={totalLessons}
+                label={`${completedLessons}/${totalLessons} leçons terminées`}
+              />
+            )}
           </CardHeader>
           <CardContent className="flex flex-col gap-6">
             {!modules || modules.length === 0 ? (
@@ -74,7 +87,11 @@ export default async function ApprenantProgrammePage({
                       {module.lessons.map((lesson) => (
                         <Link
                           key={lesson.id}
-                          href={`/apprenant/formations/${enrollmentId}/lecons/${lesson.id}`}
+                          href={
+                            lesson.type === "quiz"
+                              ? `/apprenant/formations/${enrollmentId}/quiz/${lesson.id}`
+                              : `/apprenant/formations/${enrollmentId}/lecons/${lesson.id}`
+                          }
                           className="flex items-center justify-between rounded-DEFAULT border border-border p-3 transition-colors hover:border-accent-text"
                         >
                           <div>

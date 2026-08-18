@@ -5,6 +5,7 @@ export * from "./primitives/Textarea";
 export * from "./primitives/Select";
 export * from "./primitives/Card";
 export * from "./primitives/Badge";
+export * from "./primitives/Progress";
 export * from "./primitives/Table";
 export * from "./primitives/Dialog";
 export * from "./primitives/Toast";

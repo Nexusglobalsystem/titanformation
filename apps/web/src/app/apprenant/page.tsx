@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { SpaceShell } from "@/components/SpaceShell";
-import { Badge, Card, CardContent, CardHeader, CardTitle } from "@titan-kinetic/ui";
+import { Badge, Card, CardContent, CardHeader, CardTitle, Progress } from "@titan-kinetic/ui";
 import { SignAttendanceButton } from "./_components/SignAttendanceButton";
 
 const STATUS_LABELS: Record<string, string> = {
@@ -40,9 +40,43 @@ export default async function ApprenantPage() {
 
   const { data: enrollments } = await supabase
     .from("enrollments")
-    .select("id, status, created_at, sessions(reference, starts_on, ends_on, trainings(title, slug))")
+    .select("id, status, created_at, sessions(reference, starts_on, ends_on, trainings(id, title, slug))")
     .eq("learner_id", user!.id)
     .order("created_at", { ascending: false });
+
+  const confirmedEnrollments = (enrollments ?? []).filter((e) =>
+    ["confirme", "termine"].includes(e.status),
+  );
+  const trainingIds = [
+    ...new Set(confirmedEnrollments.map((e) => e.sessions?.trainings?.id).filter((id): id is string => Boolean(id))),
+  ];
+  const enrollmentIds = confirmedEnrollments.map((e) => e.id);
+
+  const { data: lessonRows } = trainingIds.length
+    ? await supabase
+        .from("modules")
+        .select("training_id, lessons(id)")
+        .in("training_id", trainingIds)
+    : { data: [] };
+  const lessonCountByTraining = new Map<string, number>();
+  for (const row of lessonRows ?? []) {
+    lessonCountByTraining.set(
+      row.training_id,
+      (lessonCountByTraining.get(row.training_id) ?? 0) + (row.lessons?.length ?? 0),
+    );
+  }
+
+  const { data: progressRows } = enrollmentIds.length
+    ? await supabase
+        .from("learner_progress")
+        .select("enrollment_id, completed_at")
+        .in("enrollment_id", enrollmentIds)
+        .not("completed_at", "is", null)
+    : { data: [] };
+  const completedCountByEnrollment = new Map<string, number>();
+  for (const row of progressRows ?? []) {
+    completedCountByEnrollment.set(row.enrollment_id, (completedCountByEnrollment.get(row.enrollment_id) ?? 0) + 1);
+  }
 
   const { data: attendancesRaw } = await supabase
     .from("attendances")
@@ -86,36 +120,44 @@ export default async function ApprenantPage() {
                 const session = enrollment.sessions;
                 const training = session?.trainings;
                 const canAccessProgramme = ["confirme", "termine"].includes(enrollment.status);
+                const totalLessons = training?.id ? (lessonCountByTraining.get(training.id) ?? 0) : 0;
+                const completedLessons = completedCountByEnrollment.get(enrollment.id) ?? 0;
                 return (
-                  <div
-                    key={enrollment.id}
-                    className="flex flex-col gap-2 rounded-DEFAULT border border-border p-4 sm:flex-row sm:items-center sm:justify-between"
-                  >
-                    <div>
-                      <p className="font-body text-sm font-semibold text-foreground">
-                        {training?.title ?? "Formation"}
-                      </p>
-                      {session && (
-                        <p className="font-body text-xs text-foreground-muted">
-                          {session.reference} ·{" "}
-                          {new Date(session.starts_on).toLocaleDateString("fr-FR")} –{" "}
-                          {new Date(session.ends_on).toLocaleDateString("fr-FR")}
+                  <div key={enrollment.id} className="flex flex-col gap-3 rounded-DEFAULT border border-border p-4">
+                    <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                      <div>
+                        <p className="font-body text-sm font-semibold text-foreground">
+                          {training?.title ?? "Formation"}
                         </p>
-                      )}
+                        {session && (
+                          <p className="font-body text-xs text-foreground-muted">
+                            {session.reference} ·{" "}
+                            {new Date(session.starts_on).toLocaleDateString("fr-FR")} –{" "}
+                            {new Date(session.ends_on).toLocaleDateString("fr-FR")}
+                          </p>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <Badge variant={STATUS_VARIANTS[enrollment.status] ?? "neutral"}>
+                          {STATUS_LABELS[enrollment.status] ?? enrollment.status}
+                        </Badge>
+                        {canAccessProgramme && (
+                          <Link
+                            href={`/apprenant/formations/${enrollment.id}`}
+                            className="inline-flex h-8 items-center rounded border border-border px-3 font-body text-xs font-medium text-foreground hover:bg-surface-elevated"
+                          >
+                            Voir le programme
+                          </Link>
+                        )}
+                      </div>
                     </div>
-                    <div className="flex items-center gap-3">
-                      <Badge variant={STATUS_VARIANTS[enrollment.status] ?? "neutral"}>
-                        {STATUS_LABELS[enrollment.status] ?? enrollment.status}
-                      </Badge>
-                      {canAccessProgramme && (
-                        <Link
-                          href={`/apprenant/formations/${enrollment.id}`}
-                          className="inline-flex h-8 items-center rounded border border-border px-3 font-body text-xs font-medium text-foreground hover:bg-surface-elevated"
-                        >
-                          Voir le programme
-                        </Link>
-                      )}
-                    </div>
+                    {canAccessProgramme && totalLessons > 0 && (
+                      <Progress
+                        value={completedLessons}
+                        max={totalLessons}
+                        label={`${completedLessons}/${totalLessons} leçons terminées`}
+                      />
+                    )}
                   </div>
                 );
               })
