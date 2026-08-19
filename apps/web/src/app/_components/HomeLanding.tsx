@@ -146,8 +146,9 @@ export function HomeLanding() {
             </div>
             <div className="grid grid-cols-1 gap-(--spacing-gutter) lg:grid-cols-3 lg:auto-rows-[180px]">
               {MODULES.map((m) => (
-                <div
+                <Link
                   key={m.title}
+                  href="/formations"
                   className={`group relative flex flex-col justify-between overflow-hidden rounded-xl border border-border bg-surface-elevated p-6 transition-colors hover:border-accent/40 ${m.span}`}
                 >
                   <div>
@@ -171,7 +172,11 @@ export function HomeLanding() {
                       ))}
                     </div>
                   )}
-                </div>
+                  <span className="mt-6 inline-flex items-center gap-1.5 font-mono-label text-xs uppercase tracking-wide text-accent-text opacity-0 transition-opacity group-hover:opacity-100">
+                    Découvrir
+                    <IconArrowRight />
+                  </span>
+                </Link>
               ))}
             </div>
           </div>
