@@ -1020,6 +1020,63 @@ export type Database = {
           },
         ]
       }
+      organization_tasks: {
+        Row: {
+          assigned_to: string | null
+          created_at: string
+          created_by: string
+          description: string | null
+          domain: string | null
+          due_date: string | null
+          id: string
+          priority: Database["public"]["Enums"]["task_priority"]
+          status: Database["public"]["Enums"]["task_status"]
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          assigned_to?: string | null
+          created_at?: string
+          created_by: string
+          description?: string | null
+          domain?: string | null
+          due_date?: string | null
+          id?: string
+          priority?: Database["public"]["Enums"]["task_priority"]
+          status?: Database["public"]["Enums"]["task_status"]
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          assigned_to?: string | null
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          domain?: string | null
+          due_date?: string | null
+          id?: string
+          priority?: Database["public"]["Enums"]["task_priority"]
+          status?: Database["public"]["Enums"]["task_status"]
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "organization_tasks_assigned_to_fkey"
+            columns: ["assigned_to"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "organization_tasks_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       permissions: {
         Row: {
           category: string
@@ -1500,6 +1557,75 @@ export type Database = {
           },
         ]
       }
+      task_assignees: {
+        Row: {
+          task_id: string
+          user_id: string
+        }
+        Insert: {
+          task_id: string
+          user_id: string
+        }
+        Update: {
+          task_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "task_assignees_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "organization_tasks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "task_assignees_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      task_comments: {
+        Row: {
+          author_id: string
+          body: string
+          created_at: string
+          id: string
+          task_id: string
+        }
+        Insert: {
+          author_id: string
+          body: string
+          created_at?: string
+          id?: string
+          task_id: string
+        }
+        Update: {
+          author_id?: string
+          body?: string
+          created_at?: string
+          id?: string
+          task_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "task_comments_author_id_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "task_comments_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "organization_tasks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       trainer_availabilities: {
         Row: {
           created_at: string
@@ -1759,6 +1885,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      can_see_task: { Args: { p_task_id: string }; Returns: boolean }
       enrolled_session_ids: { Args: never; Returns: string[] }
       formateur_ids: { Args: never; Returns: string[] }
       has_permission: { Args: { p_key: string }; Returns: boolean }
@@ -1840,6 +1967,14 @@ export type Database = {
         | "en_cours"
         | "terminee"
         | "annulee"
+      task_priority: "low" | "normal" | "high" | "urgent"
+      task_status:
+        | "todo"
+        | "in_progress"
+        | "blocked"
+        | "review"
+        | "completed"
+        | "cancelled"
       watch_kind: "legale" | "metier" | "innovation_pedagogique" | "handicap"
     }
     CompositeTypes: {
@@ -2026,6 +2161,15 @@ export const Constants = {
         "en_cours",
         "terminee",
         "annulee",
+      ],
+      task_priority: ["low", "normal", "high", "urgent"],
+      task_status: [
+        "todo",
+        "in_progress",
+        "blocked",
+        "review",
+        "completed",
+        "cancelled",
       ],
       watch_kind: ["legale", "metier", "innovation_pedagogique", "handicap"],
     },
