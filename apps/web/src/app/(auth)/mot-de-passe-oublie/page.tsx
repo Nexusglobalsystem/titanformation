@@ -14,8 +14,11 @@ export default function MotDePasseOubliePage() {
   );
 
   return (
-    <Card>
+    <Card className="border-border/60 bg-surface-elevated shadow-2xl">
       <CardHeader>
+        <span className="mb-1 font-mono-label text-xs uppercase tracking-widest text-accent-text">
+          Récupération
+        </span>
         <CardTitle>Mot de passe oublié</CardTitle>
         <CardDescription>
           Indique ton email : tu recevras un lien pour choisir un nouveau mot de passe.

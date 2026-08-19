@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { PublicHeader } from "@/components/PublicHeader";
 import { PublicFooter } from "@/components/PublicFooter";
+import { GridBackdrop } from "@/components/GridBackdrop";
 import { Button } from "@titan-kinetic/ui";
 
 function IconLayers() {
@@ -104,7 +105,7 @@ export function HomeLanding() {
       <main className="flex-1">
         {/* Hero */}
         <section className="relative overflow-hidden border-b border-border">
-          <HeroBackdrop />
+          <GridBackdrop />
           <div className="relative z-10 mx-auto flex max-w-(--spacing-container-max) flex-col gap-6 px-4 py-28 md:px-(--spacing-margin-desktop) md:py-36">
             <span className="inline-flex w-fit items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 font-mono-label text-xs uppercase tracking-wider text-accent-text">
               LMS certifié Qualiopi
@@ -120,7 +121,9 @@ export function HomeLanding() {
               <Link href="/formations">
                 <Button variant="primary" size="lg" className="gap-2">
                   Découvrir le catalogue
-                  <IconArrowRight />
+                  <span className="inline-flex transition-transform duration-200 group-hover:translate-x-1">
+                    <IconArrowRight />
+                  </span>
                 </Button>
               </Link>
               <Link href="/connexion">
@@ -172,9 +175,11 @@ export function HomeLanding() {
                       ))}
                     </div>
                   )}
-                  <span className="mt-6 inline-flex items-center gap-1.5 font-mono-label text-xs uppercase tracking-wide text-accent-text opacity-0 transition-opacity group-hover:opacity-100">
+                  <span className="mt-6 inline-flex items-center gap-1.5 font-mono-label text-xs uppercase tracking-wide text-accent-text opacity-0 transition-opacity duration-200 group-hover:opacity-100">
                     Découvrir
-                    <IconArrowRight />
+                    <span className="inline-flex transition-transform duration-200 group-hover:translate-x-1">
+                      <IconArrowRight />
+                    </span>
                   </span>
                 </Link>
               ))}
@@ -256,32 +261,15 @@ export function HomeLanding() {
             <Link href="/formations">
               <Button variant="primary" size="lg" className="gap-2">
                 Voir les formations
-                <IconArrowRight />
+                <span className="inline-flex transition-transform duration-200 group-hover:translate-x-1">
+                  <IconArrowRight />
+                </span>
               </Button>
             </Link>
           </div>
         </section>
       </main>
       <PublicFooter />
-    </div>
-  );
-}
-
-function HeroBackdrop() {
-  return (
-    <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-      <div
-        className="absolute inset-0 opacity-[0.35]"
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, var(--color-border) 1px, transparent 1px), linear-gradient(to bottom, var(--color-border) 1px, transparent 1px)",
-          backgroundSize: "56px 56px",
-          maskImage: "radial-gradient(ellipse 80% 60% at 30% 20%, black 40%, transparent 90%)",
-          WebkitMaskImage: "radial-gradient(ellipse 80% 60% at 30% 20%, black 40%, transparent 90%)",
-        }}
-      />
-      <div className="absolute -left-32 -top-32 h-[520px] w-[520px] rounded-full bg-primary/40 blur-[120px]" />
-      <div className="absolute right-0 top-1/3 h-[420px] w-[420px] rounded-full bg-accent/10 blur-[130px]" />
     </div>
   );
 }

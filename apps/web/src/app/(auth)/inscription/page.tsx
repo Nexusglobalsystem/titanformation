@@ -11,8 +11,11 @@ export default function InscriptionPage() {
   const [state, formAction] = useActionState<ActionState, FormData>(signUpAction, undefined);
 
   return (
-    <Card>
+    <Card className="border-border/60 bg-surface-elevated shadow-2xl">
       <CardHeader>
+        <span className="mb-1 font-mono-label text-xs uppercase tracking-widest text-accent-text">
+          Nouveau compte
+        </span>
         <CardTitle>Créer un compte</CardTitle>
         <CardDescription>Inscris-toi pour accéder au catalogue de formations.</CardDescription>
       </CardHeader>

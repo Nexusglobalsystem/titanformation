@@ -13,10 +13,13 @@ export default function ReinitialiserMotDePassePage() {
   );
 
   return (
-    <Card>
+    <Card className="border-border/60 bg-surface-elevated shadow-2xl">
       <CardHeader>
+        <span className="mb-1 font-mono-label text-xs uppercase tracking-widest text-accent-text">
+          Sécurité du compte
+        </span>
         <CardTitle>Choisir un nouveau mot de passe</CardTitle>
-        <CardDescription>Ce lien n'est valable qu'une seule fois.</CardDescription>
+        <CardDescription>Ce lien n&apos;est valable qu&apos;une seule fois.</CardDescription>
       </CardHeader>
       <CardContent>
         <form action={formAction} className="flex flex-col gap-4">

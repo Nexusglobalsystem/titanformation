@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Badge, Button, Card, CardContent } from "@titan-kinetic/ui";
+import { IconArrowRight } from "@/components/icons";
 import type { Tables } from "@titan-kinetic/core/database.types";
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -26,8 +27,11 @@ export function TrainingCard({ training }: { training: Tables<"trainings"> }) {
           <span>{training.modalities}</span>
         </div>
         <Link href={`/formations/${training.slug}`}>
-          <Button variant="outline" className="w-full">
+          <Button variant="outline" className="w-full gap-2">
             Découvrir
+            <span className="inline-flex transition-transform duration-200 group-hover:translate-x-1">
+              <IconArrowRight />
+            </span>
           </Button>
         </Link>
       </CardContent>

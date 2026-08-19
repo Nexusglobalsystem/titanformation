@@ -14,8 +14,11 @@ function ConnexionForm() {
   const next = searchParams.get("next");
 
   return (
-    <Card>
+    <Card className="border-border/60 bg-surface-elevated shadow-2xl">
       <CardHeader>
+        <span className="mb-1 font-mono-label text-xs uppercase tracking-widest text-accent-text">
+          Espace membre
+        </span>
         <CardTitle>Connexion</CardTitle>
         <CardDescription>Accède à ton espace Titan Kinetic.</CardDescription>
       </CardHeader>

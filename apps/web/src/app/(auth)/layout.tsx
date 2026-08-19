@@ -1,16 +1,16 @@
+import { PublicHeader } from "@/components/PublicHeader";
+import { PublicFooter } from "@/components/PublicFooter";
+import { GridBackdrop } from "@/components/GridBackdrop";
+
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-8 bg-background px-4 py-12">
-      <div className="flex items-center gap-3">
-        <span
-          aria-hidden="true"
-          className="flex h-10 w-10 items-center justify-center rounded-DEFAULT bg-primary font-display text-lg font-bold text-accent"
-        >
-          TK
-        </span>
-        <span className="font-display text-xl font-semibold text-foreground">Titan Kinetic</span>
-      </div>
-      <div className="w-full max-w-md">{children}</div>
-    </main>
+    <div data-theme="dark" className="flex min-h-screen flex-col bg-background text-foreground">
+      <PublicHeader />
+      <main className="relative flex flex-1 items-center justify-center overflow-hidden px-4 py-16">
+        <GridBackdrop mask="radial-gradient(ellipse 60% 70% at 50% 40%, black 30%, transparent 90%)" />
+        <div className="relative z-10 w-full max-w-md">{children}</div>
+      </main>
+      <PublicFooter />
+    </div>
   );
 }
