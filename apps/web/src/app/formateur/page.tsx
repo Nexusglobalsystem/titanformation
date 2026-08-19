@@ -1,6 +1,15 @@
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { SpaceShell } from "@/components/SpaceShell";
 import { Badge, Button, Card, CardContent, CardHeader, CardTitle } from "@titan-kinetic/ui";
+import {
+  IconAlertTriangle,
+  IconCalendar,
+  IconCheckCircle,
+  IconClipboardCheck,
+  IconTasks,
+  IconUsers,
+} from "@/components/icons";
 import { NewAvailabilityForm } from "./_components/NewAvailabilityForm";
 import { NewExceptionForm } from "./_components/NewExceptionForm";
 import {
@@ -101,14 +110,121 @@ export default async function FormateurPage() {
     .order("booking_date", { ascending: true })
     .order("start_time", { ascending: true });
 
+  const activeSessionsCount = (sessions ?? []).filter(
+    (s) => s.status === "ouverte" || s.status === "en_cours",
+  ).length;
+  const unsignedAttendances = slots.flatMap((s) => (s.attendances ?? []).filter((a) => !a.signed_at));
+  const today = new Date().toISOString().slice(0, 10);
+  const upcomingBookings = (bookings ?? []).filter((b) => b.status === "confirmee" && b.booking_date >= today);
+  const nextBooking = upcomingBookings[0];
+
   return (
     <SpaceShell title="Espace formateur">
       <div className="flex flex-col gap-6">
-        <Card className="max-w-lg">
-          <CardHeader>
-            <CardTitle>Bienvenue{profile?.first_name ? `, ${profile.first_name}` : ""}</CardTitle>
-          </CardHeader>
-        </Card>
+        <div>
+          <h1 className="font-display text-2xl font-bold text-foreground md:text-3xl">
+            Bienvenue{profile?.first_name ? `, ${profile.first_name}` : ""}
+          </h1>
+          <p className="mt-1 font-body text-sm text-foreground-muted">
+            Vue d'ensemble de vos sessions et interventions requises.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+          <Card>
+            <CardContent className="flex flex-col gap-2 p-5">
+              <div className="flex items-center justify-between">
+                <span className="font-mono-label text-xs uppercase tracking-wide text-foreground-muted">
+                  Sessions actives
+                </span>
+                <IconUsers size={18} />
+              </div>
+              <span className="font-display text-3xl font-semibold tabular-nums text-foreground">
+                {activeSessionsCount}
+              </span>
+              {upcomingBookings.length > 0 && (
+                <span className="font-body text-xs text-foreground-muted">
+                  {upcomingBookings.length} rendez-vous à venir
+                </span>
+              )}
+            </CardContent>
+          </Card>
+
+          {unsignedAttendances.length > 0 ? (
+            <a
+              href="#emargement"
+              className="flex flex-col justify-between gap-4 rounded-xl border border-accent/30 bg-primary p-6 text-on-primary lg:col-span-2 hover:border-accent/60"
+            >
+              <div className="flex items-start justify-between gap-2">
+                <div>
+                  <h3 className="font-display text-lg font-bold">Émargement à valider</h3>
+                  <p className="mt-1 font-body text-sm text-on-primary/70">
+                    {unsignedAttendances.length} signature{unsignedAttendances.length > 1 ? "s" : ""} en attente
+                  </p>
+                </div>
+                <span className="inline-flex items-center gap-1 rounded-full border border-error/40 bg-error/10 px-3 py-1 font-mono-label text-[11px] uppercase tracking-wide text-error">
+                  <IconAlertTriangle size={14} />
+                  À traiter
+                </span>
+              </div>
+              <span className="inline-flex items-center gap-2 font-body text-sm font-semibold text-accent">
+                Voir le détail
+              </span>
+            </a>
+          ) : (
+            <div className="flex flex-col justify-between gap-4 rounded-xl border border-border bg-surface-elevated p-6 lg:col-span-2">
+              <div className="flex items-start justify-between gap-2">
+                <div>
+                  <h3 className="font-display text-lg font-bold text-foreground">Émargement à jour</h3>
+                  <p className="mt-1 font-body text-sm text-foreground-muted">
+                    Aucune signature en attente.
+                  </p>
+                </div>
+                <IconCheckCircle size={22} />
+              </div>
+              {nextBooking && (
+                <p className="font-body text-sm text-foreground-muted">
+                  Prochain rendez-vous :{" "}
+                  <span className="font-medium text-foreground">
+                    {new Date(nextBooking.booking_date + "T00:00:00").toLocaleDateString("fr-FR")} ·{" "}
+                    {nextBooking.start_time.slice(0, 5)}
+                  </span>
+                </p>
+              )}
+            </div>
+          )}
+        </div>
+
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+          <a
+            href="#disponibilites"
+            className="flex flex-col items-center justify-center gap-2 rounded-lg border border-border bg-surface-elevated p-4 text-center hover:border-accent/50"
+          >
+            <IconCalendar />
+            <span className="font-body text-sm font-medium text-foreground">Disponibilités</span>
+          </a>
+          <a
+            href="#rendez-vous"
+            className="flex flex-col items-center justify-center gap-2 rounded-lg border border-border bg-surface-elevated p-4 text-center hover:border-accent/50"
+          >
+            <IconClipboardCheck />
+            <span className="font-body text-sm font-medium text-foreground">Rendez-vous</span>
+          </a>
+          <Link
+            href="/formateur/taches"
+            className="flex flex-col items-center justify-center gap-2 rounded-lg border border-border bg-surface-elevated p-4 text-center hover:border-accent/50"
+          >
+            <IconTasks />
+            <span className="font-body text-sm font-medium text-foreground">Mes tâches</span>
+          </Link>
+          <Link
+            href="/formateur/notifications"
+            className="flex flex-col items-center justify-center gap-2 rounded-lg border border-border bg-surface-elevated p-4 text-center hover:border-accent/50"
+          >
+            <IconAlertTriangle />
+            <span className="font-body text-sm font-medium text-foreground">Notifications</span>
+          </Link>
+        </div>
 
         <Card>
           <CardHeader>
@@ -169,7 +285,7 @@ export default async function FormateurPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card id="emargement" className="scroll-mt-8">
           <CardHeader>
             <CardTitle>Émargement</CardTitle>
           </CardHeader>
@@ -217,7 +333,7 @@ export default async function FormateurPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card id="disponibilites" className="scroll-mt-8">
           <CardHeader>
             <CardTitle>Mes disponibilités</CardTitle>
           </CardHeader>
@@ -285,7 +401,7 @@ export default async function FormateurPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card id="rendez-vous" className="scroll-mt-8">
           <CardHeader>
             <CardTitle>Mes rendez-vous</CardTitle>
           </CardHeader>
