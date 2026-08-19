@@ -51,3 +51,4 @@ apps/web/CLAUDE.md
 
 # État local Claude Code (pas les skills, ceux-ci sont versionnés)
 .claude/scheduled_tasks.lock
+__pycache__/
