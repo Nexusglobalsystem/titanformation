@@ -9,6 +9,7 @@ import {
   IconClipboardCheck,
   IconTasks,
   IconUsers,
+  IconVideo,
 } from "@/components/icons";
 import { NewAvailabilityForm } from "./_components/NewAvailabilityForm";
 import { NewExceptionForm } from "./_components/NewExceptionForm";
@@ -80,9 +81,15 @@ export default async function FormateurPage() {
   const { data: slotsRaw } = await supabase
     .from("session_slots")
     .select(
-      "id, slot_date, half_day, sessions(reference, trainings(title)), attendances(id, signed_at, present, enrollments(profiles(first_name, last_name)))",
+      "id, slot_date, half_day, starts_at, ends_at, sessions(reference, trainings(title)), attendances(id, signed_at, present, enrollments(profiles(first_name, last_name)))",
     )
     .order("slot_date", { ascending: true });
+
+  const JOIN_WINDOW_MS = 15 * 60 * 1000;
+  const nowMs = Date.now();
+  const canJoinSlot = (startsAt: string, endsAt: string) =>
+    nowMs >= new Date(startsAt).getTime() - JOIN_WINDOW_MS &&
+    nowMs <= new Date(endsAt).getTime() + JOIN_WINDOW_MS;
 
   const HALF_DAY_ORDER: Record<string, number> = { matin: 0, apres_midi: 1 };
   const slots = [...(slotsRaw ?? [])].sort(
@@ -297,11 +304,21 @@ export default async function FormateurPage() {
                 const attendances = slot.attendances ?? [];
                 return (
                   <div key={slot.id} className="flex flex-col gap-2 rounded-DEFAULT border border-border p-4">
-                    <p className="font-body text-sm font-semibold text-foreground">
-                      {slot.sessions?.trainings?.title ?? "Formation"} —{" "}
-                      {new Date(slot.slot_date).toLocaleDateString("fr-FR")} ·{" "}
-                      {HALF_DAY_LABELS[slot.half_day] ?? slot.half_day}
-                    </p>
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <p className="font-body text-sm font-semibold text-foreground">
+                        {slot.sessions?.trainings?.title ?? "Formation"} —{" "}
+                        {new Date(slot.slot_date).toLocaleDateString("fr-FR")} ·{" "}
+                        {HALF_DAY_LABELS[slot.half_day] ?? slot.half_day}
+                      </p>
+                      {canJoinSlot(slot.starts_at, slot.ends_at) && (
+                        <Link href={`/salle/${slot.id}`}>
+                          <Button variant="accent" size="sm" className="gap-1.5">
+                            <IconVideo size={16} />
+                            Rejoindre la classe virtuelle
+                          </Button>
+                        </Link>
+                      )}
+                    </div>
                     {attendances.length === 0 ? (
                       <p className="font-body text-xs text-foreground-muted">Aucun inscrit sur ce créneau.</p>
                     ) : (

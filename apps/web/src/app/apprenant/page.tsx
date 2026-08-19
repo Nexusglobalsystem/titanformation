@@ -1,13 +1,14 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { SpaceShell } from "@/components/SpaceShell";
-import { Badge, Card, CardContent, CardHeader, CardTitle, Progress } from "@titan-kinetic/ui";
+import { Badge, Button, Card, CardContent, CardHeader, CardTitle, Progress } from "@titan-kinetic/ui";
 import {
   IconArrowRight,
   IconCalendar,
   IconCheckCircle,
   IconClock,
   IconLayers,
+  IconVideo,
 } from "@/components/icons";
 import { SignAttendanceButton } from "./_components/SignAttendanceButton";
 
@@ -88,8 +89,14 @@ export default async function ApprenantPage() {
   const { data: attendancesRaw } = await supabase
     .from("attendances")
     .select(
-      "id, signed_at, present, session_slots(slot_date, half_day, sessions(reference, trainings(title)))",
+      "id, signed_at, present, session_slots(id, slot_date, half_day, starts_at, ends_at, sessions(reference, trainings(title)))",
     );
+
+  const JOIN_WINDOW_MS = 15 * 60 * 1000;
+  const nowMs = Date.now();
+  const canJoinSlot = (startsAt: string, endsAt: string) =>
+    nowMs >= new Date(startsAt).getTime() - JOIN_WINDOW_MS &&
+    nowMs <= new Date(endsAt).getTime() + JOIN_WINDOW_MS;
 
   const HALF_DAY_ORDER: Record<string, number> = { matin: 0, apres_midi: 1 };
   const attendances = [...(attendancesRaw ?? [])].sort((a, b) => {
@@ -346,13 +353,23 @@ export default async function ApprenantPage() {
                         </p>
                       )}
                     </div>
-                    {attendance.signed_at ? (
-                      <Badge variant="success">
-                        Signé le {new Date(attendance.signed_at).toLocaleString("fr-FR")}
-                      </Badge>
-                    ) : (
-                      <SignAttendanceButton attendanceId={attendance.id} />
-                    )}
+                    <div className="flex items-center gap-2">
+                      {slot && canJoinSlot(slot.starts_at, slot.ends_at) && (
+                        <Link href={`/salle/${slot.id}`}>
+                          <Button variant="accent" size="sm" className="gap-1.5">
+                            <IconVideo size={16} />
+                            Rejoindre
+                          </Button>
+                        </Link>
+                      )}
+                      {attendance.signed_at ? (
+                        <Badge variant="success">
+                          Signé le {new Date(attendance.signed_at).toLocaleString("fr-FR")}
+                        </Badge>
+                      ) : (
+                        <SignAttendanceButton attendanceId={attendance.id} />
+                      )}
+                    </div>
                   </div>
                 );
               })
