@@ -6,6 +6,54 @@ import { PublicFooter } from "@/components/PublicFooter";
 import { Button, Card, CardContent } from "@titan-kinetic/ui";
 import { EnrollForm } from "./_components/EnrollForm";
 
+function IconLayers() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M12 3 3 8l9 5 9-5-9-5Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+      <path d="m3 13 9 5 9-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function IconTarget() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <circle cx="12" cy="12" r="8" stroke="currentColor" strokeWidth="1.5" />
+      <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="1.5" />
+      <circle cx="12" cy="12" r="0.8" fill="currentColor" />
+    </svg>
+  );
+}
+
+function IconUsers() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <circle cx="9" cy="8" r="3" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M3.5 19c.8-3.2 3-5 5.5-5s4.7 1.8 5.5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <circle cx="17" cy="9" r="2.2" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M15.5 13c2 .2 3.5 1.8 4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function IconShieldCheck() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M12 3.5 5 6v6c0 4.5 3 7.5 7 8.5 4-1 7-4 7-8.5V6l-7-2.5Z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
+      <path d="m9 12 2 2 4-4.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function SectionHeading({ icon, children }: { icon: React.ReactNode; children: React.ReactNode }) {
+  return (
+    <h2 className="mb-4 flex items-center gap-2 font-display text-lg font-semibold text-accent md:text-xl">
+      <span aria-hidden="true">{icon}</span>
+      {children}
+    </h2>
+  );
+}
+
 export default async function TrainingDetailPage({
   params,
 }: {
@@ -22,6 +70,12 @@ export default async function TrainingDetailPage({
     .maybeSingle();
 
   if (!training) notFound();
+
+  const { data: modules } = await supabase
+    .from("modules")
+    .select("id, title, description")
+    .eq("training_id", training.id)
+    .order("position", { ascending: true });
 
   const { data: session } = await supabase
     .from("sessions")
@@ -68,14 +122,35 @@ export default async function TrainingDetailPage({
           <div className="flex flex-col gap-6 lg:col-span-8">
             <Card>
               <CardContent className="p-6 pt-6">
-                <h2 className="mb-4 font-display text-xl font-semibold text-accent">Objectifs de la formation</h2>
+                <SectionHeading icon={<IconTarget />}>Objectifs de la formation</SectionHeading>
                 <p className="font-body text-sm text-foreground">{training.objectives}</p>
               </CardContent>
             </Card>
 
+            {modules && modules.length > 0 && (
+              <Card>
+                <CardContent className="p-6 pt-6">
+                  <SectionHeading icon={<IconLayers />}>Programme détaillé</SectionHeading>
+                  <ol className="flex flex-col gap-4">
+                    {modules.map((m, i) => (
+                      <li key={m.id} className="border-l-2 border-border pl-4">
+                        <p className="font-mono-label text-[11px] uppercase tracking-wide text-foreground-muted">
+                          Module {i + 1}
+                        </p>
+                        <p className="font-body text-sm font-semibold text-foreground">{m.title}</p>
+                        {m.description && (
+                          <p className="font-body text-sm text-foreground-muted">{m.description}</p>
+                        )}
+                      </li>
+                    ))}
+                  </ol>
+                </CardContent>
+              </Card>
+            )}
+
             <Card>
               <CardContent className="p-6 pt-6">
-                <h2 className="mb-4 font-display text-xl font-semibold text-accent">Modalités pédagogiques</h2>
+                <SectionHeading icon={<IconLayers />}>Modalités pédagogiques</SectionHeading>
                 <p className="font-body text-sm text-foreground">{training.pedagogical_means}</p>
               </CardContent>
             </Card>
@@ -83,13 +158,13 @@ export default async function TrainingDetailPage({
             <div className="grid grid-cols-1 gap-(--spacing-gutter) md:grid-cols-2">
               <Card>
                 <CardContent className="p-6 pt-6">
-                  <h2 className="mb-3 font-display text-lg font-semibold text-accent">Public visé</h2>
+                  <SectionHeading icon={<IconUsers />}>Public visé</SectionHeading>
                   <p className="font-body text-sm text-foreground-muted">{training.target_audience}</p>
                 </CardContent>
               </Card>
               <Card>
                 <CardContent className="p-6 pt-6">
-                  <h2 className="mb-3 font-display text-lg font-semibold text-accent">Prérequis</h2>
+                  <SectionHeading icon={<IconShieldCheck />}>Prérequis</SectionHeading>
                   <p className="font-body text-sm text-foreground-muted">{training.prerequisites}</p>
                 </CardContent>
               </Card>
@@ -127,6 +202,14 @@ export default async function TrainingDetailPage({
                     <dt className="text-foreground-muted">Format</dt>
                     <dd className="text-right font-semibold text-foreground">{training.modalities}</dd>
                   </div>
+                  {training.is_certifying && (
+                    <div className="flex items-center justify-between">
+                      <dt className="text-foreground-muted">Certification</dt>
+                      <dd className="text-right font-semibold text-foreground">
+                        {training.certification_name || "Certificat de réalisation"}
+                      </dd>
+                    </div>
+                  )}
                   {session && (
                     <div className="flex items-center justify-between">
                       <dt className="text-foreground-muted">Prochaine session</dt>
