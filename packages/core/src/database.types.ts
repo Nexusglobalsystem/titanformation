@@ -1020,6 +1020,24 @@ export type Database = {
           },
         ]
       }
+      permissions: {
+        Row: {
+          category: string
+          key: string
+          label: string
+        }
+        Insert: {
+          category: string
+          key: string
+          label: string
+        }
+        Update: {
+          category?: string
+          key?: string
+          label?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           accessibility_flagged: boolean
@@ -1303,6 +1321,29 @@ export type Database = {
             isOneToOne: true
             referencedRelation: "lessons"
             referencedColumns: ["id"]
+          },
+        ]
+      }
+      role_permissions: {
+        Row: {
+          permission_key: string
+          role: Database["public"]["Enums"]["app_role"]
+        }
+        Insert: {
+          permission_key: string
+          role: Database["public"]["Enums"]["app_role"]
+        }
+        Update: {
+          permission_key?: string
+          role?: Database["public"]["Enums"]["app_role"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "role_permissions_permission_key_fkey"
+            columns: ["permission_key"]
+            isOneToOne: false
+            referencedRelation: "permissions"
+            referencedColumns: ["key"]
           },
         ]
       }
@@ -1720,6 +1761,7 @@ export type Database = {
     Functions: {
       enrolled_session_ids: { Args: never; Returns: string[] }
       formateur_ids: { Args: never; Returns: string[] }
+      has_permission: { Args: { p_key: string }; Returns: boolean }
       has_role: {
         Args: { target: Database["public"]["Enums"]["app_role"] }
         Returns: boolean

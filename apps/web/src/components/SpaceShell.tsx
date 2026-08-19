@@ -9,6 +9,7 @@ const NAV_BY_TITLE: Record<string, SpaceNavItem[]> = {
     { label: "Tableau de bord", href: "/admin" },
     { label: "Formations", href: "/admin/formations" },
     { label: "Utilisateurs", href: "/admin/utilisateurs" },
+    { label: "Rôles & permissions", href: "/admin/roles-permissions" },
     { label: "Réclamations", href: "/admin/reclamations" },
     { label: "Documents", href: "/admin/documents" },
     { label: "Statistiques", href: "/admin/statistiques" },

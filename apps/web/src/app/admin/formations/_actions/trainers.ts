@@ -18,6 +18,11 @@ export async function assignTrainerAction(
   }
 
   const supabase = await createClient();
+  const { data: allowed } = await supabase.rpc("has_permission", { p_key: "trainers.assign" });
+  if (!allowed) {
+    return { error: "Vous n'avez pas la permission d'affecter un formateur." };
+  }
+
   const { error } = await supabase
     .from("session_trainers")
     .insert({ session_id: sessionId, trainer_id: trainerId, is_lead: true });

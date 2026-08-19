@@ -15,6 +15,11 @@ export async function confirmEnrollmentAction(
   }
 
   const supabase = await createClient();
+  const { data: allowed } = await supabase.rpc("has_permission", { p_key: "learners.approve" });
+  if (!allowed) {
+    return { error: "Vous n'avez pas la permission d'accepter une inscription." };
+  }
+
   const { data: enrollment, error } = await supabase
     .from("enrollments")
     .update({ status: "confirme" })

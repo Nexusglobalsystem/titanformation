@@ -32,6 +32,11 @@ export async function updateClaimAction(
   }
 
   const supabase = await createClient();
+  const { data: allowed } = await supabase.rpc("has_permission", { p_key: "claims.manage" });
+  if (!allowed) {
+    return { error: "Vous n'avez pas la permission de traiter les réclamations." };
+  }
+
   const isResolved = status === "resolue" || status === "refusee";
 
   const { data: claim, error } = await supabase
