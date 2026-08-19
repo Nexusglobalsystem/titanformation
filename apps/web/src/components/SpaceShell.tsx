@@ -10,6 +10,7 @@ const NAV_BY_TITLE: Record<string, SpaceNavItem[]> = {
     { label: "Formations", href: "/admin/formations" },
     { label: "Utilisateurs", href: "/admin/utilisateurs" },
     { label: "Réclamations", href: "/admin/reclamations" },
+    { label: "Documents", href: "/admin/documents" },
     { label: "Statistiques", href: "/admin/statistiques" },
     { label: "Notifications", href: "/admin/notifications" },
   ],
@@ -25,6 +26,7 @@ const NAV_BY_TITLE: Record<string, SpaceNavItem[]> = {
     { label: "Tableau de bord", href: "/apprenant" },
     { label: "Réserver un rendez-vous", href: "/apprenant/reservations" },
     { label: "Réclamations", href: "/apprenant/reclamations" },
+    { label: "Mes documents", href: "/apprenant/documents" },
     { label: "Notifications", href: "/apprenant/notifications" },
   ],
 };
