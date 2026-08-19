@@ -35,6 +35,7 @@ export async function assignTrainerAction(
   }
 
   revalidatePath(`/admin/formations/${trainingId}`);
+  revalidatePath("/admin/planification");
 }
 
 export async function removeTrainerAction(formData: FormData) {

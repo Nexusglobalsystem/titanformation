@@ -11,6 +11,7 @@ const NAV_BY_TITLE: Record<string, SpaceNavItem[]> = {
     { label: "Utilisateurs", href: "/admin/utilisateurs" },
     { label: "Rôles & permissions", href: "/admin/roles-permissions" },
     { label: "Tâches", href: "/admin/taches" },
+    { label: "Planification", href: "/admin/planification" },
     { label: "Réclamations", href: "/admin/reclamations" },
     { label: "Documents", href: "/admin/documents" },
     { label: "Statistiques", href: "/admin/statistiques" },
