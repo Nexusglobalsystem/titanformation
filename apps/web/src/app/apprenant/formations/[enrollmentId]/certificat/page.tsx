@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { evaluateCertificationEligibility } from "@/lib/certification";
 import { PrintCertificateButton } from "../../_components/PrintCertificateButton";
 
 export default async function CertificatPage({
@@ -27,40 +28,38 @@ export default async function CertificatPage({
   const training = enrollment.sessions?.trainings;
   if (!training) notFound();
 
-  const { data: modules } = await supabase
-    .from("modules")
-    .select("lessons(id)")
-    .eq("training_id", training.id);
-  const totalLessons = (modules ?? []).reduce((sum, m) => sum + (m.lessons?.length ?? 0), 0);
-
-  const { data: progressRows } = await supabase
-    .from("learner_progress")
-    .select("lesson_id, completed_at")
-    .eq("enrollment_id", enrollmentId)
-    .not("completed_at", "is", null);
-  const completedLessons = progressRows?.length ?? 0;
-
-  if (totalLessons === 0 || completedLessons < totalLessons) {
-    return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-background p-8 text-center">
-        <p className="font-body text-sm text-foreground-muted">
-          Le certificat est disponible une fois toutes les leçons de la formation terminées
-          ({completedLessons}/{totalLessons}).
-        </p>
-        <Link href={`/apprenant/formations/${enrollmentId}`} className="font-body text-sm text-accent-text hover:underline">
-          ← Retour au programme
-        </Link>
-      </div>
-    );
-  }
-
   let { data: certificate } = await supabase
     .from("certificates")
     .select("certificate_number, issued_at")
     .eq("enrollment_id", enrollmentId)
     .maybeSingle();
 
+  // Un certificat déjà délivré est un document historique immuable — jamais
+  // réévalué si les conditions de la formation changent après coup. Seule
+  // une première demande passe par la vérification d'éligibilité.
   if (!certificate) {
+    const eligibility = await evaluateCertificationEligibility(supabase, enrollmentId, training.id);
+    if (!eligibility.eligible) {
+      return (
+        <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-background p-8 text-center">
+          <p className="font-body text-sm text-foreground-muted">Le certificat n&apos;est pas encore disponible.</p>
+          <ul className="flex flex-col gap-1">
+            {eligibility.reasons.map((reason) => (
+              <li key={reason} className="font-body text-sm text-foreground-muted">
+                {reason}
+              </li>
+            ))}
+          </ul>
+          <Link
+            href={`/apprenant/formations/${enrollmentId}`}
+            className="font-body text-sm text-accent-text hover:underline"
+          >
+            ← Retour au programme
+          </Link>
+        </div>
+      );
+    }
+
     const certificateNumber = `CERT-${new Date().getFullYear()}-${enrollmentId.slice(0, 8).toUpperCase()}`;
     const { data: created } = await supabase
       .from("certificates")

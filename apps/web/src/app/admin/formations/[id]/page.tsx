@@ -11,6 +11,8 @@ import { NewLessonForm } from "../_components/NewLessonForm";
 import { AttachLessonFileForm } from "../_components/AttachLessonFileForm";
 import { TrainingStepsBoard } from "../_components/TrainingStepsBoard";
 import { NewTrainingStepForm } from "../_components/NewTrainingStepForm";
+import { CertificationRequirementsForm } from "../_components/CertificationRequirementsForm";
+import { CertificationSignoffPanel } from "../_components/CertificationSignoffPanel";
 import { updateTrainingAction } from "../_actions/trainings";
 import { removeTrainerAction } from "../_actions/trainers";
 import { CreateSatisfactionFormButton, RecalculateSatisfactionButton } from "../_components/SatisfactionActions";
@@ -76,6 +78,75 @@ export default async function EditFormationPage({ params }: { params: Promise<{ 
     .select("id, type, title, duration_minutes, modules(title)")
     .eq("training_id", id)
     .order("position", { ascending: true });
+
+  let certificationRequirement: {
+    id: string;
+    min_attendance_pct: number | null;
+    min_grade: number | null;
+    requires_final_exam: boolean;
+    final_exam_lesson_id: string | null;
+    requires_pedagogical_signoff: boolean;
+  } | null = null;
+  let requiredModuleIds: string[] = [];
+  let certificationEnrollments: {
+    id: string;
+    learnerName: string;
+    signedAt: string | null;
+    signedByName: string | null;
+    comment: string | null;
+  }[] = [];
+
+  if (training.is_certifying) {
+    const { data: req } = await supabase
+      .from("certification_requirements")
+      .select("id, min_attendance_pct, min_grade, requires_final_exam, final_exam_lesson_id, requires_pedagogical_signoff")
+      .eq("training_id", id)
+      .maybeSingle();
+    certificationRequirement = req ?? null;
+
+    if (certificationRequirement) {
+      const { data: reqModules } = await supabase
+        .from("certification_required_modules")
+        .select("module_id")
+        .eq("requirement_id", certificationRequirement.id);
+      requiredModuleIds = (reqModules ?? []).map((m) => m.module_id);
+
+      if (certificationRequirement.requires_pedagogical_signoff) {
+        const { data: enrollments } = await supabase
+          .from("enrollments")
+          .select("id, profiles(first_name, last_name), sessions!inner(training_id)")
+          .eq("sessions.training_id", id)
+          .in("status", ["confirme", "termine"]);
+
+        const enrollmentIds = (enrollments ?? []).map((e) => e.id);
+        const { data: signoffs } = enrollmentIds.length
+          ? await supabase
+              .from("certification_signoffs")
+              .select("enrollment_id, signed_at, comment, profiles(first_name, last_name)")
+              .in("enrollment_id", enrollmentIds)
+          : { data: [] };
+
+        const signoffByEnrollment = new Map((signoffs ?? []).map((s) => [s.enrollment_id, s]));
+        certificationEnrollments = (enrollments ?? []).map((e) => {
+          const signoff = signoffByEnrollment.get(e.id);
+          return {
+            id: e.id,
+            learnerName: `${e.profiles?.first_name ?? ""} ${e.profiles?.last_name ?? ""}`.trim() || "—",
+            signedAt: signoff?.signed_at ?? null,
+            signedByName: signoff?.profiles
+              ? `${signoff.profiles.first_name ?? ""} ${signoff.profiles.last_name ?? ""}`.trim()
+              : null,
+            comment: signoff?.comment ?? null,
+          };
+        });
+      }
+    }
+  }
+
+  const quizLessons = (modules ?? [])
+    .flatMap((m) => m.lessons ?? [])
+    .filter((l) => l.type === "quiz")
+    .map((l) => ({ id: l.id, title: l.title }));
 
   const { data: satisfactionForm } = await supabase
     .from("evaluation_forms")
@@ -243,6 +314,35 @@ export default async function EditFormationPage({ params }: { params: Promise<{ 
             />
           </CardContent>
         </Card>
+
+        {training.is_certifying && (
+          <Card className="max-w-3xl">
+            <CardHeader>
+              <CardTitle>Conditions de certification</CardTitle>
+              <p className="font-body text-sm text-foreground-muted">
+                Sans condition définie ici, le certificat reste débloqué dès que 100% des leçons
+                obligatoires sont terminées.
+              </p>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-6">
+              <CertificationRequirementsForm
+                trainingId={training.id}
+                requirement={certificationRequirement}
+                requiredModuleIds={requiredModuleIds}
+                modules={(modules ?? []).map((m) => ({ id: m.id, title: m.title }))}
+                quizLessons={quizLessons}
+              />
+              {certificationRequirement?.requires_pedagogical_signoff && (
+                <div className="flex flex-col gap-3 border-t border-border pt-6">
+                  <h3 className="font-display text-sm font-semibold text-foreground">
+                    Validation pédagogique par apprenant
+                  </h3>
+                  <CertificationSignoffPanel trainingId={training.id} enrollments={certificationEnrollments} />
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        )}
 
         <Card className="max-w-3xl">
           <CardHeader>

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { evaluateCertificationEligibility } from "@/lib/certification";
 import { SpaceShell } from "@/components/SpaceShell";
 import { Badge, Button, Card, CardContent, CardHeader, CardTitle, Progress } from "@titan-kinetic/ui";
 
@@ -70,6 +71,11 @@ export default async function ApprenantProgrammePage({
     0,
   );
   const isComplete = totalLessons > 0 && completedLessons === totalLessons;
+  // Calculée sans condition sur is_certifying : sans conditions personnalisées
+  // configurées, le repli reproduit exactement l'ancienne règle "100% des
+  // leçons obligatoires" — aucun changement de comportement pour les
+  // formations qui n'ont pas été reconfigurées.
+  const certificationEligibility = await evaluateCertificationEligibility(supabase, enrollmentId, training.id);
 
   let satisfactionFormId: string | null = null;
   let satisfactionAnswered = false;
@@ -144,13 +150,15 @@ export default async function ApprenantProgrammePage({
                 label={`${completedLessons}/${totalLessons} leçons terminées`}
               />
             )}
-            {isComplete && (
+            {(certificationEligibility.eligible || isComplete) && (
               <div className="flex flex-wrap gap-3">
-                <Link href={`/apprenant/formations/${enrollmentId}/certificat`} className="w-fit">
-                  <Button variant="primary" size="sm">
-                    Voir mon certificat
-                  </Button>
-                </Link>
+                {certificationEligibility.eligible && (
+                  <Link href={`/apprenant/formations/${enrollmentId}/certificat`} className="w-fit">
+                    <Button variant="primary" size="sm">
+                      Voir mon certificat
+                    </Button>
+                  </Link>
+                )}
                 {satisfactionFormId && !satisfactionAnswered && (
                   <Link href={`/apprenant/formations/${enrollmentId}/satisfaction`} className="w-fit">
                     <Button variant="outline" size="sm">

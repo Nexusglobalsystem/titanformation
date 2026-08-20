@@ -230,6 +230,126 @@ export type Database = {
           },
         ]
       }
+      certification_required_modules: {
+        Row: {
+          module_id: string
+          requirement_id: string
+        }
+        Insert: {
+          module_id: string
+          requirement_id: string
+        }
+        Update: {
+          module_id?: string
+          requirement_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "certification_required_modules_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "modules"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "certification_required_modules_requirement_id_fkey"
+            columns: ["requirement_id"]
+            isOneToOne: false
+            referencedRelation: "certification_requirements"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      certification_requirements: {
+        Row: {
+          created_at: string
+          final_exam_lesson_id: string | null
+          id: string
+          min_attendance_pct: number | null
+          min_grade: number | null
+          requires_final_exam: boolean
+          requires_pedagogical_signoff: boolean
+          training_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          final_exam_lesson_id?: string | null
+          id?: string
+          min_attendance_pct?: number | null
+          min_grade?: number | null
+          requires_final_exam?: boolean
+          requires_pedagogical_signoff?: boolean
+          training_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          final_exam_lesson_id?: string | null
+          id?: string
+          min_attendance_pct?: number | null
+          min_grade?: number | null
+          requires_final_exam?: boolean
+          requires_pedagogical_signoff?: boolean
+          training_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "certification_requirements_final_exam_lesson_id_fkey"
+            columns: ["final_exam_lesson_id"]
+            isOneToOne: false
+            referencedRelation: "lessons"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "certification_requirements_training_id_fkey"
+            columns: ["training_id"]
+            isOneToOne: true
+            referencedRelation: "trainings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      certification_signoffs: {
+        Row: {
+          comment: string | null
+          enrollment_id: string
+          id: string
+          signed_at: string
+          signed_by: string
+        }
+        Insert: {
+          comment?: string | null
+          enrollment_id: string
+          id?: string
+          signed_at?: string
+          signed_by: string
+        }
+        Update: {
+          comment?: string | null
+          enrollment_id?: string
+          id?: string
+          signed_at?: string
+          signed_by?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "certification_signoffs_enrollment_id_fkey"
+            columns: ["enrollment_id"]
+            isOneToOne: true
+            referencedRelation: "enrollments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "certification_signoffs_signed_by_fkey"
+            columns: ["signed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       claims: {
         Row: {
           assigned_to: string | null
