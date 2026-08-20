@@ -14,6 +14,98 @@ export type Database = {
   }
   public: {
     Tables: {
+      access_grants: {
+        Row: {
+          company_id: string | null
+          expires_at: string | null
+          granted_at: string
+          granted_by: string | null
+          id: string
+          module_id: string | null
+          note: string | null
+          programme_id: string | null
+          session_id: string | null
+          training_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          company_id?: string | null
+          expires_at?: string | null
+          granted_at?: string
+          granted_by?: string | null
+          id?: string
+          module_id?: string | null
+          note?: string | null
+          programme_id?: string | null
+          session_id?: string | null
+          training_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          company_id?: string | null
+          expires_at?: string | null
+          granted_at?: string
+          granted_by?: string | null
+          id?: string
+          module_id?: string | null
+          note?: string | null
+          programme_id?: string | null
+          session_id?: string | null
+          training_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "access_grants_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "access_grants_granted_by_fkey"
+            columns: ["granted_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "access_grants_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "modules"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "access_grants_programme_id_fkey"
+            columns: ["programme_id"]
+            isOneToOne: false
+            referencedRelation: "programmes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "access_grants_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "sessions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "access_grants_training_id_fkey"
+            columns: ["training_id"]
+            isOneToOne: false
+            referencedRelation: "trainings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "access_grants_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       attendances: {
         Row: {
           absence_reason: string | null
@@ -2139,6 +2231,9 @@ export type Database = {
       can_see_task: { Args: { p_task_id: string }; Returns: boolean }
       enrolled_session_ids: { Args: never; Returns: string[] }
       formateur_ids: { Args: never; Returns: string[] }
+      granted_module_ids: { Args: never; Returns: string[] }
+      granted_session_ids: { Args: never; Returns: string[] }
+      granted_training_ids: { Args: never; Returns: string[] }
       has_permission: { Args: { p_key: string }; Returns: boolean }
       has_role: {
         Args: { target: Database["public"]["Enums"]["app_role"] }

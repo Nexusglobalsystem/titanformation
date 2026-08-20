@@ -188,3 +188,67 @@ describe("RLS — attendances", () => {
     expect(data).toHaveLength(1);
   });
 });
+
+describe("RLS — access_grants (Phase 5, additif)", () => {
+  let moduleId: string;
+
+  beforeAll(async () => {
+    const { data: module, error } = await admin
+      .from("modules")
+      .insert({ training_id: trainingId, title: "Module test RLS", position: 0 })
+      .select()
+      .single();
+    if (error) throw error;
+    moduleId = module.id;
+  });
+
+  afterAll(async () => {
+    await admin.from("access_grants").delete().eq("training_id", trainingId);
+    if (moduleId) await admin.from("modules").delete().eq("id", moduleId);
+  });
+
+  it("sans accès accordé, B ne voit ni la formation ni le module de A (comportement inchangé)", async () => {
+    const { data: trainings } = await clientB.from("trainings").select("id").eq("id", trainingId);
+    expect(trainings).toEqual([]);
+    const { data: modules } = await clientB.from("modules").select("id").eq("id", moduleId);
+    expect(modules).toEqual([]);
+  });
+
+  it("après octroi d'un accès formation, B voit la formation et son module en lecture", async () => {
+    const { error: grantError } = await admin
+      .from("access_grants")
+      .insert({ user_id: userBId, training_id: trainingId, granted_by: userAId });
+    expect(grantError).toBeNull();
+
+    const { data: trainings } = await clientB.from("trainings").select("id").eq("id", trainingId);
+    expect(trainings).toHaveLength(1);
+    const { data: modules } = await clientB.from("modules").select("id").eq("id", moduleId);
+    expect(modules).toHaveLength(1);
+
+    await admin.from("access_grants").delete().eq("training_id", trainingId).eq("user_id", userBId);
+  });
+
+  it("un accès accordé sans inscription ne permet pas d'agir (learner_progress reste bloqué)", async () => {
+    const { data: lesson } = await admin
+      .from("lessons")
+      .insert({ module_id: moduleId, title: "Leçon test RLS", type: "texte", body: "N/A" })
+      .select()
+      .single();
+
+    const { error: grantError } = await admin
+      .from("access_grants")
+      .insert({ user_id: userBId, training_id: trainingId, granted_by: userAId });
+    expect(grantError).toBeNull();
+
+    // B voit la leçon (accès accordé) mais ne peut pas s'auto-déclarer une
+    // progression : aucune policy learner_progress n'a été modifiée par
+    // cette migration, l'accès accordé reste strictement en lecture.
+    const { error: progressError } = await clientB
+      .from("learner_progress")
+      .insert({ enrollment_id: enrollmentId, lesson_id: lesson!.id, completed_at: new Date().toISOString() });
+    expect(progressError).not.toBeNull();
+
+    await admin.from("access_grants").delete().eq("training_id", trainingId).eq("user_id", userBId);
+    await admin.from("lessons").delete().eq("id", lesson!.id);
+  });
+});
