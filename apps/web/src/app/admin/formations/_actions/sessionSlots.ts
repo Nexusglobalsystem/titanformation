@@ -106,6 +106,7 @@ export async function createSessionSlotAction(
   }
 
   revalidatePath(`/admin/formations/${trainingId}`);
+  revalidatePath("/admin/formations/nouvelle");
   return warning ? { warning } : undefined;
 }
 
@@ -117,4 +118,5 @@ export async function deleteSessionSlotAction(formData: FormData): Promise<void>
   const supabase = await createClient();
   await supabase.from("session_slots").delete().eq("id", slotId);
   revalidatePath(`/admin/formations/${trainingId}`);
+  revalidatePath("/admin/formations/nouvelle");
 }

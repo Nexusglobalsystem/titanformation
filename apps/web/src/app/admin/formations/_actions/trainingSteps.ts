@@ -48,6 +48,7 @@ export async function createTrainingStepAction(
   if (error) return { error: "Impossible d'ajouter cette étape : " + error.message };
 
   revalidatePath(`/admin/formations/${trainingId}`);
+  revalidatePath("/admin/formations/nouvelle");
 }
 
 export async function deleteTrainingStepAction(formData: FormData) {
@@ -58,6 +59,7 @@ export async function deleteTrainingStepAction(formData: FormData) {
   const supabase = await createClient();
   await supabase.from("training_steps").delete().eq("id", stepId);
   revalidatePath(`/admin/formations/${trainingId}`);
+  revalidatePath("/admin/formations/nouvelle");
 }
 
 export async function reorderTrainingStepsAction(
@@ -77,5 +79,6 @@ export async function reorderTrainingStepsAction(
   if (failed?.error) return { error: "Impossible d'enregistrer l'ordre : " + failed.error.message };
 
   revalidatePath(`/admin/formations/${trainingId}`);
+  revalidatePath("/admin/formations/nouvelle");
   return {};
 }

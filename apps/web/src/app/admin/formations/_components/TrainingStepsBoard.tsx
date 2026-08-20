@@ -139,7 +139,12 @@ export function TrainingStepsBoard({
 
   return (
     <div className="flex flex-col gap-3">
-      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+      {/* id fixe : sans lui, dnd-kit dérive un id depuis un compteur global qui
+          persiste côté serveur entre les requêtes mais repart de zéro côté
+          client à chaque chargement de page, provoquant un mismatch
+          d'hydratation dès qu'un autre DndContext a déjà été rendu ailleurs
+          sur le serveur depuis son démarrage. */}
+      <DndContext id={`training-steps-${trainingId}`} sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
         <SortableContext items={steps.map((s) => s.id)} strategy={verticalListSortingStrategy}>
           <div className="flex flex-col gap-2">
             {steps.map((step) => (

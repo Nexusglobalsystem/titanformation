@@ -62,4 +62,5 @@ export async function createSessionAction(
   }
 
   revalidatePath(`/admin/formations/${trainingId}`);
+  revalidatePath("/admin/formations/nouvelle");
 }

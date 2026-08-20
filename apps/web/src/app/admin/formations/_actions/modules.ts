@@ -25,6 +25,7 @@ export async function createModuleAction(
   }
 
   revalidatePath(`/admin/formations/${trainingId}`);
+  revalidatePath("/admin/formations/nouvelle");
 }
 
 const LESSON_TYPES = ["texte", "video", "audio", "document", "quiz", "live_slot"] as const;
@@ -75,6 +76,7 @@ export async function createLessonAction(
   }
 
   revalidatePath(`/admin/formations/${trainingId}`);
+  revalidatePath("/admin/formations/nouvelle");
 }
 
 export type AttachFileState = { error?: string } | undefined;
@@ -114,4 +116,5 @@ export async function attachLessonFileAction(
   }
 
   revalidatePath(`/admin/formations/${trainingId}`);
+  revalidatePath("/admin/formations/nouvelle");
 }

@@ -35,6 +35,7 @@ export async function assignTrainerAction(
   }
 
   revalidatePath(`/admin/formations/${trainingId}`);
+  revalidatePath("/admin/formations/nouvelle");
   revalidatePath("/admin/planification");
 }
 
@@ -47,4 +48,5 @@ export async function removeTrainerAction(formData: FormData) {
   const supabase = await createClient();
   await supabase.from("session_trainers").delete().eq("session_id", sessionId).eq("trainer_id", trainerId);
   revalidatePath(`/admin/formations/${trainingId}`);
+  revalidatePath("/admin/formations/nouvelle");
 }
