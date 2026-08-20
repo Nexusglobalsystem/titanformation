@@ -31,14 +31,31 @@ export default async function Home() {
   // logo client ou de note inventée. apprenants formés passe par une RPC
   // (public_learner_count) car enrollments n'est pas lisible publiquement.
   const today = new Date().toISOString().slice(0, 10);
-  const [{ count: upcomingSessionsCount }, { data: learnerCount }] = await Promise.all([
+  const [{ count: upcomingSessionsCount }, { data: learnerCount }, { data: upcomingSessionsRaw }] = await Promise.all([
     supabase
       .from("sessions")
       .select("id", { count: "exact", head: true })
       .in("status", ["ouverte", "complete"])
       .gte("starts_on", today),
     supabase.rpc("public_learner_count"),
+    supabase
+      .from("sessions")
+      .select("id, starts_on, ends_on, trainings!inner(slug, title, status)")
+      .eq("trainings.status", "publiee")
+      .in("status", ["ouverte", "complete"])
+      .gte("starts_on", today)
+      .order("starts_on", { ascending: true })
+      .limit(6),
   ]);
+  const upcomingSessions = (upcomingSessionsRaw ?? [])
+    .filter((s) => s.trainings)
+    .map((s) => ({
+      id: s.id,
+      startsOn: s.starts_on,
+      endsOn: s.ends_on,
+      trainingTitle: s.trainings!.title,
+      trainingSlug: s.trainings!.slug,
+    }));
   const satisfactionRates = (trainings ?? [])
     .map((t) => t.satisfaction_rate)
     .filter((r): r is number => typeof r === "number");
@@ -54,5 +71,12 @@ export default async function Home() {
     avgSatisfaction,
   };
 
-  return <HomeLanding popularTrainings={popularTrainings} categories={categories} stats={stats} />;
+  return (
+    <HomeLanding
+      popularTrainings={popularTrainings}
+      categories={categories}
+      stats={stats}
+      upcomingSessions={upcomingSessions}
+    />
+  );
 }

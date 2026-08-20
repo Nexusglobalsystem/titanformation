@@ -75,6 +75,38 @@ function IconCheck() {
     </svg>
   );
 }
+function IconSearch() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <circle cx="10.5" cy="10.5" r="6.5" stroke="currentColor" strokeWidth="1.5" />
+      <path d="m19.5 19.5-4.3-4.3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+function IconUserPlus() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <circle cx="10" cy="8" r="3.5" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M3.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M19 8v5.5M16.25 10.75h5.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+function IconRoute() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <circle cx="5.5" cy="18.5" r="2" stroke="currentColor" strokeWidth="1.5" />
+      <circle cx="18.5" cy="5.5" r="2" stroke="currentColor" strokeWidth="1.5" />
+      <path
+        d="M7 17.5c4-1 4.5-5.5 8.5-6.5s4.5-2 4-4"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeDasharray="0.5 3.2"
+      />
+    </svg>
+  );
+}
 
 const MODULES = [
   {
@@ -107,6 +139,29 @@ const MODULES = [
   },
 ] as const;
 
+const HOW_IT_WORKS = [
+  {
+    icon: IconSearch,
+    title: "Explorer le catalogue",
+    body: "Recherchez par mot-clé, filtrez par niveau, durée ou modalité.",
+  },
+  {
+    icon: IconUserPlus,
+    title: "S'inscrire",
+    body: "Créez votre compte et confirmez votre inscription à la session de votre choix.",
+  },
+  {
+    icon: IconRoute,
+    title: "Suivre son parcours",
+    body: "Modules, classes virtuelles et rendez-vous individuels dans un seul espace.",
+  },
+  {
+    icon: IconShieldCheck,
+    title: "Obtenir la certification",
+    body: "Certificat délivré une fois les conditions de la formation validées.",
+  },
+] as const;
+
 type HomeStats = {
   publishedTrainings: number;
   learnerCount: number;
@@ -114,14 +169,24 @@ type HomeStats = {
   avgSatisfaction: number | null;
 };
 
+type UpcomingSession = {
+  id: string;
+  startsOn: string;
+  endsOn: string;
+  trainingTitle: string;
+  trainingSlug: string;
+};
+
 export function HomeLanding({
   popularTrainings = [],
   categories = [],
   stats,
+  upcomingSessions = [],
 }: {
   popularTrainings?: CatalogueTraining[];
   categories?: string[];
   stats?: HomeStats;
+  upcomingSessions?: UpcomingSession[];
 }) {
   return (
     <div data-theme="dark" className="flex min-h-screen flex-col bg-background text-foreground">
@@ -195,6 +260,36 @@ export function HomeLanding({
           </section>
         )}
 
+        {/* Comment ça marche */}
+        <section className="border-b border-border py-20">
+          <div className="mx-auto max-w-(--spacing-container-max) px-4 md:px-(--spacing-margin-desktop)">
+            <div className="mb-12 max-w-2xl">
+              <h2 className="font-display text-2xl font-bold text-foreground md:text-3xl">
+                Comment ça marche.
+              </h2>
+              <p className="mt-3 font-body text-foreground-muted">
+                De la découverte du catalogue à la certification, quatre étapes simples.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 gap-(--spacing-gutter) sm:grid-cols-2 lg:grid-cols-4">
+              {HOW_IT_WORKS.map((step, index) => (
+                <div key={step.title} className="flex flex-col gap-3 rounded-xl border border-border bg-surface-elevated p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-lg border border-accent/20 bg-primary text-accent">
+                      <step.icon />
+                    </div>
+                    <span className="font-mono-label text-xs text-foreground-muted">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                  </div>
+                  <h3 className="font-display text-base font-semibold text-foreground">{step.title}</h3>
+                  <p className="font-body text-sm text-foreground-muted">{step.body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {categories.length > 0 && (
           <section className="border-b border-border py-10">
             <div className="mx-auto flex max-w-(--spacing-container-max) flex-wrap items-center gap-3 px-4 md:px-(--spacing-margin-desktop)">
@@ -237,6 +332,51 @@ export function HomeLanding({
               <div className="grid grid-cols-1 gap-(--spacing-gutter) md:grid-cols-2 lg:grid-cols-3">
                 {popularTrainings.map((training) => (
                   <TrainingCard key={training.id} training={training} />
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {upcomingSessions.length > 0 && (
+          <section className="border-b border-border py-20">
+            <div className="mx-auto max-w-(--spacing-container-max) px-4 md:px-(--spacing-margin-desktop)">
+              <div className="mb-10 max-w-2xl">
+                <h2 className="font-display text-2xl font-bold text-foreground md:text-3xl">
+                  Prochaines sessions
+                </h2>
+                <p className="mt-3 font-body text-foreground-muted">
+                  Les sessions ouvertes aux inscriptions dans les prochaines semaines, toutes formations
+                  confondues.
+                </p>
+              </div>
+              <div className="flex flex-col divide-y divide-border rounded-xl border border-border bg-surface-elevated">
+                {upcomingSessions.map((session) => (
+                  <Link
+                    key={session.id}
+                    href={`/formations/${session.trainingSlug}`}
+                    className="group flex flex-wrap items-center justify-between gap-3 px-6 py-4 transition-colors hover:bg-surface"
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-DEFAULT border border-accent/20 bg-primary text-accent">
+                        <IconCalendar />
+                      </span>
+                      <div>
+                        <p className="font-body text-sm font-semibold text-foreground">{session.trainingTitle}</p>
+                        <p className="font-body text-xs text-foreground-muted">
+                          {new Date(session.startsOn).toLocaleDateString("fr-FR")}
+                          {session.endsOn !== session.startsOn &&
+                            ` → ${new Date(session.endsOn).toLocaleDateString("fr-FR")}`}
+                        </p>
+                      </div>
+                    </div>
+                    <span className="inline-flex items-center gap-1.5 font-mono-label text-xs uppercase tracking-wide text-accent-text opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                      Découvrir
+                      <span className="inline-flex transition-transform duration-200 group-hover:translate-x-1">
+                        <IconArrowRight />
+                      </span>
+                    </span>
+                  </Link>
                 ))}
               </div>
             </div>
