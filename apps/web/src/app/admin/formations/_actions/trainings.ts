@@ -25,6 +25,7 @@ function parseTraining(formData: FormData) {
     assessment_methods: formData.get("assessment_methods"),
     accessibility_info: formData.get("accessibility_info"),
     category: formData.get("category"),
+    level: formData.get("level"),
     status: formData.get("status"),
     is_certifying: formData.get("is_certifying") === "on",
     certification_name: formData.get("certification_name"),
@@ -97,4 +98,37 @@ export async function updateTrainingAction(
   revalidatePath("/admin/formations");
   revalidatePath(`/admin/formations/${id}`);
   return undefined;
+}
+
+export type AttachTrainingImageState = { error?: string } | undefined;
+
+export async function attachTrainingImageAction(
+  _prev: AttachTrainingImageState,
+  formData: FormData,
+): Promise<AttachTrainingImageState> {
+  const trainingId = formData.get("trainingId");
+  const file = formData.get("file");
+
+  if (typeof trainingId !== "string") return { error: "Formation invalide." };
+  if (!(file instanceof File) || file.size === 0) return { error: "Sélectionnez une image." };
+
+  const supabase = await createClient();
+  const path = `trainings/${trainingId}/${file.name}`;
+  const { error: uploadError } = await supabase.storage
+    .from("training-images")
+    .upload(path, file, { upsert: true });
+
+  if (uploadError) return { error: "Échec de l'envoi : " + uploadError.message };
+
+  const { error: updateError } = await supabase
+    .from("trainings")
+    .update({ image_path: path })
+    .eq("id", trainingId);
+
+  if (updateError) return { error: "Image envoyée mais échec de l'enregistrement : " + updateError.message };
+
+  revalidatePath("/admin/formations");
+  revalidatePath(`/admin/formations/${trainingId}`);
+  revalidatePath("/formations");
+  revalidatePath("/");
 }

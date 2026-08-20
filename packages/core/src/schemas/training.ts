@@ -26,6 +26,10 @@ export const trainingSchema = z.object({
   assessment_methods: required("Les modalités d'évaluation"),
   accessibility_info: required("Les informations d'accessibilité"),
   category: optionalString(),
+  level: z.preprocess(
+    (v) => (v === "" || v === null || v === undefined ? undefined : v),
+    z.enum(["debutant", "intermediaire", "avance"]).optional(),
+  ),
   status: z.enum(["brouillon", "publiee", "archivee"]).default("brouillon"),
   is_certifying: z.coerce.boolean().default(false),
   certification_name: optionalString(),

@@ -2,16 +2,23 @@ import { createClient } from "@/lib/supabase/server";
 import { PublicHeader } from "@/components/PublicHeader";
 import { PublicFooter } from "@/components/PublicFooter";
 import { CatalogueClient } from "./_components/CatalogueClient";
+import { enrichTrainings } from "./_lib/enrichTrainings";
 
 export const metadata = { title: "Catalogue de formations — Titan Kinetic" };
 
-export default async function CataloguePage() {
+export default async function CataloguePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string; categorie?: string }>;
+}) {
+  const { q, categorie } = await searchParams;
   const supabase = await createClient();
   const { data: trainings } = await supabase
     .from("trainings")
     .select("*")
     .eq("status", "publiee")
     .order("published_at", { ascending: false });
+  const enriched = await enrichTrainings(supabase, trainings ?? []);
 
   return (
     <div data-theme="dark" className="flex min-h-screen flex-col bg-background text-foreground">
@@ -33,7 +40,7 @@ export default async function CataloguePage() {
         </section>
 
         <section className="mx-auto max-w-(--spacing-container-max) px-4 py-12 md:px-(--spacing-margin-desktop)">
-          <CatalogueClient trainings={trainings ?? []} />
+          <CatalogueClient trainings={enriched} initialSearch={q ?? ""} initialCategory={categorie ?? "all"} />
         </section>
       </main>
       <PublicFooter />

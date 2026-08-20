@@ -48,6 +48,7 @@ export function TrainingForm({
   const [slugTouched, setSlugTouched] = useState(Boolean(training));
   const [isCertifying, setIsCertifying] = useState(training?.is_certifying ?? false);
   const [status, setStatus] = useState(training?.status ?? "brouillon");
+  const [level, setLevel] = useState(training?.level ?? "");
 
   return (
     <form action={formAction} className="flex flex-col gap-8">
@@ -78,8 +79,22 @@ export function TrainingForm({
             hint="Utilisé dans l'URL publique : /formations/ce-slug"
           />
         </div>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
           <Input label="Catégorie" name="category" defaultValue={training?.category ?? ""} />
+          <div className="flex flex-col gap-1.5">
+            <label className="font-body text-sm font-medium text-foreground">Niveau</label>
+            <Select value={level} onValueChange={setLevel}>
+              <SelectTrigger>
+                <SelectValue placeholder="Non précisé" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="debutant">Débutant</SelectItem>
+                <SelectItem value="intermediaire">Intermédiaire</SelectItem>
+                <SelectItem value="avance">Avancé</SelectItem>
+              </SelectContent>
+            </Select>
+            <input type="hidden" name="level" value={level} />
+          </div>
           <div className="flex flex-col gap-1.5">
             <label className="font-body text-sm font-medium text-foreground">Statut</label>
             <Select value={status} onValueChange={setStatus}>

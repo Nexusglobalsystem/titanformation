@@ -2057,7 +2057,9 @@ export type Database = {
           duration_days: number | null
           duration_hours: number
           id: string
+          image_path: string | null
           is_certifying: boolean
+          level: string | null
           modalities: string
           objectives: string
           pedagogical_means: string
@@ -2087,7 +2089,9 @@ export type Database = {
           duration_days?: number | null
           duration_hours: number
           id?: string
+          image_path?: string | null
           is_certifying?: boolean
+          level?: string | null
           modalities: string
           objectives: string
           pedagogical_means: string
@@ -2117,7 +2121,9 @@ export type Database = {
           duration_days?: number | null
           duration_hours?: number
           id?: string
+          image_path?: string | null
           is_certifying?: boolean
+          level?: string | null
           modalities?: string
           objectives?: string
           pedagogical_means?: string
@@ -2253,6 +2259,13 @@ export type Database = {
         }[]
       }
       trained_session_ids: { Args: never; Returns: string[] }
+      training_enrollment_counts: {
+        Args: never
+        Returns: {
+          active_enrollments: number
+          training_id: string
+        }[]
+      }
     }
     Enums: {
       app_role:

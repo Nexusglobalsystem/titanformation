@@ -9,6 +9,7 @@ import { AssignTrainerForm } from "../_components/AssignTrainerForm";
 import { NewModuleForm } from "../_components/NewModuleForm";
 import { NewLessonForm } from "../_components/NewLessonForm";
 import { AttachLessonFileForm } from "../_components/AttachLessonFileForm";
+import { AttachTrainingImageForm } from "../_components/AttachTrainingImageForm";
 import { TrainingStepsBoard } from "../_components/TrainingStepsBoard";
 import { NewTrainingStepForm } from "../_components/NewTrainingStepForm";
 import { CertificationRequirementsForm } from "../_components/CertificationRequirementsForm";
@@ -50,6 +51,10 @@ export default async function EditFormationPage({ params }: { params: Promise<{ 
 
   const { data: training } = await supabase.from("trainings").select("*").eq("id", id).maybeSingle();
   if (!training) notFound();
+
+  const trainingImageUrl = training.image_path
+    ? supabase.storage.from("training-images").getPublicUrl(training.image_path).data.publicUrl
+    : null;
 
   const { data: sessions } = await supabase
     .from("sessions")
@@ -177,8 +182,11 @@ export default async function EditFormationPage({ params }: { params: Promise<{ 
           <CardHeader>
             <CardTitle>Modifier « {training.title} »</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="flex flex-col gap-6">
             <TrainingForm training={training} action={updateTrainingAction} submitLabel="Enregistrer" />
+            <div className="border-t border-border pt-6">
+              <AttachTrainingImageForm trainingId={training.id} imageUrl={trainingImageUrl} />
+            </div>
           </CardContent>
         </Card>
 

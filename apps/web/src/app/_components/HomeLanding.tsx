@@ -2,7 +2,14 @@ import Link from "next/link";
 import { PublicHeader } from "@/components/PublicHeader";
 import { PublicFooter } from "@/components/PublicFooter";
 import { GridBackdrop } from "@/components/GridBackdrop";
-import { Button } from "@titan-kinetic/ui";
+import { Button, Input } from "@titan-kinetic/ui";
+import { TrainingCard, type CatalogueTraining } from "@/app/formations/_components/TrainingCard";
+
+const CATEGORY_LABELS: Record<string, string> = {
+  management: "Management",
+  conformite: "Conformité",
+  technologies: "Technologies",
+};
 
 function IconLayers() {
   return (
@@ -98,7 +105,13 @@ const MODULES = [
   },
 ] as const;
 
-export function HomeLanding() {
+export function HomeLanding({
+  popularTrainings = [],
+  categories = [],
+}: {
+  popularTrainings?: CatalogueTraining[];
+  categories?: string[];
+}) {
   return (
     <div data-theme="dark" className="flex min-h-screen flex-col bg-background text-foreground">
       <PublicHeader />
@@ -117,10 +130,27 @@ export function HomeLanding() {
               De l&apos;inscription à la certification : programme structuré, suivi de présence,
               évaluations et rendez-vous individuels réunis dans un seul espace.
             </p>
-            <div className="mt-4 flex flex-wrap items-center gap-4">
+            <form
+              action="/formations"
+              method="GET"
+              className="mt-2 flex w-full max-w-lg flex-col gap-3 sm:flex-row"
+            >
+              <Input
+                name="q"
+                placeholder="Rechercher une formation, une compétence..."
+                className="bg-surface-elevated"
+              />
+              <Button type="submit" variant="primary" className="shrink-0 gap-2">
+                Rechercher
+                <span className="inline-flex transition-transform duration-200 group-hover:translate-x-1">
+                  <IconArrowRight />
+                </span>
+              </Button>
+            </form>
+            <div className="mt-2 flex flex-wrap items-center gap-4">
               <Link href="/formations">
-                <Button variant="primary" size="lg" className="gap-2">
-                  Découvrir le catalogue
+                <Button variant="outline" size="lg" className="gap-2">
+                  Voir tout le catalogue
                   <span className="inline-flex transition-transform duration-200 group-hover:translate-x-1">
                     <IconArrowRight />
                   </span>
@@ -134,6 +164,54 @@ export function HomeLanding() {
             </div>
           </div>
         </section>
+
+        {categories.length > 0 && (
+          <section className="border-b border-border py-10">
+            <div className="mx-auto flex max-w-(--spacing-container-max) flex-wrap items-center gap-3 px-4 md:px-(--spacing-margin-desktop)">
+              <span className="font-mono-label text-xs uppercase tracking-wide text-foreground-muted">
+                Catégories :
+              </span>
+              {categories.map((c) => (
+                <Link
+                  key={c}
+                  href={`/formations?categorie=${encodeURIComponent(c)}`}
+                  className="rounded-full border border-border bg-surface-elevated px-4 py-1.5 font-body text-sm text-foreground-muted transition-colors hover:border-accent/40 hover:text-foreground"
+                >
+                  {CATEGORY_LABELS[c] ?? c}
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {popularTrainings.length > 0 && (
+          <section className="border-b border-border bg-surface py-24">
+            <div className="mx-auto max-w-(--spacing-container-max) px-4 md:px-(--spacing-margin-desktop)">
+              <div className="mb-12 flex flex-wrap items-end justify-between gap-4">
+                <div className="max-w-2xl">
+                  <h2 className="font-display text-2xl font-bold text-foreground md:text-3xl">
+                    Formations populaires
+                  </h2>
+                  <p className="mt-3 font-body text-foreground-muted">
+                    Les formations qui comptent le plus d&apos;apprenants inscrits en ce moment.
+                  </p>
+                </div>
+                <Link
+                  href="/formations"
+                  className="inline-flex items-center gap-1.5 font-mono-label text-xs uppercase tracking-wide text-accent-text"
+                >
+                  Voir le catalogue
+                  <IconArrowRight />
+                </Link>
+              </div>
+              <div className="grid grid-cols-1 gap-(--spacing-gutter) md:grid-cols-2 lg:grid-cols-3">
+                {popularTrainings.map((training) => (
+                  <TrainingCard key={training.id} training={training} />
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* Bento modules */}
         <section className="border-b border-border bg-surface py-24">
