@@ -1696,6 +1696,7 @@ export type Database = {
           half_day: string
           id: string
           livekit_room_name: string | null
+          modality: Database["public"]["Enums"]["session_slot_modality"]
           recording_url: string | null
           session_id: string
           slot_date: string
@@ -1708,6 +1709,7 @@ export type Database = {
           half_day: string
           id?: string
           livekit_room_name?: string | null
+          modality?: Database["public"]["Enums"]["session_slot_modality"]
           recording_url?: string | null
           session_id: string
           slot_date: string
@@ -1720,6 +1722,7 @@ export type Database = {
           half_day?: string
           id?: string
           livekit_room_name?: string | null
+          modality?: Database["public"]["Enums"]["session_slot_modality"]
           recording_url?: string | null
           session_id?: string
           slot_date?: string
@@ -2322,6 +2325,12 @@ export type Database = {
         | "facturee"
         | "annulee"
         | "remboursee"
+      session_slot_modality:
+        | "presentiel"
+        | "livekit"
+        | "autoapprentissage"
+        | "evaluation"
+        | "certification"
       session_status:
         | "brouillon"
         | "ouverte"
@@ -2521,6 +2530,13 @@ export const Constants = {
         "facturee",
         "annulee",
         "remboursee",
+      ],
+      session_slot_modality: [
+        "presentiel",
+        "livekit",
+        "autoapprentissage",
+        "evaluation",
+        "certification",
       ],
       session_status: [
         "brouillon",

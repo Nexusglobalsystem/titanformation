@@ -89,7 +89,7 @@ export default async function ApprenantPage() {
   const { data: attendancesRaw } = await supabase
     .from("attendances")
     .select(
-      "id, signed_at, present, session_slots(id, slot_date, half_day, starts_at, ends_at, sessions(reference, trainings(title)))",
+      "id, signed_at, present, session_slots(id, slot_date, half_day, starts_at, ends_at, modality, sessions(reference, trainings(title)))",
     );
 
   const JOIN_WINDOW_MS = 15 * 60 * 1000;
@@ -354,7 +354,7 @@ export default async function ApprenantPage() {
                       )}
                     </div>
                     <div className="flex items-center gap-2">
-                      {slot && canJoinSlot(slot.starts_at, slot.ends_at) && (
+                      {slot && slot.modality === "livekit" && canJoinSlot(slot.starts_at, slot.ends_at) && (
                         <Link href={`/salle/${slot.id}`}>
                           <Button variant="accent" size="sm" className="gap-1.5">
                             <IconVideo size={16} />

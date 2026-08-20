@@ -81,7 +81,7 @@ export default async function FormateurPage() {
   const { data: slotsRaw } = await supabase
     .from("session_slots")
     .select(
-      "id, slot_date, half_day, starts_at, ends_at, sessions(reference, trainings(title)), attendances(id, signed_at, present, enrollments(profiles(first_name, last_name)))",
+      "id, slot_date, half_day, starts_at, ends_at, modality, sessions(reference, trainings(title)), attendances(id, signed_at, present, enrollments(profiles(first_name, last_name)))",
     )
     .order("slot_date", { ascending: true });
 
@@ -310,7 +310,7 @@ export default async function FormateurPage() {
                         {new Date(slot.slot_date).toLocaleDateString("fr-FR")} ·{" "}
                         {HALF_DAY_LABELS[slot.half_day] ?? slot.half_day}
                       </p>
-                      {canJoinSlot(slot.starts_at, slot.ends_at) && (
+                      {slot.modality === "livekit" && canJoinSlot(slot.starts_at, slot.ends_at) && (
                         <Link href={`/salle/${slot.id}`}>
                           <Button variant="accent" size="sm" className="gap-1.5">
                             <IconVideo size={16} />

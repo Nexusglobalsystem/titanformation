@@ -5,6 +5,7 @@ import { SpaceShell } from "@/components/SpaceShell";
 import { Badge, Button, Card, CardContent, CardHeader, CardTitle } from "@titan-kinetic/ui";
 import { TrainingForm } from "../_components/TrainingForm";
 import { NewSessionForm } from "../_components/NewSessionForm";
+import { SessionSlotsBoard } from "../_components/SessionSlotsBoard";
 import { AssignTrainerForm } from "../_components/AssignTrainerForm";
 import { NewModuleForm } from "../_components/NewModuleForm";
 import { NewLessonForm } from "../_components/NewLessonForm";
@@ -59,7 +60,7 @@ export default async function EditFormationPage({ params }: { params: Promise<{ 
   const { data: sessions } = await supabase
     .from("sessions")
     .select(
-      "id, reference, status, starts_on, ends_on, max_seats, session_trainers(trainer_id, profiles(first_name, last_name))",
+      "id, reference, status, starts_on, ends_on, max_seats, session_trainers(trainer_id, profiles(first_name, last_name)), session_slots(id, slot_date, half_day, modality)",
     )
     .eq("training_id", id)
     .order("starts_on", { ascending: true });
@@ -238,6 +239,11 @@ export default async function EditFormationPage({ params }: { params: Promise<{ 
                         ))}
                         <AssignTrainerForm sessionId={session.id} trainingId={training.id} trainers={availableTrainers} />
                       </div>
+                      <SessionSlotsBoard
+                        sessionId={session.id}
+                        trainingId={training.id}
+                        slots={session.session_slots ?? []}
+                      />
                     </div>
                   );
                 })}
