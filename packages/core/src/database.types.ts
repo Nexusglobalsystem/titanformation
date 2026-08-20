@@ -1776,6 +1776,63 @@ export type Database = {
           },
         ]
       }
+      training_steps: {
+        Row: {
+          created_at: string
+          description: string | null
+          duration_minutes: number | null
+          id: string
+          is_mandatory: boolean
+          module_id: string | null
+          position: number
+          title: string
+          training_id: string
+          type: Database["public"]["Enums"]["training_step_type"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          duration_minutes?: number | null
+          id?: string
+          is_mandatory?: boolean
+          module_id?: string | null
+          position?: number
+          title: string
+          training_id: string
+          type: Database["public"]["Enums"]["training_step_type"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          duration_minutes?: number | null
+          id?: string
+          is_mandatory?: boolean
+          module_id?: string | null
+          position?: number
+          title?: string
+          training_id?: string
+          type?: Database["public"]["Enums"]["training_step_type"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "training_steps_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "modules"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "training_steps_training_id_fkey"
+            columns: ["training_id"]
+            isOneToOne: false
+            referencedRelation: "trainings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       trainings: {
         Row: {
           access_delay: string
@@ -2049,6 +2106,12 @@ export type Database = {
         | "review"
         | "completed"
         | "cancelled"
+      training_step_type:
+        | "presentiel"
+        | "livekit"
+        | "autoapprentissage"
+        | "evaluation"
+        | "certification"
       watch_kind: "legale" | "metier" | "innovation_pedagogique" | "handicap"
     }
     CompositeTypes: {
@@ -2244,6 +2307,13 @@ export const Constants = {
         "review",
         "completed",
         "cancelled",
+      ],
+      training_step_type: [
+        "presentiel",
+        "livekit",
+        "autoapprentissage",
+        "evaluation",
+        "certification",
       ],
       watch_kind: ["legale", "metier", "innovation_pedagogique", "handicap"],
     },

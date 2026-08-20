@@ -9,6 +9,8 @@ import { AssignTrainerForm } from "../_components/AssignTrainerForm";
 import { NewModuleForm } from "../_components/NewModuleForm";
 import { NewLessonForm } from "../_components/NewLessonForm";
 import { AttachLessonFileForm } from "../_components/AttachLessonFileForm";
+import { TrainingStepsBoard } from "../_components/TrainingStepsBoard";
+import { NewTrainingStepForm } from "../_components/NewTrainingStepForm";
 import { updateTrainingAction } from "../_actions/trainings";
 import { removeTrainerAction } from "../_actions/trainers";
 import { CreateSatisfactionFormButton, RecalculateSatisfactionButton } from "../_components/SatisfactionActions";
@@ -66,6 +68,12 @@ export default async function EditFormationPage({ params }: { params: Promise<{ 
   const { data: modules } = await supabase
     .from("modules")
     .select("id, title, position, lessons(id, title, type, duration_minutes, position, document_path)")
+    .eq("training_id", id)
+    .order("position", { ascending: true });
+
+  const { data: trainingStepsRaw } = await supabase
+    .from("training_steps")
+    .select("id, type, title, duration_minutes, modules(title)")
     .eq("training_id", id)
     .order("position", { ascending: true });
 
@@ -216,6 +224,23 @@ export default async function EditFormationPage({ params }: { params: Promise<{ 
               </div>
             )}
             <NewModuleForm trainingId={training.id} nextPosition={modules?.length ?? 0} />
+          </CardContent>
+        </Card>
+
+        <Card className="max-w-3xl">
+          <CardHeader>
+            <CardTitle>Parcours de la formation</CardTitle>
+            <p className="font-body text-sm text-foreground-muted">
+              Séquence d&apos;étapes (présentiel, classe virtuelle, auto-apprentissage, évaluation,
+              certification) composant le parcours pédagogique. Glissez-déposez pour réordonner.
+            </p>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-4">
+            <TrainingStepsBoard trainingId={training.id} steps={trainingStepsRaw ?? []} />
+            <NewTrainingStepForm
+              trainingId={training.id}
+              modules={(modules ?? []).map((m) => ({ id: m.id, title: m.title }))}
+            />
           </CardContent>
         </Card>
 

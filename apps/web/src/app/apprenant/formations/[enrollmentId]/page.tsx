@@ -13,6 +13,14 @@ const LESSON_TYPE_LABELS: Record<string, string> = {
   live_slot: "Créneau live",
 };
 
+const STEP_TYPE_LABELS: Record<string, string> = {
+  presentiel: "Présentiel",
+  livekit: "Classe virtuelle",
+  autoapprentissage: "Auto-apprentissage",
+  evaluation: "Évaluation",
+  certification: "Certification",
+};
+
 export default async function ApprenantProgrammePage({
   params,
   searchParams,
@@ -38,6 +46,12 @@ export default async function ApprenantProgrammePage({
   const { data: modules } = await supabase
     .from("modules")
     .select("id, title, position, lessons(id, title, type, position, duration_minutes)")
+    .eq("training_id", training.id)
+    .order("position", { ascending: true });
+
+  const { data: trainingSteps } = await supabase
+    .from("training_steps")
+    .select("id, type, title, duration_minutes")
     .eq("training_id", training.id)
     .order("position", { ascending: true });
 
@@ -91,6 +105,35 @@ export default async function ApprenantProgrammePage({
         {error === "satisfaction" && (
           <p className="font-body text-sm text-error">Impossible d'enregistrer vos réponses.</p>
         )}
+        {trainingSteps && trainingSteps.length > 0 && (
+          <Card className="max-w-3xl">
+            <CardHeader>
+              <CardTitle>Parcours</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ol className="flex flex-col gap-2">
+                {trainingSteps.map((step, index) => (
+                  <li
+                    key={step.id}
+                    className="flex items-center justify-between gap-3 rounded-DEFAULT border border-border p-3"
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="font-mono-label text-xs text-foreground-muted">{index + 1}</span>
+                      <span className="font-body text-sm text-foreground">{step.title}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {step.duration_minutes && (
+                        <span className="font-body text-xs text-foreground-muted">{step.duration_minutes} min</span>
+                      )}
+                      <Badge variant="neutral">{STEP_TYPE_LABELS[step.type] ?? step.type}</Badge>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </CardContent>
+          </Card>
+        )}
+
         <Card className="max-w-3xl">
           <CardHeader className="flex flex-col gap-3">
             <CardTitle>{training.title}</CardTitle>
