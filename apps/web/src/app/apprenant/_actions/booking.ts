@@ -54,6 +54,7 @@ export async function createBookingAction(formData: FormData) {
   await supabase.rpc("notify_booking_event", { p_booking_id: booking.id, p_kind: "created" });
 
   revalidatePath("/apprenant");
+  revalidatePath("/apprenant/agenda");
   redirect(`/apprenant/reservations?formateur=${trainerId}&success=1`);
 }
 
@@ -66,4 +67,5 @@ export async function cancelBookingAction(formData: FormData) {
   await supabase.rpc("notify_booking_event", { p_booking_id: id, p_kind: "cancelled" });
   revalidatePath("/apprenant");
   revalidatePath("/apprenant/reservations");
+  revalidatePath("/apprenant/agenda");
 }

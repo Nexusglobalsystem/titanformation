@@ -11,6 +11,7 @@ import {
   IconVideo,
 } from "@/components/icons";
 import { SignAttendanceButton } from "./_components/SignAttendanceButton";
+import { canJoinSlot } from "@/lib/joinWindow";
 
 const STATUS_LABELS: Record<string, string> = {
   preinscrit: "Préinscrit",
@@ -91,12 +92,6 @@ export default async function ApprenantPage() {
     .select(
       "id, signed_at, present, session_slots(id, slot_date, half_day, starts_at, ends_at, modality, sessions(reference, trainings(title)))",
     );
-
-  const JOIN_WINDOW_MS = 15 * 60 * 1000;
-  const nowMs = Date.now();
-  const canJoinSlot = (startsAt: string, endsAt: string) =>
-    nowMs >= new Date(startsAt).getTime() - JOIN_WINDOW_MS &&
-    nowMs <= new Date(endsAt).getTime() + JOIN_WINDOW_MS;
 
   const HALF_DAY_ORDER: Record<string, number> = { matin: 0, apres_midi: 1 };
   const attendances = [...(attendancesRaw ?? [])].sort((a, b) => {

@@ -18,6 +18,7 @@ import {
   deleteExceptionAction,
   updateBookingStatusAction,
 } from "./_actions/availability";
+import { canJoinSlot } from "@/lib/joinWindow";
 
 const WEEKDAY_LABELS = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
 
@@ -84,12 +85,6 @@ export default async function FormateurPage() {
       "id, slot_date, half_day, starts_at, ends_at, modality, sessions(reference, trainings(title)), attendances(id, signed_at, present, enrollments(profiles(first_name, last_name)))",
     )
     .order("slot_date", { ascending: true });
-
-  const JOIN_WINDOW_MS = 15 * 60 * 1000;
-  const nowMs = Date.now();
-  const canJoinSlot = (startsAt: string, endsAt: string) =>
-    nowMs >= new Date(startsAt).getTime() - JOIN_WINDOW_MS &&
-    nowMs <= new Date(endsAt).getTime() + JOIN_WINDOW_MS;
 
   const HALF_DAY_ORDER: Record<string, number> = { matin: 0, apres_midi: 1 };
   const slots = [...(slotsRaw ?? [])].sort(

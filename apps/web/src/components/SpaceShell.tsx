@@ -30,6 +30,7 @@ const NAV_BY_TITLE: Record<string, SpaceNavItem[]> = {
   ],
   "Espace apprenant": [
     { label: "Tableau de bord", href: "/apprenant" },
+    { label: "Agenda", href: "/apprenant/agenda" },
     { label: "Réserver un rendez-vous", href: "/apprenant/reservations" },
     { label: "Réclamations", href: "/apprenant/reclamations" },
     { label: "Mes documents", href: "/apprenant/documents" },
