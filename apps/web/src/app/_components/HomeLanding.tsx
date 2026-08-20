@@ -1,9 +1,11 @@
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { PublicHeader } from "@/components/PublicHeader";
 import { PublicFooter } from "@/components/PublicFooter";
 import { GridBackdrop } from "@/components/GridBackdrop";
 import { Button, Input } from "@titan-kinetic/ui";
 import { TrainingCard, type CatalogueTraining } from "@/app/formations/_components/TrainingCard";
+import { IconTrendUp, IconUsers } from "@/components/icons";
 
 const CATEGORY_LABELS: Record<string, string> = {
   management: "Management",
@@ -105,12 +107,21 @@ const MODULES = [
   },
 ] as const;
 
+type HomeStats = {
+  publishedTrainings: number;
+  learnerCount: number;
+  upcomingSessions: number;
+  avgSatisfaction: number | null;
+};
+
 export function HomeLanding({
   popularTrainings = [],
   categories = [],
+  stats,
 }: {
   popularTrainings?: CatalogueTraining[];
   categories?: string[];
+  stats?: HomeStats;
 }) {
   return (
     <div data-theme="dark" className="flex min-h-screen flex-col bg-background text-foreground">
@@ -164,6 +175,25 @@ export function HomeLanding({
             </div>
           </div>
         </section>
+
+        {/* Chiffres clés — données réelles uniquement, jamais de logo client
+            ni de note inventée : ce que le projet a réellement à date. */}
+        {stats && (
+          <section className="border-b border-border bg-surface py-10">
+            <div className="mx-auto grid max-w-(--spacing-container-max) grid-cols-2 gap-6 px-4 md:grid-cols-4 md:px-(--spacing-margin-desktop)">
+              <KpiItem icon={<IconLayers />} value={stats.publishedTrainings} label="Formations publiées" />
+              <KpiItem icon={<IconUsers size={22} />} value={stats.learnerCount} label="Apprenants formés" />
+              <KpiItem icon={<IconCalendar />} value={stats.upcomingSessions} label="Sessions à venir" />
+              {stats.avgSatisfaction !== null && (
+                <KpiItem
+                  icon={<IconTrendUp size={22} />}
+                  value={`${stats.avgSatisfaction}%`}
+                  label="Satisfaction moyenne"
+                />
+              )}
+            </div>
+          </section>
+        )}
 
         {categories.length > 0 && (
           <section className="border-b border-border py-10">
@@ -348,6 +378,28 @@ export function HomeLanding({
         </section>
       </main>
       <PublicFooter />
+    </div>
+  );
+}
+
+function KpiItem({
+  icon,
+  value,
+  label,
+}: {
+  icon: ReactNode;
+  value: number | string;
+  label: string;
+}) {
+  return (
+    <div className="flex flex-col items-center gap-2 text-center md:flex-row md:items-center md:gap-3 md:text-left">
+      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-accent/20 bg-primary text-accent">
+        {icon}
+      </span>
+      <div className="flex flex-col">
+        <span className="font-display text-2xl font-bold tabular-nums text-foreground">{value}</span>
+        <span className="font-body text-xs text-foreground-muted">{label}</span>
+      </div>
     </div>
   );
 }

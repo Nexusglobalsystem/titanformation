@@ -27,5 +27,32 @@ export default async function Home() {
     new Set(enriched.map((t) => t.category).filter((c): c is string => Boolean(c))),
   );
 
-  return <HomeLanding popularTrainings={popularTrainings} categories={categories} />;
+  // Chiffres clés de l'accueil : uniquement des données réelles, jamais de
+  // logo client ou de note inventée. apprenants formés passe par une RPC
+  // (public_learner_count) car enrollments n'est pas lisible publiquement.
+  const today = new Date().toISOString().slice(0, 10);
+  const [{ count: upcomingSessionsCount }, { data: learnerCount }] = await Promise.all([
+    supabase
+      .from("sessions")
+      .select("id", { count: "exact", head: true })
+      .in("status", ["ouverte", "complete"])
+      .gte("starts_on", today),
+    supabase.rpc("public_learner_count"),
+  ]);
+  const satisfactionRates = (trainings ?? [])
+    .map((t) => t.satisfaction_rate)
+    .filter((r): r is number => typeof r === "number");
+  const avgSatisfaction =
+    satisfactionRates.length > 0
+      ? Math.round(satisfactionRates.reduce((a, b) => a + b, 0) / satisfactionRates.length)
+      : null;
+
+  const stats = {
+    publishedTrainings: trainings?.length ?? 0,
+    learnerCount: learnerCount ?? 0,
+    upcomingSessions: upcomingSessionsCount ?? 0,
+    avgSatisfaction,
+  };
+
+  return <HomeLanding popularTrainings={popularTrainings} categories={categories} stats={stats} />;
 }

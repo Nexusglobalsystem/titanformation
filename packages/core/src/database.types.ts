@@ -2257,6 +2257,7 @@ export type Database = {
         Args: { p_booking_id: string; p_kind: string }
         Returns: undefined
       }
+      public_learner_count: { Args: never; Returns: number }
       taken_slots: {
         Args: { p_from: string; p_to: string; p_trainer_id: string }
         Returns: {
