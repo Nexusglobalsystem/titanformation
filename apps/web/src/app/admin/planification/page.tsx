@@ -41,6 +41,16 @@ export default async function PlanificationPage() {
   );
   const sessionsToPlan = (pendingSessions ?? []).filter((s) => !assignedSessionIds.has(s.id));
 
+  const { data: enrollmentRows } = await supabase
+    .from("enrollments")
+    .select("session_id, status")
+    .in("session_id", sessionsToPlan.map((s) => s.id));
+  const enrolledCountBySession = new Map<string, number>();
+  for (const row of enrollmentRows ?? []) {
+    if (row.status === "annule" || row.status === "abandonne") continue;
+    enrolledCountBySession.set(row.session_id, (enrolledCountBySession.get(row.session_id) ?? 0) + 1);
+  }
+
   const trainers = Array.from(
     new Map(
       (trainerRoles ?? [])
@@ -92,6 +102,7 @@ export default async function PlanificationPage() {
           ) : (
             sessionsToPlan.map((session) => {
               const training = session.trainings;
+              const enrolledCount = enrolledCountBySession.get(session.id) ?? 0;
               return (
                 <div key={session.id} className="flex flex-col gap-3 rounded-DEFAULT border border-border p-4">
                   <div>
@@ -99,7 +110,8 @@ export default async function PlanificationPage() {
                       {training?.title ?? "Formation inconnue"} · {session.reference}
                     </p>
                     <p className="font-body text-xs text-foreground-muted">
-                      {formatDateRange(session.starts_on, session.ends_on)} · {session.max_seats} places max
+                      {formatDateRange(session.starts_on, session.ends_on)} · {enrolledCount}/{session.max_seats}{" "}
+                      apprenant{enrolledCount > 1 ? "s" : ""} inscrit{enrolledCount > 1 ? "s" : ""}
                     </p>
                   </div>
 
