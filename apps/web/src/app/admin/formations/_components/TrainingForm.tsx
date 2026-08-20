@@ -133,6 +133,22 @@ export function TrainingForm({
             <Input label="Code RNCP" name="rncp_code" defaultValue={training?.rncp_code ?? ""} />
           </div>
         )}
+        <div className="flex items-start gap-2 rounded-DEFAULT border border-border p-3">
+          <input
+            type="checkbox"
+            id="sequential_unlock"
+            name="sequential_unlock"
+            defaultChecked={training?.sequential_unlock ?? false}
+            className="mt-0.5 h-4 w-4 accent-accent"
+          />
+          <label htmlFor="sequential_unlock" className="flex flex-col gap-0.5">
+            <span className="font-body text-sm text-foreground">Déverrouillage progressif des modules</span>
+            <span className="font-body text-xs text-foreground-muted">
+              Chaque module ne s&apos;ouvre que lorsque toutes les leçons du module précédent sont terminées.
+              Désactivé par défaut : tous les modules restent accessibles librement.
+            </span>
+          </label>
+        </div>
       </section>
 
       <section className="flex flex-col gap-4">

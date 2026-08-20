@@ -34,6 +34,7 @@ export const trainingSchema = z.object({
   is_certifying: z.coerce.boolean().default(false),
   certification_name: optionalString(),
   rncp_code: optionalString(),
+  sequential_unlock: z.coerce.boolean().default(false),
 });
 
 export type TrainingInput = z.infer<typeof trainingSchema>;

@@ -1,9 +1,10 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { evaluateModuleUnlock } from "@/lib/moduleUnlock";
 import { SpaceShell } from "@/components/SpaceShell";
 import { Badge, Progress } from "@titan-kinetic/ui";
-import { IconArrowRight, IconCheckCircle, IconClock, IconPlayCircle } from "@/components/icons";
+import { IconArrowRight, IconCheckCircle, IconClock, IconLock, IconPlayCircle } from "@/components/icons";
 import { MarkCompleteButton } from "../../../_components/MarkCompleteButton";
 
 const VIDEO_PROVIDER_LABELS: Record<string, string> = {
@@ -46,6 +47,11 @@ export default async function LeconPage({
   if (!lesson) notFound();
 
   const trainingId = enrollment.sessions?.trainings?.id;
+  const moduleUnlock = trainingId ? await evaluateModuleUnlock(supabase, enrollmentId, trainingId) : new Map();
+  if (lesson.module_id && moduleUnlock.get(lesson.module_id)?.unlocked === false) {
+    redirect(`/apprenant/formations/${enrollmentId}`);
+  }
+
   const { data: modules } = trainingId
     ? await supabase
         .from("modules")
@@ -63,10 +69,15 @@ export default async function LeconPage({
 
   const flatLessons = (modules ?? [])
     .sort((a, b) => a.position - b.position)
-    .flatMap((m) => [...(m.lessons ?? [])].sort((a, b) => a.position - b.position));
+    .flatMap((m) => [...(m.lessons ?? [])].sort((a, b) => a.position - b.position).map((l) => ({ ...l, moduleId: m.id })));
   const currentIndex = flatLessons.findIndex((l) => l.id === lessonId);
   const previousLesson = currentIndex > 0 ? flatLessons[currentIndex - 1] : null;
-  const nextLesson = currentIndex >= 0 && currentIndex < flatLessons.length - 1 ? flatLessons[currentIndex + 1] : null;
+  const nextLessonCandidate =
+    currentIndex >= 0 && currentIndex < flatLessons.length - 1 ? flatLessons[currentIndex + 1] : null;
+  const nextLesson =
+    nextLessonCandidate && moduleUnlock.get(nextLessonCandidate.moduleId)?.unlocked !== false
+      ? nextLessonCandidate
+      : null;
   const totalLessons = flatLessons.length;
   const completedCount = flatLessons.filter((l) => completedLessonIds.has(l.id)).length;
 
@@ -212,6 +223,18 @@ export default async function LeconPage({
                       .map((l) => {
                         const isCurrent = l.id === lessonId;
                         const isDone = completedLessonIds.has(l.id);
+                        const isLocked = moduleUnlock.get(m.id)?.unlocked === false;
+                        if (isLocked) {
+                          return (
+                            <div
+                              key={l.id}
+                              className="flex cursor-not-allowed items-center gap-2 rounded-DEFAULT px-2 py-2 font-body text-sm text-foreground-muted opacity-60"
+                            >
+                              <IconLock size={16} />
+                              <span className="line-clamp-1">{l.title}</span>
+                            </div>
+                          );
+                        }
                         return (
                           <Link
                             key={l.id}

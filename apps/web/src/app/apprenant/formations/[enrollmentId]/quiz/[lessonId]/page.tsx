@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { isModuleUnlockedForLesson } from "@/lib/moduleUnlock";
 import { SpaceShell } from "@/components/SpaceShell";
 import { Badge, Card, CardContent, CardHeader, CardTitle } from "@titan-kinetic/ui";
 import { QuizRunner } from "../../../_components/QuizRunner";
@@ -15,7 +16,7 @@ export default async function ApprenantQuizPage({
 
   const { data: enrollment } = await supabase
     .from("enrollments")
-    .select("id, status, sessions(trainings(title))")
+    .select("id, status, sessions(trainings(id, title))")
     .eq("id", enrollmentId)
     .maybeSingle();
 
@@ -23,11 +24,17 @@ export default async function ApprenantQuizPage({
 
   const { data: lesson } = await supabase
     .from("lessons")
-    .select("id, title, type")
+    .select("id, title, type, module_id")
     .eq("id", lessonId)
     .maybeSingle();
 
   if (!lesson || lesson.type !== "quiz") notFound();
+
+  const trainingId = enrollment.sessions?.trainings?.id;
+  if (trainingId && lesson.module_id) {
+    const unlock = await isModuleUnlockedForLesson(supabase, enrollmentId, trainingId, lesson.module_id);
+    if (!unlock.unlocked) redirect(`/apprenant/formations/${enrollmentId}`);
+  }
 
   const { data: quiz } = await supabase
     .from("quizzes")

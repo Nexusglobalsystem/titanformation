@@ -30,6 +30,7 @@ function parseTraining(formData: FormData) {
     is_certifying: formData.get("is_certifying") === "on",
     certification_name: formData.get("certification_name"),
     rncp_code: formData.get("rncp_code"),
+    sequential_unlock: formData.get("sequential_unlock") === "on",
   });
 }
 

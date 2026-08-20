@@ -2,8 +2,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { evaluateCertificationEligibility } from "@/lib/certification";
+import { evaluateModuleUnlock } from "@/lib/moduleUnlock";
 import { SpaceShell } from "@/components/SpaceShell";
 import { Badge, Button, Card, CardContent, CardHeader, CardTitle, Progress } from "@titan-kinetic/ui";
+import { IconLock } from "@/components/icons";
 
 const LESSON_TYPE_LABELS: Record<string, string> = {
   texte: "Texte",
@@ -76,6 +78,7 @@ export default async function ApprenantProgrammePage({
   // leçons obligatoires" — aucun changement de comportement pour les
   // formations qui n'ont pas été reconfigurées.
   const certificationEligibility = await evaluateCertificationEligibility(supabase, enrollmentId, training.id);
+  const moduleUnlock = await evaluateModuleUnlock(supabase, enrollmentId, training.id);
 
   let satisfactionFormId: string | null = null;
   let satisfactionAnswered = false;
@@ -177,34 +180,58 @@ export default async function ApprenantProgrammePage({
             ) : (
               modules
                 .map((m) => ({ ...m, lessons: [...(m.lessons ?? [])].sort((a, b) => a.position - b.position) }))
-                .map((module) => (
-                  <div key={module.id} className="flex flex-col gap-3">
-                    <h3 className="font-mono-label text-xs font-semibold uppercase tracking-wide text-foreground-muted">
-                      {module.title}
-                    </h3>
-                    <div className="flex flex-col gap-2 border-l-2 border-border pl-4">
-                      {module.lessons.map((lesson) => (
-                        <Link
-                          key={lesson.id}
-                          href={
-                            lesson.type === "quiz"
-                              ? `/apprenant/formations/${enrollmentId}/quiz/${lesson.id}`
-                              : `/apprenant/formations/${enrollmentId}/lecons/${lesson.id}`
-                          }
-                          className="flex items-center justify-between rounded-DEFAULT border border-border p-3 transition-colors hover:border-accent-text"
-                        >
-                          <div>
-                            <p className="font-body text-sm text-foreground">{lesson.title}</p>
-                            <p className="font-body text-xs text-foreground-muted">
-                              {LESSON_TYPE_LABELS[lesson.type] ?? lesson.type} · {lesson.duration_minutes} min
-                            </p>
-                          </div>
-                          {completedLessonIds.has(lesson.id) && <Badge variant="success">Terminé</Badge>}
-                        </Link>
-                      ))}
+                .map((module) => {
+                  const unlock = moduleUnlock.get(module.id) ?? { unlocked: true, lockReason: null };
+                  return (
+                    <div key={module.id} className="flex flex-col gap-3">
+                      <div className="flex items-center gap-2">
+                        <h3 className="font-mono-label text-xs font-semibold uppercase tracking-wide text-foreground-muted">
+                          {module.title}
+                        </h3>
+                        {!unlock.unlocked && <IconLock size={14} />}
+                      </div>
+                      {!unlock.unlocked && unlock.lockReason && (
+                        <p className="-mt-2 font-body text-xs text-foreground-muted">{unlock.lockReason}</p>
+                      )}
+                      <div className="flex flex-col gap-2 border-l-2 border-border pl-4">
+                        {module.lessons.map((lesson) =>
+                          unlock.unlocked ? (
+                            <Link
+                              key={lesson.id}
+                              href={
+                                lesson.type === "quiz"
+                                  ? `/apprenant/formations/${enrollmentId}/quiz/${lesson.id}`
+                                  : `/apprenant/formations/${enrollmentId}/lecons/${lesson.id}`
+                              }
+                              className="flex items-center justify-between rounded-DEFAULT border border-border p-3 transition-colors hover:border-accent-text"
+                            >
+                              <div>
+                                <p className="font-body text-sm text-foreground">{lesson.title}</p>
+                                <p className="font-body text-xs text-foreground-muted">
+                                  {LESSON_TYPE_LABELS[lesson.type] ?? lesson.type} · {lesson.duration_minutes} min
+                                </p>
+                              </div>
+                              {completedLessonIds.has(lesson.id) && <Badge variant="success">Terminé</Badge>}
+                            </Link>
+                          ) : (
+                            <div
+                              key={lesson.id}
+                              className="flex cursor-not-allowed items-center justify-between rounded-DEFAULT border border-border bg-surface p-3 opacity-60"
+                            >
+                              <div>
+                                <p className="font-body text-sm text-foreground">{lesson.title}</p>
+                                <p className="font-body text-xs text-foreground-muted">
+                                  {LESSON_TYPE_LABELS[lesson.type] ?? lesson.type} · {lesson.duration_minutes} min
+                                </p>
+                              </div>
+                              <IconLock size={16} />
+                            </div>
+                          ),
+                        )}
+                      </div>
                     </div>
-                  </div>
-                ))
+                  );
+                })
             )}
           </CardContent>
         </Card>

@@ -2068,6 +2068,7 @@ export type Database = {
           published_at: string | null
           rncp_code: string | null
           satisfaction_rate: number | null
+          sequential_unlock: boolean
           slug: string
           stats_updated_at: string | null
           status: string
@@ -2100,6 +2101,7 @@ export type Database = {
           published_at?: string | null
           rncp_code?: string | null
           satisfaction_rate?: number | null
+          sequential_unlock?: boolean
           slug: string
           stats_updated_at?: string | null
           status?: string
@@ -2132,6 +2134,7 @@ export type Database = {
           published_at?: string | null
           rncp_code?: string | null
           satisfaction_rate?: number | null
+          sequential_unlock?: boolean
           slug?: string
           stats_updated_at?: string | null
           status?: string
