@@ -1134,6 +1134,80 @@ export type Database = {
         }
         Relationships: []
       }
+      programme_trainings: {
+        Row: {
+          position: number
+          programme_id: string
+          training_id: string
+        }
+        Insert: {
+          position?: number
+          programme_id: string
+          training_id: string
+        }
+        Update: {
+          position?: number
+          programme_id?: string
+          training_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "programme_trainings_programme_id_fkey"
+            columns: ["programme_id"]
+            isOneToOne: false
+            referencedRelation: "programmes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "programme_trainings_training_id_fkey"
+            columns: ["training_id"]
+            isOneToOne: false
+            referencedRelation: "trainings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      programmes: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          slug: string
+          status: string
+          summary: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          slug: string
+          status?: string
+          summary?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          slug?: string
+          status?: string
+          summary?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "programmes_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       question_options: {
         Row: {
           id: string

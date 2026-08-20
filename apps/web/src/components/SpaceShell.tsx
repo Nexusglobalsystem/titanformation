@@ -8,6 +8,7 @@ const NAV_BY_TITLE: Record<string, SpaceNavItem[]> = {
   "Espace administration": [
     { label: "Tableau de bord", href: "/admin" },
     { label: "Formations", href: "/admin/formations" },
+    { label: "Programmes", href: "/admin/programmes" },
     { label: "Utilisateurs", href: "/admin/utilisateurs" },
     { label: "Rôles & permissions", href: "/admin/roles-permissions" },
     { label: "Tâches", href: "/admin/taches" },
