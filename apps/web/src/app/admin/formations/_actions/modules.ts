@@ -44,7 +44,7 @@ export async function createLessonAction(
   const body = formData.get("body");
   const videoProvider = formData.get("video_provider");
   const videoAssetId = formData.get("video_asset_id");
-  const documentPath = formData.get("document_path");
+  const file = formData.get("file");
 
   if (
     typeof moduleId !== "string" ||
@@ -58,21 +58,39 @@ export async function createLessonAction(
   }
 
   const supabase = await createClient();
-  const { error } = await supabase.from("lessons").insert({
-    module_id: moduleId,
-    title,
-    type: type as (typeof LESSON_TYPES)[number],
-    duration_minutes: Number.isFinite(durationMinutes) ? durationMinutes : 0,
-    body: typeof body === "string" && body ? body : null,
-    video_provider: typeof videoProvider === "string" && videoProvider ? videoProvider : null,
-    video_asset_id: typeof videoAssetId === "string" && videoAssetId ? videoAssetId : null,
-    // Réutilisé pour l'audio : pas de transcodage/HLS nécessaire, donc pas
-    // besoin d'un provider dédié comme pour la vidéo (cf. migration).
-    document_path: typeof documentPath === "string" && documentPath ? documentPath : null,
-  });
+  const { data: lesson, error } = await supabase
+    .from("lessons")
+    .insert({
+      module_id: moduleId,
+      title,
+      type: type as (typeof LESSON_TYPES)[number],
+      duration_minutes: Number.isFinite(durationMinutes) ? durationMinutes : 0,
+      body: typeof body === "string" && body ? body : null,
+      video_provider: typeof videoProvider === "string" && videoProvider ? videoProvider : null,
+      video_asset_id: typeof videoAssetId === "string" && videoAssetId ? videoAssetId : null,
+    })
+    .select("id")
+    .single();
 
-  if (error) {
-    return { error: "Impossible de créer la leçon : " + error.message };
+  if (error || !lesson) {
+    return { error: "Impossible de créer la leçon : " + (error?.message ?? "") };
+  }
+
+  // Audio/document : le fichier glissé-déposé dans le même formulaire est
+  // envoyé juste après la création, dans la même action — un seul clic pour
+  // l'admin, même convention de chemin que attachLessonFileAction.
+  if ((type === "audio" || type === "document") && file instanceof File && file.size > 0) {
+    const path = `lessons/${lesson.id}/${file.name}`;
+    const { error: uploadError } = await supabase.storage.from("lesson-files").upload(path, file, { upsert: true });
+
+    if (uploadError) {
+      return { error: "Leçon créée mais échec de l'envoi du fichier : " + uploadError.message };
+    }
+
+    const { error: updateError } = await supabase.from("lessons").update({ document_path: path }).eq("id", lesson.id);
+    if (updateError) {
+      return { error: "Leçon créée mais échec de l'enregistrement du fichier : " + updateError.message };
+    }
   }
 
   revalidatePath(`/admin/formations/${trainingId}`);

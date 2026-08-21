@@ -2,7 +2,7 @@
 
 import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
-import { Button } from "@titan-kinetic/ui";
+import { Button, FileDropzone } from "@titan-kinetic/ui";
 import { attachLessonFileAction, type AttachFileState } from "../_actions/modules";
 
 function SubmitButton() {
@@ -26,21 +26,16 @@ export function AttachLessonFileForm({
   const [state, formAction] = useActionState<AttachFileState, FormData>(attachLessonFileAction, undefined);
 
   return (
-    <form action={formAction} className="flex flex-col gap-1.5">
+    <form action={formAction} className="flex flex-col gap-2">
       <input type="hidden" name="lessonId" value={lessonId} />
       <input type="hidden" name="trainingId" value={trainingId} />
-      <div className="flex flex-wrap items-center gap-2">
-        {currentPath && (
-          <p className="font-body text-xs text-foreground-muted">
-            Fichier actuel : {currentPath.split("/").pop()}
-          </p>
-        )}
-        <input
-          type="file"
-          name="file"
-          required
-          className="font-body text-xs text-foreground-muted file:mr-2 file:rounded-DEFAULT file:border file:border-border file:bg-surface file:px-2 file:py-1 file:font-body file:text-xs file:text-foreground"
-        />
+      {currentPath && (
+        <p className="font-body text-xs text-foreground-muted">
+          Fichier actuel : {currentPath.split("/").pop()}
+        </p>
+      )}
+      <FileDropzone name="file" required />
+      <div>
         <SubmitButton />
       </div>
       {state?.error && (

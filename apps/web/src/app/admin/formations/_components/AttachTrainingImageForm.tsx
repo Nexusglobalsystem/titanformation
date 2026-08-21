@@ -2,7 +2,7 @@
 
 import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
-import { Button } from "@titan-kinetic/ui";
+import { Button, FileDropzone } from "@titan-kinetic/ui";
 import { attachTrainingImageAction, type AttachTrainingImageState } from "../_actions/trainings";
 
 function SubmitButton() {
@@ -37,16 +37,12 @@ export function AttachTrainingImageForm({
           className="h-32 w-full max-w-sm rounded-DEFAULT border border-border object-cover"
         />
       )}
-      <form action={formAction} className="flex flex-wrap items-center gap-2">
+      <form action={formAction} className="flex max-w-sm flex-col gap-2">
         <input type="hidden" name="trainingId" value={trainingId} />
-        <input
-          type="file"
-          name="file"
-          accept="image/*"
-          required
-          className="font-body text-xs text-foreground-muted file:mr-2 file:rounded-DEFAULT file:border file:border-border file:bg-surface file:px-2 file:py-1 file:font-body file:text-xs file:text-foreground"
-        />
-        <SubmitButton />
+        <FileDropzone name="file" accept="image/*" required />
+        <div>
+          <SubmitButton />
+        </div>
       </form>
       {state?.error && (
         <p role="alert" className="font-body text-xs text-error">

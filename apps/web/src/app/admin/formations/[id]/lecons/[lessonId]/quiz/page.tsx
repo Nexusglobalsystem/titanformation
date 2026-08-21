@@ -2,9 +2,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { SpaceShell } from "@/components/SpaceShell";
-import { Badge, Card, CardContent, CardHeader, CardTitle } from "@titan-kinetic/ui";
+import { Badge, Button, Card, CardContent, CardHeader, CardTitle } from "@titan-kinetic/ui";
 import { QuizSettingsForm } from "../../../../_components/QuizSettingsForm";
 import { NewQuestionForm } from "../../../../_components/NewQuestionForm";
+import { GenerateQuizForm } from "../../../../_components/GenerateQuizForm";
+import { deleteQuestionAction } from "../../../../_actions/quizAI";
 
 const KIND_LABELS: Record<string, string> = {
   qcu: "Une seule bonne réponse",
@@ -87,7 +89,17 @@ export default async function AdminQuizPage({
                           <p className="font-body text-sm font-semibold text-foreground">
                             {index + 1}. {question.statement}
                           </p>
-                          <Badge variant="neutral">{KIND_LABELS[question.kind] ?? question.kind}</Badge>
+                          <div className="flex shrink-0 items-center gap-2">
+                            <Badge variant="neutral">{KIND_LABELS[question.kind] ?? question.kind}</Badge>
+                            <form action={deleteQuestionAction}>
+                              <input type="hidden" name="questionId" value={question.id} />
+                              <input type="hidden" name="trainingId" value={trainingId} />
+                              <input type="hidden" name="lessonId" value={lesson.id} />
+                              <Button type="submit" variant="ghost" size="sm" className="h-6 px-2 text-xs text-error">
+                                Supprimer
+                              </Button>
+                            </form>
+                          </div>
                         </div>
                         <ul className="flex flex-col gap-1 pl-4">
                           {options.map((option) => (
@@ -114,6 +126,12 @@ export default async function AdminQuizPage({
                 </div>
 
                 <NewQuestionForm
+                  quizId={quiz.id}
+                  lessonId={lesson.id}
+                  trainingId={trainingId}
+                  nextPosition={items?.length ?? 0}
+                />
+                <GenerateQuizForm
                   quizId={quiz.id}
                   lessonId={lesson.id}
                   trainingId={trainingId}

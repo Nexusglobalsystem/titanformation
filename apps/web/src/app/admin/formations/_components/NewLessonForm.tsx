@@ -4,6 +4,7 @@ import { useActionState, useState } from "react";
 import { useFormStatus } from "react-dom";
 import {
   Button,
+  FileDropzone,
   Input,
   Select,
   SelectContent,
@@ -76,20 +77,15 @@ export function NewLessonForm({ moduleId, trainingId }: { moduleId: string; trai
       )}
 
       {type === "audio" && (
-        <Input
-          label="Fichier audio"
-          name="document_path"
-          placeholder="lessons/audio/exemple.mp3"
-          hint="Chemin dans le bucket privé Supabase Storage."
-        />
+        <FileDropzone label="Fichier audio" name="file" accept="audio/*" hint="MP3, WAV, M4A…" />
       )}
 
       {type === "document" && (
-        <Input
+        <FileDropzone
           label="Fichier"
-          name="document_path"
-          placeholder="lessons/documents/exemple.pdf"
-          hint="Chemin dans le bucket privé Supabase Storage."
+          name="file"
+          accept="application/pdf,.doc,.docx,.odt,.ppt,.pptx"
+          hint="PDF, Word, PowerPoint…"
         />
       )}
 
