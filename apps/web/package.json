@@ -17,6 +17,7 @@
     "@dnd-kit/utilities": "^3.2.2",
     "@livekit/components-react": "^2.9.24",
     "@livekit/components-styles": "^1.2.0",
+    "@livekit/track-processors": "^0.5.4",
     "@supabase/ssr": "^0.12.4",
     "@supabase/supabase-js": "^2.47.10",
     "@titan-kinetic/core": "workspace:*",

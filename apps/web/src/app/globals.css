@@ -48,3 +48,19 @@ body {
   color: var(--color-foreground);
   font-family: var(--font-body);
 }
+
+/* Réactions flottantes de la classe virtuelle (salle/[slotId]) */
+@keyframes float-up {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0) scale(0.8);
+  }
+  15% {
+    opacity: 1;
+    transform: translate(-50%, -10px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -140px) scale(1);
+  }
+}

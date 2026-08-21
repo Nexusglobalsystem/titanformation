@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { LiveKitRoom, VideoConference } from "@livekit/components-react";
 import "@livekit/components-styles";
 import { joinSlotRoomAction, type JoinRoomResult } from "@/app/_actions/livekit";
+import { BackgroundBlurToggle } from "./BackgroundBlurToggle";
+import { LiveReactions } from "./LiveReactions";
 
 export function SalleClient({ slotId }: { slotId: string }) {
   const router = useRouter();
@@ -59,6 +61,8 @@ export function SalleClient({ slotId }: { slotId: string }) {
           className="h-full"
         >
           <VideoConference />
+          <BackgroundBlurToggle />
+          <LiveReactions />
         </LiveKitRoom>
       </div>
     </div>
