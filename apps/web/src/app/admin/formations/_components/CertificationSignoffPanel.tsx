@@ -1,4 +1,5 @@
-import { Badge, Button, Input } from "@titan-kinetic/ui";
+import { Badge, Button, EmptyState, Input } from "@titan-kinetic/ui";
+import { IconUsers } from "@/components/icons";
 import { addCertificationSignoffAction, removeCertificationSignoffAction } from "../_actions/certification";
 
 export function CertificationSignoffPanel({
@@ -15,7 +16,7 @@ export function CertificationSignoffPanel({
   }[];
 }) {
   if (enrollments.length === 0) {
-    return <p className="font-body text-sm text-foreground-muted">Aucun apprenant inscrit pour le moment.</p>;
+    return <EmptyState icon={<IconUsers />} title="Aucun apprenant inscrit pour le moment." />;
   }
 
   return (

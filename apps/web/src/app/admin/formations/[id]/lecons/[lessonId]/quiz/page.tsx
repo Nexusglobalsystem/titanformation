@@ -2,7 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { SpaceShell } from "@/components/SpaceShell";
-import { Badge, Button, Card, CardContent, CardHeader, CardTitle } from "@titan-kinetic/ui";
+import { Badge, Button, Card, CardContent, CardHeader, CardTitle, EmptyState } from "@titan-kinetic/ui";
+import { IconClipboardCheck } from "@/components/icons";
 import { QuizSettingsForm } from "../../../../_components/QuizSettingsForm";
 import { NewQuestionForm } from "../../../../_components/NewQuestionForm";
 import { GenerateQuizForm } from "../../../../_components/GenerateQuizForm";
@@ -121,7 +122,7 @@ export default async function AdminQuizPage({
                     );
                   })}
                   {(!items || items.length === 0) && (
-                    <p className="font-body text-sm text-foreground-muted">Aucune question pour l'instant.</p>
+                    <EmptyState icon={<IconClipboardCheck />} title="Aucune question pour l'instant." />
                   )}
                 </div>
 

@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { SpaceShell } from "@/components/SpaceShell";
-import { Card, CardContent, CardHeader, CardTitle } from "@titan-kinetic/ui";
+import { Card, CardContent, CardHeader, CardTitle, EmptyState } from "@titan-kinetic/ui";
+import { IconTasks } from "@/components/icons";
 import { TaskCard } from "@/app/_components/TaskCard";
 
 export default async function FormateurTasksPage() {
@@ -43,7 +44,7 @@ export default async function FormateurTasksPage() {
         </CardHeader>
         <CardContent className="flex flex-col gap-3">
           {!tasks || tasks.length === 0 ? (
-            <p className="font-body text-sm text-foreground-muted">Aucune tâche assignée pour le moment.</p>
+            <EmptyState icon={<IconTasks />} title="Aucune tâche assignée pour le moment." />
           ) : (
             tasks.map((t) => {
               const assignee = t.profiles;

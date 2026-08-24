@@ -68,7 +68,7 @@ export function CatalogueClient({
 
   return (
     <>
-      <div className="mb-12 flex flex-col gap-4 rounded-lg border border-border bg-surface p-6 shadow-sm">
+      <div className="mb-12 flex flex-col gap-4 rounded-DEFAULT border border-border bg-surface p-6 shadow-sm">
         <div className="flex flex-col gap-4 md:flex-row md:items-center">
           <div className="md:w-1/3">
             <Input

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export type SpaceNavItem = { label: string; href: string; badge?: number };
+export type SpaceNavItem = { label: string; href: string; badge?: number; icon?: React.ReactNode };
 
 export function SpaceNav({
   items,
@@ -27,13 +27,18 @@ export function SpaceNav({
           <Link
             key={item.href}
             href={item.href}
-            className={`flex items-center justify-between gap-2 whitespace-nowrap rounded-DEFAULT px-3 py-2 font-body text-sm transition-colors ${
+            className={`flex items-center gap-2 whitespace-nowrap rounded-DEFAULT px-3 py-2 font-body text-sm transition-colors ${
               isActive
                 ? "bg-primary text-on-primary"
                 : "text-foreground-muted hover:bg-surface-elevated hover:text-foreground"
             }`}
           >
-            {item.label}
+            {item.icon && (
+              <span aria-hidden="true" className="shrink-0">
+                {item.icon}
+              </span>
+            )}
+            <span className="flex-1">{item.label}</span>
             {!!item.badge && (
               <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1.5 text-xs font-semibold text-on-accent">
                 {item.badge}

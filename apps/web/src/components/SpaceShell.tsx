@@ -1,40 +1,55 @@
 import { createClient } from "@/lib/supabase/server";
 import { SignOutButton } from "./SignOutButton";
 import { SpaceNav, type SpaceNavItem } from "./SpaceNav";
+import {
+  IconAlertTriangle,
+  IconBell,
+  IconCalendar,
+  IconClock,
+  IconDashboard,
+  IconFileText,
+  IconGraduationCap,
+  IconLayers,
+  IconLock,
+  IconShieldCheck,
+  IconTasks,
+  IconTrendUp,
+  IconUsers,
+} from "./icons";
 
 // Couplé au libellé passé par chaque page — pas idéal, mais évite de
 // modifier les ~12 appelants pour un seul prop supplémentaire.
 const NAV_BY_TITLE: Record<string, SpaceNavItem[]> = {
   "Espace administration": [
-    { label: "Tableau de bord", href: "/admin" },
-    { label: "Formations", href: "/admin/formations" },
-    { label: "Programmes", href: "/admin/programmes" },
-    { label: "Accès", href: "/admin/acces" },
-    { label: "Utilisateurs", href: "/admin/utilisateurs" },
-    { label: "Rôles & permissions", href: "/admin/roles-permissions" },
-    { label: "Tâches", href: "/admin/taches" },
-    { label: "Planification", href: "/admin/planification" },
-    { label: "Réclamations", href: "/admin/reclamations" },
-    { label: "Documents", href: "/admin/documents" },
-    { label: "Statistiques", href: "/admin/statistiques" },
-    { label: "Notifications", href: "/admin/notifications" },
+    { label: "Tableau de bord", href: "/admin", icon: <IconDashboard size={18} /> },
+    { label: "Formations", href: "/admin/formations", icon: <IconGraduationCap size={18} /> },
+    { label: "Programmes", href: "/admin/programmes", icon: <IconLayers size={18} /> },
+    { label: "Accès", href: "/admin/acces", icon: <IconLock size={18} /> },
+    { label: "Utilisateurs", href: "/admin/utilisateurs", icon: <IconUsers size={18} /> },
+    { label: "Rôles & permissions", href: "/admin/roles-permissions", icon: <IconShieldCheck size={18} /> },
+    { label: "Tâches", href: "/admin/taches", icon: <IconTasks size={18} /> },
+    { label: "Planification", href: "/admin/planification", icon: <IconCalendar size={18} /> },
+    { label: "Réclamations", href: "/admin/reclamations", icon: <IconAlertTriangle size={18} /> },
+    { label: "Documents", href: "/admin/documents", icon: <IconFileText size={18} /> },
+    { label: "Statistiques", href: "/admin/statistiques", icon: <IconTrendUp size={18} /> },
+    { label: "Notifications", href: "/admin/notifications", icon: <IconBell size={18} /> },
   ],
   "Espace formateur": [
-    { label: "Tableau de bord", href: "/formateur" },
-    { label: "Mes tâches", href: "/formateur/taches" },
-    { label: "Notifications", href: "/formateur/notifications" },
+    { label: "Tableau de bord", href: "/formateur", icon: <IconDashboard size={18} /> },
+    { label: "Mes tâches", href: "/formateur/taches", icon: <IconTasks size={18} /> },
+    { label: "Notifications", href: "/formateur/notifications", icon: <IconBell size={18} /> },
   ],
   "Espace entreprise": [
-    { label: "Tableau de bord", href: "/entreprise" },
-    { label: "Notifications", href: "/entreprise/notifications" },
+    { label: "Tableau de bord", href: "/entreprise", icon: <IconDashboard size={18} /> },
+    { label: "Notifications", href: "/entreprise/notifications", icon: <IconBell size={18} /> },
   ],
   "Espace apprenant": [
-    { label: "Tableau de bord", href: "/apprenant" },
-    { label: "Agenda", href: "/apprenant/agenda" },
-    { label: "Réserver un rendez-vous", href: "/apprenant/reservations" },
-    { label: "Réclamations", href: "/apprenant/reclamations" },
-    { label: "Mes documents", href: "/apprenant/documents" },
-    { label: "Notifications", href: "/apprenant/notifications" },
+    { label: "Tableau de bord", href: "/apprenant", icon: <IconDashboard size={18} /> },
+    { label: "Agenda", href: "/apprenant/agenda", icon: <IconCalendar size={18} /> },
+    { label: "Réserver un rendez-vous", href: "/apprenant/reservations", icon: <IconClock size={18} /> },
+    { label: "Réclamations", href: "/apprenant/reclamations", icon: <IconAlertTriangle size={18} /> },
+    { label: "Mes documents", href: "/apprenant/documents", icon: <IconFileText size={18} /> },
+    { label: "Notifications", href: "/apprenant/notifications", icon: <IconBell size={18} /> },
   ],
 };
 

@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { SpaceShell } from "@/components/SpaceShell";
-import { Badge, Button, Card, CardContent, CardHeader, CardTitle } from "@titan-kinetic/ui";
+import { Badge, Button, Card, CardContent, CardHeader, CardTitle, EmptyState } from "@titan-kinetic/ui";
 import {
   IconAlertTriangle,
   IconCalendar,
   IconCheckCircle,
   IconClipboardCheck,
+  IconClock,
   IconTasks,
   IconUsers,
   IconVideo,
@@ -234,9 +235,7 @@ export default async function FormateurPage() {
           </CardHeader>
           <CardContent className="flex flex-col gap-6">
             {!sessions || sessions.length === 0 ? (
-              <p className="font-body text-sm text-foreground-muted">
-                Aucune session ne t'est affectée pour le moment.
-              </p>
+              <EmptyState icon={<IconCalendar />} title="Aucune session ne t'est affectée pour le moment." />
             ) : (
               sessions.map((session) => {
                 const enrolled = session.enrollments ?? [];
@@ -293,7 +292,7 @@ export default async function FormateurPage() {
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
             {!slots || slots.length === 0 ? (
-              <p className="font-body text-sm text-foreground-muted">Aucun créneau pour le moment.</p>
+              <EmptyState icon={<IconClock />} title="Aucun créneau pour le moment." />
             ) : (
               slots.map((slot) => {
                 const attendances = slot.attendances ?? [];
@@ -355,7 +354,7 @@ export default async function FormateurPage() {
                 Créneaux hebdomadaires
               </p>
               {availabilities.length === 0 ? (
-                <p className="font-body text-sm text-foreground-muted">Aucune disponibilité définie.</p>
+                <EmptyState icon={<IconClock />} title="Aucune disponibilité définie." />
               ) : (
                 <div className="flex flex-col gap-2">
                   {availabilities.map((a) => (
@@ -385,7 +384,7 @@ export default async function FormateurPage() {
                 Exceptions (congés, indisponibilités ponctuelles)
               </p>
               {!exceptions || exceptions.length === 0 ? (
-                <p className="font-body text-sm text-foreground-muted">Aucune exception.</p>
+                <EmptyState icon={<IconCalendar />} title="Aucune exception." />
               ) : (
                 <div className="flex flex-col gap-2">
                   {exceptions.map((e) => (
@@ -419,7 +418,7 @@ export default async function FormateurPage() {
           </CardHeader>
           <CardContent className="flex flex-col gap-3">
             {!bookings || bookings.length === 0 ? (
-              <p className="font-body text-sm text-foreground-muted">Aucun rendez-vous réservé pour le moment.</p>
+              <EmptyState icon={<IconCalendar />} title="Aucun rendez-vous réservé pour le moment." />
             ) : (
               bookings.map((booking) => {
                 const learner = booking.profiles;

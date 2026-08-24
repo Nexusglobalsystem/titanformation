@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { SpaceShell } from "@/components/SpaceShell";
-import { Badge, Button, Card, CardContent, CardHeader, CardTitle, Textarea } from "@titan-kinetic/ui";
+import { Badge, Button, Card, CardContent, CardHeader, CardTitle, EmptyState, Textarea } from "@titan-kinetic/ui";
+import { IconCalendar } from "@/components/icons";
 import { createBookingAction, cancelBookingAction } from "../_actions/booking";
 
 const WEEKDAY_SHORT = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
@@ -347,7 +348,7 @@ export default async function ReservationsPage({
           </CardHeader>
           <CardContent className="flex flex-col gap-3">
             {!myBookings || myBookings.length === 0 ? (
-              <p className="font-body text-sm text-foreground-muted">Aucune réservation pour le moment.</p>
+              <EmptyState icon={<IconCalendar />} title="Aucune réservation pour le moment." />
             ) : (
               myBookings.map((booking) => {
                 const trainer = booking.profiles;

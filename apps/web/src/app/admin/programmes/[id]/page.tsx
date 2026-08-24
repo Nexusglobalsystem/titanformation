@@ -2,7 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { SpaceShell } from "@/components/SpaceShell";
-import { Badge, Card, CardContent, CardHeader, CardTitle } from "@titan-kinetic/ui";
+import { Badge, Card, CardContent, CardHeader, CardTitle, EmptyState } from "@titan-kinetic/ui";
+import { IconLayers } from "@/components/icons";
 import { ProgrammeForm } from "../_components/ProgrammeForm";
 import { AddTrainingForm } from "../_components/AddTrainingForm";
 import {
@@ -58,7 +59,7 @@ export default async function ProgrammeDetailPage({
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
             {programmeTrainings.length === 0 ? (
-              <p className="font-body text-sm text-foreground-muted">Aucune formation dans ce programme.</p>
+              <EmptyState icon={<IconLayers />} title="Aucune formation dans ce programme." />
             ) : (
               <ol className="flex flex-col gap-2">
                 {programmeTrainings.map((pt, index) => {

@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { SpaceShell } from "@/components/SpaceShell";
-import { Badge, Card, CardContent, CardHeader, CardTitle } from "@titan-kinetic/ui";
+import { Badge, Card, CardContent, CardHeader, CardTitle, EmptyState } from "@titan-kinetic/ui";
+import { IconFileText } from "@/components/icons";
 
 const DOCUMENT_TYPE_LABELS: Record<string, string> = {
   programme: "Programme de formation",
@@ -39,9 +40,7 @@ export default async function ApprenantDocumentsPage() {
         </CardHeader>
         <CardContent className="flex flex-col gap-3">
           {documentsWithUrls.length === 0 ? (
-            <p className="font-body text-sm text-foreground-muted">
-              Aucun document disponible pour le moment.
-            </p>
+            <EmptyState icon={<IconFileText />} title="Aucun document disponible pour le moment." />
           ) : (
             documentsWithUrls.map((doc) => {
               const training = doc.enrollments?.sessions?.trainings;

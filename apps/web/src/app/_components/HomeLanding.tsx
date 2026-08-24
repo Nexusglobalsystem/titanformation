@@ -260,10 +260,11 @@ export function HomeLanding({
           </section>
         )}
 
-        {/* Comment ça marche */}
+        {/* Comment ça marche — étapes reliées, pas des cartes égales : le
+            contenu est une vraie séquence, la mise en page le montre. */}
         <section className="border-b border-border py-20">
           <div className="mx-auto max-w-(--spacing-container-max) px-4 md:px-(--spacing-margin-desktop)">
-            <div className="mb-12 max-w-2xl">
+            <div className="mb-14 max-w-2xl">
               <h2 className="font-display text-2xl font-bold text-foreground md:text-3xl">
                 Comment ça marche.
               </h2>
@@ -271,22 +272,37 @@ export function HomeLanding({
                 De la découverte du catalogue à la certification, quatre étapes simples.
               </p>
             </div>
-            <div className="grid grid-cols-1 gap-(--spacing-gutter) sm:grid-cols-2 lg:grid-cols-4">
+            <ol className="flex flex-col divide-y divide-border md:flex-row md:divide-y-0">
               {HOW_IT_WORKS.map((step, index) => (
-                <div key={step.title} className="flex flex-col gap-3 rounded-xl border border-border bg-surface-elevated p-6">
-                  <div className="flex items-center justify-between">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-lg border border-accent/20 bg-primary text-accent">
+                <li
+                  key={step.title}
+                  className="flex gap-4 py-6 first:pt-0 last:pb-0 md:flex-1 md:flex-col md:gap-0 md:py-0"
+                >
+                  <div className="flex shrink-0 items-center md:w-full">
+                    <span
+                      aria-hidden="true"
+                      className={`hidden h-px flex-1 bg-border md:block ${index === 0 ? "invisible" : ""}`}
+                    />
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-accent/40 bg-surface-elevated text-accent">
                       <step.icon />
                     </div>
-                    <span className="font-mono-label text-xs text-foreground-muted">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
+                    <span
+                      aria-hidden="true"
+                      className={`hidden h-px flex-1 bg-border md:block ${
+                        index === HOW_IT_WORKS.length - 1 ? "invisible" : ""
+                      }`}
+                    />
                   </div>
-                  <h3 className="font-display text-base font-semibold text-foreground">{step.title}</h3>
-                  <p className="font-body text-sm text-foreground-muted">{step.body}</p>
-                </div>
+                  <div className="flex flex-col gap-1.5 md:mt-5 md:pr-6">
+                    <span className="font-mono-label text-xs uppercase tracking-wide text-accent-text">
+                      Étape {index + 1}
+                    </span>
+                    <h3 className="font-display text-base font-semibold text-foreground">{step.title}</h3>
+                    <p className="font-body text-sm text-foreground-muted">{step.body}</p>
+                  </div>
+                </li>
               ))}
-            </div>
+            </ol>
           </div>
         </section>
 

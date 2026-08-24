@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { SpaceShell } from "@/components/SpaceShell";
-import { Badge, Button, Card, CardContent, CardHeader, CardTitle } from "@titan-kinetic/ui";
+import { Badge, Button, Card, CardContent, CardHeader, CardTitle, EmptyState } from "@titan-kinetic/ui";
+import { IconFileText } from "@/components/icons";
 import { deleteDocumentAction } from "./_actions/documents";
 import { DOCUMENT_TYPE_LABELS } from "./_lib/document-types";
 import { GenerateDocumentForm } from "./_components/GenerateDocumentForm";
@@ -66,7 +67,7 @@ export default async function AdminDocumentsPage() {
           </CardHeader>
           <CardContent className="flex flex-col gap-3">
             {documentsWithUrls.length === 0 ? (
-              <p className="font-body text-sm text-foreground-muted">Aucun document pour le moment.</p>
+              <EmptyState icon={<IconFileText />} title="Aucun document pour le moment." />
             ) : (
               documentsWithUrls.map((doc) => {
                 const enrollment = doc.enrollments;

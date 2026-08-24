@@ -1,12 +1,14 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { SpaceShell } from "@/components/SpaceShell";
-import { Badge, Button, Card, CardContent, CardHeader, CardTitle, Progress } from "@titan-kinetic/ui";
+import { Badge, Button, Card, CardContent, CardHeader, CardTitle, EmptyState, Progress } from "@titan-kinetic/ui";
 import {
   IconArrowRight,
   IconCalendar,
   IconCheckCircle,
+  IconClipboardCheck,
   IconClock,
+  IconGraduationCap,
   IconLayers,
   IconVideo,
 } from "@/components/icons";
@@ -255,12 +257,15 @@ export default async function ApprenantPage() {
           {!enrollments || enrollments.length === 0 ? (
             <Card>
               <CardContent className="p-6">
-                <p className="font-body text-sm text-foreground-muted">
-                  Aucune inscription pour le moment.{" "}
-                  <a href="/formations" className="text-accent-text hover:underline">
-                    Parcourir le catalogue
-                  </a>
-                </p>
+                <EmptyState
+                  icon={<IconGraduationCap />}
+                  title="Aucune inscription pour le moment."
+                  action={
+                    <a href="/formations" className="font-body text-sm text-accent-text hover:underline">
+                      Parcourir le catalogue
+                    </a>
+                  }
+                />
               </CardContent>
             </Card>
           ) : (
@@ -325,9 +330,7 @@ export default async function ApprenantPage() {
           </CardHeader>
           <CardContent className="flex flex-col gap-3">
             {!attendances || attendances.length === 0 ? (
-              <p className="font-body text-sm text-foreground-muted">
-                Aucun créneau d'émargement pour le moment.
-              </p>
+              <EmptyState icon={<IconClipboardCheck />} title="Aucun créneau d'émargement pour le moment." />
             ) : (
               attendances.map((attendance) => {
                 const slot = attendance.session_slots;

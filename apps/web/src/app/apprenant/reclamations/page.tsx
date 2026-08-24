@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { SpaceShell } from "@/components/SpaceShell";
-import { Badge, Card, CardContent, CardHeader, CardTitle } from "@titan-kinetic/ui";
+import { Badge, Card, CardContent, CardHeader, CardTitle, EmptyState } from "@titan-kinetic/ui";
+import { IconAlertTriangle } from "@/components/icons";
 import { NewClaimForm } from "../_components/NewClaimForm";
 
 const STATUS_LABELS: Record<string, string> = {
@@ -52,7 +53,7 @@ export default async function ReclamationsPage() {
           </CardHeader>
           <CardContent className="flex flex-col gap-3">
             {!claims || claims.length === 0 ? (
-              <p className="font-body text-sm text-foreground-muted">Aucune réclamation pour le moment.</p>
+              <EmptyState icon={<IconAlertTriangle />} title="Aucune réclamation pour le moment." />
             ) : (
               claims.map((claim) => (
                 <div key={claim.id} className="flex flex-col gap-2 rounded-DEFAULT border border-border p-4">

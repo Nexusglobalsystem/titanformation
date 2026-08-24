@@ -11,7 +11,8 @@ import {
 } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy, useSortable, arrayMove } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Badge } from "@titan-kinetic/ui";
+import { Badge, EmptyState } from "@titan-kinetic/ui";
+import { IconLayers } from "@/components/icons";
 import { reorderTrainingStepsAction, deleteTrainingStepAction } from "../_actions/trainingSteps";
 
 export type TrainingStep = {
@@ -134,7 +135,7 @@ export function TrainingStepsBoard({
   }
 
   if (steps.length === 0) {
-    return <p className="font-body text-sm text-foreground-muted">Aucune étape définie pour ce parcours.</p>;
+    return <EmptyState icon={<IconLayers />} title="Aucune étape définie pour ce parcours." />;
   }
 
   return (

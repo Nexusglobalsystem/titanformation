@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { SpaceShell } from "@/components/SpaceShell";
-import { Badge, Card, CardContent, CardHeader, CardTitle, Progress } from "@titan-kinetic/ui";
+import { Badge, Card, CardContent, CardHeader, CardTitle, EmptyState, Progress } from "@titan-kinetic/ui";
+import { IconAlertTriangle, IconTrendUp, IconUsers } from "@/components/icons";
 
 const ENROLLMENT_STATUS_LABELS: Record<string, string> = {
   preinscrit: "Préinscrit",
@@ -111,7 +112,7 @@ export default async function StatistiquesPage() {
                 />
               ))}
               {enrollments.length === 0 && (
-                <p className="font-body text-sm text-foreground-muted">Aucune inscription pour le moment.</p>
+                <EmptyState icon={<IconUsers />} title="Aucune inscription pour le moment." />
               )}
             </CardContent>
           </Card>
@@ -136,7 +137,7 @@ export default async function StatistiquesPage() {
                   />
                 ))}
                 {claims.length === 0 && (
-                  <p className="font-body text-sm text-foreground-muted">Aucune réclamation pour le moment.</p>
+                  <EmptyState icon={<IconAlertTriangle />} title="Aucune réclamation pour le moment." />
                 )}
               </div>
             </CardContent>
@@ -148,9 +149,7 @@ export default async function StatistiquesPage() {
             </CardHeader>
             <CardContent>
               {avgSatisfaction === null ? (
-                <p className="font-body text-sm text-foreground-muted">
-                  Aucun taux de satisfaction publié pour le moment.
-                </p>
+                <EmptyState icon={<IconTrendUp />} title="Aucun taux de satisfaction publié pour le moment." />
               ) : (
                 <Progress value={avgSatisfaction} label="Toutes formations confondues" />
               )}

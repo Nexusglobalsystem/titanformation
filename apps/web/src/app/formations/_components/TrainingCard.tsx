@@ -23,15 +23,16 @@ export type CatalogueTraining = Tables<"trainings"> & {
 };
 
 export function TrainingCard({ training }: { training: CatalogueTraining }) {
+  const showPopularBadgeOnImage = training.isPopular && training.imageUrl;
+  const showPopularBadgeInline = training.isPopular && !training.imageUrl;
+
   return (
     <Card className="flex flex-col overflow-hidden">
-      {(training.imageUrl || training.isPopular) && (
+      {training.imageUrl && (
         <div className="relative h-36 w-full overflow-hidden bg-surface">
-          {training.imageUrl && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={training.imageUrl} alt="" className="h-full w-full object-cover" />
-          )}
-          {training.isPopular && (
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={training.imageUrl} alt="" className="h-full w-full object-cover" />
+          {showPopularBadgeOnImage && (
             <Badge variant="warning" className="absolute left-3 top-3">
               Populaire
             </Badge>
@@ -41,11 +42,12 @@ export function TrainingCard({ training }: { training: CatalogueTraining }) {
       <CardContent className="flex flex-1 flex-col gap-4 p-6 pt-6">
         <div className="flex items-start justify-between gap-3">
           <h3 className="font-display text-lg font-semibold text-foreground">{training.title}</h3>
-          {training.category && (
-            <Badge variant="featured" className="shrink-0">
-              {CATEGORY_LABELS[training.category] ?? training.category}
-            </Badge>
-          )}
+          <div className="flex shrink-0 flex-wrap justify-end gap-2">
+            {showPopularBadgeInline && <Badge variant="warning">Populaire</Badge>}
+            {training.category && (
+              <Badge variant="featured">{CATEGORY_LABELS[training.category] ?? training.category}</Badge>
+            )}
+          </div>
         </div>
         <p className="line-clamp-2 font-body text-sm text-foreground-muted">{training.summary}</p>
         {(training.level || training.is_certifying) && (

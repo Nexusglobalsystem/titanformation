@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { SpaceShell } from "@/components/SpaceShell";
-import { Badge, Button, Card, CardContent, CardHeader, CardTitle } from "@titan-kinetic/ui";
+import { Badge, Button, Card, CardContent, CardHeader, CardTitle, EmptyState } from "@titan-kinetic/ui";
+import { IconUsers } from "@/components/icons";
 import { AddRoleForm } from "./_components/AddRoleForm";
 import { revokeRoleAction } from "./_actions/roles";
 
@@ -42,7 +43,7 @@ export default async function UtilisateursPage() {
           </CardHeader>
           <CardContent className="flex flex-col gap-3">
             {!profiles || profiles.length === 0 ? (
-              <p className="font-body text-sm text-foreground-muted">Aucun utilisateur.</p>
+              <EmptyState icon={<IconUsers />} title="Aucun utilisateur." />
             ) : (
               profiles.map((profile) => {
                 const roles = (profile.user_roles ?? []).map((r) => r.role);

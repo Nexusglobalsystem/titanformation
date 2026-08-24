@@ -54,6 +54,26 @@ function SectionHeading({ icon, children }: { icon: React.ReactNode; children: R
   );
 }
 
+// Les champs texte de la base sont saisis en une seule colonne (pas de format
+// riche) — un retour à la ligne dans le formulaire admin correspond à un
+// nouveau paragraphe voulu, jamais à un simple retour à l'écran.
+function MultiParagraph({ text, className }: { text: string | null; className: string }) {
+  if (!text) return null;
+  const paragraphs = text
+    .split("\n")
+    .map((p) => p.trim())
+    .filter(Boolean);
+  return (
+    <div className="flex flex-col gap-3">
+      {paragraphs.map((p, i) => (
+        <p key={i} className={className}>
+          {p}
+        </p>
+      ))}
+    </div>
+  );
+}
+
 export default async function TrainingDetailPage({
   params,
 }: {
@@ -123,7 +143,7 @@ export default async function TrainingDetailPage({
             <Card>
               <CardContent className="p-6 pt-6">
                 <SectionHeading icon={<IconTarget />}>Objectifs de la formation</SectionHeading>
-                <p className="font-body text-sm text-foreground">{training.objectives}</p>
+                <MultiParagraph text={training.objectives} className="font-body text-sm text-foreground" />
               </CardContent>
             </Card>
 
@@ -151,7 +171,7 @@ export default async function TrainingDetailPage({
             <Card>
               <CardContent className="p-6 pt-6">
                 <SectionHeading icon={<IconLayers />}>Modalités pédagogiques</SectionHeading>
-                <p className="font-body text-sm text-foreground">{training.pedagogical_means}</p>
+                <MultiParagraph text={training.pedagogical_means} className="font-body text-sm text-foreground" />
               </CardContent>
             </Card>
 
@@ -159,13 +179,13 @@ export default async function TrainingDetailPage({
               <Card>
                 <CardContent className="p-6 pt-6">
                   <SectionHeading icon={<IconUsers />}>Public visé</SectionHeading>
-                  <p className="font-body text-sm text-foreground-muted">{training.target_audience}</p>
+                  <MultiParagraph text={training.target_audience} className="font-body text-sm text-foreground-muted" />
                 </CardContent>
               </Card>
               <Card>
                 <CardContent className="p-6 pt-6">
                   <SectionHeading icon={<IconShieldCheck />}>Prérequis</SectionHeading>
-                  <p className="font-body text-sm text-foreground-muted">{training.prerequisites}</p>
+                  <MultiParagraph text={training.prerequisites} className="font-body text-sm text-foreground-muted" />
                 </CardContent>
               </Card>
             </div>
@@ -173,14 +193,14 @@ export default async function TrainingDetailPage({
             <Card>
               <CardContent className="p-6 pt-6">
                 <h2 className="mb-3 font-display text-lg font-semibold text-accent">Modalités d'évaluation</h2>
-                <p className="font-body text-sm text-foreground-muted">{training.assessment_methods}</p>
+                <MultiParagraph text={training.assessment_methods} className="font-body text-sm text-foreground-muted" />
               </CardContent>
             </Card>
 
             <Card>
               <CardContent className="p-6 pt-6">
                 <h2 className="mb-3 font-display text-lg font-semibold text-accent">Accessibilité</h2>
-                <p className="font-body text-sm text-foreground-muted">{training.accessibility_info}</p>
+                <MultiParagraph text={training.accessibility_info} className="font-body text-sm text-foreground-muted" />
               </CardContent>
             </Card>
           </div>

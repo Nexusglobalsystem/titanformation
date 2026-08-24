@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { SpaceShell } from "@/components/SpaceShell";
-import { Badge, Button, Card, CardContent, CardHeader, CardTitle } from "@titan-kinetic/ui";
+import { Badge, Button, Card, CardContent, CardHeader, CardTitle, EmptyState } from "@titan-kinetic/ui";
+import { IconLock } from "@/components/icons";
 import { GrantAccessForm } from "./_components/GrantAccessForm";
 import { revokeAccessGrantAction } from "./_actions/accessGrants";
 
@@ -76,7 +77,7 @@ export default async function AdminAccesPage() {
           </CardHeader>
           <CardContent className="flex flex-col gap-2">
             {!grantsRaw || grantsRaw.length === 0 ? (
-              <p className="font-body text-sm text-foreground-muted">Aucun accès accordé pour le moment.</p>
+              <EmptyState icon={<IconLock />} title="Aucun accès accordé pour le moment." />
             ) : (
               grantsRaw.map((g) => {
                 const who = g.profiles
