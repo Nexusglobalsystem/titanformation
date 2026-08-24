@@ -129,6 +129,21 @@ export default async function ApprenantPage() {
 
   const unsignedCount = attendances.filter((a) => !a.signed_at).length;
 
+  // Regroupées par session (= une instance datée d'une formation) plutôt qu'en
+  // liste plate — un apprenant inscrit à deux formations voit deux blocs
+  // distincts au lieu de 20+ lignes indifférenciées.
+  const attendanceGroups = (() => {
+    const map = new Map<string, { key: string; label: string; items: typeof attendances }>();
+    for (const a of attendances) {
+      const session = a.session_slots?.sessions;
+      const key = session?.reference ?? "—";
+      const label = session?.trainings?.title ?? "Formation";
+      if (!map.has(key)) map.set(key, { key, label, items: [] });
+      map.get(key)!.items.push(a);
+    }
+    return Array.from(map.values());
+  })();
+
   return (
     <SpaceShell title="Espace apprenant">
       <div className="flex flex-col gap-6">
@@ -328,49 +343,54 @@ export default async function ApprenantPage() {
             <CardTitle>Émargement</CardTitle>
             {unsignedCount > 0 && <Badge variant="warning">{unsignedCount} à signer</Badge>}
           </CardHeader>
-          <CardContent className="flex flex-col gap-3">
+          <CardContent className="flex flex-col gap-6">
             {!attendances || attendances.length === 0 ? (
               <EmptyState icon={<IconClipboardCheck />} title="Aucun créneau d'émargement pour le moment." />
             ) : (
-              attendances.map((attendance) => {
-                const slot = attendance.session_slots;
-                const session = slot?.sessions;
-                return (
-                  <div
-                    key={attendance.id}
-                    className="flex flex-col gap-2 rounded-DEFAULT border border-border p-4 sm:flex-row sm:items-center sm:justify-between"
-                  >
-                    <div>
-                      <p className="font-body text-sm font-semibold text-foreground">
-                        {session?.trainings?.title ?? "Formation"}
-                      </p>
-                      {slot && (
-                        <p className="font-body text-xs text-foreground-muted">
-                          {new Date(slot.slot_date).toLocaleDateString("fr-FR")} ·{" "}
-                          {HALF_DAY_LABELS[slot.half_day] ?? slot.half_day}
-                        </p>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-2">
-                      {slot && slot.modality === "livekit" && canJoinSlot(slot.starts_at, slot.ends_at) && (
-                        <Link href={`/salle/${slot.id}`}>
-                          <Button variant="accent" size="sm" className="gap-1.5">
-                            <IconVideo size={16} />
-                            Rejoindre
-                          </Button>
-                        </Link>
-                      )}
-                      {attendance.signed_at ? (
-                        <Badge variant="success">
-                          Signé le {new Date(attendance.signed_at).toLocaleString("fr-FR")}
-                        </Badge>
-                      ) : (
-                        <SignAttendanceButton attendanceId={attendance.id} />
-                      )}
-                    </div>
+              attendanceGroups.map((group) => (
+                <div key={group.key} className="flex flex-col gap-2">
+                  <p className="font-mono-label text-xs uppercase tracking-wide text-foreground-muted">
+                    {group.label} · {group.key}
+                  </p>
+                  <div className="flex flex-col gap-2">
+                    {group.items.map((attendance) => {
+                      const slot = attendance.session_slots;
+                      return (
+                        <div
+                          key={attendance.id}
+                          className="flex flex-col gap-2 rounded-DEFAULT border border-border p-4 sm:flex-row sm:items-center sm:justify-between"
+                        >
+                          <div>
+                            {slot && (
+                              <p className="font-body text-sm font-semibold text-foreground">
+                                {new Date(slot.slot_date).toLocaleDateString("fr-FR")} ·{" "}
+                                {HALF_DAY_LABELS[slot.half_day] ?? slot.half_day}
+                              </p>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            {slot && slot.modality === "livekit" && canJoinSlot(slot.starts_at, slot.ends_at) && (
+                              <Link href={`/salle/${slot.id}`}>
+                                <Button variant="accent" size="sm" className="gap-1.5">
+                                  <IconVideo size={16} />
+                                  Rejoindre
+                                </Button>
+                              </Link>
+                            )}
+                            {attendance.signed_at ? (
+                              <Badge variant="success">
+                                Signé le {new Date(attendance.signed_at).toLocaleString("fr-FR")}
+                              </Badge>
+                            ) : (
+                              <SignAttendanceButton attendanceId={attendance.id} />
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
-                );
-              })
+                </div>
+              ))
             )}
           </CardContent>
         </Card>

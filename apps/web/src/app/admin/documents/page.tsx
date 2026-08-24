@@ -1,7 +1,20 @@
 import { createClient } from "@/lib/supabase/server";
 import { SpaceShell } from "@/components/SpaceShell";
-import { Badge, Button, Card, CardContent, CardHeader, CardTitle, EmptyState } from "@titan-kinetic/ui";
-import { IconFileText } from "@/components/icons";
+import {
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Table,
+  TableBody,
+  TableCell,
+  TableEmpty,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@titan-kinetic/ui";
 import { deleteDocumentAction } from "./_actions/documents";
 import { DOCUMENT_TYPE_LABELS } from "./_lib/document-types";
 import { GenerateDocumentForm } from "./_components/GenerateDocumentForm";
@@ -65,54 +78,63 @@ export default async function AdminDocumentsPage() {
           <CardHeader>
             <CardTitle>Documents</CardTitle>
           </CardHeader>
-          <CardContent className="flex flex-col gap-3">
-            {documentsWithUrls.length === 0 ? (
-              <EmptyState icon={<IconFileText />} title="Aucun document pour le moment." />
-            ) : (
-              documentsWithUrls.map((doc) => {
-                const enrollment = doc.enrollments;
-                const learner = enrollment?.profiles;
-                const training = enrollment?.sessions?.trainings;
-                const learnerName = learner
-                  ? `${learner.first_name ?? ""} ${learner.last_name ?? ""}`.trim()
-                  : "—";
-                return (
-                  <div
-                    key={doc.id}
-                    className="flex flex-col gap-2 rounded-DEFAULT border border-border p-3 sm:flex-row sm:items-center sm:justify-between"
-                  >
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <Badge variant="neutral">{DOCUMENT_TYPE_LABELS[doc.type] ?? doc.type}</Badge>
-                        <p className="font-body text-sm font-semibold text-foreground">{learnerName}</p>
-                      </div>
-                      <p className="font-body text-xs text-foreground-muted">
-                        {training?.title ?? "—"} · {new Date(doc.generated_at).toLocaleString("fr-FR")}
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      {doc.signedUrl && (
-                        <a
-                          href={doc.signedUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="font-body text-xs text-primary underline"
-                        >
-                          Ouvrir
-                        </a>
-                      )}
-                      <form action={deleteDocumentAction}>
-                        <input type="hidden" name="id" value={doc.id} />
-                        <input type="hidden" name="storagePath" value={doc.storage_path} />
-                        <Button type="submit" variant="ghost" size="sm">
-                          Supprimer
-                        </Button>
-                      </form>
-                    </div>
-                  </div>
-                );
-              })
-            )}
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Type</TableHead>
+                  <TableHead>Apprenant</TableHead>
+                  <TableHead>Formation</TableHead>
+                  <TableHead>Date</TableHead>
+                  <TableHead>Action</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {documentsWithUrls.length === 0 ? (
+                  <TableEmpty colSpan={5}>Aucun document pour le moment.</TableEmpty>
+                ) : (
+                  documentsWithUrls.map((doc) => {
+                    const enrollment = doc.enrollments;
+                    const learner = enrollment?.profiles;
+                    const training = enrollment?.sessions?.trainings;
+                    const learnerName = learner
+                      ? `${learner.first_name ?? ""} ${learner.last_name ?? ""}`.trim()
+                      : "—";
+                    return (
+                      <TableRow key={doc.id}>
+                        <TableCell>
+                          <Badge variant="neutral">{DOCUMENT_TYPE_LABELS[doc.type] ?? doc.type}</Badge>
+                        </TableCell>
+                        <TableCell>{learnerName}</TableCell>
+                        <TableCell>{training?.title ?? "—"}</TableCell>
+                        <TableCell>{new Date(doc.generated_at).toLocaleString("fr-FR")}</TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-3">
+                            {doc.signedUrl && (
+                              <a
+                                href={doc.signedUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="font-body text-xs text-primary underline"
+                              >
+                                Ouvrir
+                              </a>
+                            )}
+                            <form action={deleteDocumentAction}>
+                              <input type="hidden" name="id" value={doc.id} />
+                              <input type="hidden" name="storagePath" value={doc.storage_path} />
+                              <Button type="submit" variant="ghost" size="sm">
+                                Supprimer
+                              </Button>
+                            </form>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })
+                )}
+              </TableBody>
+            </Table>
           </CardContent>
         </Card>
       </div>

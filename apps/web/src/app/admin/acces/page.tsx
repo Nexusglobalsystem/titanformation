@@ -1,7 +1,20 @@
 import { createClient } from "@/lib/supabase/server";
 import { SpaceShell } from "@/components/SpaceShell";
-import { Badge, Button, Card, CardContent, CardHeader, CardTitle, EmptyState } from "@titan-kinetic/ui";
-import { IconLock } from "@/components/icons";
+import {
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Table,
+  TableBody,
+  TableCell,
+  TableEmpty,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@titan-kinetic/ui";
 import { GrantAccessForm } from "./_components/GrantAccessForm";
 import { revokeAccessGrantAction } from "./_actions/accessGrants";
 
@@ -75,47 +88,64 @@ export default async function AdminAccesPage() {
           <CardHeader>
             <CardTitle>Accès en cours</CardTitle>
           </CardHeader>
-          <CardContent className="flex flex-col gap-2">
-            {!grantsRaw || grantsRaw.length === 0 ? (
-              <EmptyState icon={<IconLock />} title="Aucun accès accordé pour le moment." />
-            ) : (
-              grantsRaw.map((g) => {
-                const who = g.profiles
-                  ? `${g.profiles.first_name ?? ""} ${g.profiles.last_name ?? ""}`.trim()
-                  : g.companies?.name
-                    ? `Entreprise : ${g.companies.name}`
-                    : "—";
-                const what =
-                  g.programmes?.title ?? g.trainings?.title ?? g.modules?.title ?? g.sessions?.reference ?? "—";
-                const expired = g.expires_at ? new Date(g.expires_at) < new Date() : false;
-                return (
-                  <div
-                    key={g.id}
-                    className="flex flex-col gap-2 rounded-DEFAULT border border-border p-3 sm:flex-row sm:items-center sm:justify-between"
-                  >
-                    <div>
-                      <p className="font-body text-sm text-foreground">
-                        {who} → {what}
-                      </p>
-                      <p className="font-body text-xs text-foreground-muted">
-                        Accordé le {new Date(g.granted_at).toLocaleDateString("fr-FR")}
-                        {g.expires_at ? ` · Expire le ${new Date(g.expires_at).toLocaleDateString("fr-FR")}` : ""}
-                        {g.note ? ` · ${g.note}` : ""}
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      {expired && <Badge variant="warning">Expiré</Badge>}
-                      <form action={revokeAccessGrantAction}>
-                        <input type="hidden" name="grantId" value={g.id} />
-                        <Button type="submit" variant="ghost" size="sm">
-                          Révoquer
-                        </Button>
-                      </form>
-                    </div>
-                  </div>
-                );
-              })
-            )}
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Accès</TableHead>
+                  <TableHead>Accordé le</TableHead>
+                  <TableHead>Statut</TableHead>
+                  <TableHead>Action</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {!grantsRaw || grantsRaw.length === 0 ? (
+                  <TableEmpty colSpan={4}>Aucun accès accordé pour le moment.</TableEmpty>
+                ) : (
+                  grantsRaw.map((g) => {
+                    const who = g.profiles
+                      ? `${g.profiles.first_name ?? ""} ${g.profiles.last_name ?? ""}`.trim()
+                      : g.companies?.name
+                        ? `Entreprise : ${g.companies.name}`
+                        : "—";
+                    const what =
+                      g.programmes?.title ?? g.trainings?.title ?? g.modules?.title ?? g.sessions?.reference ?? "—";
+                    const expired = g.expires_at ? new Date(g.expires_at) < new Date() : false;
+                    return (
+                      <TableRow key={g.id}>
+                        <TableCell>
+                          <p className="font-body text-sm text-foreground">
+                            {who} → {what}
+                          </p>
+                          {g.note && (
+                            <p className="font-body text-xs text-foreground-muted">{g.note}</p>
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          {new Date(g.granted_at).toLocaleDateString("fr-FR")}
+                          {g.expires_at ? ` · Expire le ${new Date(g.expires_at).toLocaleDateString("fr-FR")}` : ""}
+                        </TableCell>
+                        <TableCell>
+                          {expired ? (
+                            <Badge variant="warning">Expiré</Badge>
+                          ) : (
+                            <Badge variant="success">Actif</Badge>
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          <form action={revokeAccessGrantAction}>
+                            <input type="hidden" name="grantId" value={g.id} />
+                            <Button type="submit" variant="ghost" size="sm">
+                              Révoquer
+                            </Button>
+                          </form>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })
+                )}
+              </TableBody>
+            </Table>
           </CardContent>
         </Card>
       </div>

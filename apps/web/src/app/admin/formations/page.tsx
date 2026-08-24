@@ -16,6 +16,7 @@ import {
   TableHeader,
   TableRow,
 } from "@titan-kinetic/ui";
+import { AdminSectionTabs } from "../_components/AdminSectionTabs";
 
 const STATUS_LABELS: Record<string, string> = {
   brouillon: "Brouillon",
@@ -39,17 +40,7 @@ export default async function AdminFormationsPage() {
   return (
     <SpaceShell title="Espace administration">
       <div className="flex flex-col gap-6">
-        <nav className="flex gap-4 border-b border-border pb-2">
-          <Link href="/admin" className="pb-2 font-body text-sm text-foreground-muted hover:text-foreground">
-            Inscriptions
-          </Link>
-          <Link
-            href="/admin/formations"
-            className="border-b-2 border-accent pb-2 font-body text-sm font-semibold text-accent"
-          >
-            Formations
-          </Link>
-        </nav>
+        <AdminSectionTabs active="formations" />
 
         <div className="flex items-center justify-between">
           <h1 className="font-display text-xl font-semibold text-foreground">Formations</h1>

@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { SpaceShell } from "@/components/SpaceShell";
 import {
@@ -16,6 +15,7 @@ import {
   TableRow,
 } from "@titan-kinetic/ui";
 import { ConfirmEnrollmentButton } from "./_components/ConfirmEnrollmentButton";
+import { AdminSectionTabs } from "./_components/AdminSectionTabs";
 
 const STATUS_LABELS: Record<string, string> = {
   preinscrit: "Préinscrit",
@@ -62,17 +62,7 @@ export default async function AdminPage() {
           </CardHeader>
         </Card>
 
-        <nav className="flex gap-4 border-b border-border pb-2">
-          <Link href="/admin" className="border-b-2 border-accent pb-2 font-body text-sm font-semibold text-accent">
-            Inscriptions
-          </Link>
-          <Link
-            href="/admin/formations"
-            className="pb-2 font-body text-sm text-foreground-muted hover:text-foreground"
-          >
-            Formations
-          </Link>
-        </nav>
+        <AdminSectionTabs active="inscriptions" />
 
         <Card>
           <CardHeader>

@@ -117,6 +117,21 @@ export default async function FormateurPage() {
     (s) => s.status === "ouverte" || s.status === "en_cours",
   ).length;
   const unsignedAttendances = slots.flatMap((s) => (s.attendances ?? []).filter((a) => !a.signed_at));
+
+  // Regroupés par session plutôt qu'en liste plate de créneaux — un
+  // formateur avec plusieurs sessions actives voit un bloc par formation
+  // au lieu de 15-20 cartes de créneau indifférenciées.
+  const slotGroups = (() => {
+    const map = new Map<string, { key: string; label: string; items: typeof slots }>();
+    for (const slot of slots) {
+      const session = slot.sessions;
+      const key = session?.reference ?? "—";
+      const label = session?.trainings?.title ?? "Formation";
+      if (!map.has(key)) map.set(key, { key, label, items: [] });
+      map.get(key)!.items.push(slot);
+    }
+    return Array.from(map.values());
+  })();
   const today = new Date().toISOString().slice(0, 10);
   const upcomingBookings = (bookings ?? []).filter((b) => b.status === "confirmee" && b.booking_date >= today);
   const nextBooking = upcomingBookings[0];
@@ -290,56 +305,66 @@ export default async function FormateurPage() {
           <CardHeader>
             <CardTitle>Émargement</CardTitle>
           </CardHeader>
-          <CardContent className="flex flex-col gap-4">
+          <CardContent className="flex flex-col gap-6">
             {!slots || slots.length === 0 ? (
               <EmptyState icon={<IconClock />} title="Aucun créneau pour le moment." />
             ) : (
-              slots.map((slot) => {
-                const attendances = slot.attendances ?? [];
-                return (
-                  <div key={slot.id} className="flex flex-col gap-2 rounded-DEFAULT border border-border p-4">
-                    <div className="flex flex-wrap items-center justify-between gap-2">
-                      <p className="font-body text-sm font-semibold text-foreground">
-                        {slot.sessions?.trainings?.title ?? "Formation"} —{" "}
-                        {new Date(slot.slot_date).toLocaleDateString("fr-FR")} ·{" "}
-                        {HALF_DAY_LABELS[slot.half_day] ?? slot.half_day}
-                      </p>
-                      {slot.modality === "livekit" && canJoinSlot(slot.starts_at, slot.ends_at) && (
-                        <Link href={`/salle/${slot.id}`}>
-                          <Button variant="accent" size="sm" className="gap-1.5">
-                            <IconVideo size={16} />
-                            Rejoindre la classe virtuelle
-                          </Button>
-                        </Link>
-                      )}
-                    </div>
-                    {attendances.length === 0 ? (
-                      <p className="font-body text-xs text-foreground-muted">Aucun inscrit sur ce créneau.</p>
-                    ) : (
-                      attendances.map((attendance) => {
-                        const learner = attendance.enrollments?.profiles;
-                        return (
-                          <div
-                            key={attendance.id}
-                            className="flex items-center justify-between border-t border-border pt-2 first:border-t-0 first:pt-0"
-                          >
-                            <span className="font-body text-sm text-foreground">
-                              {learner ? `${learner.first_name ?? ""} ${learner.last_name ?? ""}`.trim() : "—"}
-                            </span>
-                            {attendance.signed_at ? (
-                              <Badge variant="success">
-                                Signé le {new Date(attendance.signed_at).toLocaleString("fr-FR")}
-                              </Badge>
-                            ) : (
-                              <Badge variant="warning">Non signé</Badge>
+              slotGroups.map((group) => (
+                <div key={group.key} className="flex flex-col gap-2">
+                  <p className="font-mono-label text-xs uppercase tracking-wide text-foreground-muted">
+                    {group.label} · {group.key}
+                  </p>
+                  <div className="flex flex-col gap-2">
+                    {group.items.map((slot) => {
+                      const attendances = slot.attendances ?? [];
+                      return (
+                        <div key={slot.id} className="flex flex-col gap-2 rounded-DEFAULT border border-border p-4">
+                          <div className="flex flex-wrap items-center justify-between gap-2">
+                            <p className="font-body text-sm font-semibold text-foreground">
+                              {new Date(slot.slot_date).toLocaleDateString("fr-FR")} ·{" "}
+                              {HALF_DAY_LABELS[slot.half_day] ?? slot.half_day}
+                            </p>
+                            {slot.modality === "livekit" && canJoinSlot(slot.starts_at, slot.ends_at) && (
+                              <Link href={`/salle/${slot.id}`}>
+                                <Button variant="accent" size="sm" className="gap-1.5">
+                                  <IconVideo size={16} />
+                                  Rejoindre la classe virtuelle
+                                </Button>
+                              </Link>
                             )}
                           </div>
-                        );
-                      })
-                    )}
+                          {attendances.length === 0 ? (
+                            <p className="font-body text-xs text-foreground-muted">Aucun inscrit sur ce créneau.</p>
+                          ) : (
+                            attendances.map((attendance) => {
+                              const learner = attendance.enrollments?.profiles;
+                              return (
+                                <div
+                                  key={attendance.id}
+                                  className="flex items-center justify-between border-t border-border pt-2 first:border-t-0 first:pt-0"
+                                >
+                                  <span className="font-body text-sm text-foreground">
+                                    {learner
+                                      ? `${learner.first_name ?? ""} ${learner.last_name ?? ""}`.trim()
+                                      : "—"}
+                                  </span>
+                                  {attendance.signed_at ? (
+                                    <Badge variant="success">
+                                      Signé le {new Date(attendance.signed_at).toLocaleString("fr-FR")}
+                                    </Badge>
+                                  ) : (
+                                    <Badge variant="warning">Non signé</Badge>
+                                  )}
+                                </div>
+                              );
+                            })
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
-                );
-              })
+                </div>
+              ))
             )}
           </CardContent>
         </Card>
