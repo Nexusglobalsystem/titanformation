@@ -1,6 +1,7 @@
 export * from "./lib/cn";
 export * from "./primitives/Button";
 export * from "./primitives/Input";
+export * from "./primitives/PasswordInput";
 export * from "./primitives/FileDropzone";
 export * from "./primitives/Textarea";
 export * from "./primitives/Select";

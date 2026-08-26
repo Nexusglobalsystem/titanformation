@@ -2,7 +2,7 @@
 
 import { useActionState } from "react";
 import Link from "next/link";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, Input } from "@titan-kinetic/ui";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, Input, PasswordInput } from "@titan-kinetic/ui";
 import { signUpAction, type ActionState } from "../_actions/auth";
 import { SubmitButton } from "../_components/SubmitButton";
 import { FormMessage } from "../_components/FormMessage";
@@ -26,18 +26,16 @@ export default function InscriptionPage() {
             <Input label="Nom" name="lastName" autoComplete="family-name" required />
           </div>
           <Input label="Email" name="email" type="email" autoComplete="email" required />
-          <Input
+          <PasswordInput
             label="Mot de passe"
             name="password"
-            type="password"
             autoComplete="new-password"
             hint="8 caractères minimum"
             required
           />
-          <Input
+          <PasswordInput
             label="Confirmer le mot de passe"
             name="confirmPassword"
-            type="password"
             autoComplete="new-password"
             required
           />

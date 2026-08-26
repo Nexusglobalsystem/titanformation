@@ -3,7 +3,7 @@
 import { Suspense, useActionState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, Input } from "@titan-kinetic/ui";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, Input, PasswordInput } from "@titan-kinetic/ui";
 import { signInAction, type ActionState } from "../_actions/auth";
 import { SubmitButton } from "../_components/SubmitButton";
 import { FormMessage } from "../_components/FormMessage";
@@ -26,10 +26,9 @@ function ConnexionForm() {
         <form action={formAction} className="flex flex-col gap-4">
           {next && <input type="hidden" name="next" value={next} />}
           <Input label="Email" name="email" type="email" autoComplete="email" required />
-          <Input
+          <PasswordInput
             label="Mot de passe"
             name="password"
-            type="password"
             autoComplete="current-password"
             required
           />

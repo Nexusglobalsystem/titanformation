@@ -5,10 +5,11 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
   error?: string;
   label?: string;
   hint?: string;
+  endAdornment?: React.ReactNode;
 }
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, id, error, label, hint, ...props }, ref) => {
+  ({ className, id, error, label, hint, endAdornment, ...props }, ref) => {
     const generatedId = React.useId();
     const inputId = id ?? generatedId;
     const hintId = hint ? `${inputId}-hint` : undefined;
@@ -21,20 +22,26 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {label}
           </label>
         )}
-        <input
-          ref={ref}
-          id={inputId}
-          aria-invalid={Boolean(error) || undefined}
-          aria-describedby={cn(hintId, errorId) || undefined}
-          className={cn(
-            "h-10 rounded border border-border bg-surface px-3 font-body text-sm text-foreground placeholder:text-foreground-muted",
-            "outline-none transition-[border-color,box-shadow] focus-visible:border-accent focus-visible:ring-2 focus-visible:ring-accent",
-            "disabled:cursor-not-allowed disabled:opacity-50",
-            error && "border-error focus-visible:border-error focus-visible:ring-error",
-            className,
+        <div className="relative">
+          <input
+            ref={ref}
+            id={inputId}
+            aria-invalid={Boolean(error) || undefined}
+            aria-describedby={cn(hintId, errorId) || undefined}
+            className={cn(
+              "h-10 w-full rounded border border-border bg-surface px-3 font-body text-sm text-foreground placeholder:text-foreground-muted",
+              "outline-none transition-[border-color,box-shadow] focus-visible:border-accent focus-visible:ring-2 focus-visible:ring-accent",
+              "disabled:cursor-not-allowed disabled:opacity-50",
+              error && "border-error focus-visible:border-error focus-visible:ring-error",
+              endAdornment && "pr-10",
+              className,
+            )}
+            {...props}
+          />
+          {endAdornment && (
+            <div className="absolute right-1 top-1/2 -translate-y-1/2">{endAdornment}</div>
           )}
-          {...props}
-        />
+        </div>
         {hint && !error && (
           <p id={hintId} className="font-body text-xs text-foreground-muted">
             {hint}

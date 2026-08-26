@@ -8,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
   Input,
+  PasswordInput,
   Table,
   TableBody,
   TableCell,
@@ -47,7 +48,7 @@ function Primitives() {
 
       <Section title="Champs de saisie">
         <Input label="Email" placeholder="vous@exemple.fr" className="w-64" />
-        <Input label="Mot de passe" type="password" hint="8 caractères minimum" className="w-64" />
+        <PasswordInput label="Mot de passe" hint="8 caractères minimum" className="w-64" />
         <Input label="Champ en erreur" error="Ce champ est requis." className="w-64" />
         <Input label="Désactivé" disabled placeholder="—" className="w-64" />
       </Section>

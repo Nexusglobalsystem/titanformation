@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, Input } from "@titan-kinetic/ui";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, PasswordInput } from "@titan-kinetic/ui";
 import { resetPasswordAction, type ActionState } from "../_actions/auth";
 import { SubmitButton } from "../_components/SubmitButton";
 import { FormMessage } from "../_components/FormMessage";
@@ -23,18 +23,16 @@ export default function ReinitialiserMotDePassePage() {
       </CardHeader>
       <CardContent>
         <form action={formAction} className="flex flex-col gap-4">
-          <Input
+          <PasswordInput
             label="Nouveau mot de passe"
             name="password"
-            type="password"
             autoComplete="new-password"
             hint="8 caractères minimum"
             required
           />
-          <Input
+          <PasswordInput
             label="Confirmer le mot de passe"
             name="confirmPassword"
-            type="password"
             autoComplete="new-password"
             required
           />
