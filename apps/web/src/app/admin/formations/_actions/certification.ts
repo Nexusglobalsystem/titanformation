@@ -50,6 +50,7 @@ export async function upsertCertificationRequirementsAction(
   }
 
   revalidatePath(`/admin/formations/${trainingId}`);
+  revalidatePath("/admin/formations/nouvelle");
 }
 
 export async function addCertificationSignoffAction(formData: FormData) {
@@ -74,6 +75,7 @@ export async function addCertificationSignoffAction(formData: FormData) {
   });
 
   revalidatePath(`/admin/formations/${trainingId}`);
+  revalidatePath("/admin/formations/nouvelle");
 }
 
 export async function removeCertificationSignoffAction(formData: FormData) {
@@ -84,4 +86,5 @@ export async function removeCertificationSignoffAction(formData: FormData) {
   const supabase = await createClient();
   await supabase.from("certification_signoffs").delete().eq("enrollment_id", enrollmentId);
   revalidatePath(`/admin/formations/${trainingId}`);
+  revalidatePath("/admin/formations/nouvelle");
 }

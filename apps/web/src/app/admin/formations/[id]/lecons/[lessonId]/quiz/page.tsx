@@ -51,7 +51,7 @@ export default async function AdminQuizPage({
     <SpaceShell title="Espace administration">
       <div className="flex flex-col gap-6">
         <Link
-          href={`/admin/formations/${trainingId}`}
+          href={`/admin/formations/nouvelle?id=${trainingId}`}
           className="inline-block font-body text-sm text-accent-text hover:underline"
         >
           ← Retour à la formation

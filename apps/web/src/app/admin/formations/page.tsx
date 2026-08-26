@@ -81,7 +81,10 @@ export default async function AdminFormationsPage() {
                         </Badge>
                       </TableCell>
                       <TableCell>
-                        <Link href={`/admin/formations/${training.id}`} className="text-accent-text hover:underline">
+                        <Link
+                          href={`/admin/formations/nouvelle?id=${training.id}`}
+                          className="text-accent-text hover:underline"
+                        >
                           Modifier
                         </Link>
                       </TableCell>

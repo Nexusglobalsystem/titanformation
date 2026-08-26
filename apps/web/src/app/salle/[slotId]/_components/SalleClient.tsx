@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { LiveKitRoom, VideoConference } from "@livekit/components-react";
+import { LiveKitRoom, PreJoin, VideoConference, type LocalUserChoices } from "@livekit/components-react";
 import "@livekit/components-styles";
 import { joinSlotRoomAction, type JoinRoomResult } from "@/app/_actions/livekit";
 import { BackgroundBlurToggle } from "./BackgroundBlurToggle";
@@ -11,6 +11,7 @@ import { LiveReactions } from "./LiveReactions";
 export function SalleClient({ slotId }: { slotId: string }) {
   const router = useRouter();
   const [result, setResult] = useState<JoinRoomResult | null>(null);
+  const [choices, setChoices] = useState<LocalUserChoices | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -45,6 +46,26 @@ export function SalleClient({ slotId }: { slotId: string }) {
     );
   }
 
+  if (!choices) {
+    return (
+      <div className="flex flex-1 flex-col">
+        <div className="border-b border-border px-4 py-3">
+          <p className="font-body text-sm text-foreground-muted">{result.slotLabel}</p>
+        </div>
+        <div className="flex flex-1 items-center justify-center p-4" data-lk-theme="default">
+          <PreJoin
+            joinLabel="Rejoindre la classe"
+            micLabel="Microphone"
+            camLabel="Caméra"
+            userLabel="Nom affiché"
+            defaults={{ username: result.participantName }}
+            onSubmit={setChoices}
+          />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-1 flex-col">
       <div className="border-b border-border px-4 py-3">
@@ -55,8 +76,8 @@ export function SalleClient({ slotId }: { slotId: string }) {
           serverUrl={result.url}
           token={result.token}
           connect
-          audio
-          video
+          audio={choices.audioEnabled ? { deviceId: choices.audioDeviceId } : false}
+          video={choices.videoEnabled ? { deviceId: choices.videoDeviceId } : false}
           onDisconnected={() => router.back()}
           className="h-full"
         >

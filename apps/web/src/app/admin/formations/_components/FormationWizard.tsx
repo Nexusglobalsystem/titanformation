@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import type { Tables } from "@titan-kinetic/core/database.types";
-import { Card, CardContent, CardHeader, CardTitle } from "@titan-kinetic/ui";
+import { Badge, Card, CardContent, CardHeader, CardTitle } from "@titan-kinetic/ui";
 import { IconAlertTriangle, IconCheckCircle } from "@/components/icons";
 import { TrainingForm } from "./TrainingForm";
 import { AttachTrainingImageForm } from "./AttachTrainingImageForm";
@@ -10,6 +10,9 @@ import { TrainingStepsBoard, type TrainingStep } from "./TrainingStepsBoard";
 import { NewTrainingStepForm } from "./NewTrainingStepForm";
 import { ModulesLessonsPanel } from "./ModulesLessonsPanel";
 import { SessionsPanel } from "./SessionsPanel";
+import { CertificationRequirementsForm } from "./CertificationRequirementsForm";
+import { CertificationSignoffPanel } from "./CertificationSignoffPanel";
+import { CreateSatisfactionFormButton, RecalculateSatisfactionButton } from "./SatisfactionActions";
 import { createTrainingAction, updateTrainingAction } from "../_actions/trainings";
 
 type ModuleWithLessons = {
@@ -71,6 +74,23 @@ function ChecklistRow({ label, done, detail }: { label: string; done: boolean; d
 // ModulesLessonsPanel, SessionsPanel) — aucune nouvelle logique métier,
 // les mêmes actions serveur produisent exactement les mêmes lignes que
 // l'ancien flux à page unique.
+type CertificationRequirement = {
+  id: string;
+  min_attendance_pct: number | null;
+  min_grade: number | null;
+  requires_final_exam: boolean;
+  final_exam_lesson_id: string | null;
+  requires_pedagogical_signoff: boolean;
+};
+
+type CertificationEnrollment = {
+  id: string;
+  learnerName: string;
+  signedAt: string | null;
+  signedByName: string | null;
+  comment: string | null;
+};
+
 export function FormationWizard({
   training,
   trainingImageUrl,
@@ -78,6 +98,12 @@ export function FormationWizard({
   modules,
   trainingSteps,
   sessions,
+  certificationRequirement = null,
+  requiredModuleIds = [],
+  certificationEnrollments = [],
+  quizLessons = [],
+  satisfactionFormId = null,
+  satisfactionResponseCount = 0,
 }: {
   training: Tables<"trainings"> | null;
   trainingImageUrl: string | null;
@@ -85,6 +111,12 @@ export function FormationWizard({
   modules: ModuleWithLessons[];
   trainingSteps: TrainingStep[];
   sessions: SessionWithTrainers[];
+  certificationRequirement?: CertificationRequirement | null;
+  requiredModuleIds?: string[];
+  certificationEnrollments?: CertificationEnrollment[];
+  quizLessons?: { id: string; title: string }[];
+  satisfactionFormId?: string | null;
+  satisfactionResponseCount?: number;
 }) {
   const [activeTab, setActiveTab] = useState<number>(training ? 2 : 1);
   const totalLessons = modules.reduce((sum, m) => sum + (m.lessons?.length ?? 0), 0);
@@ -207,6 +239,59 @@ export function FormationWizard({
             </CardHeader>
             <CardContent>
               <TrainingForm training={training} action={updateTrainingAction} submitLabel="Enregistrer" />
+            </CardContent>
+          </Card>
+
+          {training.is_certifying && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Conditions de certification</CardTitle>
+                <p className="font-body text-sm text-foreground-muted">
+                  Sans condition définie ici, le certificat reste débloqué dès que 100% des leçons
+                  obligatoires sont terminées.
+                </p>
+              </CardHeader>
+              <CardContent className="flex flex-col gap-6">
+                <CertificationRequirementsForm
+                  trainingId={training.id}
+                  requirement={certificationRequirement}
+                  requiredModuleIds={requiredModuleIds}
+                  modules={modules.map((m) => ({ id: m.id, title: m.title }))}
+                  quizLessons={quizLessons}
+                />
+                {certificationRequirement?.requires_pedagogical_signoff && (
+                  <div className="flex flex-col gap-3 border-t border-border pt-6">
+                    <h3 className="font-display text-sm font-semibold text-foreground">
+                      Validation pédagogique par apprenant
+                    </h3>
+                    <CertificationSignoffPanel trainingId={training.id} enrollments={certificationEnrollments} />
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          )}
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Questionnaire de satisfaction (ind. 2/3)</CardTitle>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-4">
+              <div className="flex flex-wrap gap-2">
+                <Badge variant="neutral">
+                  Taux de satisfaction :{" "}
+                  {training.satisfaction_rate !== null ? `${training.satisfaction_rate}%` : "non renseigné"}
+                </Badge>
+                {satisfactionFormId && (
+                  <Badge variant="neutral">
+                    {satisfactionResponseCount} réponse{satisfactionResponseCount > 1 ? "s" : ""}
+                  </Badge>
+                )}
+              </div>
+              {satisfactionFormId ? (
+                <RecalculateSatisfactionButton trainingId={training.id} />
+              ) : (
+                <CreateSatisfactionFormButton trainingId={training.id} />
+              )}
             </CardContent>
           </Card>
         </div>

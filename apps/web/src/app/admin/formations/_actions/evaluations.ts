@@ -36,6 +36,7 @@ export async function createSatisfactionFormAction(
   }
 
   revalidatePath(`/admin/formations/${trainingId}`);
+  revalidatePath("/admin/formations/nouvelle");
 }
 
 export type RecalcState = { error?: string } | undefined;
@@ -83,4 +84,5 @@ export async function recalculateSatisfactionAction(
   }
 
   revalidatePath(`/admin/formations/${trainingId}`);
+  revalidatePath("/admin/formations/nouvelle");
 }

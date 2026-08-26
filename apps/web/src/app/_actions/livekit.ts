@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 const JOIN_WINDOW_MS = 15 * 60 * 1000;
 
 export type JoinRoomResult =
-  | { url: string; token: string; roomName: string; slotLabel: string }
+  | { url: string; token: string; roomName: string; slotLabel: string; participantName: string }
   | { error: string };
 
 // Nom de salle déterministe : dérivé du slotId, jamais persisté. Le webhook
@@ -67,5 +67,5 @@ export async function joinSlotRoomAction(slotId: string): Promise<JoinRoomResult
   const halfDayLabel = slot.half_day === "matin" ? "matin" : "après-midi";
   const slotLabel = `${trainingTitle} — ${slot.slot_date} (${halfDayLabel})`;
 
-  return { url: wsUrl, token, roomName, slotLabel };
+  return { url: wsUrl, token, roomName, slotLabel, participantName: name };
 }
