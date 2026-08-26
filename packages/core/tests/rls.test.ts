@@ -309,3 +309,149 @@ describe("RLS — organization_settings (CMS informations légales, additif)", (
     await admin.from("user_roles").delete().eq("user_id", userBId).eq("role", "admin");
   });
 });
+
+describe("RLS — espace entreprise (salariés, devis, additif)", () => {
+  let companyAId: string;
+  let companyBId: string;
+
+  beforeAll(async () => {
+    const { data: companyA, error: cAErr } = await admin
+      .from("companies")
+      .insert({ name: "Entreprise Test A" })
+      .select()
+      .single();
+    if (cAErr) throw cAErr;
+    companyAId = companyA.id;
+
+    const { data: companyB, error: cBErr } = await admin
+      .from("companies")
+      .insert({ name: "Entreprise Test B" })
+      .select()
+      .single();
+    if (cBErr) throw cBErr;
+    companyBId = companyB.id;
+
+    // userA = responsable de l'entreprise A uniquement.
+    const { error } = await admin
+      .from("company_members")
+      .insert({ company_id: companyAId, user_id: userAId, role: "responsable" });
+    if (error) throw error;
+  });
+
+  afterAll(async () => {
+    const { data: orders } = await admin.from("orders").select("id").eq("company_id", companyAId);
+    const orderIds = (orders ?? []).map((o) => o.id);
+    if (orderIds.length) await admin.from("order_items").delete().in("order_id", orderIds);
+    await admin.from("orders").delete().eq("company_id", companyAId);
+    await admin.from("company_members").delete().in("company_id", [companyAId, companyBId]);
+    await admin.from("companies").delete().in("id", [companyAId, companyBId]);
+  });
+
+  it("le responsable ajoute un salarié à sa propre entreprise", async () => {
+    const { data, error } = await clientA
+      .from("company_members")
+      .insert({ company_id: companyAId, user_id: userBId, role: "salarie" })
+      .select();
+    expect(error).toBeNull();
+    expect(data).toHaveLength(1);
+  });
+
+  it("le responsable retire ce salarié de sa propre entreprise", async () => {
+    const { data } = await clientA
+      .from("company_members")
+      .delete()
+      .eq("company_id", companyAId)
+      .eq("user_id", userBId)
+      .select();
+    expect(data).toHaveLength(1);
+
+    const { data: check } = await admin
+      .from("company_members")
+      .select("user_id")
+      .eq("company_id", companyAId)
+      .eq("user_id", userBId);
+    expect(check).toEqual([]);
+  });
+
+  it("le responsable ne peut pas ajouter de salarié à une entreprise qu'il ne gère pas", async () => {
+    const { error } = await clientA
+      .from("company_members")
+      .insert({ company_id: companyBId, user_id: userBId, role: "salarie" });
+    expect(error).not.toBeNull();
+  });
+
+  it("un salarié ne peut pas se retirer lui-même via la policy responsable", async () => {
+    await admin.from("company_members").insert({ company_id: companyAId, user_id: userBId, role: "salarie" });
+
+    // clientB n'est responsable d'aucune entreprise — sa tentative de
+    // suppression ne matche aucune ligne (0 affectée, pas d'erreur).
+    const { data } = await clientB
+      .from("company_members")
+      .delete()
+      .eq("company_id", companyAId)
+      .eq("user_id", userBId)
+      .select();
+    expect(data).toEqual([]);
+
+    const { data: check } = await admin
+      .from("company_members")
+      .select("user_id")
+      .eq("company_id", companyAId)
+      .eq("user_id", userBId);
+    expect(check).toHaveLength(1);
+
+    await admin.from("company_members").delete().eq("company_id", companyAId).eq("user_id", userBId);
+  });
+
+  it("le responsable crée une demande de devis pour sa propre entreprise", async () => {
+    const { data, error } = await clientA
+      .from("orders")
+      .insert({
+        reference: `RLS-TEST-DEVIS-${Date.now()}`,
+        company_id: companyAId,
+        buyer_id: userAId,
+        funding: "entreprise_directe",
+        status: "devis",
+        total_ht: 100,
+        total_vat: 0,
+        total_ttc: 100,
+      })
+      .select()
+      .single();
+    expect(error).toBeNull();
+    expect(data?.status).toBe("devis");
+
+    const { error: itemError } = await clientA
+      .from("order_items")
+      .insert({ order_id: data!.id, label: "Test", quantity: 1, unit_price_ht: 100, vat_rate: 0 });
+    expect(itemError).toBeNull();
+  });
+
+  it("le responsable ne peut pas créer une commande dans un autre statut que 'devis'", async () => {
+    const { error } = await clientA.from("orders").insert({
+      reference: `RLS-TEST-PAYEE-${Date.now()}`,
+      company_id: companyAId,
+      buyer_id: userAId,
+      funding: "entreprise_directe",
+      status: "payee",
+      total_ht: 100,
+      total_vat: 0,
+      total_ttc: 100,
+    });
+    expect(error).not.toBeNull();
+  });
+
+  it("le responsable ne peut pas créer de commande pour une entreprise qu'il ne gère pas", async () => {
+    const { error } = await clientA.from("orders").insert({
+      reference: `RLS-TEST-AUTRE-${Date.now()}`,
+      company_id: companyBId,
+      buyer_id: userAId,
+      funding: "entreprise_directe",
+      status: "devis",
+      total_ht: 100,
+      total_vat: 0,
+      total_ttc: 100,
+    });
+    expect(error).not.toBeNull();
+  });
+});

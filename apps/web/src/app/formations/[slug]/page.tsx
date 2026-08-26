@@ -5,6 +5,7 @@ import { PublicHeader } from "@/components/PublicHeader";
 import { PublicFooter } from "@/components/PublicFooter";
 import { Button, Card, CardContent } from "@titan-kinetic/ui";
 import { EnrollForm } from "./_components/EnrollForm";
+import { EnrollEmployeeForm } from "./_components/EnrollEmployeeForm";
 import { TrainingCoverArt } from "../_components/TrainingCoverArt";
 
 function IconLayers() {
@@ -124,6 +125,28 @@ export default async function TrainingDetailPage({
       .eq("learner_id", user.id)
       .maybeSingle();
     existingEnrollment = data;
+  }
+
+  // Responsable d'entreprise : carte d'inscription additionnelle pour un
+  // salarié, à côté de (jamais à la place de) l'auto-inscription/devis
+  // déjà en production.
+  let employees: { id: string; name: string }[] = [];
+  let isResponsable = false;
+  if (user) {
+    const { data: companyIds } = await supabase.rpc("managed_company_ids");
+    const companyId = companyIds?.[0];
+    if (companyId) {
+      isResponsable = true;
+      const { data: members } = await supabase
+        .from("company_members")
+        .select("user_id, profiles(id, first_name, last_name)")
+        .eq("company_id", companyId)
+        .eq("role", "salarie");
+      employees = (members ?? [])
+        .map((m) => m.profiles)
+        .filter((p): p is NonNullable<typeof p> => Boolean(p))
+        .map((p) => ({ id: p.id, name: `${p.first_name ?? ""} ${p.last_name ?? ""}`.trim() || p.id }));
+    }
   }
 
   return (
@@ -281,6 +304,23 @@ export default async function TrainingDetailPage({
                 </div>
               </CardContent>
             </Card>
+
+            {isResponsable && session && (
+              <Card className="mt-6">
+                <CardContent className="flex flex-col gap-4 p-6 pt-6">
+                  <div>
+                    <h2 className="font-display text-base font-semibold text-foreground">
+                      Inscrire un salarié
+                    </h2>
+                    <p className="mt-1 font-body text-xs text-foreground-muted">
+                      En tant que responsable d&apos;entreprise, inscrivez directement un de vos
+                      salariés à cette session.
+                    </p>
+                  </div>
+                  <EnrollEmployeeForm sessionId={session.id} slug={training.slug} employees={employees} />
+                </CardContent>
+              </Card>
+            )}
           </div>
         </div>
       </main>

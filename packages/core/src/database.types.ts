@@ -2310,6 +2310,14 @@ export type Database = {
     Functions: {
       can_see_task: { Args: { p_task_id: string }; Returns: boolean }
       enrolled_session_ids: { Args: never; Returns: string[] }
+      find_profile_by_email: {
+        Args: { p_email: string }
+        Returns: {
+          first_name: string
+          id: string
+          last_name: string
+        }[]
+      }
       formateur_ids: { Args: never; Returns: string[] }
       granted_module_ids: { Args: never; Returns: string[] }
       granted_session_ids: { Args: never; Returns: string[] }
@@ -2325,6 +2333,7 @@ export type Database = {
         Args: { p_booking_id: string; p_kind: string }
         Returns: undefined
       }
+      notify_devis_request: { Args: { p_order_id: string }; Returns: undefined }
       public_learner_count: { Args: never; Returns: number }
       taken_slots: {
         Args: { p_from: string; p_to: string; p_trainer_id: string }
