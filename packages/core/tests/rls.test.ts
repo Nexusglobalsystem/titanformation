@@ -252,3 +252,60 @@ describe("RLS — access_grants (Phase 5, additif)", () => {
     await admin.from("lessons").delete().eq("id", lesson!.id);
   });
 });
+
+describe("RLS — organization_settings (CMS informations légales, additif)", () => {
+  it("un visiteur anonyme peut lire les paramètres publics", async () => {
+    const anon = anonClient();
+    const { data, error } = await anon.from("organization_settings").select("id").eq("id", 1);
+    expect(error).toBeNull();
+    expect(data).toHaveLength(1);
+  });
+
+  it("un utilisateur authentifié non-staff ne peut pas modifier les paramètres", async () => {
+    // Une UPDATE bloquée par RLS n'échoue pas avec une erreur : la ligne
+    // n'est simplement pas visible pour l'écriture, donc 0 ligne affectée.
+    // .select() après .update() est nécessaire pour observer ce résultat.
+    const { data } = await clientB
+      .from("organization_settings")
+      .update({ legal_name: "Tentative non autorisée" })
+      .eq("id", 1)
+      .select("id");
+    expect(data).toEqual([]);
+
+    const { data: check } = await admin.from("organization_settings").select("legal_name").eq("id", 1).single();
+    expect(check?.legal_name).toBeNull();
+  });
+
+  it("un gestionnaire peut lire mais n'a pas la permission settings.edit par défaut", async () => {
+    await admin.from("user_roles").insert({ user_id: userBId, role: "gestionnaire" });
+
+    const { data: readData, error: readError } = await clientB
+      .from("organization_settings")
+      .select("id")
+      .eq("id", 1);
+    expect(readError).toBeNull();
+    expect(readData).toHaveLength(1);
+
+    const { data: allowed } = await clientB.rpc("has_permission", { p_key: "settings.edit" });
+    expect(allowed).toBe(false);
+
+    await admin.from("user_roles").delete().eq("user_id", userBId).eq("role", "gestionnaire");
+  });
+
+  it("un admin a la permission settings.edit et peut modifier la fiche", async () => {
+    await admin.from("user_roles").insert({ user_id: userBId, role: "admin" });
+
+    const { data: allowed } = await clientB.rpc("has_permission", { p_key: "settings.edit" });
+    expect(allowed).toBe(true);
+
+    const { error } = await clientB
+      .from("organization_settings")
+      .update({ legal_name: "Titan Kinetic Test" })
+      .eq("id", 1);
+    expect(error).toBeNull();
+
+    // Nettoyage : la fiche retrouve son état vide, le rôle de test est retiré.
+    await admin.from("organization_settings").update({ legal_name: null }).eq("id", 1);
+    await admin.from("user_roles").delete().eq("user_id", userBId).eq("role", "admin");
+  });
+});

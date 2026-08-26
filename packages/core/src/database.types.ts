@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "14.15"
+    PostgrestVersion: "14.17"
   }
   public: {
     Tables: {
@@ -1228,6 +1228,74 @@ export type Database = {
             columns: ["company_id"]
             isOneToOne: false
             referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      organization_settings: {
+        Row: {
+          address_line1: string | null
+          address_line2: string | null
+          cancellation_policy: string | null
+          city: string | null
+          contact_email: string | null
+          contact_phone: string | null
+          id: number
+          legal_form: string | null
+          legal_name: string | null
+          payment_terms: string | null
+          postal_code: string | null
+          publication_director: string | null
+          share_capital: string | null
+          siret: string | null
+          updated_at: string
+          updated_by: string | null
+          withdrawal_period_days: number
+        }
+        Insert: {
+          address_line1?: string | null
+          address_line2?: string | null
+          cancellation_policy?: string | null
+          city?: string | null
+          contact_email?: string | null
+          contact_phone?: string | null
+          id?: number
+          legal_form?: string | null
+          legal_name?: string | null
+          payment_terms?: string | null
+          postal_code?: string | null
+          publication_director?: string | null
+          share_capital?: string | null
+          siret?: string | null
+          updated_at?: string
+          updated_by?: string | null
+          withdrawal_period_days?: number
+        }
+        Update: {
+          address_line1?: string | null
+          address_line2?: string | null
+          cancellation_policy?: string | null
+          city?: string | null
+          contact_email?: string | null
+          contact_phone?: string | null
+          id?: number
+          legal_form?: string | null
+          legal_name?: string | null
+          payment_terms?: string | null
+          postal_code?: string | null
+          publication_director?: string | null
+          share_capital?: string | null
+          siret?: string | null
+          updated_at?: string
+          updated_by?: string | null
+          withdrawal_period_days?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "organization_settings_updated_by_fkey"
+            columns: ["updated_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]

@@ -11,6 +11,7 @@ import {
   IconGraduationCap,
   IconLayers,
   IconLock,
+  IconSettings,
   IconShieldCheck,
   IconTasks,
   IconTrendUp,
@@ -33,6 +34,7 @@ const NAV_BY_TITLE: Record<string, SpaceNavItem[]> = {
     { label: "Documents", href: "/admin/documents", icon: <IconFileText size={18} /> },
     { label: "Statistiques", href: "/admin/statistiques", icon: <IconTrendUp size={18} /> },
     { label: "Notifications", href: "/admin/notifications", icon: <IconBell size={18} /> },
+    { label: "Paramètres", href: "/admin/parametres", icon: <IconSettings size={18} /> },
   ],
   "Espace formateur": [
     { label: "Tableau de bord", href: "/formateur", icon: <IconDashboard size={18} /> },
