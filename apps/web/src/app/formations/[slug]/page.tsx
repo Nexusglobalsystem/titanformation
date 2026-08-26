@@ -5,6 +5,7 @@ import { PublicHeader } from "@/components/PublicHeader";
 import { PublicFooter } from "@/components/PublicFooter";
 import { Button, Card, CardContent } from "@titan-kinetic/ui";
 import { EnrollForm } from "./_components/EnrollForm";
+import { TrainingCoverArt } from "../_components/TrainingCoverArt";
 
 function IconLayers() {
   return (
@@ -91,6 +92,10 @@ export default async function TrainingDetailPage({
 
   if (!training) notFound();
 
+  const trainingImageUrl = training.image_path
+    ? supabase.storage.from("training-images").getPublicUrl(training.image_path).data.publicUrl
+    : null;
+
   const { data: modules } = await supabase
     .from("modules")
     .select("id, title, description")
@@ -132,6 +137,15 @@ export default async function TrainingDetailPage({
           <span>/</span>
           <span className="text-accent">{training.title}</span>
         </nav>
+
+        <div className="relative mb-8 h-48 w-full overflow-hidden rounded-xl md:h-64">
+          {trainingImageUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={trainingImageUrl} alt="" className="h-full w-full object-cover" />
+          ) : (
+            <TrainingCoverArt seed={training.id} className="h-full w-full" />
+          )}
+        </div>
 
         <div className="mb-8 flex flex-col gap-4">
           <h1 className="font-display text-3xl font-bold text-foreground md:text-4xl">{training.title}</h1>
