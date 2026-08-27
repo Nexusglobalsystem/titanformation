@@ -76,6 +76,7 @@ export async function createTrainingAction(
   }
 
   revalidatePath("/admin/formations");
+  revalidatePath("/formations");
   // L'unique appelant est l'assistant de création (admin/formations/nouvelle) :
   // on revient sur la même page, désormais avec un id, pour poursuivre les
   // étapes Composer/Planifier/Publier sans quitter l'assistant.
@@ -119,6 +120,7 @@ export async function updateTrainingAction(
   revalidatePath("/admin/formations");
   revalidatePath(`/admin/formations/${id}`);
   revalidatePath("/admin/formations/nouvelle");
+  revalidatePath("/formations");
   return undefined;
 }
 

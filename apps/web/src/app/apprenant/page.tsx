@@ -43,17 +43,35 @@ export default async function ApprenantPage() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("first_name")
-    .eq("id", user!.id)
-    .single();
 
-  const { data: enrollments } = await supabase
-    .from("enrollments")
-    .select("id, status, created_at, sessions(reference, starts_on, ends_on, trainings(id, title, slug))")
-    .eq("learner_id", user!.id)
-    .order("created_at", { ascending: false });
+  const today = new Date().toISOString().slice(0, 10);
+
+  // Les 4 requêtes ci-dessous ne dépendent que de user.id/l'authentification —
+  // aucune ne dépend du résultat d'une autre, parallélisables sans risque.
+  const [{ data: profile }, { data: enrollments }, { data: attendancesRaw }, { data: nextBooking }] =
+    await Promise.all([
+      supabase.from("profiles").select("first_name").eq("id", user!.id).single(),
+      supabase
+        .from("enrollments")
+        .select("id, status, created_at, sessions(reference, starts_on, ends_on, trainings(id, title, slug))")
+        .eq("learner_id", user!.id)
+        .order("created_at", { ascending: false }),
+      supabase
+        .from("attendances")
+        .select(
+          "id, signed_at, present, session_slots(id, slot_date, half_day, starts_at, ends_at, modality, sessions(reference, trainings(title)))",
+        ),
+      supabase
+        .from("bookings")
+        .select("booking_date, start_time, reason, profiles!bookings_trainer_id_fkey(first_name, last_name)")
+        .eq("learner_id", user!.id)
+        .eq("status", "confirmee")
+        .gte("booking_date", today)
+        .order("booking_date", { ascending: true })
+        .order("start_time", { ascending: true })
+        .limit(1)
+        .maybeSingle(),
+    ]);
 
   const confirmedEnrollments = (enrollments ?? []).filter((e) =>
     ["confirme", "termine"].includes(e.status),
@@ -63,12 +81,21 @@ export default async function ApprenantPage() {
   ];
   const enrollmentIds = confirmedEnrollments.map((e) => e.id);
 
-  const { data: lessonRows } = trainingIds.length
-    ? await supabase
-        .from("modules")
-        .select("training_id, lessons(id)")
-        .in("training_id", trainingIds)
-    : { data: [] };
+  // lessonRows et progressRows dépendent tous deux de confirmedEnrollments
+  // (résolu ci-dessus) mais pas l'un de l'autre — 2ᵉ lot parallélisable.
+  const [{ data: lessonRows }, { data: progressRows }] = await Promise.all([
+    trainingIds.length
+      ? supabase.from("modules").select("training_id, lessons(id)").in("training_id", trainingIds)
+      : Promise.resolve({ data: [] as { training_id: string; lessons: { id: string }[] | null }[] }),
+    enrollmentIds.length
+      ? supabase
+          .from("learner_progress")
+          .select("enrollment_id, completed_at")
+          .in("enrollment_id", enrollmentIds)
+          .not("completed_at", "is", null)
+      : Promise.resolve({ data: [] as { enrollment_id: string; completed_at: string | null }[] }),
+  ]);
+
   const lessonCountByTraining = new Map<string, number>();
   for (const row of lessonRows ?? []) {
     lessonCountByTraining.set(
@@ -77,23 +104,10 @@ export default async function ApprenantPage() {
     );
   }
 
-  const { data: progressRows } = enrollmentIds.length
-    ? await supabase
-        .from("learner_progress")
-        .select("enrollment_id, completed_at")
-        .in("enrollment_id", enrollmentIds)
-        .not("completed_at", "is", null)
-    : { data: [] };
   const completedCountByEnrollment = new Map<string, number>();
   for (const row of progressRows ?? []) {
     completedCountByEnrollment.set(row.enrollment_id, (completedCountByEnrollment.get(row.enrollment_id) ?? 0) + 1);
   }
-
-  const { data: attendancesRaw } = await supabase
-    .from("attendances")
-    .select(
-      "id, signed_at, present, session_slots(id, slot_date, half_day, starts_at, ends_at, modality, sessions(reference, trainings(title)))",
-    );
 
   const HALF_DAY_ORDER: Record<string, number> = { matin: 0, apres_midi: 1 };
   const attendances = [...(attendancesRaw ?? [])].sort((a, b) => {
@@ -104,18 +118,6 @@ export default async function ApprenantPage() {
       (HALF_DAY_ORDER[b.session_slots?.half_day ?? ""] ?? 0)
     );
   });
-
-  const today = new Date().toISOString().slice(0, 10);
-  const { data: nextBooking } = await supabase
-    .from("bookings")
-    .select("booking_date, start_time, reason, profiles!bookings_trainer_id_fkey(first_name, last_name)")
-    .eq("learner_id", user!.id)
-    .eq("status", "confirmee")
-    .gte("booking_date", today)
-    .order("booking_date", { ascending: true })
-    .order("start_time", { ascending: true })
-    .limit(1)
-    .maybeSingle();
 
   // Formation "à reprendre" : inscription confirmée avec un programme en cours, pas encore terminée.
   const inProgress = confirmedEnrollments

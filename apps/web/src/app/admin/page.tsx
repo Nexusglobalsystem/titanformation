@@ -40,18 +40,17 @@ export default async function AdminPage() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("first_name")
-    .eq("id", user!.id)
-    .single();
-
-  const { data: enrollments } = await supabase
-    .from("enrollments")
-    .select(
-      "id, status, funding, created_at, profiles(first_name, last_name, email), sessions(reference, trainings(title))",
-    )
-    .order("created_at", { ascending: false });
+  // Aucune des deux requêtes ne dépend de l'autre (enrollments est une vue
+  // globale staff, pas filtrée par utilisateur) — parallélisables.
+  const [{ data: profile }, { data: enrollments }] = await Promise.all([
+    supabase.from("profiles").select("first_name").eq("id", user!.id).single(),
+    supabase
+      .from("enrollments")
+      .select(
+        "id, status, funding, created_at, profiles(first_name, last_name, email), sessions(reference, trainings(title))",
+      )
+      .order("created_at", { ascending: false }),
+  ]);
 
   return (
     <SpaceShell title="Espace administration">

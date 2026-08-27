@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import sanitizeHtml from "sanitize-html";
@@ -103,12 +104,12 @@ export default async function TrainingDetailPage({
   const { slug } = await params;
   const supabase = await createClient();
 
-  const { data: training } = await supabase
-    .from("trainings")
-    .select("*")
-    .eq("slug", slug)
-    .eq("status", "publiee")
-    .maybeSingle();
+  // training et l'utilisateur courant sont indépendants — parallélisables
+  // même si training échoue ensuite (le coût de getUser() est négligeable).
+  const [{ data: training }, { data: { user } }] = await Promise.all([
+    supabase.from("trainings").select("*").eq("slug", slug).eq("status", "publiee").maybeSingle(),
+    supabase.auth.getUser(),
+  ]);
 
   if (!training) notFound();
 
@@ -116,57 +117,64 @@ export default async function TrainingDetailPage({
     ? supabase.storage.from("training-images").getPublicUrl(training.image_path).data.publicUrl
     : null;
 
-  const { data: modules } = await supabase
-    .from("modules")
-    .select("id, title, description")
-    .eq("training_id", training.id)
-    .order("position", { ascending: true });
+  // modules et session dépendent tous deux uniquement de training.id, pas
+  // l'un de l'autre — parallélisables.
+  const [{ data: modules }, { data: session }] = await Promise.all([
+    supabase
+      .from("modules")
+      .select("id, title, description")
+      .eq("training_id", training.id)
+      .order("position", { ascending: true }),
+    supabase
+      .from("sessions")
+      .select("*")
+      .eq("training_id", training.id)
+      .eq("status", "ouverte")
+      .order("starts_on", { ascending: true })
+      .limit(1)
+      .maybeSingle(),
+  ]);
 
-  const { data: session } = await supabase
-    .from("sessions")
-    .select("*")
-    .eq("training_id", training.id)
-    .eq("status", "ouverte")
-    .order("starts_on", { ascending: true })
-    .limit(1)
-    .maybeSingle();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  let existingEnrollment: { status: string } | null = null;
-  if (user && session) {
+  async function loadExistingEnrollment(): Promise<{ status: string } | null> {
+    if (!user || !session) return null;
     const { data } = await supabase
       .from("enrollments")
       .select("status")
       .eq("session_id", session.id)
       .eq("learner_id", user.id)
       .maybeSingle();
-    existingEnrollment = data;
+    return data;
   }
 
   // Responsable d'entreprise : carte d'inscription additionnelle pour un
   // salarié, à côté de (jamais à la place de) l'auto-inscription/devis
   // déjà en production.
-  let employees: { id: string; name: string }[] = [];
-  let isResponsable = false;
-  if (user) {
+  async function loadResponsableEmployees(): Promise<{
+    isResponsable: boolean;
+    employees: { id: string; name: string }[];
+  }> {
+    if (!user) return { isResponsable: false, employees: [] };
     const { data: companyIds } = await supabase.rpc("managed_company_ids");
     const companyId = companyIds?.[0];
-    if (companyId) {
-      isResponsable = true;
-      const { data: members } = await supabase
-        .from("company_members")
-        .select("user_id, profiles(id, first_name, last_name)")
-        .eq("company_id", companyId)
-        .eq("role", "salarie");
-      employees = (members ?? [])
-        .map((m) => m.profiles)
-        .filter((p): p is NonNullable<typeof p> => Boolean(p))
-        .map((p) => ({ id: p.id, name: `${p.first_name ?? ""} ${p.last_name ?? ""}`.trim() || p.id }));
-    }
+    if (!companyId) return { isResponsable: false, employees: [] };
+    const { data: members } = await supabase
+      .from("company_members")
+      .select("user_id, profiles(id, first_name, last_name)")
+      .eq("company_id", companyId)
+      .eq("role", "salarie");
+    const employees = (members ?? [])
+      .map((m) => m.profiles)
+      .filter((p): p is NonNullable<typeof p> => Boolean(p))
+      .map((p) => ({ id: p.id, name: `${p.first_name ?? ""} ${p.last_name ?? ""}`.trim() || p.id }));
+    return { isResponsable: true, employees };
   }
+
+  // existingEnrollment (dépend de user+session) et le lookup responsable
+  // (dépend seulement de user) ne dépendent pas l'un de l'autre.
+  const [existingEnrollment, { isResponsable, employees }] = await Promise.all([
+    loadExistingEnrollment(),
+    loadResponsableEmployees(),
+  ]);
 
   return (
     <div data-theme="dark" className="flex min-h-screen flex-col bg-background text-foreground">
@@ -182,8 +190,7 @@ export default async function TrainingDetailPage({
 
         <div className="relative mb-8 h-48 w-full overflow-hidden rounded-xl md:h-64">
           {trainingImageUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={trainingImageUrl} alt="" className="h-full w-full object-cover" />
+            <Image src={trainingImageUrl} alt="" fill sizes="100vw" priority className="object-cover" />
           ) : (
             <TrainingCoverArt seed={training.id} className="h-full w-full" />
           )}

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Badge, Button, Card, CardContent } from "@titan-kinetic/ui";
 import { IconArrowRight, IconCalendar, IconShieldCheck } from "@/components/icons";
@@ -28,8 +29,13 @@ export function TrainingCard({ training }: { training: CatalogueTraining }) {
     <Card className="flex flex-col overflow-hidden">
       <div className="relative h-36 w-full overflow-hidden bg-surface">
         {training.imageUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={training.imageUrl} alt="" className="h-full w-full object-cover" />
+          <Image
+            src={training.imageUrl}
+            alt=""
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover"
+          />
         ) : (
           <TrainingCoverArt seed={training.id} className="h-full w-full" />
         )}

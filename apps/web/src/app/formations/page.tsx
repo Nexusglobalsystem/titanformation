@@ -6,6 +6,13 @@ import { enrichTrainings } from "./_lib/enrichTrainings";
 
 export const metadata = { title: "Catalogue de formations — Titan Kinetic" };
 
+// Catalogue public, pas de contenu personnalisé (aucun appel à
+// auth.getUser() ici) — safe à mettre en cache. Invalidé immédiatement à
+// la publication d'une formation via revalidatePath("/formations") dans
+// createTrainingAction/updateTrainingAction ; ce délai n'est qu'un filet
+// de sécurité pour les autres cas (nouvelle session ouverte, etc.).
+export const revalidate = 3600;
+
 export default async function CataloguePage({
   searchParams,
 }: {
