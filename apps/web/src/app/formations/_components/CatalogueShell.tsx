@@ -1,8 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@titan-kinetic/ui";
-import { TrainingCard, type CatalogueTraining } from "./TrainingCard";
+import type { CatalogueFilters } from "../_lib/filterTrainings";
 
 const CATEGORY_LABELS: Record<string, string> = {
   management: "Management",
@@ -16,55 +17,56 @@ const LEVEL_LABELS: Record<string, string> = {
   avance: "Avancé",
 };
 
-function durationBucket(hours: number): "short" | "medium" | "long" {
-  if (hours < 20) return "short";
-  if (hours <= 50) return "medium";
-  return "long";
-}
+const DEFAULTS: CatalogueFilters = {
+  q: "",
+  categorie: "all",
+  niveau: "all",
+  duree: "all",
+  certifiante: false,
+  tri: "pertinence",
+};
 
-export function CatalogueClient({
-  trainings,
-  initialSearch = "",
-  initialCategory = "all",
+export function CatalogueShell({
+  categories,
+  filters,
+  children,
 }: {
-  trainings: CatalogueTraining[];
-  initialSearch?: string;
-  initialCategory?: string;
+  categories: string[];
+  filters: CatalogueFilters;
+  children: React.ReactNode;
 }) {
-  const [search, setSearch] = useState(initialSearch);
-  const [category, setCategory] = useState<string>(initialCategory);
-  const [duration, setDuration] = useState<string>("all");
-  const [level, setLevel] = useState<string>("all");
-  const [certifyingOnly, setCertifyingOnly] = useState(false);
-  const [sort, setSort] = useState<string>("pertinence");
+  const router = useRouter();
+  const pathname = usePathname();
+  const [isPending, startTransition] = useTransition();
+  const [searchInput, setSearchInput] = useState(filters.q);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const categories = useMemo(
-    () => Array.from(new Set(trainings.map((t) => t.category).filter((c): c is string => Boolean(c)))),
-    [trainings],
-  );
+  // Navigation (retour/avance navigateur, lien externe vers une URL filtrée)
+  // change filters.q sans remonter ce composant client — resynchronise le
+  // champ visible, sinon il reste bloqué sur la dernière saisie locale.
+  useEffect(() => {
+    setSearchInput(filters.q);
+  }, [filters.q]);
 
-  const filtered = trainings
-    .filter((t) => {
-      const matchesSearch =
-        search.trim().length === 0 ||
-        t.title.toLowerCase().includes(search.toLowerCase()) ||
-        t.summary.toLowerCase().includes(search.toLowerCase());
-      const matchesCategory = category === "all" || t.category === category;
-      const matchesDuration = duration === "all" || durationBucket(t.duration_hours) === duration;
-      const matchesLevel = level === "all" || t.level === level;
-      const matchesCertifying = !certifyingOnly || t.is_certifying;
-      return matchesSearch && matchesCategory && matchesDuration && matchesLevel && matchesCertifying;
-    })
-    .sort((a, b) => {
-      if (sort === "prix") return a.price_ht - b.price_ht;
-      if (sort === "popularite") return b.enrolledCount - a.enrolledCount;
-      if (sort === "session") {
-        if (!a.nextSessionStartsOn) return 1;
-        if (!b.nextSessionStartsOn) return -1;
-        return a.nextSessionStartsOn.localeCompare(b.nextSessionStartsOn);
-      }
-      return 0;
+  function pushFilters(next: Partial<CatalogueFilters>) {
+    const merged: CatalogueFilters = { ...filters, ...next };
+    const params = new URLSearchParams();
+    (Object.keys(DEFAULTS) as (keyof CatalogueFilters)[]).forEach((key) => {
+      const value = merged[key];
+      if (value === DEFAULTS[key] || value === "") return;
+      params.set(key, String(value));
     });
+    const query = params.toString();
+    startTransition(() => {
+      router.push(query ? `${pathname}?${query}` : pathname, { scroll: false });
+    });
+  }
+
+  function handleSearchChange(value: string) {
+    setSearchInput(value);
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => pushFilters({ q: value }), 400);
+  }
 
   return (
     <>
@@ -73,12 +75,12 @@ export function CatalogueClient({
           <div className="md:w-1/3">
             <Input
               placeholder="Rechercher une formation..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              value={searchInput}
+              onChange={(e) => handleSearchChange(e.target.value)}
             />
           </div>
           <div className="flex flex-wrap items-center gap-4 md:ml-auto">
-            <Select value={category} onValueChange={setCategory}>
+            <Select value={filters.categorie} onValueChange={(v) => pushFilters({ categorie: v })}>
               <SelectTrigger className="w-44" aria-label="Filtrer par catégorie">
                 <SelectValue placeholder="Catégorie" />
               </SelectTrigger>
@@ -91,7 +93,7 @@ export function CatalogueClient({
                 ))}
               </SelectContent>
             </Select>
-            <Select value={level} onValueChange={setLevel}>
+            <Select value={filters.niveau} onValueChange={(v) => pushFilters({ niveau: v })}>
               <SelectTrigger className="w-44" aria-label="Filtrer par niveau">
                 <SelectValue placeholder="Niveau" />
               </SelectTrigger>
@@ -104,7 +106,7 @@ export function CatalogueClient({
                 ))}
               </SelectContent>
             </Select>
-            <Select value={duration} onValueChange={setDuration}>
+            <Select value={filters.duree} onValueChange={(v) => pushFilters({ duree: v })}>
               <SelectTrigger className="w-44" aria-label="Filtrer par durée">
                 <SelectValue placeholder="Durée" />
               </SelectTrigger>
@@ -121,13 +123,13 @@ export function CatalogueClient({
           <label className="flex items-center gap-2 font-body text-sm text-foreground">
             <input
               type="checkbox"
-              checked={certifyingOnly}
-              onChange={(e) => setCertifyingOnly(e.target.checked)}
+              checked={filters.certifiante}
+              onChange={(e) => pushFilters({ certifiante: e.target.checked })}
               className="h-4 w-4 accent-accent"
             />
             Certifiantes uniquement
           </label>
-          <Select value={sort} onValueChange={setSort}>
+          <Select value={filters.tri} onValueChange={(v) => pushFilters({ tri: v })}>
             <SelectTrigger className="w-56" aria-label="Trier les résultats par">
               <SelectValue placeholder="Trier par" />
             </SelectTrigger>
@@ -141,17 +143,7 @@ export function CatalogueClient({
         </div>
       </div>
 
-      {filtered.length === 0 ? (
-        <p className="py-16 text-center font-body text-sm text-foreground-muted">
-          Aucune formation ne correspond à ta recherche.
-        </p>
-      ) : (
-        <div className="grid grid-cols-1 gap-(--spacing-gutter) md:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((training) => (
-            <TrainingCard key={training.id} training={training} />
-          ))}
-        </div>
-      )}
+      <div className={isPending ? "opacity-50 transition-opacity" : "transition-opacity"}>{children}</div>
     </>
   );
 }

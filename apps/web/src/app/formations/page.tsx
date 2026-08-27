@@ -1,8 +1,10 @@
 import { createClient } from "@/lib/supabase/server";
 import { PublicHeader } from "@/components/PublicHeader";
 import { PublicFooter } from "@/components/PublicFooter";
-import { CatalogueClient } from "./_components/CatalogueClient";
+import { CatalogueShell } from "./_components/CatalogueShell";
+import { TrainingCard } from "./_components/TrainingCard";
 import { enrichTrainings } from "./_lib/enrichTrainings";
+import { filterAndSortTrainings, type CatalogueFilters } from "./_lib/filterTrainings";
 
 export const metadata = { title: "Catalogue de formations — Titan Kinetic" };
 
@@ -16,9 +18,18 @@ export const revalidate = 3600;
 export default async function CataloguePage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string; categorie?: string }>;
+  searchParams: Promise<Record<string, string | undefined>>;
 }) {
-  const { q, categorie } = await searchParams;
+  const sp = await searchParams;
+  const filters: CatalogueFilters = {
+    q: sp.q ?? "",
+    categorie: sp.categorie ?? "all",
+    niveau: sp.niveau ?? "all",
+    duree: sp.duree ?? "all",
+    certifiante: sp.certifiante === "true",
+    tri: sp.tri ?? "pertinence",
+  };
+
   const supabase = await createClient();
   const { data: trainings } = await supabase
     .from("trainings")
@@ -26,6 +37,9 @@ export default async function CataloguePage({
     .eq("status", "publiee")
     .order("published_at", { ascending: false });
   const enriched = await enrichTrainings(supabase, trainings ?? []);
+
+  const categories = Array.from(new Set(enriched.map((t) => t.category).filter((c): c is string => Boolean(c))));
+  const filtered = filterAndSortTrainings(enriched, filters);
 
   return (
     <div data-theme="dark" className="flex min-h-screen flex-col bg-background text-foreground">
@@ -47,7 +61,19 @@ export default async function CataloguePage({
         </section>
 
         <section className="mx-auto max-w-(--spacing-container-max) px-4 py-12 md:px-(--spacing-margin-desktop)">
-          <CatalogueClient trainings={enriched} initialSearch={q ?? ""} initialCategory={categorie ?? "all"} />
+          <CatalogueShell categories={categories} filters={filters}>
+            {filtered.length === 0 ? (
+              <p className="py-16 text-center font-body text-sm text-foreground-muted">
+                Aucune formation ne correspond à ta recherche.
+              </p>
+            ) : (
+              <div className="grid grid-cols-1 gap-(--spacing-gutter) md:grid-cols-2 lg:grid-cols-3">
+                {filtered.map((training) => (
+                  <TrainingCard key={training.id} training={training} />
+                ))}
+              </div>
+            )}
+          </CatalogueShell>
         </section>
       </main>
       <PublicFooter />
