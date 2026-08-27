@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { SpaceShell } from "@/components/SpaceShell";
 import { Badge, Card, CardContent, CardHeader, CardTitle, EmptyState } from "@titan-kinetic/ui";
@@ -35,6 +36,8 @@ export default async function DevisPage() {
     .from("orders")
     .select("id, reference, status, total_ht, created_at, order_items(label, quantity)")
     .order("created_at", { ascending: false });
+
+  const invoicedStatuses = new Set(["facturee", "payee"]);
 
   return (
     <SpaceShell title="Espace entreprise">
@@ -75,9 +78,19 @@ export default async function DevisPage() {
                       {new Date(order.created_at).toLocaleDateString("fr-FR")}
                     </p>
                   </div>
-                  <Badge variant={STATUS_VARIANTS[order.status] ?? "neutral"}>
-                    {STATUS_LABELS[order.status] ?? order.status}
-                  </Badge>
+                  <div className="flex items-center gap-3">
+                    {invoicedStatuses.has(order.status) && (
+                      <Link
+                        href={`/entreprise/devis/${order.id}/facture`}
+                        className="font-body text-sm text-accent-text hover:underline"
+                      >
+                        Voir la facture
+                      </Link>
+                    )}
+                    <Badge variant={STATUS_VARIANTS[order.status] ?? "neutral"}>
+                      {STATUS_LABELS[order.status] ?? order.status}
+                    </Badge>
+                  </div>
                 </div>
               ))
             )}

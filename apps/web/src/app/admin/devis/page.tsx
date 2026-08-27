@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { SpaceShell } from "@/components/SpaceShell";
+import { DevisRowActions } from "./_components/DevisRowActions";
 import {
   Badge,
   Card,
@@ -39,7 +40,7 @@ export default async function AdminDevisPage() {
   const { data: orders } = await supabase
     .from("orders")
     .select(
-      "id, reference, status, total_ht, created_at, companies(name), order_items(label, quantity)",
+      "id, reference, status, total_ht, created_at, companies(name), order_items(label, quantity), invoices(number)",
     )
     .order("created_at", { ascending: false });
 
@@ -52,8 +53,8 @@ export default async function AdminDevisPage() {
           <CardHeader>
             <CardTitle>Toutes les demandes</CardTitle>
             <p className="font-body text-sm text-foreground-muted">
-              Suivi commercial (relance, envoi du devis, négociation) réalisé en dehors de
-              l&apos;application pour cette version — cette liste sert uniquement à ne rien manquer.
+              Négociation et relance réalisées en dehors de l&apos;application — acceptez ou refusez
+              une demande, puis générez et suivez la facture directement ici.
             </p>
           </CardHeader>
           <CardContent>
@@ -66,11 +67,12 @@ export default async function AdminDevisPage() {
                   <TableHead>Montant HT</TableHead>
                   <TableHead>Date</TableHead>
                   <TableHead>Statut</TableHead>
+                  <TableHead />
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {!orders || orders.length === 0 ? (
-                  <TableEmpty colSpan={6}>Aucune demande de devis pour le moment.</TableEmpty>
+                  <TableEmpty colSpan={7}>Aucune demande de devis pour le moment.</TableEmpty>
                 ) : (
                   orders.map((order) => (
                     <TableRow key={order.id}>
@@ -83,6 +85,13 @@ export default async function AdminDevisPage() {
                         <Badge variant={STATUS_VARIANTS[order.status] ?? "neutral"}>
                           {STATUS_LABELS[order.status] ?? order.status}
                         </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <DevisRowActions
+                          orderId={order.id}
+                          status={order.status}
+                          invoiceNumber={order.invoices?.[0]?.number ?? null}
+                        />
                       </TableCell>
                     </TableRow>
                   ))

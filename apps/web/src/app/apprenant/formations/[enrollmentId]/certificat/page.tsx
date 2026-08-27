@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { evaluateCertificationEligibility } from "@/lib/certification";
-import { PrintCertificateButton } from "../../_components/PrintCertificateButton";
+import { PrintButton } from "@titan-kinetic/ui";
 
 export default async function CertificatPage({
   params,
@@ -88,7 +88,7 @@ export default async function CertificatPage({
         >
           ← Retour au programme
         </Link>
-        <PrintCertificateButton />
+        <PrintButton />
       </div>
 
       <div className="mx-auto max-w-3xl px-6 py-12">

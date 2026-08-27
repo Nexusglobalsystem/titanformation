@@ -2329,6 +2329,7 @@ export type Database = {
       }
       is_staff: { Args: never; Returns: boolean }
       managed_company_ids: { Args: never; Returns: string[] }
+      next_invoice_number: { Args: never; Returns: string }
       notify_booking_event: {
         Args: { p_booking_id: string; p_kind: string }
         Returns: undefined
