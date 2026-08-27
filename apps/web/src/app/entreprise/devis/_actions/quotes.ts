@@ -2,6 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { sendEmail } from "@/lib/email/resend";
+import { quoteAcknowledgementEmail, quoteStaffAlertEmail } from "@/lib/email/templates";
 
 export type QuoteFormState = { error?: string; success?: string } | undefined;
 
@@ -71,6 +73,37 @@ export async function requestQuoteAction(
   }
 
   await supabase.rpc("notify_devis_request", { p_order_id: order.id });
+
+  try {
+    const [{ data: company }, { data: profile }, { data: staffEmails, error: staffEmailsError }] = await Promise.all([
+      supabase.from("companies").select("name").eq("id", companyId).single(),
+      supabase.from("profiles").select("first_name").eq("id", user.id).single(),
+      supabase.rpc("staff_emails_for_devis_order", { p_order_id: order.id }),
+    ]);
+    if (staffEmailsError) console.error("[email] staff_emails_for_devis_order :", staffEmailsError);
+    if (user.email) {
+      const { subject, html } = quoteAcknowledgementEmail({
+        recipientName: profile?.first_name || user.email,
+        reference,
+        trainingTitle: training.title,
+        quantity,
+        totalHt,
+      });
+      await sendEmail({ to: user.email, subject, html });
+    }
+    const recipients = (staffEmails ?? []).map((r) => r.email).filter((e): e is string => Boolean(e));
+    if (recipients.length > 0) {
+      const { subject, html } = quoteStaffAlertEmail({
+        companyName: company?.name ?? "Une entreprise",
+        reference,
+        trainingTitle: training.title,
+        totalHt,
+      });
+      await sendEmail({ to: recipients, subject, html, replyTo: user.email ?? undefined });
+    }
+  } catch (err) {
+    console.error("[email] devis :", err);
+  }
 
   revalidatePath("/entreprise/devis");
   revalidatePath("/admin/devis");

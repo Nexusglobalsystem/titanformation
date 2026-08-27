@@ -2335,6 +2335,12 @@ export type Database = {
       }
       notify_devis_request: { Args: { p_order_id: string }; Returns: undefined }
       public_learner_count: { Args: never; Returns: number }
+      staff_emails_for_devis_order: {
+        Args: { p_order_id: string }
+        Returns: {
+          email: string
+        }[]
+      }
       taken_slots: {
         Args: { p_from: string; p_to: string; p_trainer_id: string }
         Returns: {

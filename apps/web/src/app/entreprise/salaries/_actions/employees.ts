@@ -2,6 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { sendEmail } from "@/lib/email/resend";
+import { employeeAddedEmail } from "@/lib/email/templates";
 
 export type EmployeeFormState = { error?: string } | undefined;
 
@@ -34,6 +36,17 @@ export async function addEmployeeAction(
   if (error) {
     if (error.code === "23505") return { error: "Ce salarié est déjà rattaché à votre entreprise." };
     return { error: "Impossible d'ajouter ce salarié : " + error.message };
+  }
+
+  try {
+    const { data: company } = await supabase.from("companies").select("name").eq("id", companyId).single();
+    const { subject, html } = employeeAddedEmail({
+      recipientName: existingProfile.first_name || email.trim(),
+      companyName: company?.name ?? "votre entreprise",
+    });
+    await sendEmail({ to: email.trim(), subject, html });
+  } catch (err) {
+    console.error("[email] rattachement salarié :", err);
   }
 
   revalidatePath("/entreprise/salaries");

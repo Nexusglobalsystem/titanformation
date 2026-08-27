@@ -2,6 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { sendEmail } from "@/lib/email/resend";
+import { enrollmentConfirmationEmail } from "@/lib/email/templates";
 
 export type EnrollEmployeeState = { error?: string; success?: string } | undefined;
 
@@ -47,6 +49,29 @@ export async function enrollEmployeeAction(
       return { success: "Ce salarié est déjà préinscrit à cette session." };
     }
     return { error: "Impossible d'enregistrer l'inscription : " + error.message };
+  }
+
+  try {
+    const [{ data: session }, { data: employeeProfile }] = await Promise.all([
+      supabase
+        .from("sessions")
+        .select("reference, starts_on, ends_on, trainings(title)")
+        .eq("id", sessionId)
+        .single(),
+      supabase.from("profiles").select("email, first_name").eq("id", employeeId).single(),
+    ]);
+    if (session?.trainings && employeeProfile?.email) {
+      const { subject, html } = enrollmentConfirmationEmail({
+        recipientName: employeeProfile.first_name || employeeProfile.email,
+        trainingTitle: session.trainings.title,
+        sessionReference: session.reference,
+        startsOn: session.starts_on,
+        endsOn: session.ends_on,
+      });
+      await sendEmail({ to: employeeProfile.email, subject, html });
+    }
+  } catch (err) {
+    console.error("[email] confirmation d'inscription (salarié) :", err);
   }
 
   revalidatePath(`/formations/${slug}`);
