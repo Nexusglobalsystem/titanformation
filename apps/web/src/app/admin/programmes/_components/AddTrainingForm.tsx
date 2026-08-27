@@ -40,7 +40,7 @@ export function AddTrainingForm({
       <input type="hidden" name="programmeId" value={programmeId} />
       <input type="hidden" name="trainingId" value={trainingId} />
       <Select value={trainingId} onValueChange={setTrainingId}>
-        <SelectTrigger className="h-8 w-64 text-xs">
+        <SelectTrigger className="h-8 w-64 text-xs" aria-label="Ajouter une formation au programme">
           <SelectValue placeholder="+ Ajouter une formation" />
         </SelectTrigger>
         <SelectContent>

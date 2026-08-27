@@ -55,7 +55,7 @@ export function NewTaskForm({
         <div className="flex flex-col gap-1.5">
           <label className="font-body text-sm font-medium text-foreground">Domaine</label>
           <Select value={domain} onValueChange={setDomain}>
-            <SelectTrigger>
+            <SelectTrigger aria-label="Domaine">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -71,7 +71,7 @@ export function NewTaskForm({
         <div className="flex flex-col gap-1.5">
           <label className="font-body text-sm font-medium text-foreground">Priorité</label>
           <Select value={priority} onValueChange={setPriority}>
-            <SelectTrigger>
+            <SelectTrigger aria-label="Priorité">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -87,7 +87,7 @@ export function NewTaskForm({
         <div className="flex flex-col gap-1.5">
           <label className="font-body text-sm font-medium text-foreground">Responsable</label>
           <Select value={assignedTo} onValueChange={setAssignedTo}>
-            <SelectTrigger>
+            <SelectTrigger aria-label="Responsable">
               <SelectValue placeholder="Non assignée" />
             </SelectTrigger>
             <SelectContent>

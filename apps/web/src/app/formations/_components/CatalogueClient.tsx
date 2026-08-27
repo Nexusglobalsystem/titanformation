@@ -79,7 +79,7 @@ export function CatalogueClient({
           </div>
           <div className="flex flex-wrap items-center gap-4 md:ml-auto">
             <Select value={category} onValueChange={setCategory}>
-              <SelectTrigger className="w-44">
+              <SelectTrigger className="w-44" aria-label="Filtrer par catégorie">
                 <SelectValue placeholder="Catégorie" />
               </SelectTrigger>
               <SelectContent>
@@ -92,7 +92,7 @@ export function CatalogueClient({
               </SelectContent>
             </Select>
             <Select value={level} onValueChange={setLevel}>
-              <SelectTrigger className="w-44">
+              <SelectTrigger className="w-44" aria-label="Filtrer par niveau">
                 <SelectValue placeholder="Niveau" />
               </SelectTrigger>
               <SelectContent>
@@ -105,7 +105,7 @@ export function CatalogueClient({
               </SelectContent>
             </Select>
             <Select value={duration} onValueChange={setDuration}>
-              <SelectTrigger className="w-44">
+              <SelectTrigger className="w-44" aria-label="Filtrer par durée">
                 <SelectValue placeholder="Durée" />
               </SelectTrigger>
               <SelectContent>
@@ -128,7 +128,7 @@ export function CatalogueClient({
             Certifiantes uniquement
           </label>
           <Select value={sort} onValueChange={setSort}>
-            <SelectTrigger className="w-56">
+            <SelectTrigger className="w-56" aria-label="Trier les résultats par">
               <SelectValue placeholder="Trier par" />
             </SelectTrigger>
             <SelectContent>

@@ -40,7 +40,7 @@ export function AddRoleForm({ userId, availableRoles }: { userId: string; availa
       <input type="hidden" name="userId" value={userId} />
       <input type="hidden" name="role" value={role} />
       <Select value={role} onValueChange={setRole}>
-        <SelectTrigger className="h-8 w-44 text-xs">
+        <SelectTrigger className="h-8 w-44 text-xs" aria-label="Ajouter un rôle">
           <SelectValue placeholder="+ Ajouter un rôle" />
         </SelectTrigger>
         <SelectContent>

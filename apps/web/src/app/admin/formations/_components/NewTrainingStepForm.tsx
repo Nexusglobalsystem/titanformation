@@ -51,7 +51,7 @@ export function NewTrainingStepForm({
         <div className="flex flex-col gap-1.5">
           <label className="font-body text-xs font-medium text-foreground">Type</label>
           <Select value={type} onValueChange={setType}>
-            <SelectTrigger className="h-9 text-sm">
+            <SelectTrigger className="h-9 text-sm" aria-label="Type">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -71,7 +71,7 @@ export function NewTrainingStepForm({
         <div className="flex flex-col gap-1.5 md:w-72">
           <label className="font-body text-xs font-medium text-foreground">Module concerné (facultatif)</label>
           <Select value={moduleId} onValueChange={setModuleId}>
-            <SelectTrigger className="h-9 text-sm">
+            <SelectTrigger className="h-9 text-sm" aria-label="Module concerné">
               <SelectValue placeholder="Tous les modules" />
             </SelectTrigger>
             <SelectContent>

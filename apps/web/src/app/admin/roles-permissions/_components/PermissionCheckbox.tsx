@@ -7,10 +7,12 @@ export function PermissionCheckbox({
   role,
   permissionKey,
   checked,
+  label,
 }: {
   role: string;
   permissionKey: string;
   checked: boolean;
+  label: string;
 }) {
   const [isPending, startTransition] = useTransition();
 
@@ -19,7 +21,7 @@ export function PermissionCheckbox({
       type="checkbox"
       defaultChecked={checked}
       disabled={isPending}
-      aria-label={`${permissionKey} pour ${role}`}
+      aria-label={label}
       className="h-4 w-4 rounded border-border text-primary accent-primary disabled:opacity-50"
       onChange={(event) => {
         const formData = new FormData();

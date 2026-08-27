@@ -23,7 +23,7 @@ export default async function CataloguePage({
   return (
     <div data-theme="dark" className="flex min-h-screen flex-col bg-background text-foreground">
       <PublicHeader />
-      <main className="flex-1">
+      <main id="main-content" tabIndex={-1} className="flex-1 outline-none">
         <section className="border-b border-border bg-surface px-4 py-20 md:px-(--spacing-margin-desktop)">
           <div className="mx-auto flex max-w-(--spacing-container-max) flex-col gap-4">
             <span className="inline-block w-fit rounded border border-border bg-surface-elevated px-3 py-1 font-mono-label text-xs uppercase tracking-wide text-accent">

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Button, Dialog, DialogClose, DialogContent, DialogTrigger } from "@titan-kinetic/ui";
+import { Button, Dialog, DialogClose, DialogContent, DialogTrigger, SkipLink } from "@titan-kinetic/ui";
 import { IconMail, IconMenu, IconX } from "./icons";
 
 const NAV_LINKS = [
@@ -13,7 +13,9 @@ export function PublicHeader() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur">
+    <>
+      <SkipLink />
+      <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur">
       <div className="mx-auto flex max-w-(--spacing-container-max) items-center justify-between gap-6 px-4 py-4 md:px-(--spacing-margin-desktop)">
         <Link href="/" className="shrink-0 font-display text-xl font-bold tracking-tight text-accent">
           Titan Kinetic
@@ -121,6 +123,7 @@ export function PublicHeader() {
           </Dialog>
         </div>
       </div>
-    </header>
+      </header>
+    </>
   );
 }

@@ -41,7 +41,7 @@ export function AssignTrainerForm({
       <input type="hidden" name="trainingId" value={trainingId} />
       <input type="hidden" name="trainerId" value={trainerId} />
       <Select value={trainerId} onValueChange={setTrainerId}>
-        <SelectTrigger className="h-8 w-48 text-xs">
+        <SelectTrigger className="h-8 w-48 text-xs" aria-label="Ajouter un formateur">
           <SelectValue placeholder="+ Ajouter un formateur" />
         </SelectTrigger>
         <SelectContent>

@@ -113,7 +113,7 @@ export function SessionSlotsBoard({
         <div className="flex flex-col gap-1.5">
           <label className="font-body text-sm font-medium text-foreground">Demi-journée</label>
           <Select value={halfDay} onValueChange={setHalfDay}>
-            <SelectTrigger className="w-36">
+            <SelectTrigger className="w-36" aria-label="Demi-journée">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -125,7 +125,7 @@ export function SessionSlotsBoard({
         <div className="flex flex-col gap-1.5">
           <label className="font-body text-sm font-medium text-foreground">Modalité</label>
           <Select value={modality} onValueChange={setModality}>
-            <SelectTrigger className="w-48">
+            <SelectTrigger className="w-48" aria-label="Modalité">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>

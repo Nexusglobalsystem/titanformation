@@ -80,7 +80,7 @@ export function ProgrammeForm({
       <div className="flex flex-col gap-1.5 md:w-64">
         <label className="font-body text-sm font-medium text-foreground">Statut</label>
         <Select value={status} onValueChange={setStatus}>
-          <SelectTrigger>
+          <SelectTrigger aria-label="Statut">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>

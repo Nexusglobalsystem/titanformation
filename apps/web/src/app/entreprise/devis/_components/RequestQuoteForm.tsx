@@ -36,7 +36,7 @@ export function RequestQuoteForm({ trainings }: { trainings: { id: string; title
       <div className="flex flex-col gap-1.5">
         <label className="font-body text-sm font-medium text-foreground">Formation</label>
         <Select value={trainingId} onValueChange={setTrainingId}>
-          <SelectTrigger>
+          <SelectTrigger aria-label="Formation">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>

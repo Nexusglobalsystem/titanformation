@@ -42,7 +42,7 @@ export function GenerateDocumentForm({
       <div className="flex flex-col gap-1.5">
         <label className="font-body text-sm font-medium text-foreground">Inscription</label>
         <Select value={enrollmentId} onValueChange={setEnrollmentId}>
-          <SelectTrigger>
+          <SelectTrigger aria-label="Inscription">
             <SelectValue placeholder="Choisir un apprenant / une formation" />
           </SelectTrigger>
           <SelectContent>
@@ -57,7 +57,7 @@ export function GenerateDocumentForm({
       <div className="flex flex-col gap-1.5">
         <label className="font-body text-sm font-medium text-foreground">Type de document</label>
         <Select value={kind} onValueChange={setKind}>
-          <SelectTrigger>
+          <SelectTrigger aria-label="Type de document">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>

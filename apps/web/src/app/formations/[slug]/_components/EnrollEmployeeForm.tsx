@@ -61,7 +61,7 @@ export function EnrollEmployeeForm({
       <div className="flex flex-col gap-1.5">
         <label className="font-body text-sm font-medium text-foreground">Salarié</label>
         <Select value={employeeId} onValueChange={setEmployeeId}>
-          <SelectTrigger>
+          <SelectTrigger aria-label="Salarié">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>

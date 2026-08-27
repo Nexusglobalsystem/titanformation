@@ -80,7 +80,7 @@ export function GrantAccessForm({
             ))}
           </div>
           <Select value={targetId} onValueChange={setTargetId}>
-            <SelectTrigger className="h-9 text-sm">
+            <SelectTrigger className="h-9 text-sm" aria-label={targetType === "user" ? "Choisir un utilisateur" : "Choisir une entreprise"}>
               <SelectValue placeholder={targetType === "user" ? "Choisir un utilisateur" : "Choisir une entreprise"} />
             </SelectTrigger>
             <SelectContent>
@@ -102,7 +102,7 @@ export function GrantAccessForm({
               setScopeId("");
             }}
           >
-            <SelectTrigger className="h-9 text-sm">
+            <SelectTrigger className="h-9 text-sm" aria-label="Accès à">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -113,7 +113,7 @@ export function GrantAccessForm({
             </SelectContent>
           </Select>
           <Select value={scopeId} onValueChange={setScopeId}>
-            <SelectTrigger className="h-9 text-sm">
+            <SelectTrigger className="h-9 text-sm" aria-label="Élément concerné">
               <SelectValue placeholder="Choisir…" />
             </SelectTrigger>
             <SelectContent>

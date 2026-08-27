@@ -44,7 +44,7 @@ export function UploadDocumentForm({ enrollments }: { enrollments: { id: string;
       <div className="flex flex-col gap-1.5">
         <label className="font-body text-sm font-medium text-foreground">Inscription</label>
         <Select value={enrollmentId} onValueChange={setEnrollmentId}>
-          <SelectTrigger>
+          <SelectTrigger aria-label="Inscription">
             <SelectValue placeholder="Choisir un apprenant / une formation" />
           </SelectTrigger>
           <SelectContent>
@@ -59,7 +59,7 @@ export function UploadDocumentForm({ enrollments }: { enrollments: { id: string;
       <div className="flex flex-col gap-1.5">
         <label className="font-body text-sm font-medium text-foreground">Type de document</label>
         <Select value={type} onValueChange={setType}>
-          <SelectTrigger>
+          <SelectTrigger aria-label="Type de document">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>

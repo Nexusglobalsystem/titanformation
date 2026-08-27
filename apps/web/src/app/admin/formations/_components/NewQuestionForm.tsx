@@ -56,7 +56,7 @@ export function NewQuestionForm({
       <div className="flex flex-col gap-1.5">
         <label className="font-body text-sm font-medium text-foreground">Type de réponse</label>
         <Select value={kind} onValueChange={setKind}>
-          <SelectTrigger>
+          <SelectTrigger aria-label="Type de réponse">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>

@@ -6,17 +6,22 @@
  *   - or #D4AF37 sur marine #003366 (dark mode)      → 6.0:1  (passe, texte normal)
  *   - marine #003366 sur clair #F8F9FA (light mode)   → 11.9:1 (passe largement)
  *   - or #D4AF37 sur clair #F8F9FA (light mode)       → 2.0:1  (ÉCHOUE)
- *     → variante assombrie --color-accent-text-on-light (#8A6D23) utilisée à la
+ *     → variante assombrie --color-titan-gold-on-light (#7A5E1D) utilisée à la
  *       place de l'or brut chaque fois que l'accent sert de COULEUR DE TEXTE sur
  *       fond clair (ex. prix, libellés). L'or brut reste utilisable en fond,
- *       bordure ou icône sur fond clair (pas de contrainte de contraste de texte).
+ *       bordure ou icône sur fond clair — SAUF quand la bordure/le texte porte
+ *       lui-même une information d'état (ex. onglet actif) : WCAG 1.4.11 exige
+ *       alors ≥3:1 comme n'importe quel composant d'interface non textuel.
+ *   - #7A5E1D sur clair #F8F9FA                        → 5.8:1  (passe)
+ *   - #7A5E1D sur zébrure de tableau #F2F4F7            → 5.5:1  (passe, marge
+ *     conservée : l'ancienne valeur #8A6D23 n'y passait qu'à 4.44:1, sous 4.5:1)
  */
 
 :root {
   /* Marque */
   --color-deep-navy: #003366;
   --color-titan-gold: #d4af37;
-  --color-titan-gold-on-light: #8a6d23; /* variante assombrie, cf. note de contraste */
+  --color-titan-gold-on-light: #7a5e1d; /* variante assombrie, cf. note de contraste */
 
   /*
    * Rouge plein, invariant par thème (comme --color-primary) : réservé aux

@@ -47,7 +47,7 @@ export function NewLessonForm({ moduleId, trainingId }: { moduleId: string; trai
         <div className="flex flex-col gap-1.5">
           <label className="font-body text-sm font-medium text-foreground">Type</label>
           <Select value={type} onValueChange={setType}>
-            <SelectTrigger>
+            <SelectTrigger aria-label="Type">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>

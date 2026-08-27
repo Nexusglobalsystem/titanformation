@@ -16,7 +16,7 @@ export function AdminSectionTabs({ active }: { active: "inscriptions" | "formati
             href={tab.href}
             className={
               isActive
-                ? "border-b-2 border-accent pb-2 font-body text-sm font-semibold text-accent"
+                ? "border-b-2 border-accent pb-2 font-body text-sm font-semibold text-accent-text"
                 : "pb-2 font-body text-sm text-foreground-muted hover:text-foreground"
             }
           >

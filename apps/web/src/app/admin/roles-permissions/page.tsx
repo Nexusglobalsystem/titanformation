@@ -74,7 +74,13 @@ export default async function RolesPermissionsPage() {
                         >
                           <td className="px-4 py-3 text-foreground-muted">{p.label}</td>
                           <td className="px-4 py-3 text-center">
-                            <input type="checkbox" checked disabled className="h-4 w-4 accent-primary opacity-60" />
+                            <input
+                              type="checkbox"
+                              checked
+                              disabled
+                              aria-label={`${p.label} — ${ROLE_LABELS.admin} (toujours accordé)`}
+                              className="h-4 w-4 accent-primary opacity-60"
+                            />
                           </td>
                           {EDITABLE_ROLES.map((role) => (
                             <td key={role} className="px-4 py-3 text-center">
@@ -82,6 +88,7 @@ export default async function RolesPermissionsPage() {
                                 role={role}
                                 permissionKey={p.key}
                                 checked={granted.has(`${role}:${p.key}`)}
+                                label={`${p.label} — ${ROLE_LABELS[role]}`}
                               />
                             </td>
                           ))}

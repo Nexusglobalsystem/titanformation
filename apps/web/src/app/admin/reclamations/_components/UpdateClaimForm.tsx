@@ -50,7 +50,7 @@ export function UpdateClaimForm({
       <div className="flex flex-col gap-1.5 sm:max-w-xs">
         <label className="font-body text-sm font-medium text-foreground">Statut</label>
         <Select value={status} onValueChange={setStatus}>
-          <SelectTrigger>
+          <SelectTrigger aria-label="Statut">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>

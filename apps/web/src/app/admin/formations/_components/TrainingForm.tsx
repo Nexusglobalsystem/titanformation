@@ -85,7 +85,7 @@ export function TrainingForm({
           <div className="flex flex-col gap-1.5">
             <label className="font-body text-sm font-medium text-foreground">Niveau</label>
             <Select value={level} onValueChange={setLevel}>
-              <SelectTrigger>
+              <SelectTrigger aria-label="Niveau">
                 <SelectValue placeholder="Non précisé" />
               </SelectTrigger>
               <SelectContent>
@@ -99,7 +99,7 @@ export function TrainingForm({
           <div className="flex flex-col gap-1.5">
             <label className="font-body text-sm font-medium text-foreground">Statut</label>
             <Select value={status} onValueChange={setStatus}>
-              <SelectTrigger>
+              <SelectTrigger aria-label="Statut">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>

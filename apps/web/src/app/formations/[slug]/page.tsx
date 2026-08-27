@@ -171,7 +171,7 @@ export default async function TrainingDetailPage({
   return (
     <div data-theme="dark" className="flex min-h-screen flex-col bg-background text-foreground">
       <PublicHeader />
-      <main className="mx-auto w-full max-w-(--spacing-container-max) flex-1 px-4 py-8 md:px-(--spacing-margin-desktop)">
+      <main id="main-content" tabIndex={-1} className="mx-auto w-full max-w-(--spacing-container-max) flex-1 px-4 py-8 outline-none md:px-(--spacing-margin-desktop)">
         <nav className="mb-8 flex items-center gap-2 font-mono-label text-xs uppercase tracking-wide text-foreground-muted">
           <Link href="/formations" className="hover:text-accent">
             Catalogue

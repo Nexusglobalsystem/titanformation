@@ -7,7 +7,7 @@ export default function NotFound() {
   return (
     <div data-theme="dark" className="flex min-h-screen flex-col bg-background text-foreground">
       <PublicHeader />
-      <main className="flex flex-1 flex-col items-center justify-center gap-6 px-4 py-24 text-center">
+      <main id="main-content" tabIndex={-1} className="flex flex-1 flex-col items-center justify-center gap-6 px-4 py-24 text-center outline-none">
         <span className="font-mono-label text-sm uppercase tracking-wide text-accent-text">Erreur 404</span>
         <h1 className="font-display text-3xl font-bold text-foreground md:text-4xl">
           Cette page n&apos;existe pas.
