@@ -4,6 +4,7 @@ export * from "./primitives/Input";
 export * from "./primitives/PasswordInput";
 export * from "./primitives/FileDropzone";
 export * from "./primitives/Textarea";
+export * from "./primitives/RichTextEditor";
 export * from "./primitives/Select";
 export * from "./primitives/Card";
 export * from "./primitives/Badge";

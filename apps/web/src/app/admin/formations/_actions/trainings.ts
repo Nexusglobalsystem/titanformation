@@ -2,28 +2,45 @@
 
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import sanitizeHtml from "sanitize-html";
 import { trainingSchema } from "@titan-kinetic/core";
 import { createClient } from "@/lib/supabase/server";
 
 export type TrainingFormState = { error?: string } | undefined;
+
+// Contenu produit par RichTextEditor (packages/ui) : gras/italique/listes
+// uniquement, jamais de lien/image/script. Allowlist volontairement stricte
+// puisque ce HTML est ensuite rendu tel quel côté public.
+function sanitizeRichText(value: FormDataEntryValue | null) {
+  if (typeof value !== "string") return "";
+  const clean = sanitizeHtml(value, {
+    allowedTags: ["p", "br", "strong", "em", "b", "i", "ul", "ol", "li"],
+    allowedAttributes: {},
+  });
+  // Un éditeur vide produit "<p></p>" (une balise mais aucun texte) : le
+  // considérer comme vide pour que la validation "champ requis" du schéma
+  // le rejette au lieu de laisser passer une fiche Qualiopi sans contenu.
+  const hasText = clean.replace(/<[^>]*>/g, "").trim().length > 0;
+  return hasText ? clean : "";
+}
 
 function parseTraining(formData: FormData) {
   return trainingSchema.safeParse({
     slug: formData.get("slug"),
     title: formData.get("title"),
     summary: formData.get("summary"),
-    objectives: formData.get("objectives"),
-    prerequisites: formData.get("prerequisites"),
-    target_audience: formData.get("target_audience"),
+    objectives: sanitizeRichText(formData.get("objectives")),
+    prerequisites: sanitizeRichText(formData.get("prerequisites")),
+    target_audience: sanitizeRichText(formData.get("target_audience")),
     duration_hours: formData.get("duration_hours"),
     duration_days: formData.get("duration_days"),
     price_ht: formData.get("price_ht"),
     vat_rate: formData.get("vat_rate"),
     modalities: formData.get("modalities"),
     access_delay: formData.get("access_delay"),
-    pedagogical_means: formData.get("pedagogical_means"),
-    assessment_methods: formData.get("assessment_methods"),
-    accessibility_info: formData.get("accessibility_info"),
+    pedagogical_means: sanitizeRichText(formData.get("pedagogical_means")),
+    assessment_methods: sanitizeRichText(formData.get("assessment_methods")),
+    accessibility_info: sanitizeRichText(formData.get("accessibility_info")),
     category: formData.get("category"),
     level: formData.get("level"),
     status: formData.get("status"),

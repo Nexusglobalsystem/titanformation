@@ -5,6 +5,7 @@ import { useFormStatus } from "react-dom";
 import {
   Button,
   Input,
+  RichTextEditor,
   Select,
   SelectContent,
   SelectItem,
@@ -156,40 +157,40 @@ export function TrainingForm({
           Contenu Qualiopi (indicateur 1)
         </h2>
         <Textarea label="Résumé" name="summary" required defaultValue={training?.summary ?? ""} />
-        <Textarea
+        <RichTextEditor
           label="Objectifs pédagogiques"
           name="objectives"
           required
           defaultValue={training?.objectives ?? ""}
         />
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <Textarea
+          <RichTextEditor
             label="Prérequis"
             name="prerequisites"
             required
             hint="« Aucun » est une réponse valable."
             defaultValue={training?.prerequisites ?? ""}
           />
-          <Textarea
+          <RichTextEditor
             label="Public visé"
             name="target_audience"
             required
             defaultValue={training?.target_audience ?? ""}
           />
         </div>
-        <Textarea
+        <RichTextEditor
           label="Moyens pédagogiques"
           name="pedagogical_means"
           required
           defaultValue={training?.pedagogical_means ?? ""}
         />
-        <Textarea
+        <RichTextEditor
           label="Modalités d'évaluation"
           name="assessment_methods"
           required
           defaultValue={training?.assessment_methods ?? ""}
         />
-        <Textarea
+        <RichTextEditor
           label="Accessibilité (indicateur 9)"
           name="accessibility_info"
           required

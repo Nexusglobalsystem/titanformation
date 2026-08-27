@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import sanitizeHtml from "sanitize-html";
 import { createClient } from "@/lib/supabase/server";
 import { PublicHeader } from "@/components/PublicHeader";
 import { PublicFooter } from "@/components/PublicFooter";
@@ -56,11 +57,11 @@ function SectionHeading({ icon, children }: { icon: React.ReactNode; children: R
   );
 }
 
-// Les champs texte de la base sont saisis en une seule colonne (pas de format
-// riche) — un retour à la ligne dans le formulaire admin correspond à un
-// nouveau paragraphe voulu, jamais à un simple retour à l'écran.
-function MultiParagraph({ text, className }: { text: string | null; className: string }) {
-  if (!text) return null;
+// Repli pour les fiches jamais rééditées avec RichTextEditor : ces champs
+// texte étaient saisis en une seule colonne sans format riche, où un retour
+// à la ligne dans le formulaire admin correspond à un nouveau paragraphe
+// voulu, jamais à un simple retour à l'écran.
+function MultiParagraphLegacy({ text, className }: { text: string; className: string }) {
   const paragraphs = text
     .split("\n")
     .map((p) => p.trim())
@@ -73,6 +74,24 @@ function MultiParagraph({ text, className }: { text: string | null; className: s
         </p>
       ))}
     </div>
+  );
+}
+
+const RICH_TEXT_ALLOWED_TAGS = ["p", "br", "strong", "em", "b", "i", "ul", "ol", "li"];
+
+// Champs produits soit par l'ancien <Textarea> (texte brut, \n = paragraphe),
+// soit par le nouveau RichTextEditor (HTML gras/italique/listes). On
+// distingue les deux au rendu plutôt que de migrer les fiches existantes.
+function RichOrLegacyText({ text, className }: { text: string | null; className: string }) {
+  if (!text) return null;
+  const clean = sanitizeHtml(text, { allowedTags: RICH_TEXT_ALLOWED_TAGS, allowedAttributes: {} });
+  const isRich = /<[a-z][\s\S]*>/i.test(clean);
+  if (!isRich) return <MultiParagraphLegacy text={text} className={className} />;
+  return (
+    <div
+      className={`${className} [&_p]:mb-3 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1 [&_strong]:font-semibold`}
+      dangerouslySetInnerHTML={{ __html: clean }}
+    />
   );
 }
 
@@ -180,7 +199,7 @@ export default async function TrainingDetailPage({
             <Card>
               <CardContent className="p-6 pt-6">
                 <SectionHeading icon={<IconTarget />}>Objectifs de la formation</SectionHeading>
-                <MultiParagraph text={training.objectives} className="font-body text-sm text-foreground" />
+                <RichOrLegacyText text={training.objectives} className="font-body text-sm text-foreground" />
               </CardContent>
             </Card>
 
@@ -208,7 +227,7 @@ export default async function TrainingDetailPage({
             <Card>
               <CardContent className="p-6 pt-6">
                 <SectionHeading icon={<IconLayers />}>Modalités pédagogiques</SectionHeading>
-                <MultiParagraph text={training.pedagogical_means} className="font-body text-sm text-foreground" />
+                <RichOrLegacyText text={training.pedagogical_means} className="font-body text-sm text-foreground" />
               </CardContent>
             </Card>
 
@@ -216,13 +235,13 @@ export default async function TrainingDetailPage({
               <Card>
                 <CardContent className="p-6 pt-6">
                   <SectionHeading icon={<IconUsers />}>Public visé</SectionHeading>
-                  <MultiParagraph text={training.target_audience} className="font-body text-sm text-foreground-muted" />
+                  <RichOrLegacyText text={training.target_audience} className="font-body text-sm text-foreground-muted" />
                 </CardContent>
               </Card>
               <Card>
                 <CardContent className="p-6 pt-6">
                   <SectionHeading icon={<IconShieldCheck />}>Prérequis</SectionHeading>
-                  <MultiParagraph text={training.prerequisites} className="font-body text-sm text-foreground-muted" />
+                  <RichOrLegacyText text={training.prerequisites} className="font-body text-sm text-foreground-muted" />
                 </CardContent>
               </Card>
             </div>
@@ -230,14 +249,14 @@ export default async function TrainingDetailPage({
             <Card>
               <CardContent className="p-6 pt-6">
                 <h2 className="mb-3 font-display text-lg font-semibold text-accent">Modalités d'évaluation</h2>
-                <MultiParagraph text={training.assessment_methods} className="font-body text-sm text-foreground-muted" />
+                <RichOrLegacyText text={training.assessment_methods} className="font-body text-sm text-foreground-muted" />
               </CardContent>
             </Card>
 
             <Card>
               <CardContent className="p-6 pt-6">
                 <h2 className="mb-3 font-display text-lg font-semibold text-accent">Accessibilité</h2>
-                <MultiParagraph text={training.accessibility_info} className="font-body text-sm text-foreground-muted" />
+                <RichOrLegacyText text={training.accessibility_info} className="font-body text-sm text-foreground-muted" />
               </CardContent>
             </Card>
           </div>
