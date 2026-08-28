@@ -1,8 +1,10 @@
+import "../global.css";
 import { Platform } from "react-native";
 import { setupURLPolyfill } from "react-native-url-polyfill";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Stack } from "expo-router";
+import { ThemeProvider } from "../src/theme/ThemeProvider";
 
 // Équivalent inliné de "react-native-url-polyfill/auto" : l'import de
 // sous-chemin résout mal sous Metro ici (unstable_enablePackageExports,
@@ -18,10 +20,12 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="(tabs)" />
-          <Stack.Screen name="(auth)" />
-        </Stack>
+        <ThemeProvider>
+          <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="(tabs)" />
+            <Stack.Screen name="(auth)" />
+          </Stack>
+        </ThemeProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );

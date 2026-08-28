@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Portage des tokens de packages/ui/src/tokens/tokens.css (web) — mêmes
+ * valeurs, format "R G B" (canaux séparés) requis par le pattern NativeWind
+ * rgb(var(--x) / <alpha-value>) pour supporter les opacités Tailwind.
+ * --color-accent-text est la seule paire asymétrique clair/sombre :
+ * l'or brut (#D4AF37) échoue le contraste WCAG en texte sur fond clair
+ * (2.0:1), d'où la variante assombrie #7A5E1D réservée au mode clair —
+ * même nuance que le correctif déjà appliqué côté web (tokens.css).
+ */
+:root {
+  --color-primary: 0 51 102; /* #003366 */
+  --color-accent: 212 175 55; /* #D4AF37 */
+  --color-accent-text: 122 94 29; /* #7A5E1D — clair uniquement */
+  --color-danger: 179 38 30; /* #B3261E */
+
+  --color-background: 248 249 250; /* #f8f9fa */
+  --color-surface: 255 255 255;
+  --color-surface-elevated: 255 255 255;
+  --color-border: 221 227 234; /* #dde3ea */
+  --color-foreground: 11 28 48; /* #0b1c30 */
+  --color-foreground-muted: 75 91 110; /* #4b5b6e */
+  --color-zebra: 242 244 247; /* #f2f4f7 */
+
+  --color-success: 27 122 67; /* #1b7a43 */
+  --color-success-bg: 229 244 234; /* #e5f4ea */
+  --color-warning: 138 90 0; /* #8a5a00 */
+  --color-warning-bg: 253 241 220; /* #fdf1dc */
+  --color-error: 179 38 30; /* #b3261e */
+  --color-error-bg: 251 233 231; /* #fbe9e7 */
+}
+
+.dark:root {
+  --color-accent-text: 212 175 55; /* #D4AF37 — or brut, contraste déjà validé sur fond sombre */
+
+  --color-background: 5 12 20; /* #050c14 */
+  --color-surface: 12 22 34; /* #0c1622 */
+  --color-surface-elevated: 16 30 48; /* #101e30 */
+  --color-border: 28 43 60; /* #1c2b3c */
+  --color-foreground: 231 234 240; /* #e7eaf0 */
+  --color-foreground-muted: 169 180 196; /* #a9b4c4 */
+  --color-zebra: 15 26 40; /* #0f1a28 */
+
+  --color-success: 127 217 154; /* #7fd99a */
+  --color-success-bg: 17 51 33; /* #113321 */
+  --color-warning: 255 201 77; /* #ffc94d */
+  --color-warning-bg: 58 42 5; /* #3a2a05 */
+  --color-error: 255 180 171; /* #ffb4ab */
+  --color-error-bg: 58 22 19; /* #3a1613 */
+}
