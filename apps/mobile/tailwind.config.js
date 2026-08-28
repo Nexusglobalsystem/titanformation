@@ -34,6 +34,16 @@ module.exports = {
         lg: "8px",
         xl: "12px",
       },
+      fontFamily: {
+        // Mêmes noms d'utilitaires que apps/web/src/app/globals.css
+        // (font-display/font-body/font-mono-label). RN charge des polices
+        // statiques par graisse (pas de variable font + font-weight libre
+        // comme sur le web) — poids par défaut le plus courant ici ;
+        // d'autres graisses s'ajoutent à la demande (ex. font-display-bold).
+        display: ["HankenGrotesk_600SemiBold"],
+        body: ["Manrope_400Regular"],
+        "mono-label": ["GeistMono_500Medium"],
+      },
     },
   },
   plugins: [],
