@@ -69,8 +69,8 @@ export default async function EntreprisePage() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Salarié</TableHead>
-                  <TableHead>Formation</TableHead>
-                  <TableHead>Session</TableHead>
+                  <TableHead className="hidden sm:table-cell">Formation</TableHead>
+                  <TableHead className="hidden sm:table-cell">Session</TableHead>
                   <TableHead>Statut</TableHead>
                 </TableRow>
               </TableHeader>
@@ -87,8 +87,8 @@ export default async function EntreprisePage() {
                           {learner ? `${learner.first_name ?? ""} ${learner.last_name ?? ""}`.trim() : "—"}
                           <div className="font-body text-xs text-foreground-muted">{learner?.email}</div>
                         </TableCell>
-                        <TableCell>{session?.trainings?.title ?? "—"}</TableCell>
-                        <TableCell>{session?.reference ?? "—"}</TableCell>
+                        <TableCell className="hidden sm:table-cell">{session?.trainings?.title ?? "—"}</TableCell>
+                        <TableCell className="hidden sm:table-cell">{session?.reference ?? "—"}</TableCell>
                         <TableCell>
                           <Badge variant={STATUS_VARIANTS[enrollment.status] ?? "neutral"}>
                             {STATUS_LABELS[enrollment.status] ?? enrollment.status}

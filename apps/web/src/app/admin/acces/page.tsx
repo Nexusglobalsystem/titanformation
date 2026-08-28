@@ -93,7 +93,7 @@ export default async function AdminAccesPage() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Accès</TableHead>
-                  <TableHead>Accordé le</TableHead>
+                  <TableHead className="hidden sm:table-cell">Accordé le</TableHead>
                   <TableHead>Statut</TableHead>
                   <TableHead>Action</TableHead>
                 </TableRow>
@@ -121,7 +121,7 @@ export default async function AdminAccesPage() {
                             <p className="font-body text-xs text-foreground-muted">{g.note}</p>
                           )}
                         </TableCell>
-                        <TableCell>
+                        <TableCell className="hidden sm:table-cell">
                           {new Date(g.granted_at).toLocaleDateString("fr-FR")}
                           {g.expires_at ? ` · Expire le ${new Date(g.expires_at).toLocaleDateString("fr-FR")}` : ""}
                         </TableCell>

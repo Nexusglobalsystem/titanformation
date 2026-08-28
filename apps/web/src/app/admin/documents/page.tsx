@@ -84,8 +84,8 @@ export default async function AdminDocumentsPage() {
                 <TableRow>
                   <TableHead>Type</TableHead>
                   <TableHead>Apprenant</TableHead>
-                  <TableHead>Formation</TableHead>
-                  <TableHead>Date</TableHead>
+                  <TableHead className="hidden sm:table-cell">Formation</TableHead>
+                  <TableHead className="hidden sm:table-cell">Date</TableHead>
                   <TableHead>Action</TableHead>
                 </TableRow>
               </TableHeader>
@@ -106,8 +106,8 @@ export default async function AdminDocumentsPage() {
                           <Badge variant="neutral">{DOCUMENT_TYPE_LABELS[doc.type] ?? doc.type}</Badge>
                         </TableCell>
                         <TableCell>{learnerName}</TableCell>
-                        <TableCell>{training?.title ?? "—"}</TableCell>
-                        <TableCell>{new Date(doc.generated_at).toLocaleString("fr-FR")}</TableCell>
+                        <TableCell className="hidden sm:table-cell">{training?.title ?? "—"}</TableCell>
+                        <TableCell className="hidden sm:table-cell">{new Date(doc.generated_at).toLocaleString("fr-FR")}</TableCell>
                         <TableCell>
                           <div className="flex items-center gap-3">
                             {doc.signedUrl && (

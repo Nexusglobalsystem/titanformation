@@ -58,9 +58,9 @@ export default async function AdminFormationsPage() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Titre</TableHead>
-                  <TableHead>Catégorie</TableHead>
-                  <TableHead>Durée</TableHead>
-                  <TableHead>Prix HT</TableHead>
+                  <TableHead className="hidden sm:table-cell">Catégorie</TableHead>
+                  <TableHead className="hidden sm:table-cell">Durée</TableHead>
+                  <TableHead className="hidden sm:table-cell">Prix HT</TableHead>
                   <TableHead>Statut</TableHead>
                   <TableHead>Action</TableHead>
                 </TableRow>
@@ -72,9 +72,9 @@ export default async function AdminFormationsPage() {
                   trainings.map((training) => (
                     <TableRow key={training.id}>
                       <TableCell>{training.title}</TableCell>
-                      <TableCell>{training.category ?? "—"}</TableCell>
-                      <TableCell>{training.duration_hours}h</TableCell>
-                      <TableCell>{training.price_ht} €</TableCell>
+                      <TableCell className="hidden sm:table-cell">{training.category ?? "—"}</TableCell>
+                      <TableCell className="hidden sm:table-cell">{training.duration_hours}h</TableCell>
+                      <TableCell className="hidden sm:table-cell">{training.price_ht} €</TableCell>
                       <TableCell>
                         <Badge variant={STATUS_VARIANTS[training.status] ?? "neutral"}>
                           {STATUS_LABELS[training.status] ?? training.status}

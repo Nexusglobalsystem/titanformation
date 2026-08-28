@@ -55,7 +55,7 @@ export default async function AdminProgrammesPage() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Titre</TableHead>
-                  <TableHead>Formations</TableHead>
+                  <TableHead className="hidden sm:table-cell">Formations</TableHead>
                   <TableHead>Statut</TableHead>
                   <TableHead>Action</TableHead>
                 </TableRow>
@@ -67,7 +67,7 @@ export default async function AdminProgrammesPage() {
                   programmes.map((programme) => (
                     <TableRow key={programme.id}>
                       <TableCell>{programme.title}</TableCell>
-                      <TableCell>{programme.programme_trainings?.length ?? 0}</TableCell>
+                      <TableCell className="hidden sm:table-cell">{programme.programme_trainings?.length ?? 0}</TableCell>
                       <TableCell>
                         <Badge variant={STATUS_VARIANTS[programme.status] ?? "neutral"}>
                           {STATUS_LABELS[programme.status] ?? programme.status}

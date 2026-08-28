@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@titan-kinetic/ui";
+import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, cn } from "@titan-kinetic/ui";
 import type { CatalogueFilters } from "../_lib/filterTrainings";
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -79,20 +79,51 @@ export function CatalogueShell({
               onChange={(e) => handleSearchChange(e.target.value)}
             />
           </div>
+          <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1 sm:hidden" role="group" aria-label="Filtrer par catégorie">
+            <button
+              type="button"
+              onClick={() => pushFilters({ categorie: "all" })}
+              className={cn(
+                "shrink-0 rounded-full px-4 py-1.5 font-body text-xs font-semibold transition-colors",
+                filters.categorie === "all"
+                  ? "bg-accent text-on-accent"
+                  : "border border-border text-foreground-muted",
+              )}
+            >
+              Toutes
+            </button>
+            {categories.map((c) => (
+              <button
+                key={c}
+                type="button"
+                onClick={() => pushFilters({ categorie: c })}
+                className={cn(
+                  "shrink-0 rounded-full px-4 py-1.5 font-body text-xs font-semibold transition-colors",
+                  filters.categorie === c
+                    ? "bg-accent text-on-accent"
+                    : "border border-border text-foreground-muted",
+                )}
+              >
+                {CATEGORY_LABELS[c] ?? c}
+              </button>
+            ))}
+          </div>
           <div className="flex flex-wrap items-center gap-4 md:ml-auto">
-            <Select value={filters.categorie} onValueChange={(v) => pushFilters({ categorie: v })}>
-              <SelectTrigger className="w-44" aria-label="Filtrer par catégorie">
-                <SelectValue placeholder="Catégorie" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Catégorie : Toutes</SelectItem>
-                {categories.map((c) => (
-                  <SelectItem key={c} value={c}>
-                    {CATEGORY_LABELS[c] ?? c}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <div className="hidden sm:block">
+              <Select value={filters.categorie} onValueChange={(v) => pushFilters({ categorie: v })}>
+                <SelectTrigger className="w-44" aria-label="Filtrer par catégorie">
+                  <SelectValue placeholder="Catégorie" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Catégorie : Toutes</SelectItem>
+                  {categories.map((c) => (
+                    <SelectItem key={c} value={c}>
+                      {CATEGORY_LABELS[c] ?? c}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
             <Select value={filters.niveau} onValueChange={(v) => pushFilters({ niveau: v })}>
               <SelectTrigger className="w-44" aria-label="Filtrer par niveau">
                 <SelectValue placeholder="Niveau" />

@@ -61,11 +61,11 @@ export default async function AdminDevisPage() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Référence</TableHead>
+                  <TableHead className="hidden sm:table-cell">Référence</TableHead>
                   <TableHead>Entreprise</TableHead>
-                  <TableHead>Contenu</TableHead>
-                  <TableHead>Montant HT</TableHead>
-                  <TableHead>Date</TableHead>
+                  <TableHead className="hidden sm:table-cell">Contenu</TableHead>
+                  <TableHead className="hidden sm:table-cell">Montant HT</TableHead>
+                  <TableHead className="hidden sm:table-cell">Date</TableHead>
                   <TableHead>Statut</TableHead>
                   <TableHead />
                 </TableRow>
@@ -76,11 +76,16 @@ export default async function AdminDevisPage() {
                 ) : (
                   orders.map((order) => (
                     <TableRow key={order.id}>
-                      <TableCell>{order.reference}</TableCell>
-                      <TableCell>{order.companies?.name ?? "—"}</TableCell>
-                      <TableCell>{(order.order_items ?? []).map((i) => i.label).join(", ") || "—"}</TableCell>
-                      <TableCell>{order.total_ht.toLocaleString("fr-FR")} €</TableCell>
-                      <TableCell>{new Date(order.created_at).toLocaleDateString("fr-FR")}</TableCell>
+                      <TableCell className="hidden sm:table-cell">{order.reference}</TableCell>
+                      <TableCell>
+                        {order.companies?.name ?? "—"}
+                        <div className="font-body text-xs text-foreground-muted sm:hidden">
+                          {order.reference} · {order.total_ht.toLocaleString("fr-FR")} €
+                        </div>
+                      </TableCell>
+                      <TableCell className="hidden sm:table-cell">{(order.order_items ?? []).map((i) => i.label).join(", ") || "—"}</TableCell>
+                      <TableCell className="hidden sm:table-cell">{order.total_ht.toLocaleString("fr-FR")} €</TableCell>
+                      <TableCell className="hidden sm:table-cell">{new Date(order.created_at).toLocaleDateString("fr-FR")}</TableCell>
                       <TableCell>
                         <Badge variant={STATUS_VARIANTS[order.status] ?? "neutral"}>
                           {STATUS_LABELS[order.status] ?? order.status}
