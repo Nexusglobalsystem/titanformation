@@ -34,6 +34,7 @@ const ICONS = {
   X: { set: "material", name: "close" },
   Settings: { set: "material", name: "settings" },
   GraduationCap: { set: "community", name: "school-outline" },
+  Target: { set: "material", name: "track-changes" },
 } as const satisfies Record<string, IconSpec>;
 
 export type IconKey = keyof typeof ICONS;
@@ -76,3 +77,4 @@ export const IconMenu = makeIcon("Menu");
 export const IconX = makeIcon("X");
 export const IconSettings = makeIcon("Settings");
 export const IconGraduationCap = makeIcon("GraduationCap");
+export const IconTarget = makeIcon("Target");
