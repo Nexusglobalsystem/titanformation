@@ -8,6 +8,7 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { ThemeProvider } from "../src/theme/ThemeProvider";
 import { useAppFonts } from "../src/theme/fonts";
+import { QueryClientProvider } from "../src/lib/queryClient";
 
 // Équivalent inliné de "react-native-url-polyfill/auto" : l'import de
 // sous-chemin résout mal sous Metro ici (unstable_enablePackageExports,
@@ -37,12 +38,14 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
-        <ThemeProvider>
-          <Stack screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="(tabs)" />
-            <Stack.Screen name="(auth)" />
-          </Stack>
-        </ThemeProvider>
+        <QueryClientProvider>
+          <ThemeProvider>
+            <Stack screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="(tabs)" />
+              <Stack.Screen name="(auth)" />
+            </Stack>
+          </ThemeProvider>
+        </QueryClientProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );

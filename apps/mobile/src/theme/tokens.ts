@@ -12,7 +12,9 @@ interface SemanticColor {
 
 export interface AppColors {
   primary: string;
+  onPrimary: string;
   accent: string;
+  onAccent: string;
   accentText: string;
   danger: string;
   background: string;
@@ -57,7 +59,9 @@ export const lightTheme: AppTheme = {
   scheme: "light",
   colors: {
     primary: "#003366",
+    onPrimary: "#ffffff",
     accent: "#D4AF37",
+    onAccent: "#1a1400",
     accentText: "#7A5E1D",
     danger: "#B3261E",
     background: "#f8f9fa",

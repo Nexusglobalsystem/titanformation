@@ -13,7 +13,9 @@
  */
 :root {
   --color-primary: 0 51 102; /* #003366 */
+  --color-on-primary: 255 255 255;
   --color-accent: 212 175 55; /* #D4AF37 */
+  --color-on-accent: 26 20 0; /* #1a1400 */
   --color-accent-text: 122 94 29; /* #7A5E1D — clair uniquement */
   --color-danger: 179 38 30; /* #B3261E */
 

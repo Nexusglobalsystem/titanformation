@@ -7,7 +7,9 @@ module.exports = {
     extend: {
       colors: {
         primary: "rgb(var(--color-primary) / <alpha-value>)",
+        "on-primary": "rgb(var(--color-on-primary) / <alpha-value>)",
         accent: "rgb(var(--color-accent) / <alpha-value>)",
+        "on-accent": "rgb(var(--color-on-accent) / <alpha-value>)",
         "accent-text": "rgb(var(--color-accent-text) / <alpha-value>)",
         danger: "rgb(var(--color-danger) / <alpha-value>)",
         background: "rgb(var(--color-background) / <alpha-value>)",
