@@ -1,85 +1,145 @@
-import { useState } from "react";
 import { Link } from "expo-router";
-import { Pressable, ScrollView, Text, View } from "react-native";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { signInSchema, type SignInInput } from "@titan-kinetic/core/schemas";
+import { ActivityIndicator, ScrollView, Text, View } from "react-native";
+import { useRequireAuth } from "../../src/hooks/useRequireAuth";
+import { SignInPrompt } from "../../src/components/SignInPrompt";
+import { useDashboard } from "../../src/features/dashboard/useDashboard";
 import { useAppTheme } from "../../src/theme/ThemeProvider";
-import {
-  IconBell,
-  IconCalendar,
-  IconCheckCircle,
-  IconGraduationCap,
-  IconShieldCheck,
-} from "../../src/components/Icon";
-import { TextField } from "../../src/components/form/TextField";
-import { PasswordField } from "../../src/components/form/PasswordField";
+import { Card } from "../../src/components/Card";
+import { Progress } from "../../src/components/Progress";
 import { SubmitButton } from "../../src/components/form/SubmitButton";
-import { ErrorText } from "../../src/components/form/ErrorText";
+import { IconArrowRight, IconCalendar, IconCheckCircle, IconClock } from "../../src/components/Icon";
 
-// Vitrine des tokens/polices/icônes/formulaire (lots 0.3-0.5) — classes
-// NativeWind clair/sombre, useAppTheme(), et un formulaire jetable câblé
-// sur le vrai schéma Zod signInSchema (@titan-kinetic/core) pour vérifier
-// TextField/PasswordField/SubmitButton/ErrorText bout en bout avant que
-// le lot 1.2 construise le véritable écran de connexion. Sera remplacé
-// par le vrai tableau de bord apprenant au lot 3.1.
+// Équivalent RN de apps/web/src/app/apprenant/page.tsx. Lot 3.1 : données
+// + carte héro ("à reprendre" / "à jour" / "aucune formation") + prochain
+// rendez-vous. "Mes formations" et Émargement arrivent au lot 3.2.
 export default function AccueilScreen() {
-  const { theme, scheme, setScheme } = useAppTheme();
-  const [submitError, setSubmitError] = useState<string | null>(null);
-  const { control, handleSubmit } = useForm<SignInInput>({
-    resolver: zodResolver(signInSchema),
-    defaultValues: { email: "", password: "" },
-  });
+  const { theme } = useAppTheme();
+  const { isAuthenticated, session, loading: authLoading } = useRequireAuth();
+  const { data, isLoading } = useDashboard(session?.user.id);
 
-  function onSubmit(values: SignInInput) {
-    setSubmitError(`Validé : ${values.email} — la vraie soumission arrive au lot 1.2.`);
+  if (authLoading) {
+    return (
+      <View className="flex-1 items-center justify-center bg-background">
+        <ActivityIndicator />
+      </View>
+    );
   }
 
-  return (
-    <ScrollView className="flex-1 bg-background" contentContainerClassName="items-center gap-4 px-gutter py-8">
-      <Text className="font-display text-xl text-foreground">Accueil</Text>
-      <Text className="font-body text-foreground-muted">Tableau de bord apprenant — lot 3.1.</Text>
+  if (!isAuthenticated) {
+    return <SignInPrompt message="Connectez-vous pour accéder à votre espace apprenant." />;
+  }
 
-      <View className="w-full gap-2 rounded-lg border border-border bg-surface p-4">
-        <Text className="font-body text-accent-text">Texte en accent-text (nuance clair/sombre)</Text>
-        <Text className="font-body text-success">Succès</Text>
-        <Text className="font-body text-warning">Avertissement</Text>
-        <Text className="font-body text-error">Erreur</Text>
-        <Text className="font-mono-label text-xs uppercase tracking-wider text-foreground-muted">
-          Thème JS actuel : {theme.scheme}
+  if (isLoading || !data) {
+    return (
+      <View className="flex-1 items-center justify-center bg-background">
+        <ActivityIndicator />
+      </View>
+    );
+  }
+
+  const { profile, confirmedEnrollments, nextBooking, inProgress } = data;
+
+  return (
+    <ScrollView className="flex-1 bg-background" contentContainerClassName="gap-6 px-gutter py-6">
+      <View>
+        <Text className="font-display text-2xl font-bold text-foreground">
+          Bienvenue{profile?.first_name ? `, ${profile.first_name}` : ""}
+        </Text>
+        <Text className="mt-1 font-body text-sm text-foreground-muted">
+          Voici où en est votre parcours de formation.
         </Text>
       </View>
 
-      <View className="w-full flex-row items-center justify-around rounded-lg border border-border bg-surface p-4">
-        <IconBell size={22} color={theme.colors.foreground} />
-        <IconCalendar size={22} color={theme.colors.accent} />
-        <IconCheckCircle size={22} color={theme.colors.success.fg} />
-        <IconShieldCheck size={22} color={theme.colors.foreground} />
-        <IconGraduationCap size={22} color={theme.colors.primary} />
+      <View className="gap-4 overflow-hidden rounded-xl bg-primary p-6">
+        {inProgress ? (
+          <>
+            <View className="mb-1 flex-row items-center gap-1.5 self-start rounded-full bg-accent/10 px-3 py-1">
+              <IconClock size={14} color={theme.colors.accent} />
+              <Text className="font-mono-label text-[11px] uppercase tracking-wide" style={{ color: theme.colors.accent }}>
+                En cours
+              </Text>
+            </View>
+            <Text className="font-display text-xl font-bold text-on-primary">
+              {inProgress.enrollment.sessions?.trainings?.title ?? "Formation"}
+            </Text>
+            <Text className="font-body text-sm text-on-primary/70">
+              {inProgress.completed}/{inProgress.total} leçons terminées
+            </Text>
+            <Progress value={inProgress.completed} max={inProgress.total} />
+            <Link href={`/formations/${inProgress.enrollment.id}`} asChild>
+              <SubmitButton onPress={() => {}}>Reprendre</SubmitButton>
+            </Link>
+          </>
+        ) : confirmedEnrollments.length > 0 ? (
+          <>
+            <View className="mb-1 flex-row items-center gap-1.5 self-start rounded-full bg-accent/10 px-3 py-1">
+              <IconCheckCircle size={14} color={theme.colors.accent} />
+              <Text className="font-mono-label text-[11px] uppercase tracking-wide" style={{ color: theme.colors.accent }}>
+                À jour
+              </Text>
+            </View>
+            <Text className="font-display text-xl font-bold text-on-primary">
+              Toutes vos formations sont terminées
+            </Text>
+            <Text className="font-body text-sm text-on-primary/70">
+              Découvrez un nouveau programme dans le catalogue.
+            </Text>
+            <Link href="/(tabs)/formations" asChild>
+              <SubmitButton onPress={() => {}}>Parcourir le catalogue</SubmitButton>
+            </Link>
+          </>
+        ) : (
+          <>
+            <Text className="font-display text-xl font-bold text-on-primary">Aucune formation en cours</Text>
+            <Text className="font-body text-sm text-on-primary/70">
+              Inscrivez-vous à une formation pour démarrer votre parcours.
+            </Text>
+            <Link href="/(tabs)/formations" asChild>
+              <SubmitButton onPress={() => {}}>Parcourir le catalogue</SubmitButton>
+            </Link>
+          </>
+        )}
       </View>
 
-      <View className="w-full gap-3 rounded-lg border border-border bg-surface p-4">
-        <Text className="font-display text-sm text-foreground">Formulaire jetable (lot 0.5)</Text>
-        {submitError && <ErrorText>{submitError}</ErrorText>}
-        <TextField
-          control={control}
-          name="email"
-          label="Email"
-          autoCapitalize="none"
-          keyboardType="email-address"
-        />
-        <PasswordField control={control} name="password" label="Mot de passe" />
-        <SubmitButton onPress={handleSubmit(onSubmit)}>Valider</SubmitButton>
-      </View>
+      <Card>
+        <View className="mb-3 flex-row items-center justify-between">
+          <Text className="font-display text-base font-semibold text-foreground">Prochain rendez-vous</Text>
+          <IconCalendar size={18} color={theme.colors.foreground} />
+        </View>
+        {nextBooking ? (
+          <View className="rounded-DEFAULT border border-border bg-surface p-3">
+            <Text className="font-mono-label text-[11px] uppercase tracking-wide text-foreground-muted">
+              {new Date(nextBooking.booking_date + "T00:00:00").toLocaleDateString("fr-FR", {
+                weekday: "short",
+                day: "2-digit",
+                month: "short",
+              })}{" "}
+              · {nextBooking.start_time.slice(0, 5)}
+            </Text>
+            <Text className="mt-1 font-body text-sm font-medium text-foreground">
+              {nextBooking.profiles
+                ? `${nextBooking.profiles.first_name ?? ""} ${nextBooking.profiles.last_name ?? ""}`.trim()
+                : "Formateur"}
+            </Text>
+            {nextBooking.reason && (
+              <Text numberOfLines={1} className="mt-0.5 font-body text-xs text-foreground-muted">
+                {nextBooking.reason}
+              </Text>
+            )}
+          </View>
+        ) : (
+          <Text className="font-body text-sm text-foreground-muted">Aucun rendez-vous à venir.</Text>
+        )}
+        <Link href="/(tabs)/agenda" className="mt-3 font-body text-sm text-accent-text">
+          {nextBooking ? "Voir mes réservations" : "Réserver un rendez-vous"}
+        </Link>
+      </Card>
 
-      <Pressable
-        onPress={() => setScheme(scheme === "dark" ? "light" : "dark")}
-        className="rounded-DEFAULT bg-primary px-4 py-2"
-      >
-        <Text className="font-display text-on-primary">Basculer le thème ({scheme})</Text>
-      </Pressable>
-
-      <Link href="/(auth)/connexion">Se connecter</Link>
+      <Card>
+        <Text className="font-body text-sm text-foreground-muted">
+          « Mes formations » et l&apos;émargement arrivent au lot 3.2.
+        </Text>
+      </Card>
     </ScrollView>
   );
 }
