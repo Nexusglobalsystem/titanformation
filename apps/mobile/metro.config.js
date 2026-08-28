@@ -6,20 +6,20 @@ const workspaceRoot = path.resolve(projectRoot, "../..");
 
 const config = getDefaultConfig(projectRoot);
 
-// Résolution pnpm monorepo : node_modules symlinké, non-flat — Metro doit
-// regarder à la racine du repo en plus du dossier de l'app, et honorer la
-// carte "exports" de @titan-kinetic/core (sinon résolution silencieusement
-// cassée alors que le même import fonctionne côté web).
-config.watchFolders = [workspaceRoot];
-config.resolver.nodeModulesPaths = [
-  path.resolve(projectRoot, "node_modules"),
-  path.resolve(workspaceRoot, "node_modules"),
-];
-// pnpm utilise des symlinks pour son store virtuel (.pnpm/) — Metro ne les
-// suit pas par défaut. unstable_enablePackageExports honore la carte
-// "exports" de @titan-kinetic/core (sinon résolution silencieusement
-// cassée alors que le même import fonctionne côté web via Next.js).
+// Résolution pnpm monorepo : le store virtuel .pnpm/ est symlinké, Metro ne
+// les suit pas par défaut (unstable_enableSymlinks), et @titan-kinetic/core
+// n'est résolvable que si la carte "exports" de son package.json est
+// honorée (unstable_enablePackageExports) — sinon résolution silencieusement
+// cassée alors que le même import fonctionne côté web via Next.js.
 config.resolver.unstable_enableSymlinks = true;
 config.resolver.unstable_enablePackageExports = true;
+
+// watchFolders scopé à node_modules + packages/ plutôt qu'à la racine du
+// monorepo entière (qui inclurait apps/web — aucune dépendance mobile
+// dessus, mais un node_modules bien plus gros à crawler).
+config.watchFolders = [
+  path.resolve(workspaceRoot, "node_modules"),
+  path.resolve(workspaceRoot, "packages"),
+];
 
 module.exports = config;
