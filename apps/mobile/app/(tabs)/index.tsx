@@ -187,7 +187,7 @@ export default function AccueilScreen() {
         ) : (
           <Text className="font-body text-sm text-foreground-muted">Aucun rendez-vous à venir.</Text>
         )}
-        <Link href="/(tabs)/agenda" className="mt-3 font-body text-sm text-accent-text">
+        <Link href="/(tabs)/agenda/reserver" className="mt-3 font-body text-sm text-accent-text">
           {nextBooking ? "Voir mes réservations" : "Réserver un rendez-vous"}
         </Link>
       </Card>

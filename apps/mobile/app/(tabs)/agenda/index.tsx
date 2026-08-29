@@ -64,11 +64,16 @@ export default function AgendaScreen() {
 
   return (
     <ScrollView className="flex-1 bg-background" contentContainerClassName="gap-6 px-gutter py-6">
-      <View>
-        <Text className="font-display text-2xl font-bold text-foreground">Mon agenda</Text>
-        <Text className="mt-1 font-body text-sm text-foreground-muted">
-          Vos créneaux de formation et vos rendez-vous, dans l&apos;ordre chronologique.
-        </Text>
+      <View className="flex-row items-start justify-between gap-3">
+        <View className="flex-1">
+          <Text className="font-display text-2xl font-bold text-foreground">Mon agenda</Text>
+          <Text className="mt-1 font-body text-sm text-foreground-muted">
+            Vos créneaux de formation et vos rendez-vous, dans l&apos;ordre chronologique.
+          </Text>
+        </View>
+        <Link href="/(tabs)/agenda/reserver" className="font-body text-sm text-accent-text">
+          Réserver
+        </Link>
       </View>
 
       <Card>
