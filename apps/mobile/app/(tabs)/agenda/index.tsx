@@ -1,5 +1,5 @@
 import { Link } from "expo-router";
-import { ActivityIndicator, ScrollView, Text, View } from "react-native";
+import { ActivityIndicator, RefreshControl, ScrollView, Text, View } from "react-native";
 import { useRequireAuth } from "../../../src/hooks/useRequireAuth";
 import { SignInPrompt } from "../../../src/components/SignInPrompt";
 import { useAgenda, useCancelBooking, type BookingEntry, type SlotEntry } from "../../../src/features/agenda/useAgenda";
@@ -37,7 +37,7 @@ const BOOKING_STATUS_LABELS: Record<string, string> = { demandee: "Demandée", c
 export default function AgendaScreen() {
   const { theme } = useAppTheme();
   const { isAuthenticated, session, loading: authLoading } = useRequireAuth();
-  const { data, isLoading } = useAgenda(session?.user.id);
+  const { data, isLoading, refetch, isRefetching } = useAgenda(session?.user.id);
   const cancelBooking = useCancelBooking(session?.user.id);
 
   if (authLoading) {
@@ -63,7 +63,11 @@ export default function AgendaScreen() {
   const { entriesByDate, orderedDates, moduleSections } = data;
 
   return (
-    <ScrollView className="flex-1 bg-background" contentContainerClassName="gap-6 px-gutter py-6">
+    <ScrollView
+      className="flex-1 bg-background"
+      contentContainerClassName="gap-6 px-gutter py-6"
+      refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} />}
+    >
       <View className="flex-row items-start justify-between gap-3">
         <View className="flex-1">
           <Text className="font-display text-2xl font-bold text-foreground">Mon agenda</Text>

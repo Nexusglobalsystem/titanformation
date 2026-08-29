@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ActivityIndicator, ScrollView, Text, TextInput, View } from "react-native";
+import { ActivityIndicator, RefreshControl, ScrollView, Text, TextInput, View } from "react-native";
 import { useRequireAuth } from "../../../src/hooks/useRequireAuth";
 import { useClaims, useSubmitClaim } from "../../../src/features/claims/useClaims";
 import { useAppTheme } from "../../../src/theme/ThemeProvider";
@@ -29,7 +29,7 @@ export default function ReclamationsScreen() {
   const { theme } = useAppTheme();
   const { session } = useRequireAuth();
   const userId = session?.user.id;
-  const { data: claims, isLoading } = useClaims(userId);
+  const { data: claims, isLoading, refetch, isRefetching } = useClaims(userId);
   const submitClaim = useSubmitClaim(userId);
 
   const [subject, setSubject] = useState("");
@@ -52,7 +52,11 @@ export default function ReclamationsScreen() {
   }
 
   return (
-    <ScrollView className="flex-1 bg-background" contentContainerClassName="gap-6 px-gutter py-6">
+    <ScrollView
+      className="flex-1 bg-background"
+      contentContainerClassName="gap-6 px-gutter py-6"
+      refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} />}
+    >
       <Card>
         <Text className="mb-3 font-display text-lg font-semibold text-foreground">Déposer une réclamation</Text>
         <View className="gap-3">

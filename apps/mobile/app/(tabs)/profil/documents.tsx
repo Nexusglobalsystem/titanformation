@@ -1,4 +1,4 @@
-import { ActivityIndicator, Linking, ScrollView, Text, View } from "react-native";
+import { ActivityIndicator, Linking, RefreshControl, ScrollView, Text, View } from "react-native";
 import { useRequireAuth } from "../../../src/hooks/useRequireAuth";
 import { useDocuments } from "../../../src/features/documents/useDocuments";
 import { useAppTheme } from "../../../src/theme/ThemeProvider";
@@ -24,7 +24,7 @@ const DOCUMENT_TYPE_LABELS: Record<string, string> = {
 export default function DocumentsScreen() {
   const { theme } = useAppTheme();
   const { session } = useRequireAuth();
-  const { data: documents, isLoading } = useDocuments(session?.user.id);
+  const { data: documents, isLoading, refetch, isRefetching } = useDocuments(session?.user.id);
 
   if (isLoading) {
     return (
@@ -35,7 +35,11 @@ export default function DocumentsScreen() {
   }
 
   return (
-    <ScrollView className="flex-1 bg-background" contentContainerClassName="px-gutter py-6">
+    <ScrollView
+      className="flex-1 bg-background"
+      contentContainerClassName="px-gutter py-6"
+      refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} />}
+    >
       <Card>
         <Text className="mb-3 font-display text-lg font-semibold text-foreground">Mes documents</Text>
         {!documents || documents.length === 0 ? (

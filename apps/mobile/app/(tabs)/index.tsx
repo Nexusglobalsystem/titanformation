@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "expo-router";
-import { ActivityIndicator, ScrollView, Text, View } from "react-native";
+import { ActivityIndicator, RefreshControl, ScrollView, Text, View } from "react-native";
 import { useRequireAuth } from "../../src/hooks/useRequireAuth";
 import { SignInPrompt } from "../../src/components/SignInPrompt";
 import { useDashboard } from "../../src/features/dashboard/useDashboard";
@@ -51,7 +51,7 @@ const HALF_DAY_LABELS: Record<string, string> = {
 export default function AccueilScreen() {
   const { theme } = useAppTheme();
   const { isAuthenticated, session, loading: authLoading } = useRequireAuth();
-  const { data, isLoading } = useDashboard(session?.user.id);
+  const { data, isLoading, refetch, isRefetching } = useDashboard(session?.user.id);
   const signAttendance = useSignAttendance(session?.user.id);
   const [signError, setSignError] = useState<string | null>(null);
 
@@ -97,7 +97,11 @@ export default function AccueilScreen() {
   }
 
   return (
-    <ScrollView className="flex-1 bg-background" contentContainerClassName="gap-6 px-gutter py-6">
+    <ScrollView
+      className="flex-1 bg-background"
+      contentContainerClassName="gap-6 px-gutter py-6"
+      refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} />}
+    >
       <View>
         <Text className="font-display text-2xl font-bold text-foreground">
           Bienvenue{profile?.first_name ? `, ${profile.first_name}` : ""}

@@ -1,5 +1,5 @@
 import { Link } from "expo-router";
-import { ActivityIndicator, ScrollView, Text, View } from "react-native";
+import { ActivityIndicator, RefreshControl, ScrollView, Text, View } from "react-native";
 import { useRequireAuth } from "../../../src/hooks/useRequireAuth";
 import {
   useMarkAllNotificationsRead,
@@ -11,7 +11,7 @@ import { SubmitButton } from "../../../src/components/form/SubmitButton";
 export default function NotificationsScreen() {
   const { session } = useRequireAuth();
   const userId = session?.user.id;
-  const { data: notifications, isLoading } = useNotifications(userId);
+  const { data: notifications, isLoading, refetch, isRefetching } = useNotifications(userId);
   const markRead = useMarkNotificationRead(userId);
   const markAllRead = useMarkAllNotificationsRead(userId);
 
@@ -26,7 +26,11 @@ export default function NotificationsScreen() {
   }
 
   return (
-    <ScrollView className="flex-1 bg-background" contentContainerClassName="gap-4 px-gutter py-6">
+    <ScrollView
+      className="flex-1 bg-background"
+      contentContainerClassName="gap-4 px-gutter py-6"
+      refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} />}
+    >
       {unreadCount > 0 && (
         <SubmitButton onPress={() => markAllRead.mutate()} loading={markAllRead.isPending}>
           Tout marquer comme lu
