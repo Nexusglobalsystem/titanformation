@@ -34,6 +34,8 @@ export function TextField<TFieldValues extends FieldValues>({
               value={typeof value === "string" ? value : ""}
               onChangeText={onChange}
               onBlur={onBlur}
+              accessibilityLabel={label}
+              accessibilityHint={hint}
               placeholderTextColor={theme.colors.foregroundMuted}
               className={[
                 "h-10 w-full rounded border bg-surface px-3 font-body text-sm text-foreground",

@@ -73,6 +73,9 @@ export default function SatisfactionScreen() {
                         <Pressable
                           key={n}
                           onPress={() => setValues((prev) => ({ ...prev, [q.id]: n }))}
+                          accessibilityRole="radio"
+                          accessibilityState={{ checked: isSelected }}
+                          accessibilityLabel={`Note ${n} sur 5`}
                           className={[
                             "h-10 w-10 items-center justify-center rounded-full border",
                             isSelected ? "border-accent bg-accent" : "border-border",
@@ -91,6 +94,7 @@ export default function SatisfactionScreen() {
                     onChangeText={(text) => setValues((prev) => ({ ...prev, [q.id]: text }))}
                     multiline
                     numberOfLines={3}
+                    accessibilityLabel={q.label}
                     placeholderTextColor={theme.colors.foregroundMuted}
                     className="min-h-20 rounded border border-border bg-surface p-3 font-body text-sm text-foreground"
                   />

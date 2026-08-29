@@ -238,6 +238,7 @@ export default function ReserverScreen() {
                         onChangeText={setReason}
                         multiline
                         numberOfLines={2}
+                        accessibilityLabel="Motif du rendez-vous"
                         placeholder="Ex. point sur mon projet, difficulté sur le module 2…"
                         placeholderTextColor={theme.colors.foregroundMuted}
                         className="min-h-16 rounded border border-border bg-surface px-3 py-2 font-body text-sm text-foreground"

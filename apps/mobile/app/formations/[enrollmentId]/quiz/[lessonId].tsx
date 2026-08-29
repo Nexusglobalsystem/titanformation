@@ -234,6 +234,9 @@ function QuizRunner({ lessonId, enrollmentId }: { lessonId: string; enrollmentId
                   <Pressable
                     key={option.id}
                     onPress={() => toggleAnswer(q.id, option.id, multi)}
+                    accessibilityRole={multi ? "checkbox" : "radio"}
+                    accessibilityState={{ checked: isSelected }}
+                    accessibilityLabel={option.label}
                     className="flex-row items-center gap-2 py-1"
                   >
                     <View

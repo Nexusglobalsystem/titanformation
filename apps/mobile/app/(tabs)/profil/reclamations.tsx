@@ -65,6 +65,7 @@ export default function ReclamationsScreen() {
             <TextInput
               value={subject}
               onChangeText={setSubject}
+              accessibilityLabel="Sujet"
               className="h-10 rounded border border-border bg-surface px-3 font-body text-sm text-foreground"
             />
           </View>
@@ -75,6 +76,7 @@ export default function ReclamationsScreen() {
               onChangeText={setBody}
               multiline
               numberOfLines={4}
+              accessibilityLabel="Description"
               placeholderTextColor={theme.colors.foregroundMuted}
               className="min-h-28 rounded border border-border bg-surface px-3 py-2 font-body text-sm text-foreground"
             />

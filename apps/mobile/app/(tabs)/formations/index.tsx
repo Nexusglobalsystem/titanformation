@@ -54,6 +54,7 @@ export default function FormationsScreen() {
         <TextInput
           value={q}
           onChangeText={setQ}
+          accessibilityLabel="Rechercher une formation"
           placeholder="Rechercher une formation..."
           placeholderTextColor={theme.colors.foregroundMuted}
           className="h-10 rounded border border-border bg-surface px-3 font-body text-sm text-foreground"
@@ -61,6 +62,8 @@ export default function FormationsScreen() {
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerClassName="gap-2">
           <Pressable
             onPress={() => setCategorie("all")}
+            accessibilityRole="button"
+            accessibilityState={{ selected: categorie === "all" }}
             className={[
               "rounded-full px-4 py-1.5",
               categorie === "all" ? "bg-accent" : "border border-border",
@@ -78,6 +81,8 @@ export default function FormationsScreen() {
             <Pressable
               key={c}
               onPress={() => setCategorie(c)}
+              accessibilityRole="button"
+              accessibilityState={{ selected: categorie === c }}
               className={["rounded-full px-4 py-1.5", categorie === c ? "bg-accent" : "border border-border"].join(" ")}
             >
               <Text
