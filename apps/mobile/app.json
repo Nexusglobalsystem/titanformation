@@ -27,9 +27,7 @@
       "expo-asset",
       "expo-font",
       "expo-splash-screen",
-      "expo-image",
-      "expo-audio",
-      "expo-sharing"
+      "expo-audio"
     ]
   }
 }
