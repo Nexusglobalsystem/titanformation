@@ -3,13 +3,23 @@
 import { Suspense, useActionState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, Input, PasswordInput } from "@titan-kinetic/ui";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  Input,
+  PasswordInput,
+} from "@titan-kinetic/ui";
 import { signInAction, type ActionState } from "../_actions/auth";
 import { SubmitButton } from "../_components/SubmitButton";
 import { FormMessage } from "../_components/FormMessage";
 
 function ConnexionForm() {
-  const [state, formAction] = useActionState<ActionState, FormData>(signInAction, undefined);
+  const [state, formAction] = useActionState<ActionState, FormData>(
+    signInAction,
+    undefined,
+  );
   const searchParams = useSearchParams();
   const next = searchParams.get("next");
 
@@ -19,13 +29,23 @@ function ConnexionForm() {
         <span className="mb-1 font-mono-label text-xs uppercase tracking-widest text-accent-text">
           Espace membre
         </span>
-        <CardTitle>Connexion</CardTitle>
-        <CardDescription>Accède à ton espace Titan Kinetic.</CardDescription>
+        <h1 className="font-display text-3xl font-semibold tracking-tight text-foreground">
+          Heureux de vous retrouver.
+        </h1>
+        <CardDescription>
+          Retrouvez vos formations et poursuivez votre parcours.
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <form action={formAction} className="flex flex-col gap-4">
           {next && <input type="hidden" name="next" value={next} />}
-          <Input label="Email" name="email" type="email" autoComplete="email" required />
+          <Input
+            label="Email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            required
+          />
           <PasswordInput
             label="Mot de passe"
             name="password"
@@ -36,13 +56,19 @@ function ConnexionForm() {
           <SubmitButton>Se connecter</SubmitButton>
         </form>
         <div className="mt-6 flex flex-col gap-2 text-center font-body text-sm text-foreground-muted">
-          <Link href="/mot-de-passe-oublie" className="text-accent-text hover:underline">
+          <Link
+            href="/mot-de-passe-oublie"
+            className="text-accent-text hover:underline"
+          >
             Mot de passe oublié ?
           </Link>
           <span>
             Pas encore de compte ?{" "}
-            <Link href="/inscription" className="text-accent-text hover:underline">
-              Inscris-toi
+            <Link
+              href="/inscription"
+              className="text-accent-text hover:underline"
+            >
+              Créer mon espace
             </Link>
           </span>
         </div>

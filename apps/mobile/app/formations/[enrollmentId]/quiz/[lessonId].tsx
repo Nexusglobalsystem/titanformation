@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { useLocalSearchParams } from "expo-router";
-import { ActivityIndicator, Pressable, ScrollView, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Pressable,
+  ScrollView,
+  Text,
+  View,
+} from "react-native";
 import { useQuizPage } from "../../../../src/features/quiz/useQuizPage";
 import { useMarkLessonComplete } from "../../../../src/features/lessons/useLesson";
 import { supabase } from "../../../../src/lib/supabase";
@@ -26,7 +32,12 @@ type SubmitResult = {
   maxScore: number;
   passed: boolean;
   passThreshold: number;
-  results: { questionId: string; isCorrect: boolean; correctOptionIds: string[]; explanation: string | null }[];
+  results: {
+    questionId: string;
+    isCorrect: boolean;
+    correctOptionIds: string[];
+    explanation: string | null;
+  }[];
 };
 
 // Équivalent RN de .../quiz/[lessonId]/page.tsx + QuizRunner.tsx. Le
@@ -36,7 +47,10 @@ type SubmitResult = {
 // depuis le client RN ; seul l'état React (sélection, affichage des
 // résultats) est porté vers des primitives RN.
 export default function QuizScreen() {
-  const { enrollmentId, lessonId } = useLocalSearchParams<{ enrollmentId: string; lessonId: string }>();
+  const { enrollmentId, lessonId } = useLocalSearchParams<{
+    enrollmentId: string;
+    lessonId: string;
+  }>();
   const { data, isLoading } = useQuizPage(enrollmentId ?? "", lessonId ?? "");
 
   if (isLoading) {
@@ -50,22 +64,40 @@ export default function QuizScreen() {
   if (!data || data.isLocked) {
     return (
       <View className="flex-1 items-center justify-center gap-2 bg-background px-gutter">
-        <Text className="font-body text-foreground-muted">Quiz indisponible.</Text>
+        <Text className="font-body text-foreground-muted">
+          Quiz indisponible.
+        </Text>
       </View>
     );
   }
 
-  const { trainingTitle, lesson, quiz, submittedAttempts, hasPassed, attemptsExhausted } = data;
+  const {
+    trainingTitle,
+    lesson,
+    quiz,
+    submittedAttempts,
+    hasPassed,
+    attemptsExhausted,
+  } = data;
 
   return (
-    <ScrollView className="flex-1 bg-background" contentContainerClassName="gap-6 px-gutter py-6">
+    <ScrollView
+      className="flex-1 bg-background"
+      contentContainerClassName="gap-6 px-gutter py-6"
+    >
       <View className="gap-1">
-        <Text className="font-display text-xl font-bold text-foreground">{lesson.title}</Text>
-        <Text className="font-body text-xs text-foreground-muted">{trainingTitle}</Text>
+        <Text className="font-display text-xl font-bold text-foreground">
+          {lesson.title}
+        </Text>
+        <Text className="font-body text-xs text-foreground-muted">
+          {trainingTitle}
+        </Text>
       </View>
 
       {!quiz ? (
-        <Text className="font-body text-sm text-foreground-muted">Ce QCM n&apos;est pas encore disponible.</Text>
+        <Text className="font-body text-sm text-foreground-muted">
+          Ce QCM n&apos;est pas encore disponible.
+        </Text>
       ) : (
         <>
           {submittedAttempts.length > 0 && (
@@ -79,22 +111,30 @@ export default function QuizScreen() {
                   className="flex-row items-center justify-between rounded-DEFAULT border border-border p-3"
                 >
                   <Text className="font-body text-sm text-foreground">
-                    Tentative {a.attempt_number} · {a.score}/{a.max_score} points
+                    Tentative {a.attempt_number} · {a.score}/{a.max_score}{" "}
+                    points
                   </Text>
-                  <Badge variant={a.passed ? "success" : "error"}>{a.passed ? "Réussi" : "Non validé"}</Badge>
+                  <Badge variant={a.passed ? "success" : "error"}>
+                    {a.passed ? "Réussi" : "Non validé"}
+                  </Badge>
                 </View>
               ))}
             </View>
           )}
 
           {hasPassed ? (
-            <Text className="font-body text-sm text-success">Vous avez déjà validé ce QCM.</Text>
+            <Text className="font-body text-sm text-success">
+              Vous avez déjà validé ce QCM.
+            </Text>
           ) : attemptsExhausted ? (
             <Text className="font-body text-sm text-error">
               Nombre maximal de tentatives atteint ({quiz.max_attempts}).
             </Text>
           ) : (
-            <QuizRunner lessonId={lessonId ?? ""} enrollmentId={enrollmentId ?? ""} />
+            <QuizRunner
+              lessonId={lessonId ?? ""}
+              enrollmentId={enrollmentId ?? ""}
+            />
           )}
         </>
       )}
@@ -102,7 +142,13 @@ export default function QuizScreen() {
   );
 }
 
-function QuizRunner({ lessonId, enrollmentId }: { lessonId: string; enrollmentId: string }) {
+function QuizRunner({
+  lessonId,
+  enrollmentId,
+}: {
+  lessonId: string;
+  enrollmentId: string;
+}) {
   const markComplete = useMarkLessonComplete(enrollmentId);
   const [started, setStarted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -116,12 +162,15 @@ function QuizRunner({ lessonId, enrollmentId }: { lessonId: string; enrollmentId
     setStarted(true);
     setLoading(true);
     setError(null);
-    const { data, error: invokeError } = await supabase.functions.invoke<StartResponse | { error: string }>(
-      "quiz-attempt",
-      { body: { action: "start", lessonId } },
-    );
+    const { data, error: invokeError } = await supabase.functions.invoke<
+      StartResponse | { error: string }
+    >("quiz-attempt", { body: { action: "start", lessonId, enrollmentId } });
     if (invokeError || !data || "error" in data) {
-      setError((data as { error?: string } | undefined)?.error ?? invokeError?.message ?? "Impossible de démarrer le QCM.");
+      setError(
+        (data as { error?: string } | undefined)?.error ??
+          invokeError?.message ??
+          "Impossible de démarrer le QCM.",
+      );
     } else {
       setAttempt(data);
     }
@@ -155,13 +204,16 @@ function QuizRunner({ lessonId, enrollmentId }: { lessonId: string; enrollmentId
         selectedOptionIds: [...(answers.get(q.id) ?? [])],
       })),
     };
-    const { data, error: invokeError } = await supabase.functions.invoke<SubmitResult | { error: string }>(
-      "quiz-attempt",
-      { body: { action: "submit", ...payload } },
-    );
+    const { data, error: invokeError } = await supabase.functions.invoke<
+      SubmitResult | { error: string }
+    >("quiz-attempt", { body: { action: "submit", ...payload } });
     setSubmitting(false);
     if (invokeError || !data || "error" in data) {
-      setError((data as { error?: string } | undefined)?.error ?? invokeError?.message ?? "Échec de l'envoi.");
+      setError(
+        (data as { error?: string } | undefined)?.error ??
+          invokeError?.message ??
+          "Échec de l'envoi.",
+      );
       return;
     }
     setResult(data);
@@ -175,7 +227,11 @@ function QuizRunner({ lessonId, enrollmentId }: { lessonId: string; enrollmentId
   }
 
   if (loading) {
-    return <Text className="font-body text-sm text-foreground-muted">Chargement du QCM…</Text>;
+    return (
+      <Text className="font-body text-sm text-foreground-muted">
+        Chargement du QCM…
+      </Text>
+    );
   }
 
   if (error) {
@@ -183,26 +239,44 @@ function QuizRunner({ lessonId, enrollmentId }: { lessonId: string; enrollmentId
   }
 
   if (result) {
-    const pct = result.maxScore > 0 ? Math.round((result.score / result.maxScore) * 100) : 0;
+    const pct =
+      result.maxScore > 0
+        ? Math.round((result.score / result.maxScore) * 100)
+        : 0;
     return (
       <View className="gap-4">
         <View className="flex-row items-center gap-3">
-          <Badge variant={result.passed ? "success" : "error"}>{result.passed ? "Réussi" : "Non validé"}</Badge>
+          <Badge variant={result.passed ? "success" : "error"}>
+            {result.passed ? "Réussi" : "Non validé"}
+          </Badge>
           <Text className="font-body text-sm text-foreground">
-            {result.score}/{result.maxScore} points ({pct}%, seuil {result.passThreshold}%)
+            {result.score}/{result.maxScore} points ({pct}%, seuil{" "}
+            {result.passThreshold}%)
           </Text>
         </View>
         <View className="gap-3">
           {attempt?.questions.map((q) => {
             const r = result.results.find((res) => res.questionId === q.id);
             return (
-              <View key={q.id} className="rounded-DEFAULT border border-border p-3">
-                <Text className="font-body text-sm font-semibold text-foreground">{q.statement}</Text>
-                <Text className={["font-body text-xs", r?.isCorrect ? "text-success" : "text-error"].join(" ")}>
+              <View
+                key={q.id}
+                className="rounded-DEFAULT border border-border p-3"
+              >
+                <Text className="font-body text-sm font-semibold text-foreground">
+                  {q.statement}
+                </Text>
+                <Text
+                  className={[
+                    "font-body text-xs",
+                    r?.isCorrect ? "text-success" : "text-error",
+                  ].join(" ")}
+                >
                   {r?.isCorrect ? "Bonne réponse" : "Réponse incorrecte"}
                 </Text>
                 {r?.explanation && (
-                  <Text className="mt-1 font-body text-xs text-foreground-muted">{r.explanation}</Text>
+                  <Text className="mt-1 font-body text-xs text-foreground-muted">
+                    {r.explanation}
+                  </Text>
                 )}
               </View>
             );
@@ -217,7 +291,9 @@ function QuizRunner({ lessonId, enrollmentId }: { lessonId: string; enrollmentId
   return (
     <View className="gap-6">
       {attempt.timeLimitMinutes && (
-        <Text className="font-body text-xs text-foreground-muted">Durée limite : {attempt.timeLimitMinutes} min</Text>
+        <Text className="font-body text-xs text-foreground-muted">
+          Durée limite : {attempt.timeLimitMinutes} min
+        </Text>
       )}
       {attempt.questions.map((q, index) => {
         const multi = q.kind === "qcm";
@@ -243,12 +319,21 @@ function QuizRunner({ lessonId, enrollmentId }: { lessonId: string; enrollmentId
                       className={[
                         "h-4 w-4 items-center justify-center border",
                         multi ? "rounded-sm" : "rounded-full",
-                        isSelected ? "border-accent bg-accent" : "border-border",
+                        isSelected
+                          ? "border-accent bg-accent"
+                          : "border-border",
                       ].join(" ")}
                     >
-                      {isSelected && <View className="h-2 w-2 bg-on-accent" style={multi ? undefined : { borderRadius: 9999 }} />}
+                      {isSelected && (
+                        <View
+                          className="h-2 w-2 bg-on-accent"
+                          style={multi ? undefined : { borderRadius: 9999 }}
+                        />
+                      )}
                     </View>
-                    <Text className="font-body text-sm text-foreground">{option.label}</Text>
+                    <Text className="font-body text-sm text-foreground">
+                      {option.label}
+                    </Text>
                   </Pressable>
                 );
               })}

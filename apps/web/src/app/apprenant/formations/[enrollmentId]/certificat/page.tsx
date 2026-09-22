@@ -14,6 +14,7 @@ export default async function CertificatPage({
   const {
     data: { user },
   } = await supabase.auth.getUser();
+  if (!user) notFound();
 
   const { data: enrollment } = await supabase
     .from("enrollments")
@@ -21,9 +22,11 @@ export default async function CertificatPage({
       "id, status, sessions(reference, starts_on, ends_on, trainings(id, title, duration_hours)), profiles(first_name, last_name)",
     )
     .eq("id", enrollmentId)
+    .eq("learner_id", user.id)
     .maybeSingle();
 
-  if (!enrollment || !["confirme", "termine"].includes(enrollment.status)) notFound();
+  if (!enrollment || !["confirme", "termine"].includes(enrollment.status))
+    notFound();
 
   const training = enrollment.sessions?.trainings;
   if (!training) notFound();
@@ -38,14 +41,23 @@ export default async function CertificatPage({
   // réévalué si les conditions de la formation changent après coup. Seule
   // une première demande passe par la vérification d'éligibilité.
   if (!certificate) {
-    const eligibility = await evaluateCertificationEligibility(supabase, enrollmentId, training.id);
+    const eligibility = await evaluateCertificationEligibility(
+      supabase,
+      enrollmentId,
+      training.id,
+    );
     if (!eligibility.eligible) {
       return (
         <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-background p-8 text-center">
-          <p className="font-body text-sm text-foreground-muted">Le certificat n&apos;est pas encore disponible.</p>
+          <p className="font-body text-sm text-foreground-muted">
+            Le certificat n&apos;est pas encore disponible.
+          </p>
           <ul className="flex flex-col gap-1">
             {eligibility.reasons.map((reason) => (
-              <li key={reason} className="font-body text-sm text-foreground-muted">
+              <li
+                key={reason}
+                className="font-body text-sm text-foreground-muted"
+              >
                 {reason}
               </li>
             ))}
@@ -63,21 +75,36 @@ export default async function CertificatPage({
     const certificateNumber = `CERT-${new Date().getFullYear()}-${enrollmentId.slice(0, 8).toUpperCase()}`;
     const { data: created } = await supabase
       .from("certificates")
-      .insert({ enrollment_id: enrollmentId, certificate_number: certificateNumber })
+      .insert({
+        enrollment_id: enrollmentId,
+        certificate_number: certificateNumber,
+      })
       .select("certificate_number, issued_at")
       .single();
-    certificate = created;
+    certificate =
+      created ??
+      (
+        await supabase
+          .from("certificates")
+          .select("certificate_number, issued_at")
+          .eq("enrollment_id", enrollmentId)
+          .maybeSingle()
+      ).data;
   }
 
   if (!certificate) notFound();
 
   const learner = enrollment.profiles;
-  const learnerName = `${learner?.first_name ?? ""} ${learner?.last_name ?? ""}`.trim();
-  const issuedDate = new Date(certificate.issued_at).toLocaleDateString("fr-FR", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  const learnerName =
+    `${learner?.first_name ?? ""} ${learner?.last_name ?? ""}`.trim();
+  const issuedDate = new Date(certificate.issued_at).toLocaleDateString(
+    "fr-FR",
+    {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    },
+  );
 
   return (
     <div className="min-h-screen bg-background">
@@ -103,24 +130,38 @@ export default async function CertificatPage({
             <h1 className="mt-6 font-display text-3xl font-bold text-foreground sm:text-4xl">
               Certificat de réussite
             </h1>
-            <p className="mt-8 font-body text-sm text-foreground-muted">Décerné à</p>
-            <p className="mt-2 font-display text-2xl font-semibold text-foreground">{learnerName}</p>
+            <p className="mt-8 font-body text-sm text-foreground-muted">
+              Décerné à
+            </p>
+            <p className="mt-2 font-display text-2xl font-semibold text-foreground">
+              {learnerName}
+            </p>
             <p className="mt-8 font-body text-sm text-foreground-muted">
               pour avoir suivi avec succès la formation
             </p>
-            <p className="mt-2 font-display text-xl font-semibold text-accent-text">{training.title}</p>
+            <p className="mt-2 font-display text-xl font-semibold text-accent-text">
+              {training.title}
+            </p>
             <p className="mt-2 font-body text-sm text-foreground-muted">
               {training.duration_hours} heures de formation
             </p>
 
             <div className="mx-auto mt-10 flex max-w-sm items-center justify-between border-t border-border pt-6 text-left">
               <div>
-                <p className="font-mono-label text-[10px] uppercase text-foreground-muted">Délivré le</p>
-                <p className="font-body text-sm text-foreground">{issuedDate}</p>
+                <p className="font-mono-label text-[10px] uppercase text-foreground-muted">
+                  Délivré le
+                </p>
+                <p className="font-body text-sm text-foreground">
+                  {issuedDate}
+                </p>
               </div>
               <div className="text-right">
-                <p className="font-mono-label text-[10px] uppercase text-foreground-muted">N° de certificat</p>
-                <p className="font-mono-label text-sm text-foreground">{certificate.certificate_number}</p>
+                <p className="font-mono-label text-[10px] uppercase text-foreground-muted">
+                  N° de certificat
+                </p>
+                <p className="font-mono-label text-sm text-foreground">
+                  {certificate.certificate_number}
+                </p>
               </div>
             </div>
 

@@ -1,19 +1,29 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import {
   DndContext,
   closestCenter,
   PointerSensor,
+  KeyboardSensor,
   useSensor,
   useSensors,
   type DragEndEvent,
 } from "@dnd-kit/core";
-import { SortableContext, verticalListSortingStrategy, useSortable, arrayMove } from "@dnd-kit/sortable";
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+  useSortable,
+  arrayMove,
+  sortableKeyboardCoordinates,
+} from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Badge, EmptyState } from "@titan-kinetic/ui";
 import { IconLayers } from "@/components/icons";
-import { reorderTrainingStepsAction, deleteTrainingStepAction } from "../_actions/trainingSteps";
+import {
+  reorderTrainingStepsAction,
+  deleteTrainingStepAction,
+} from "../_actions/trainingSteps";
 
 export type TrainingStep = {
   id: string;
@@ -31,7 +41,10 @@ const TYPE_LABELS: Record<string, string> = {
   certification: "Certification",
 };
 
-const TYPE_VARIANTS: Record<string, "neutral" | "success" | "warning" | "featured"> = {
+const TYPE_VARIANTS: Record<
+  string,
+  "neutral" | "success" | "warning" | "featured"
+> = {
   presentiel: "neutral",
   livekit: "featured",
   autoapprentissage: "success",
@@ -39,8 +52,21 @@ const TYPE_VARIANTS: Record<string, "neutral" | "success" | "warning" | "feature
   certification: "featured",
 };
 
-function SortableStepRow({ step, trainingId }: { step: TrainingStep; trainingId: string }) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: step.id });
+function SortableStepRow({
+  step,
+  trainingId,
+}: {
+  step: TrainingStep;
+  trainingId: string;
+}) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: step.id });
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
@@ -65,8 +91,12 @@ function SortableStepRow({ step, trainingId }: { step: TrainingStep; trainingId:
         </button>
         <div>
           <div className="flex items-center gap-2">
-            <p className="font-body text-sm font-medium text-foreground">{step.title}</p>
-            <Badge variant={TYPE_VARIANTS[step.type] ?? "neutral"}>{TYPE_LABELS[step.type] ?? step.type}</Badge>
+            <p className="font-body text-sm font-medium text-foreground">
+              {step.title}
+            </p>
+            <Badge variant={TYPE_VARIANTS[step.type] ?? "neutral"}>
+              {TYPE_LABELS[step.type] ?? step.type}
+            </Badge>
           </div>
           {(step.duration_minutes || step.modules?.title) && (
             <p className="font-body text-xs text-foreground-muted">
@@ -80,7 +110,10 @@ function SortableStepRow({ step, trainingId }: { step: TrainingStep; trainingId:
       <form action={deleteTrainingStepAction}>
         <input type="hidden" name="trainingId" value={trainingId} />
         <input type="hidden" name="stepId" value={step.id} />
-        <button type="submit" className="font-body text-xs text-error hover:underline">
+        <button
+          type="submit"
+          className="font-body text-xs text-error hover:underline"
+        >
           Retirer
         </button>
       </form>
@@ -88,7 +121,14 @@ function SortableStepRow({ step, trainingId }: { step: TrainingStep; trainingId:
   );
 }
 
-export function TrainingStepsBoard({
+export function TrainingStepsBoard(props: {
+  trainingId: string;
+  steps: TrainingStep[];
+}) {
+  return <TrainingStepsContent key={JSON.stringify(props.steps)} {...props} />;
+}
+
+function TrainingStepsContent({
   trainingId,
   steps: initialSteps,
 }: {
@@ -99,15 +139,12 @@ export function TrainingStepsBoard({
   const [error, setError] = useState<string | null>(null);
   const [, startTransition] = useTransition();
 
-  // initialSteps vient du Server Component et se rafraîchit après chaque
-  // ajout/suppression d'étape (formulaire séparé) via revalidatePath — sans
-  // cette resynchronisation, useState ne reprendrait sa valeur qu'au premier
-  // montage et ignorerait silencieusement les nouvelles étapes ajoutées.
-  useEffect(() => {
-    setSteps(initialSteps);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(initialSteps.map((s) => s.id))]);
-  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }));
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
+  );
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
@@ -135,7 +172,12 @@ export function TrainingStepsBoard({
   }
 
   if (steps.length === 0) {
-    return <EmptyState icon={<IconLayers />} title="Aucune étape définie pour ce parcours." />;
+    return (
+      <EmptyState
+        icon={<IconLayers />}
+        title="Aucune étape définie pour ce parcours."
+      />
+    );
   }
 
   return (
@@ -145,11 +187,23 @@ export function TrainingStepsBoard({
           client à chaque chargement de page, provoquant un mismatch
           d'hydratation dès qu'un autre DndContext a déjà été rendu ailleurs
           sur le serveur depuis son démarrage. */}
-      <DndContext id={`training-steps-${trainingId}`} sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-        <SortableContext items={steps.map((s) => s.id)} strategy={verticalListSortingStrategy}>
+      <DndContext
+        id={`training-steps-${trainingId}`}
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+      >
+        <SortableContext
+          items={steps.map((s) => s.id)}
+          strategy={verticalListSortingStrategy}
+        >
           <div className="flex flex-col gap-2">
             {steps.map((step) => (
-              <SortableStepRow key={step.id} step={step} trainingId={trainingId} />
+              <SortableStepRow
+                key={step.id}
+                step={step}
+                trainingId={trainingId}
+              />
             ))}
           </div>
         </SortableContext>

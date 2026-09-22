@@ -1,19 +1,29 @@
+import { getVideoEmbedUrl } from "@titan-kinetic/core";
 import { useEffect } from "react";
 import { Link, useLocalSearchParams, useRouter } from "expo-router";
-import { ActivityIndicator, Linking, Pressable, ScrollView, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Linking,
+  Pressable,
+  ScrollView,
+  Text,
+  View,
+} from "react-native";
 import { useAudioPlayer, useAudioPlayerStatus } from "expo-audio";
-import { useLesson, useMarkLessonComplete } from "../../../../src/features/lessons/useLesson";
+import {
+  useLesson,
+  useMarkLessonComplete,
+} from "../../../../src/features/lessons/useLesson";
 import { useAppTheme } from "../../../../src/theme/ThemeProvider";
 import { Badge } from "../../../../src/components/Badge";
 import { Progress } from "../../../../src/components/Progress";
 import { SubmitButton } from "../../../../src/components/form/SubmitButton";
-import { IconCheckCircle, IconClock, IconLock, IconPlayCircle } from "../../../../src/components/Icon";
-
-const VIDEO_PROVIDER_LABELS: Record<string, string> = {
-  mux: "Mux",
-  cloudflare_stream: "Cloudflare Stream",
-  bunny: "Bunny",
-};
+import {
+  IconCheckCircle,
+  IconClock,
+  IconLock,
+  IconPlayCircle,
+} from "../../../../src/components/Icon";
 
 const TYPE_LABELS: Record<string, string> = {
   texte: "Lecture",
@@ -25,11 +35,11 @@ const TYPE_LABELS: Record<string, string> = {
 };
 
 // Équivalent RN de apps/web/.../formations/[enrollmentId]/lecons/[lessonId]/page.tsx.
-// Type "vidéo" reproduit le même placeholder "en attente" que le web (qui
-// n'a lui-même pas encore de vrai lecteur configuré) — le mobile ne
-// dépasse pas le web sur une fonctionnalité inachevée.
 export default function LeconScreen() {
-  const { enrollmentId, lessonId } = useLocalSearchParams<{ enrollmentId: string; lessonId: string }>();
+  const { enrollmentId, lessonId } = useLocalSearchParams<{
+    enrollmentId: string;
+    lessonId: string;
+  }>();
   const router = useRouter();
   const { theme } = useAppTheme();
   const { data, isLoading } = useLesson(enrollmentId ?? "", lessonId ?? "");
@@ -52,7 +62,9 @@ export default function LeconScreen() {
   if (!data) {
     return (
       <View className="flex-1 items-center justify-center gap-2 bg-background px-gutter">
-        <Text className="font-body text-foreground-muted">Leçon indisponible.</Text>
+        <Text className="font-body text-foreground-muted">
+          Leçon indisponible.
+        </Text>
       </View>
     );
   }
@@ -70,26 +82,43 @@ export default function LeconScreen() {
     alreadyDone,
     fileUrl,
   } = data;
+  const videoUrl = getVideoEmbedUrl(
+    lesson.video_provider,
+    lesson.video_asset_id,
+  );
 
   return (
-    <ScrollView className="flex-1 bg-background" contentContainerClassName="gap-4 px-gutter py-6">
+    <ScrollView
+      className="flex-1 bg-background"
+      contentContainerClassName="gap-4 px-gutter py-6"
+    >
       <View className="rounded-xl border border-border bg-surface-elevated p-6">
         <View className="mb-4 flex-row flex-wrap items-center justify-between gap-2">
           <View className="flex-row items-center gap-2">
-            <Badge variant="neutral">{TYPE_LABELS[lesson.type] ?? lesson.type}</Badge>
+            <Badge variant="neutral">
+              {TYPE_LABELS[lesson.type] ?? lesson.type}
+            </Badge>
             <View className="flex-row items-center gap-1">
               <IconClock size={14} color={theme.colors.foregroundMuted} />
-              <Text className="font-body text-xs text-foreground-muted">{lesson.duration_minutes} min</Text>
+              <Text className="font-body text-xs text-foreground-muted">
+                {lesson.duration_minutes} min
+              </Text>
             </View>
           </View>
           {alreadyDone && <Badge variant="success">Terminé</Badge>}
         </View>
 
-        <Text className="mb-1 font-display text-xl font-bold text-foreground">{lesson.title}</Text>
-        <Text className="mb-6 font-body text-xs text-foreground-muted">{trainingTitle}</Text>
+        <Text className="mb-1 font-display text-xl font-bold text-foreground">
+          {lesson.title}
+        </Text>
+        <Text className="mb-6 font-body text-xs text-foreground-muted">
+          {trainingTitle}
+        </Text>
 
         {lesson.type === "texte" && (
-          <Text className="font-body text-sm text-foreground">{lesson.body || "Aucun contenu."}</Text>
+          <Text className="font-body text-sm text-foreground">
+            {lesson.body || "Aucun contenu."}
+          </Text>
         )}
 
         {lesson.type === "audio" &&
@@ -103,7 +132,9 @@ export default function LeconScreen() {
 
         {lesson.type === "document" &&
           (fileUrl ? (
-            <SubmitButton onPress={() => Linking.openURL(fileUrl)}>Ouvrir le document</SubmitButton>
+            <SubmitButton onPress={() => Linking.openURL(fileUrl)}>
+              Ouvrir le document
+            </SubmitButton>
           ) : (
             <Text className="font-body text-sm text-foreground-muted">
               Aucun document n&apos;a encore été mis en ligne.
@@ -111,17 +142,23 @@ export default function LeconScreen() {
           ))}
 
         {lesson.type === "video" &&
-          (lesson.video_provider && lesson.video_asset_id ? (
-            <View className="gap-2 rounded-DEFAULT border border-dashed border-border p-6">
-              <Text className="text-center font-body text-sm text-foreground">
-                Vidéo hébergée chez {VIDEO_PROVIDER_LABELS[lesson.video_provider] ?? lesson.video_provider}
+          (videoUrl ? (
+            <Pressable
+              accessibilityRole="link"
+              onPress={() => Linking.openURL(videoUrl)}
+              className="rounded-xl bg-primary p-6"
+            >
+              <Text className="font-body font-semibold text-on-primary">
+                Lire la vidéo ↗
               </Text>
-              <Text className="text-center font-body text-xs text-foreground-muted">
-                Asset : {lesson.video_asset_id} — lecteur en attente de la configuration du compte prestataire.
+              <Text className="mt-2 font-body text-xs text-on-primary">
+                Le lecteur s’ouvre dans votre navigateur.
               </Text>
-            </View>
+            </Pressable>
           ) : (
-            <Text className="font-body text-sm text-foreground-muted">Aucune vidéo n&apos;a encore été configurée.</Text>
+            <Text className="font-body text-sm text-foreground-muted">
+              La vidéo sera disponible dès sa publication.
+            </Text>
           ))}
       </View>
 
@@ -144,8 +181,13 @@ export default function LeconScreen() {
             </Link>
           )}
         </View>
-        <SubmitButton onPress={() => markComplete.mutate(lessonId ?? "")} loading={markComplete.isPending}>
-          {alreadyDone ? "Marquer à nouveau comme terminé" : "Marquer comme terminé"}
+        <SubmitButton
+          onPress={() => markComplete.mutate(lessonId ?? "")}
+          loading={markComplete.isPending}
+        >
+          {alreadyDone
+            ? "Marquer à nouveau comme terminé"
+            : "Marquer comme terminé"}
         </SubmitButton>
       </View>
 
@@ -155,7 +197,10 @@ export default function LeconScreen() {
             Progression du programme
           </Text>
           <Text className="font-body text-xs font-semibold text-accent-text">
-            {totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0}%
+            {totalLessons > 0
+              ? Math.round((completedCount / totalLessons) * 100)
+              : 0}
+            %
           </Text>
         </View>
         <Progress value={completedCount} max={totalLessons || 1} />
@@ -163,7 +208,9 @@ export default function LeconScreen() {
 
       <View className="gap-3 rounded-xl border border-border bg-surface-elevated p-2">
         {modules.length === 0 ? (
-          <Text className="p-3 font-body text-sm text-foreground-muted">Programme vide.</Text>
+          <Text className="p-3 font-body text-sm text-foreground-muted">
+            Programme vide.
+          </Text>
         ) : (
           modules.map((m) => (
             <View key={m.id} className="gap-1 p-2">
@@ -175,19 +222,33 @@ export default function LeconScreen() {
                 .map((l) => {
                   const isCurrent = l.id === lessonId;
                   const isDone = completedLessonIds.has(l.id);
-                  const isLockedModule = moduleUnlock.get(m.id)?.unlocked === false;
+                  const isLockedModule =
+                    moduleUnlock.get(m.id)?.unlocked === false;
                   if (isLockedModule) {
                     return (
-                      <View key={l.id} className="flex-row items-center gap-2 rounded-DEFAULT px-2 py-2 opacity-60">
-                        <IconLock size={16} color={theme.colors.foregroundMuted} />
-                        <Text numberOfLines={1} className="font-body text-sm text-foreground-muted">
+                      <View
+                        key={l.id}
+                        className="flex-row items-center gap-2 rounded-DEFAULT px-2 py-2 opacity-60"
+                      >
+                        <IconLock
+                          size={16}
+                          color={theme.colors.foregroundMuted}
+                        />
+                        <Text
+                          numberOfLines={1}
+                          className="font-body text-sm text-foreground-muted"
+                        >
                           {l.title}
                         </Text>
                       </View>
                     );
                   }
                   return (
-                    <Link key={l.id} href={`/formations/${enrollmentId}/lecons/${l.id}`} asChild>
+                    <Link
+                      key={l.id}
+                      href={`/formations/${enrollmentId}/lecons/${l.id}`}
+                      asChild
+                    >
                       <Pressable
                         className={[
                           "flex-row items-center gap-2 rounded-DEFAULT px-2 py-2",
@@ -195,9 +256,15 @@ export default function LeconScreen() {
                         ].join(" ")}
                       >
                         {isDone ? (
-                          <IconCheckCircle size={16} color={theme.colors.success.fg} />
+                          <IconCheckCircle
+                            size={16}
+                            color={theme.colors.success.fg}
+                          />
                         ) : isCurrent ? (
-                          <IconPlayCircle size={16} color={theme.colors.accentText} />
+                          <IconPlayCircle
+                            size={16}
+                            color={theme.colors.accentText}
+                          />
                         ) : (
                           <View className="h-4 w-4 rounded-full border border-border" />
                         )}
@@ -205,7 +272,9 @@ export default function LeconScreen() {
                           numberOfLines={1}
                           className={[
                             "font-body text-sm",
-                            isCurrent ? "font-semibold text-accent-text" : "text-foreground",
+                            isCurrent
+                              ? "font-semibold text-accent-text"
+                              : "text-foreground",
                           ].join(" ")}
                         >
                           {l.title}

@@ -5,11 +5,13 @@ node_modules/
 # Env
 .env
 .env.local
+.env.test
 .env.*.local
 !.env.example
 
 # Next.js
 .next/
+.next-verify/
 out/
 
 # Turborepo
@@ -52,3 +54,7 @@ apps/web/CLAUDE.md
 # État local Claude Code (pas les skills, ceux-ci sont versionnés)
 .claude/scheduled_tasks.lock
 __pycache__/
+
+# Local verification artifacts
+.verification/
+artifacts/

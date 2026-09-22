@@ -3,11 +3,11 @@ import { fileURLToPath } from "node:url";
 import { config } from "dotenv";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-config({ path: path.resolve(__dirname, "../../../apps/web/.env.local") });
+config({ path: path.resolve(__dirname, "../.env.test") });
 
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-import { createAdminClient } from "../src/supabase/admin";
+
 import type { Database } from "../src/database.types";
 
 /**
@@ -19,10 +19,26 @@ import type { Database } from "../src/database.types";
  */
 
 const PASSWORD = "TestRls2026!";
-const EMAIL_A = "test-rls-a@titankinetic.fr";
-const EMAIL_B = "test-rls-b@titankinetic.fr";
+const runId = crypto.randomUUID();
+const EMAIL_A = `test-rls-a-${runId}@example.invalid`;
+const EMAIL_B = `test-rls-b-${runId}@example.invalid`;
 
-const admin = createAdminClient();
+const testUrl = process.env.TEST_SUPABASE_URL;
+const testAnonKey = process.env.TEST_SUPABASE_ANON_KEY;
+const testServiceKey = process.env.TEST_SUPABASE_SERVICE_ROLE_KEY;
+if (
+  !testUrl ||
+  !testAnonKey ||
+  !testServiceKey ||
+  testUrl.includes("svenjjuajujnrccmfzkc")
+) {
+  throw new Error(
+    "Tests RLS : renseignez TEST_SUPABASE_URL, TEST_SUPABASE_ANON_KEY et TEST_SUPABASE_SERVICE_ROLE_KEY pour une base de test isolée. La production est interdite.",
+  );
+}
+const admin = createClient<Database>(testUrl, testServiceKey, {
+  auth: { persistSession: false, autoRefreshToken: false },
+});
 
 let userAId: string;
 let userBId: string;
@@ -34,10 +50,7 @@ let slotId: string;
 let enrollmentId: string;
 
 function anonClient() {
-  return createClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-  );
+  return createClient<Database>(testUrl!, testAnonKey!);
 }
 
 async function createConfirmedUser(email: string) {
@@ -52,7 +65,10 @@ async function createConfirmedUser(email: string) {
 
 async function signIn(email: string) {
   const client = anonClient();
-  const { error } = await client.auth.signInWithPassword({ email, password: PASSWORD });
+  const { error } = await client.auth.signInWithPassword({
+    email,
+    password: PASSWORD,
+  });
   if (error) throw error;
   return client;
 }
@@ -134,7 +150,8 @@ beforeAll(async () => {
 afterAll(async () => {
   // L'enrollment (et l'attendance auto-créée par trigger) doivent partir
   // avant la session/le profil : leurs FK sont "on delete restrict".
-  if (enrollmentId) await admin.from("enrollments").delete().eq("id", enrollmentId);
+  if (enrollmentId)
+    await admin.from("enrollments").delete().eq("id", enrollmentId);
   if (sessionId) await admin.from("sessions").delete().eq("id", sessionId);
   if (trainingId) await admin.from("trainings").delete().eq("id", trainingId);
   if (userAId) await admin.auth.admin.deleteUser(userAId);
@@ -143,48 +160,72 @@ afterAll(async () => {
 
 describe("RLS — profiles", () => {
   it("B ne voit pas le profil de A", async () => {
-    const { data } = await clientB.from("profiles").select("id").eq("id", userAId);
+    const { data } = await clientB
+      .from("profiles")
+      .select("id")
+      .eq("id", userAId);
     expect(data).toEqual([]);
   });
 
   it("A voit son propre profil", async () => {
-    const { data } = await clientA.from("profiles").select("id").eq("id", userAId);
+    const { data } = await clientA
+      .from("profiles")
+      .select("id")
+      .eq("id", userAId);
     expect(data).toHaveLength(1);
   });
 });
 
 describe("RLS — user_roles", () => {
   it("B ne voit pas les rôles de A", async () => {
-    const { data } = await clientB.from("user_roles").select("role").eq("user_id", userAId);
+    const { data } = await clientB
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", userAId);
     expect(data).toEqual([]);
   });
 
   it("A voit ses propres rôles", async () => {
-    const { data } = await clientA.from("user_roles").select("role").eq("user_id", userAId);
+    const { data } = await clientA
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", userAId);
     expect(data!.length).toBeGreaterThan(0);
   });
 });
 
 describe("RLS — enrollments", () => {
   it("B ne voit pas l'inscription de A", async () => {
-    const { data } = await clientB.from("enrollments").select("id").eq("id", enrollmentId);
+    const { data } = await clientB
+      .from("enrollments")
+      .select("id")
+      .eq("id", enrollmentId);
     expect(data).toEqual([]);
   });
 
   it("A voit sa propre inscription", async () => {
-    const { data } = await clientA.from("enrollments").select("id").eq("id", enrollmentId);
+    const { data } = await clientA
+      .from("enrollments")
+      .select("id")
+      .eq("id", enrollmentId);
     expect(data).toHaveLength(1);
   });
 });
 
 describe("RLS — attendances", () => {
   it("B ne voit pas l'émargement de A", async () => {
-    const { data } = await clientB.from("attendances").select("id").eq("enrollment_id", enrollmentId);
+    const { data } = await clientB
+      .from("attendances")
+      .select("id")
+      .eq("enrollment_id", enrollmentId);
     expect(data).toEqual([]);
   });
 
   it("A voit son propre émargement", async () => {
-    const { data } = await clientA.from("attendances").select("id").eq("enrollment_id", enrollmentId);
+    const { data } = await clientA
+      .from("attendances")
+      .select("id")
+      .eq("enrollment_id", enrollmentId);
     expect(data).toHaveLength(1);
   });
 });
@@ -195,7 +236,11 @@ describe("RLS — access_grants (Phase 5, additif)", () => {
   beforeAll(async () => {
     const { data: module, error } = await admin
       .from("modules")
-      .insert({ training_id: trainingId, title: "Module test RLS", position: 0 })
+      .insert({
+        training_id: trainingId,
+        title: "Module test RLS",
+        position: 0,
+      })
       .select()
       .single();
     if (error) throw error;
@@ -208,36 +253,65 @@ describe("RLS — access_grants (Phase 5, additif)", () => {
   });
 
   it("sans accès accordé, B ne voit ni la formation ni le module de A (comportement inchangé)", async () => {
-    const { data: trainings } = await clientB.from("trainings").select("id").eq("id", trainingId);
+    const { data: trainings } = await clientB
+      .from("trainings")
+      .select("id")
+      .eq("id", trainingId);
     expect(trainings).toEqual([]);
-    const { data: modules } = await clientB.from("modules").select("id").eq("id", moduleId);
+    const { data: modules } = await clientB
+      .from("modules")
+      .select("id")
+      .eq("id", moduleId);
     expect(modules).toEqual([]);
   });
 
   it("après octroi d'un accès formation, B voit la formation et son module en lecture", async () => {
     const { error: grantError } = await admin
       .from("access_grants")
-      .insert({ user_id: userBId, training_id: trainingId, granted_by: userAId });
+      .insert({
+        user_id: userBId,
+        training_id: trainingId,
+        granted_by: userAId,
+      });
     expect(grantError).toBeNull();
 
-    const { data: trainings } = await clientB.from("trainings").select("id").eq("id", trainingId);
+    const { data: trainings } = await clientB
+      .from("trainings")
+      .select("id")
+      .eq("id", trainingId);
     expect(trainings).toHaveLength(1);
-    const { data: modules } = await clientB.from("modules").select("id").eq("id", moduleId);
+    const { data: modules } = await clientB
+      .from("modules")
+      .select("id")
+      .eq("id", moduleId);
     expect(modules).toHaveLength(1);
 
-    await admin.from("access_grants").delete().eq("training_id", trainingId).eq("user_id", userBId);
+    await admin
+      .from("access_grants")
+      .delete()
+      .eq("training_id", trainingId)
+      .eq("user_id", userBId);
   });
 
   it("un accès accordé sans inscription ne permet pas d'agir (learner_progress reste bloqué)", async () => {
     const { data: lesson } = await admin
       .from("lessons")
-      .insert({ module_id: moduleId, title: "Leçon test RLS", type: "texte", body: "N/A" })
+      .insert({
+        module_id: moduleId,
+        title: "Leçon test RLS",
+        type: "texte",
+        body: "N/A",
+      })
       .select()
       .single();
 
     const { error: grantError } = await admin
       .from("access_grants")
-      .insert({ user_id: userBId, training_id: trainingId, granted_by: userAId });
+      .insert({
+        user_id: userBId,
+        training_id: trainingId,
+        granted_by: userAId,
+      });
     expect(grantError).toBeNull();
 
     // B voit la leçon (accès accordé) mais ne peut pas s'auto-déclarer une
@@ -245,10 +319,18 @@ describe("RLS — access_grants (Phase 5, additif)", () => {
     // cette migration, l'accès accordé reste strictement en lecture.
     const { error: progressError } = await clientB
       .from("learner_progress")
-      .insert({ enrollment_id: enrollmentId, lesson_id: lesson!.id, completed_at: new Date().toISOString() });
+      .insert({
+        enrollment_id: enrollmentId,
+        lesson_id: lesson!.id,
+        completed_at: new Date().toISOString(),
+      });
     expect(progressError).not.toBeNull();
 
-    await admin.from("access_grants").delete().eq("training_id", trainingId).eq("user_id", userBId);
+    await admin
+      .from("access_grants")
+      .delete()
+      .eq("training_id", trainingId)
+      .eq("user_id", userBId);
     await admin.from("lessons").delete().eq("id", lesson!.id);
   });
 });
@@ -256,12 +338,20 @@ describe("RLS — access_grants (Phase 5, additif)", () => {
 describe("RLS — organization_settings (CMS informations légales, additif)", () => {
   it("un visiteur anonyme peut lire les paramètres publics", async () => {
     const anon = anonClient();
-    const { data, error } = await anon.from("organization_settings").select("id").eq("id", 1);
+    const { data, error } = await anon
+      .from("organization_settings")
+      .select("id")
+      .eq("id", 1);
     expect(error).toBeNull();
     expect(data).toHaveLength(1);
   });
 
   it("un utilisateur authentifié non-staff ne peut pas modifier les paramètres", async () => {
+    const { data: initial } = await admin
+      .from("organization_settings")
+      .select("legal_name")
+      .eq("id", 1)
+      .single();
     // Une UPDATE bloquée par RLS n'échoue pas avec une erreur : la ligne
     // n'est simplement pas visible pour l'écriture, donc 0 ligne affectée.
     // .select() après .update() est nécessaire pour observer ce résultat.
@@ -272,12 +362,18 @@ describe("RLS — organization_settings (CMS informations légales, additif)", (
       .select("id");
     expect(data).toEqual([]);
 
-    const { data: check } = await admin.from("organization_settings").select("legal_name").eq("id", 1).single();
-    expect(check?.legal_name).toBeNull();
+    const { data: check } = await admin
+      .from("organization_settings")
+      .select("legal_name")
+      .eq("id", 1)
+      .single();
+    expect(check?.legal_name).toBe(initial?.legal_name);
   });
 
   it("un gestionnaire peut lire mais n'a pas la permission settings.edit par défaut", async () => {
-    await admin.from("user_roles").insert({ user_id: userBId, role: "gestionnaire" });
+    await admin
+      .from("user_roles")
+      .insert({ user_id: userBId, role: "gestionnaire" });
 
     const { data: readData, error: readError } = await clientB
       .from("organization_settings")
@@ -286,27 +382,54 @@ describe("RLS — organization_settings (CMS informations légales, additif)", (
     expect(readError).toBeNull();
     expect(readData).toHaveLength(1);
 
-    const { data: allowed } = await clientB.rpc("has_permission", { p_key: "settings.edit" });
+    const { data: allowed } = await clientB.rpc("has_permission", {
+      p_key: "settings.edit",
+    });
     expect(allowed).toBe(false);
 
-    await admin.from("user_roles").delete().eq("user_id", userBId).eq("role", "gestionnaire");
+    await admin
+      .from("user_roles")
+      .delete()
+      .eq("user_id", userBId)
+      .eq("role", "gestionnaire");
   });
 
   it("un admin a la permission settings.edit et peut modifier la fiche", async () => {
-    await admin.from("user_roles").insert({ user_id: userBId, role: "admin" });
-
-    const { data: allowed } = await clientB.rpc("has_permission", { p_key: "settings.edit" });
-    expect(allowed).toBe(true);
-
-    const { error } = await clientB
+    const { data: initial, error: readError } = await admin
       .from("organization_settings")
-      .update({ legal_name: "Titan Kinetic Test" })
-      .eq("id", 1);
-    expect(error).toBeNull();
+      .select("legal_name")
+      .eq("id", 1)
+      .single();
+    if (readError || !initial)
+      throw readError ?? new Error("Paramètres absents");
+    try {
+      await admin
+        .from("user_roles")
+        .insert({ user_id: userBId, role: "admin" });
 
-    // Nettoyage : la fiche retrouve son état vide, le rôle de test est retiré.
-    await admin.from("organization_settings").update({ legal_name: null }).eq("id", 1);
-    await admin.from("user_roles").delete().eq("user_id", userBId).eq("role", "admin");
+      const { data: allowed } = await clientB.rpc("has_permission", {
+        p_key: "settings.edit",
+      });
+      expect(allowed).toBe(true);
+
+      const { error } = await clientB
+        .from("organization_settings")
+        .update({ legal_name: "Titan Kinetic Test" })
+        .eq("id", 1);
+      expect(error).toBeNull();
+    } finally {
+      await admin
+        .from("organization_settings")
+        .update({ legal_name: initial.legal_name })
+        .eq("id", 1)
+        .throwOnError();
+      await admin
+        .from("user_roles")
+        .delete()
+        .eq("user_id", userBId)
+        .eq("role", "admin")
+        .throwOnError();
+    }
   });
 });
 
@@ -334,16 +457,27 @@ describe("RLS — espace entreprise (salariés, devis, additif)", () => {
     // userA = responsable de l'entreprise A uniquement.
     const { error } = await admin
       .from("company_members")
-      .insert({ company_id: companyAId, user_id: userAId, role: "responsable" });
+      .insert({
+        company_id: companyAId,
+        user_id: userAId,
+        role: "responsable",
+      });
     if (error) throw error;
   });
 
   afterAll(async () => {
-    const { data: orders } = await admin.from("orders").select("id").eq("company_id", companyAId);
+    const { data: orders } = await admin
+      .from("orders")
+      .select("id")
+      .eq("company_id", companyAId);
     const orderIds = (orders ?? []).map((o) => o.id);
-    if (orderIds.length) await admin.from("order_items").delete().in("order_id", orderIds);
+    if (orderIds.length)
+      await admin.from("order_items").delete().in("order_id", orderIds);
     await admin.from("orders").delete().eq("company_id", companyAId);
-    await admin.from("company_members").delete().in("company_id", [companyAId, companyBId]);
+    await admin
+      .from("company_members")
+      .delete()
+      .in("company_id", [companyAId, companyBId]);
     await admin.from("companies").delete().in("id", [companyAId, companyBId]);
   });
 
@@ -381,7 +515,9 @@ describe("RLS — espace entreprise (salariés, devis, additif)", () => {
   });
 
   it("un salarié ne peut pas se retirer lui-même via la policy responsable", async () => {
-    await admin.from("company_members").insert({ company_id: companyAId, user_id: userBId, role: "salarie" });
+    await admin
+      .from("company_members")
+      .insert({ company_id: companyAId, user_id: userBId, role: "salarie" });
 
     // clientB n'est responsable d'aucune entreprise — sa tentative de
     // suppression ne matche aucune ligne (0 affectée, pas d'erreur).
@@ -400,7 +536,11 @@ describe("RLS — espace entreprise (salariés, devis, additif)", () => {
       .eq("user_id", userBId);
     expect(check).toHaveLength(1);
 
-    await admin.from("company_members").delete().eq("company_id", companyAId).eq("user_id", userBId);
+    await admin
+      .from("company_members")
+      .delete()
+      .eq("company_id", companyAId)
+      .eq("user_id", userBId);
   });
 
   it("le responsable crée une demande de devis pour sa propre entreprise", async () => {
@@ -423,7 +563,13 @@ describe("RLS — espace entreprise (salariés, devis, additif)", () => {
 
     const { error: itemError } = await clientA
       .from("order_items")
-      .insert({ order_id: data!.id, label: "Test", quantity: 1, unit_price_ht: 100, vat_rate: 0 });
+      .insert({
+        order_id: data!.id,
+        label: "Test",
+        quantity: 1,
+        unit_price_ht: 100,
+        vat_rate: 0,
+      });
     expect(itemError).toBeNull();
   });
 

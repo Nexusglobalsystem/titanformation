@@ -1,79 +1,36 @@
 import Link from "next/link";
-import { IconMail, IconShieldCheck } from "./icons";
-
-const FOOTER_COLUMNS = [
-  {
-    title: "Formations",
-    links: [{ label: "Catalogue", href: "/formations" }],
-  },
-  {
-    title: "Mon espace",
-    links: [
-      { label: "Connexion", href: "/connexion" },
-      { label: "Créer un compte", href: "/inscription" },
-    ],
-  },
-  {
-    title: "Légal",
-    links: [
-      { label: "Mentions légales", href: "/mentions-legales" },
-      { label: "Confidentialité", href: "/confidentialite" },
-      { label: "CGV", href: "/cgv" },
-    ],
-  },
-] as const;
-
+import { Brand } from "./Brand";
 export function PublicFooter() {
   return (
-    <footer className="mt-auto w-full border-t border-border bg-surface px-4 py-12 md:px-(--spacing-margin-desktop)">
-      <div className="mx-auto flex max-w-(--spacing-container-max) flex-col gap-10">
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-5">
-          <div className="flex flex-col gap-3">
-            <span className="font-display text-lg font-bold text-foreground">Titan Kinetic</span>
-            <p className="font-body text-sm text-foreground-muted">
-              Organisme de formation professionnelle.
-            </p>
-            <span className="inline-flex w-fit items-center gap-1.5 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 font-mono-label text-[11px] uppercase tracking-wide text-accent-text">
-              <IconShieldCheck size={14} />
-              Certifié Qualiopi
-            </span>
-          </div>
-
-          {FOOTER_COLUMNS.map((column) => (
-            <div key={column.title} className="flex flex-col gap-3">
-              <span className="font-mono-label text-xs font-semibold uppercase tracking-wide text-foreground-muted">
-                {column.title}
-              </span>
-              <ul className="flex flex-col gap-2">
-                {column.links.map((link) => (
-                  <li key={link.href}>
-                    <Link href={link.href} className="font-body text-sm text-foreground-muted hover:text-foreground">
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-
-          <div className="flex flex-col gap-3">
-            <span className="font-mono-label text-xs font-semibold uppercase tracking-wide text-foreground-muted">
-              Contact
-            </span>
-            <a
-              href="mailto:contact@titankinetic.fr"
-              className="flex items-center gap-1.5 font-body text-sm text-foreground-muted hover:text-foreground"
-            >
-              <IconMail size={14} />
-              contact@titankinetic.fr
-            </a>
-          </div>
+    <footer className="campus-footer">
+      <div className="campus-container">
+        <div className="footer-invitation">
+          <p>NE CESSEZ JAMAIS D’APPRENDRE.</p>
+          <Link href="/formations">
+            La suite vous appartient.<span aria-hidden="true">↗</span>
+          </Link>
         </div>
-
-        <div className="border-t border-border pt-6">
-          <p className="font-body text-xs text-foreground-muted">
-            © {new Date().getFullYear()} Titan Kinetic. Tous droits réservés.
+        <div className="footer-links">
+          <Brand />
+          <p>
+            Des compétences.
+            <br />
+            De nouvelles perspectives.
           </p>
+          <nav aria-label="Liens utiles">
+            <Link href="/formations">Les formations</Link>
+            <Link href="/connexion">Mon espace</Link>
+            <a href="mailto:contact@titankinetic.fr">Nous contacter</a>
+          </nav>
+        </div>
+        <div className="footer-legal">
+          <span>© {new Date().getFullYear()} Titan Kinetic</span>
+          <nav aria-label="Informations légales">
+            <Link href="/mentions-legales">Mentions légales</Link>
+            <Link href="/confidentialite">Confidentialité</Link>
+            <Link href="/cgv">Conditions générales</Link>
+          </nav>
+          <span>LA CURIOSITÉ NOUS ANIME. ✳</span>
         </div>
       </div>
     </footer>

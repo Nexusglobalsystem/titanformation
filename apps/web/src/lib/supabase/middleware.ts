@@ -14,7 +14,9 @@ export async function createMiddlewareClient(request: NextRequest) {
           return request.cookies.getAll();
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
+          cookiesToSet.forEach(({ name, value }) =>
+            request.cookies.set(name, value),
+          );
           response = NextResponse.next({ request });
           cookiesToSet.forEach(({ name, value, options }) =>
             response.cookies.set(name, value, options),
@@ -24,5 +26,10 @@ export async function createMiddlewareClient(request: NextRequest) {
     },
   );
 
-  return { supabase, response };
+  return {
+    supabase,
+    get response() {
+      return response;
+    },
+  };
 }
