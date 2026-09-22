@@ -30,7 +30,9 @@ Les prix, intitulés, notes de satisfaction et nombres d’inscrits restent ceux
 - Types, lint et 10 tests unitaires validés.
 - Accueil contrôlé dans Edge sur ordinateur et mobile ; onglets au clavier, absence de débordement à 320/390/768 px, audit WCAG sans violation détectée sur l’accueil après corrections.
 - Compilation de production réussie (43 pages générées). Parcours accueil → catalogue → recherche sans résultat → remise à zéro → fiche formation, puis accès protégé → connexion : validés dans Edge. Six audits WCAG A/AA sans violation détectée et aucune erreur JavaScript non gérée.
-- Vercel : projet nexus-1491/titan-kinetic identifié, mais accès refusé par le connecteur (403 sur l’équipe). Aucun déploiement frontal confirmé à ce stade.
+- Vercel : prévisualisation déployée automatiquement depuis GitHub, statut Ready. Accueil, onglets et navigation vers le catalogue filtré vérifiés en ligne, sans erreur console observée. Le connecteur reste sans accès direct à l’équipe ; cela n’a pas empêché le déploiement GitHub.
+- [Prévisualisation](https://titan-kinetic-git-codex-immersive-learning-integrity-nexus-1491.vercel.app) — code validé au commit a4c17b2.
+- [Demande de revue](https://github.com/Nexusglobalsystem/titanformation/pull/1), conservée en brouillon ; branche master non fusionnée.
 
 ## Limites et points de suivi
 
