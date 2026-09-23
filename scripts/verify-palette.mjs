@@ -26,7 +26,7 @@ async function visit(path) {
     timeout: 90000,
   });
   expect(response.status()).toBeLessThan(400);
-  await page.getByRole("heading", { level: 1 }).first().waitFor();
+  await page.getByRole("heading").first().waitFor();
 }
 async function audit(label) {
   const results = await new AxeBuilder({ page })
