@@ -31,8 +31,16 @@ export default function RootLayout({
   return (
     <html
       lang="fr"
+      suppressHydrationWarning
       className={`${hankenGrotesk.variable} ${manrope.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "try{document.documentElement.dataset.campusTheme=localStorage.getItem('titan-campus-theme')==='light'?'light':'dark'}catch{}",
+          }}
+        />
+      </head>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );
