@@ -14,8 +14,17 @@ function SubmitButton() {
   );
 }
 
-export function QuizSettingsForm({ lessonId, trainingId }: { lessonId: string; trainingId: string }) {
-  const [state, formAction] = useActionState<QuizFormState, FormData>(createQuizAction, undefined);
+export function QuizSettingsForm({
+  lessonId,
+  trainingId,
+}: {
+  lessonId: string;
+  trainingId: string;
+}) {
+  const [state, formAction] = useActionState<QuizFormState, FormData>(
+    createQuizAction,
+    undefined,
+  );
 
   return (
     <form action={formAction} className="flex flex-col gap-4">
@@ -46,8 +55,13 @@ export function QuizSettingsForm({ lessonId, trainingId }: { lessonId: string; t
         />
       </div>
       <label className="flex items-center gap-2 font-body text-sm text-foreground">
-        <input type="checkbox" name="shuffle_questions" defaultChecked className="h-4 w-4" />
-        Mélanger l'ordre des questions à chaque tentative
+        <input
+          type="checkbox"
+          name="shuffle_questions"
+          defaultChecked
+          className="h-4 w-4"
+        />
+        Mélanger l’ordre des questions à chaque tentative
       </label>
       {state?.error && (
         <p role="alert" className="font-body text-xs text-error">

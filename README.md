@@ -1,102 +1,82 @@
 # Titan Kinetic
 
-LMS certifié Qualiopi — Lot 1 (bootstrap monorepo, design system, authentification,
-routage par rôle, tests RLS).
+Plateforme de formation : catalogue public, inscriptions, espace apprenant, quiz, certificats, visioconférence et gestion des formations. Monorepo pnpm/Turborepo avec Next.js, Expo et Supabase.
 
-## Stack
+## Démarrage
 
-Turborepo + pnpm · Next.js (App Router, TS strict, Tailwind v4) · Expo (coquille) ·
-Supabase (Postgres, Auth) — voir `prompt kinetic.md` pour le détail complet.
+Node.js 20 ou supérieur, pnpm 11.21.0.
 
-## Prérequis
-
-- Node ≥ 20
-- pnpm (`corepack enable` puis `corepack prepare pnpm@11.21.0 --activate`, ou `npx pnpm@11.21.0 <commande>` sans installation globale)
-- Un accès au projet Supabase cloud **« Nexusglobalsystem's Project »** (`svenjjuajujnrccmfzkc`, région `eu-west-3`). Le développement de ce lot se fait contre cette instance distante — pas de Supabase local (Docker non disponible sur ce poste).
-
-## Installation
-
-```bash
+```sh
 pnpm install
+cp apps/web/.env.example apps/web/.env.local
+pnpm --filter @titan-kinetic/web dev
 ```
 
-### Variables d'environnement
+Renseigner l’URL Supabase et la clé publique dans le fichier local. Aucun secret n’est nécessaire pour consulter le catalogue. Les intégrations LiveKit, Resend et Anthropic nécessitent leurs clés serveur pour activer leurs fonctions respectives. Ne jamais exposer une clé de service dans une variable NEXT_PUBLIC_ ou EXPO_PUBLIC_.
 
-Copier `apps/web/.env.example` vers `apps/web/.env.local` (déjà fait dans ce dépôt
-avec les valeurs publiques du projet). Il ne manque que la clé service_role :
+Le site s’ouvre sur http://localhost:3000. Les espaces authentifiés sont /admin, /formateur, /entreprise et /apprenant. Expo contient les parcours apprenants, le catalogue, les leçons, les quiz et la certification ; ce n’est plus une simple coquille.
 
-1. Dashboard Supabase → le projet → **Project Settings → API Keys**.
-2. Copier la clé `service_role` (secrète, jamais `NEXT_PUBLIC_`) dans
-   `apps/web/.env.local`, variable `SUPABASE_SERVICE_ROLE_KEY`.
+Sous Windows/OneDrive, si le cache Turbopack est inaccessible, utiliser PowerShell :
 
-Cette clé n'est nécessaire que pour le script de seed et les tests RLS (ils
-tournent en Node, pas dans le navigateur).
-
-### Lancer le site web
-
-```bash
-pnpm dev
+```powershell
+$env:NEXT_DIST_DIR='.next-verify'
+pnpm --filter @titan-kinetic/web exec next dev --webpack
 ```
 
-→ http://localhost:3000. Page de démonstration du design system :
-`/design-system`.
+## Vérifications
 
-### Peupler des données de démonstration
-
-```bash
-pnpm seed
-```
-
-Crée : 1 admin, 1 gestionnaire, 2 formateurs, 1 entreprise (Constructa BTP) avec
-1 responsable et 3 salariés, 5 apprenants particuliers, 2 formations publiées et
-1 session à venir (15–17 septembre 2026). Mot de passe commun affiché par le
-script (`TitanKinetic2026!`).
-
-Comptes créés :
-
-| Rôle | Email |
-|---|---|
-| admin | admin@titankinetic.fr |
-| gestionnaire | gestion@titankinetic.fr |
-| formateur | f.bernard@titankinetic.fr |
-| formateur | s.lecomte@titankinetic.fr |
-| responsable_entreprise | r.perrin@constructa-btp.fr |
-| apprenant (salarié) | julie.faure@constructa-btp.fr, mehdi.belkacem@constructa-btp.fr, nora.chevallier@constructa-btp.fr |
-| apprenant (particulier) | claire.dubois@exemple.fr, karim.haddad@exemple.fr, lea.martin@exemple.fr, thomas.roux@exemple.fr, amandine.petit@exemple.fr (accents retirés des emails) |
-
-Chaque rôle atterrit sur son espace après connexion : `/admin` (admin,
-gestionnaire), `/formateur`, `/entreprise`, `/apprenant`. Toute tentative
-d'accès à un espace non autorisé redirige vers l'espace légitime de
-l'utilisateur (ou vers `/connexion` si non authentifié).
-
-### Tests
-
-```bash
+```sh
+pnpm typecheck
+pnpm lint
 pnpm test
+pnpm build
 ```
 
-Inclut les tests RLS obligatoires (`packages/core/tests/rls.test.ts`) : pour
-`profiles`, `user_roles`, `enrollments` et `attendances`, vérifie qu'un
-utilisateur ne peut jamais lire les lignes d'un autre. Ces tests créent leurs
-propres utilisateurs et données de test (préfixe `test-rls-`) et les nettoient
-à la fin — ils tournent en intégration contre le projet Supabase cloud et
-nécessitent `SUPABASE_SERVICE_ROLE_KEY`.
+Les tests par défaut sont unitaires, sans écriture dans Supabase. Pour vérifier toutes les migrations et les protections de certification/quiz dans un PostgreSQL isolé :
 
-## Structure
-
-```
-apps/
-  web/      Next.js — site public, espaces apprenant / formateur / entreprise / admin
-  mobile/   Expo — coquille minimale (pas de fonctionnalité dans ce lot)
-packages/
-  core/     types Supabase générés, clients, schémas Zod, script de seed, tests RLS
-  ui/       design system partagé (tokens + primitives)
-supabase/
-  migrations/   migration initiale (annexe A du prompt d'amorçage)
+```sh
+npm install --prefix .verification --no-audit --no-fund @electric-sql/pglite
+node scripts/verify-database.mjs
 ```
 
-## Écarts par rapport à la maquette / au prompt d'amorçage
+Le harnais PGlite simule auth.uid et les tables Storage ; il valide les règles SQL mais ne remplace pas un test du service Auth et du déploiement Edge.
 
-Voir le résumé de fin de lot fourni dans la conversation pour le détail complet
-(bugs corrigés dans l'annexe A avec validation préalable, écrans d'authentification
-extrapolés en l'absence de maquette Stitch pour ces écrans).
+Les tests d’intégration Auth/RLS exigent un projet Supabase de test distinct. Copier packages/core/.env.test.example vers packages/core/.env.test et renseigner ses trois clés, puis :
+
+```sh
+pnpm --filter @titan-kinetic/core test:rls
+```
+
+Ces tests refusent le projet de production connu. Ils créent des comptes temporaires et restaurent les réglages modifiés. Ne jamais les lancer sur un projet partagé contenant des données réelles. Le script pnpm seed crée des comptes de démonstration avec un mot de passe commun : il est réservé à une base de développement jetable.
+
+## Déploiement de la correction
+
+1. Appliquer uniquement la migration 20260922084518_learning_integrity.sql au projet existant, après les migrations précédentes.
+2. Déployer supabase/functions/quiz-attempt/index.ts. Cette fonction authentifie la session et appelle les RPC de correction ; elle ne possède plus de clé de service pour noter les réponses.
+3. Déployer l’application web, puis la version mobile correspondante.
+
+Le projet cloud historique utilise des versions de migrations horodatées, alors que les premiers fichiers locaux utilisent des numéros séquentiels. Ne pas lancer un db push aveugle et ne pas rejouer les anciennes migrations sur cette base. Réconcilier l’historique avant tout futur déploiement global.
+
+Les tentatives anciennes sans tirage enregistré sont clôturées sans réussite lors de leur reprise. Les certificats déjà émis restent conservés. Les nouvelles demandes sont validées dans Postgres : leçons obligatoires, notes, examen, assiduité et validation pédagogique configurés. Le tirage et la date limite des quiz sont conservés côté serveur. Les permissions fines complètent les règles RLS existantes.
+
+## Organisation
+
+- apps/web : site public et espaces de travail Next.js.
+- apps/mobile : application apprenant Expo.
+- packages/core : types, schémas, clients Supabase et règles de progression/certification partagées.
+- packages/ui : composants et tokens de style.
+- supabase : migrations SQL et Edge Functions.
+- scripts/verify-database.mjs : vérification isolée des migrations et régressions.
+
+La nouvelle interface utilise des animations CSS légères, respecte prefers-reduced-motion et propose un mode concentration dans le lecteur de leçons. Les cartes et les indicateurs affichent les données réelles du catalogue.
+
+## Vérification du navigateur
+
+Installer les outils dans le répertoire ignoré :
+
+```sh
+npm install --prefix .verification --no-audit --no-fund @playwright/test @axe-core/playwright
+node scripts/verify-ui.mjs
+```
+
+Le serveur doit être démarré. TEST_BASE_URL permet de changer son URL ; BROWSER_PATH peut pointer vers Chrome ou Edge installé. Sinon installer Chromium avec Playwright. Les captures et le rapport WCAG sont enregistrés dans artifacts, hors Git.

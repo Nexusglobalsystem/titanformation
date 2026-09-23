@@ -32,12 +32,24 @@ function SubmitButton() {
   );
 }
 
-export function NewLessonForm({ moduleId, trainingId }: { moduleId: string; trainingId: string }) {
-  const [state, formAction] = useActionState<LessonFormState, FormData>(createLessonAction, undefined);
+export function NewLessonForm({
+  moduleId,
+  trainingId,
+}: {
+  moduleId: string;
+  trainingId: string;
+}) {
+  const [state, formAction] = useActionState<LessonFormState, FormData>(
+    createLessonAction,
+    undefined,
+  );
   const [type, setType] = useState<string>("texte");
 
   return (
-    <form action={formAction} className="flex flex-col gap-3 rounded-DEFAULT border border-dashed border-border p-3">
+    <form
+      action={formAction}
+      className="flex flex-col gap-3 rounded-DEFAULT border border-dashed border-border p-3"
+    >
       <input type="hidden" name="moduleId" value={moduleId} />
       <input type="hidden" name="trainingId" value={trainingId} />
       <input type="hidden" name="type" value={type} />
@@ -45,7 +57,9 @@ export function NewLessonForm({ moduleId, trainingId }: { moduleId: string; trai
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
         <Input label="Titre de la leçon" name="title" required />
         <div className="flex flex-col gap-1.5">
-          <label className="font-body text-sm font-medium text-foreground">Type</label>
+          <label className="font-body text-sm font-medium text-foreground">
+            Type
+          </label>
           <Select value={type} onValueChange={setType}>
             <SelectTrigger aria-label="Type">
               <SelectValue />
@@ -59,7 +73,13 @@ export function NewLessonForm({ moduleId, trainingId }: { moduleId: string; trai
             </SelectContent>
           </Select>
         </div>
-        <Input label="Durée (minutes)" name="duration_minutes" type="number" min="0" defaultValue={0} />
+        <Input
+          label="Durée (minutes)"
+          name="duration_minutes"
+          type="number"
+          min="0"
+          defaultValue={0}
+        />
       </div>
 
       {type === "texte" && <Textarea label="Contenu" name="body" rows={4} />}
@@ -70,14 +90,23 @@ export function NewLessonForm({ moduleId, trainingId }: { moduleId: string; trai
             label="Prestataire vidéo"
             name="video_provider"
             placeholder="mux, cloudflare_stream ou bunny"
-            hint="Jamais Supabase Storage pour la vidéo."
+            hint="Mux, Cloudflare Stream ou Bunny Stream."
           />
-          <Input label="ID de l'asset vidéo" name="video_asset_id" />
+          <Input
+            label="Identifiant de lecture vidéo"
+            name="video_asset_id"
+            hint="Mux : Playback ID ; Cloudflare : Video UID ; Bunny : bibliothèque/UUID vidéo."
+          />
         </div>
       )}
 
       {type === "audio" && (
-        <FileDropzone label="Fichier audio" name="file" accept="audio/*" hint="MP3, WAV, M4A…" />
+        <FileDropzone
+          label="Fichier audio"
+          name="file"
+          accept="audio/*"
+          hint="MP3, WAV, M4A…"
+        />
       )}
 
       {type === "document" && (
@@ -91,7 +120,8 @@ export function NewLessonForm({ moduleId, trainingId }: { moduleId: string; trai
 
       {type === "quiz" && (
         <p className="font-body text-xs text-foreground-muted">
-          Les questions se configurent après la création, depuis le bouton « Gérer le QCM ».
+          Les questions se configurent après la création, depuis le bouton «
+          Gérer le QCM ».
         </p>
       )}
 

@@ -22,6 +22,7 @@ export async function enrichTrainings(
       .select("training_id, starts_on")
       .in("training_id", ids)
       .eq("status", "ouverte")
+      .gte("starts_on", new Date().toISOString().slice(0, 10))
       .order("starts_on", { ascending: true }),
     // Comptage via une fonction security definer : la table enrollments elle-même
     // n'est lisible que par l'apprenant concerné, le staff ou le formateur — un
@@ -52,7 +53,10 @@ export async function enrichTrainings(
 
   return trainings.map((t) => ({
     ...t,
-    imageUrl: t.image_path ? supabase.storage.from("training-images").getPublicUrl(t.image_path).data.publicUrl : null,
+    imageUrl: t.image_path
+      ? supabase.storage.from("training-images").getPublicUrl(t.image_path).data
+          .publicUrl
+      : null,
     nextSessionStartsOn: nextSessionByTraining.get(t.id) ?? null,
     enrolledCount: enrolledCountByTraining.get(t.id) ?? 0,
     isPopular: popularIds.has(t.id),

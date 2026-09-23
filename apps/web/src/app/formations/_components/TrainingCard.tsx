@@ -1,96 +1,80 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Badge, Button, Card, CardContent } from "@titan-kinetic/ui";
-import { IconArrowRight, IconCalendar, IconShieldCheck } from "@/components/icons";
 import { TrainingCoverArt } from "./TrainingCoverArt";
 import type { Tables } from "@titan-kinetic/core/database.types";
-
-const CATEGORY_LABELS: Record<string, string> = {
+const categories: Record<string, string> = {
   management: "Management",
   conformite: "Conformité",
   technologies: "Technologies",
 };
-
-const LEVEL_LABELS: Record<string, string> = {
+const levels: Record<string, string> = {
   debutant: "Débutant",
   intermediaire: "Intermédiaire",
   avance: "Avancé",
 };
-
 export type CatalogueTraining = Tables<"trainings"> & {
   imageUrl: string | null;
   nextSessionStartsOn: string | null;
   enrolledCount: number;
   isPopular: boolean;
 };
-
 export function TrainingCard({ training }: { training: CatalogueTraining }) {
   return (
-    <Card className="flex flex-col overflow-hidden">
-      <div className="relative h-36 w-full overflow-hidden bg-surface">
+    <article className="course-card">
+      <div className="course-cover">
         {training.imageUrl ? (
           <Image
             src={training.imageUrl}
             alt=""
             fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            sizes="(max-width: 480px) 100vw, (max-width: 800px) 50vw, 33vw"
             className="object-cover"
           />
         ) : (
           <TrainingCoverArt seed={training.id} className="h-full w-full" />
         )}
-        {training.isPopular && (
-          <Badge variant="warning" className="absolute left-3 top-3">
-            Populaire
-          </Badge>
-        )}
+        <span className="course-category">
+          {training.category
+            ? (categories[training.category] ?? training.category)
+            : "Formation professionnelle"}
+        </span>
       </div>
-      <CardContent className="flex flex-1 flex-col gap-4 p-6 pt-6">
-        <div className="flex items-start justify-between gap-3">
-          <h3 className="font-display text-lg font-semibold text-foreground">{training.title}</h3>
-          {training.category && (
-            <Badge variant="featured" className="shrink-0">
-              {CATEGORY_LABELS[training.category] ?? training.category}
-            </Badge>
+      <div className="course-content">
+        <div className="course-meta">
+          <span>{training.duration_hours} heures</span>
+          {training.level && (
+            <span>{levels[training.level] ?? training.level}</span>
           )}
+          {training.is_certifying && <span>Certifiante</span>}
         </div>
-        <p className="line-clamp-2 font-body text-sm text-foreground-muted">{training.summary}</p>
-        {(training.level || training.is_certifying) && (
-          <div className="flex flex-wrap gap-2">
-            {training.level && (
-              <Badge variant="neutral">{LEVEL_LABELS[training.level] ?? training.level}</Badge>
-            )}
-            {training.is_certifying && (
-              <Badge variant="success" className="gap-1">
-                <IconShieldCheck size={12} />
-                Certifiante
-              </Badge>
-            )}
-          </div>
+        <h3>{training.title}</h3>
+        <p className="line-clamp-2">{training.summary}</p>
+        {training.nextSessionStartsOn && (
+          <p className="course-date">
+            Prochaine session ·{" "}
+            {new Date(
+              training.nextSessionStartsOn + "T12:00:00Z",
+            ).toLocaleDateString("fr-FR", {
+              day: "numeric",
+              month: "long",
+              timeZone: "UTC",
+            })}
+          </p>
         )}
-        <div className="mt-auto flex flex-col gap-2">
-          <div className="flex flex-wrap items-center justify-between gap-2 font-body text-sm text-foreground-muted">
-            <span>{training.duration_hours}h</span>
-            <span className="font-display text-base font-semibold text-foreground">
-              {training.price_ht.toLocaleString("fr-FR")} € HT
-            </span>
+        <div className="course-bottom">
+          <div>
+            <strong>{training.price_ht.toLocaleString("fr-FR")} €</strong>{" "}
+            <small>HT</small>
           </div>
-          {training.nextSessionStartsOn && (
-            <p className="flex items-center gap-1.5 font-body text-xs text-accent-text">
-              <IconCalendar size={14} />
-              Prochaine session : {new Date(training.nextSessionStartsOn).toLocaleDateString("fr-FR")}
-            </p>
-          )}
+          <Link
+            href={"/formations/" + training.slug}
+            className="course-link"
+            aria-label={"Découvrir la formation : " + training.title}
+          >
+            <span aria-hidden="true">↗</span>
+          </Link>
         </div>
-        <Link href={`/formations/${training.slug}`}>
-          <Button variant="outline" className="w-full gap-2">
-            Découvrir
-            <span className="inline-flex transition-transform duration-200 group-hover:translate-x-1">
-              <IconArrowRight />
-            </span>
-          </Button>
-        </Link>
-      </CardContent>
-    </Card>
+      </div>
+    </article>
   );
 }

@@ -19,10 +19,15 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Titan Kinetic",
-  description: "LMS certifié Qualiopi — Titan Kinetic",
+  description:
+    "Des compétences qui ouvrent de nouvelles perspectives. Découvrez vos formations, échangez avec vos formateurs et avancez à votre rythme.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html
       lang="fr"

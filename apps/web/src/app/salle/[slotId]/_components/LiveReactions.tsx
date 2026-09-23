@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useDataChannel, useLocalParticipant } from "@livekit/components-react";
 
 const REACTION_EMOJIS = ["👍", "👏", "😂", "❤️"] as const;
@@ -28,6 +28,7 @@ function decode<T>(payload: Uint8Array): T | null {
 // topics séparés : "reactions" (ponctuel, disparaît après ~2,5s) et
 // "raised-hands" (persiste jusqu'au geste inverse).
 export function LiveReactions() {
+  const reactionSequence = useRef(0);
   const { localParticipant } = useLocalParticipant();
   const [floating, setFloating] = useState<FloatingReaction[]>([]);
   const [raisedHands, setRaisedHands] = useState<Record<string, string>>({});
@@ -36,9 +37,15 @@ export function LiveReactions() {
   const { send: sendReaction } = useDataChannel("reactions", (msg) => {
     const data = decode<ReactionPayload>(msg.payload);
     if (!data) return;
-    const id = `${Date.now()}-${Math.random()}`;
-    setFloating((prev) => [...prev, { id, emoji: data.emoji, name: data.name }]);
-    setTimeout(() => setFloating((prev) => prev.filter((f) => f.id !== id)), FLOAT_DURATION_MS);
+    const id = `received-${++reactionSequence.current}`;
+    setFloating((prev) => [
+      ...prev,
+      { id, emoji: data.emoji, name: data.name },
+    ]);
+    setTimeout(
+      () => setFloating((prev) => prev.filter((f) => f.id !== id)),
+      FLOAT_DURATION_MS,
+    );
   });
 
   const { send: sendRaisedHand } = useDataChannel("raised-hands", (msg) => {
@@ -55,9 +62,12 @@ export function LiveReactions() {
   function sendReactionEmoji(emoji: string) {
     const name = localParticipant.name || "Participant";
     void sendReaction(encode({ emoji, name } satisfies ReactionPayload), {});
-    const id = `local-${Date.now()}`;
+    const id = `local-${++reactionSequence.current}`;
     setFloating((prev) => [...prev, { id, emoji, name }]);
-    setTimeout(() => setFloating((prev) => prev.filter((f) => f.id !== id)), FLOAT_DURATION_MS);
+    setTimeout(
+      () => setFloating((prev) => prev.filter((f) => f.id !== id)),
+      FLOAT_DURATION_MS,
+    );
   }
 
   function toggleHand() {
@@ -126,7 +136,9 @@ export function LiveReactions() {
           onClick={toggleHand}
           aria-pressed={handRaised}
           className={`flex h-8 w-8 items-center justify-center rounded-full text-lg transition-colors ${
-            handRaised ? "bg-accent text-on-accent" : "hover:bg-surface-elevated"
+            handRaised
+              ? "bg-accent text-on-accent"
+              : "hover:bg-surface-elevated"
           }`}
           aria-label="Lever la main"
         >

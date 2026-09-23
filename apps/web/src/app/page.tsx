@@ -11,7 +11,10 @@ export default async function Home() {
   } = await supabase.auth.getUser();
 
   if (user) {
-    const { data: roleRows } = await supabase.from("user_roles").select("role");
+    const { data: roleRows } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", user.id);
     const roles = (roleRows ?? []).map((r) => r.role as AppRole);
     redirect(homePathForRoles(roles));
   }
@@ -22,19 +25,28 @@ export default async function Home() {
     .eq("status", "publiee")
     .order("published_at", { ascending: false });
   const enriched = await enrichTrainings(supabase, trainings ?? []);
-  const popularTrainings = enriched.filter((t) => t.isPopular);
+  const popularTrainings = [...enriched]
+    .sort((a, b) => b.enrolledCount - a.enrolledCount)
+    .slice(0, 3);
   const categories = Array.from(
-    new Set(enriched.map((t) => t.category).filter((c): c is string => Boolean(c))),
+    new Set(
+      enriched.map((t) => t.category).filter((c): c is string => Boolean(c)),
+    ),
   );
 
   // Chiffres clés de l'accueil : uniquement des données réelles, jamais de
   // logo client ou de note inventée. apprenants formés passe par une RPC
   // (public_learner_count) car enrollments n'est pas lisible publiquement.
   const today = new Date().toISOString().slice(0, 10);
-  const [{ count: upcomingSessionsCount }, { data: learnerCount }, { data: upcomingSessionsRaw }] = await Promise.all([
+  const [
+    { count: upcomingSessionsCount },
+    { data: learnerCount },
+    { data: upcomingSessionsRaw },
+  ] = await Promise.all([
     supabase
       .from("sessions")
-      .select("id", { count: "exact", head: true })
+      .select("id, trainings!inner(status)", { count: "exact", head: true })
+      .eq("trainings.status", "publiee")
       .in("status", ["ouverte", "complete"])
       .gte("starts_on", today),
     supabase.rpc("public_learner_count"),
@@ -61,7 +73,10 @@ export default async function Home() {
     .filter((r): r is number => typeof r === "number");
   const avgSatisfaction =
     satisfactionRates.length > 0
-      ? Math.round(satisfactionRates.reduce((a, b) => a + b, 0) / satisfactionRates.length)
+      ? Math.round(
+          satisfactionRates.reduce((a, b) => a + b, 0) /
+            satisfactionRates.length,
+        )
       : null;
 
   const stats = {

@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./campus.css";
 @import "@titan-kinetic/ui/styles/tokens.css";
 
 @source "../../../../packages/ui/src";

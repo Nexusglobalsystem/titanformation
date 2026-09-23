@@ -3,7 +3,13 @@ import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { isModuleUnlockedForLesson } from "@/lib/moduleUnlock";
 import { SpaceShell } from "@/components/SpaceShell";
-import { Badge, Card, CardContent, CardHeader, CardTitle } from "@titan-kinetic/ui";
+import {
+  Badge,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@titan-kinetic/ui";
 import { QuizRunner } from "../../../_components/QuizRunner";
 
 export default async function ApprenantQuizPage({
@@ -20,7 +26,8 @@ export default async function ApprenantQuizPage({
     .eq("id", enrollmentId)
     .maybeSingle();
 
-  if (!enrollment || !["confirme", "termine"].includes(enrollment.status)) notFound();
+  if (!enrollment || !["confirme", "termine"].includes(enrollment.status))
+    notFound();
 
   const { data: lesson } = await supabase
     .from("lessons")
@@ -32,7 +39,12 @@ export default async function ApprenantQuizPage({
 
   const trainingId = enrollment.sessions?.trainings?.id;
   if (trainingId && lesson.module_id) {
-    const unlock = await isModuleUnlockedForLesson(supabase, enrollmentId, trainingId, lesson.module_id);
+    const unlock = await isModuleUnlockedForLesson(
+      supabase,
+      enrollmentId,
+      trainingId,
+      lesson.module_id,
+    );
     if (!unlock.unlocked) redirect(`/apprenant/formations/${enrollmentId}`);
   }
 
@@ -54,7 +66,9 @@ export default async function ApprenantQuizPage({
   const submittedAttempts = (attempts ?? []).filter((a) => a.submitted_at);
   const hasPassed = submittedAttempts.some((a) => a.passed);
   const attemptsExhausted = Boolean(
-    quiz?.max_attempts && submittedAttempts.length >= quiz.max_attempts && !hasPassed,
+    quiz?.max_attempts &&
+    submittedAttempts.length >= quiz.max_attempts &&
+    !hasPassed,
   );
 
   return (
@@ -69,12 +83,14 @@ export default async function ApprenantQuizPage({
         <Card className="max-w-3xl">
           <CardHeader>
             <CardTitle>{lesson.title}</CardTitle>
-            <p className="font-body text-xs text-foreground-muted">{enrollment.sessions?.trainings?.title}</p>
+            <p className="font-body text-xs text-foreground-muted">
+              {enrollment.sessions?.trainings?.title}
+            </p>
           </CardHeader>
           <CardContent className="flex flex-col gap-6">
             {!quiz ? (
               <p className="font-body text-sm text-foreground-muted">
-                Ce QCM n'est pas encore disponible.
+                Ce QCM n’est pas encore disponible.
               </p>
             ) : (
               <>
@@ -89,7 +105,8 @@ export default async function ApprenantQuizPage({
                         className="flex items-center justify-between rounded-DEFAULT border border-border p-3"
                       >
                         <p className="font-body text-sm text-foreground">
-                          Tentative {a.attempt_number} · {a.score}/{a.max_score} points
+                          Tentative {a.attempt_number} · {a.score}/{a.max_score}{" "}
+                          points
                         </p>
                         <Badge variant={a.passed ? "success" : "error"}>
                           {a.passed ? "Réussi" : "Non validé"}

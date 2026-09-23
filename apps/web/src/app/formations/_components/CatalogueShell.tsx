@@ -2,7 +2,15 @@
 
 import { useEffect, useRef, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, cn } from "@titan-kinetic/ui";
+import {
+  Input,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  cn,
+} from "@titan-kinetic/ui";
 import type { CatalogueFilters } from "../_lib/filterTrainings";
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -41,15 +49,16 @@ export function CatalogueShell({
   const [searchInput, setSearchInput] = useState(filters.q);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Navigation (retour/avance navigateur, lien externe vers une URL filtrée)
-  // change filters.q sans remonter ce composant client — resynchronise le
-  // champ visible, sinon il reste bloqué sur la dernière saisie locale.
-  useEffect(() => {
-    setSearchInput(filters.q);
-  }, [filters.q]);
+  useEffect(
+    () => () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    },
+    [],
+  );
 
   function pushFilters(next: Partial<CatalogueFilters>) {
-    const merged: CatalogueFilters = { ...filters, ...next };
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    const merged: CatalogueFilters = { ...filters, q: searchInput, ...next };
     const params = new URLSearchParams();
     (Object.keys(DEFAULTS) as (keyof CatalogueFilters)[]).forEach((key) => {
       const value = merged[key];
@@ -70,16 +79,21 @@ export function CatalogueShell({
 
   return (
     <>
-      <div className="mb-12 flex flex-col gap-4 rounded-DEFAULT border border-border bg-surface p-6 shadow-sm">
+      <div className="catalogue-filters mb-8 flex flex-col gap-4 rounded-DEFAULT border border-border bg-surface p-6 shadow-sm">
         <div className="flex flex-col gap-4 md:flex-row md:items-center">
           <div className="md:w-1/3">
             <Input
-              placeholder="Rechercher une formation..."
+              aria-label="Rechercher une formation"
+              placeholder="Rechercher une compétence..."
               value={searchInput}
               onChange={(e) => handleSearchChange(e.target.value)}
             />
           </div>
-          <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1 sm:hidden" role="group" aria-label="Filtrer par catégorie">
+          <div
+            className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1 sm:hidden"
+            role="group"
+            aria-label="Filtrer par catégorie"
+          >
             <button
               type="button"
               onClick={() => pushFilters({ categorie: "all" })}
@@ -110,8 +124,14 @@ export function CatalogueShell({
           </div>
           <div className="flex flex-wrap items-center gap-4 md:ml-auto">
             <div className="hidden sm:block">
-              <Select value={filters.categorie} onValueChange={(v) => pushFilters({ categorie: v })}>
-                <SelectTrigger className="w-44" aria-label="Filtrer par catégorie">
+              <Select
+                value={filters.categorie}
+                onValueChange={(v) => pushFilters({ categorie: v })}
+              >
+                <SelectTrigger
+                  className="w-44"
+                  aria-label="Filtrer par catégorie"
+                >
                   <SelectValue placeholder="Catégorie" />
                 </SelectTrigger>
                 <SelectContent>
@@ -124,7 +144,10 @@ export function CatalogueShell({
                 </SelectContent>
               </Select>
             </div>
-            <Select value={filters.niveau} onValueChange={(v) => pushFilters({ niveau: v })}>
+            <Select
+              value={filters.niveau}
+              onValueChange={(v) => pushFilters({ niveau: v })}
+            >
               <SelectTrigger className="w-44" aria-label="Filtrer par niveau">
                 <SelectValue placeholder="Niveau" />
               </SelectTrigger>
@@ -137,7 +160,10 @@ export function CatalogueShell({
                 ))}
               </SelectContent>
             </Select>
-            <Select value={filters.duree} onValueChange={(v) => pushFilters({ duree: v })}>
+            <Select
+              value={filters.duree}
+              onValueChange={(v) => pushFilters({ duree: v })}
+            >
               <SelectTrigger className="w-44" aria-label="Filtrer par durée">
                 <SelectValue placeholder="Durée" />
               </SelectTrigger>
@@ -160,13 +186,21 @@ export function CatalogueShell({
             />
             Certifiantes uniquement
           </label>
-          <Select value={filters.tri} onValueChange={(v) => pushFilters({ tri: v })}>
-            <SelectTrigger className="w-56" aria-label="Trier les résultats par">
+          <Select
+            value={filters.tri}
+            onValueChange={(v) => pushFilters({ tri: v })}
+          >
+            <SelectTrigger
+              className="w-56"
+              aria-label="Trier les résultats par"
+            >
               <SelectValue placeholder="Trier par" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="pertinence">Trier par : Pertinence</SelectItem>
-              <SelectItem value="session">Trier par : Prochaine session</SelectItem>
+              <SelectItem value="session">
+                Trier par : Prochaine session
+              </SelectItem>
               <SelectItem value="prix">Trier par : Prix croissant</SelectItem>
               <SelectItem value="popularite">Trier par : Popularité</SelectItem>
             </SelectContent>
@@ -174,7 +208,14 @@ export function CatalogueShell({
         </div>
       </div>
 
-      <div className={isPending ? "opacity-50 transition-opacity" : "transition-opacity"}>{children}</div>
+      <div
+        aria-busy={isPending}
+        className={
+          isPending ? "opacity-50 transition-opacity" : "transition-opacity"
+        }
+      >
+        {children}
+      </div>
     </>
   );
 }

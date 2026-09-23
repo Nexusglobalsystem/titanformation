@@ -12,16 +12,39 @@ import { TrainingCoverArt } from "../_components/TrainingCoverArt";
 
 function IconLayers() {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path d="M12 3 3 8l9 5 9-5-9-5Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-      <path d="m3 13 9 5 9-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M12 3 3 8l9 5 9-5-9-5Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
+      <path
+        d="m3 13 9 5 9-5"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
 
 function IconTarget() {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+    >
       <circle cx="12" cy="12" r="8" stroke="currentColor" strokeWidth="1.5" />
       <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="1.5" />
       <circle cx="12" cy="12" r="0.8" fill="currentColor" />
@@ -31,25 +54,64 @@ function IconTarget() {
 
 function IconUsers() {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+    >
       <circle cx="9" cy="8" r="3" stroke="currentColor" strokeWidth="1.5" />
-      <path d="M3.5 19c.8-3.2 3-5 5.5-5s4.7 1.8 5.5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <path
+        d="M3.5 19c.8-3.2 3-5 5.5-5s4.7 1.8 5.5 5"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
       <circle cx="17" cy="9" r="2.2" stroke="currentColor" strokeWidth="1.5" />
-      <path d="M15.5 13c2 .2 3.5 1.8 4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <path
+        d="M15.5 13c2 .2 3.5 1.8 4 4"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }
 
 function IconShieldCheck() {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path d="M12 3.5 5 6v6c0 4.5 3 7.5 7 8.5 4-1 7-4 7-8.5V6l-7-2.5Z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
-      <path d="m9 12 2 2 4-4.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M12 3.5 5 6v6c0 4.5 3 7.5 7 8.5 4-1 7-4 7-8.5V6l-7-2.5Z"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinejoin="round"
+      />
+      <path
+        d="m9 12 2 2 4-4.5"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
 
-function SectionHeading({ icon, children }: { icon: React.ReactNode; children: React.ReactNode }) {
+function SectionHeading({
+  icon,
+  children,
+}: {
+  icon: React.ReactNode;
+  children: React.ReactNode;
+}) {
   return (
     <h2 className="mb-4 flex items-center gap-2 font-display text-lg font-semibold text-accent md:text-xl">
       <span aria-hidden="true">{icon}</span>
@@ -62,7 +124,13 @@ function SectionHeading({ icon, children }: { icon: React.ReactNode; children: R
 // texte étaient saisis en une seule colonne sans format riche, où un retour
 // à la ligne dans le formulaire admin correspond à un nouveau paragraphe
 // voulu, jamais à un simple retour à l'écran.
-function MultiParagraphLegacy({ text, className }: { text: string; className: string }) {
+function MultiParagraphLegacy({
+  text,
+  className,
+}: {
+  text: string;
+  className: string;
+}) {
   const paragraphs = text
     .split("\n")
     .map((p) => p.trim())
@@ -78,16 +146,36 @@ function MultiParagraphLegacy({ text, className }: { text: string; className: st
   );
 }
 
-const RICH_TEXT_ALLOWED_TAGS = ["p", "br", "strong", "em", "b", "i", "ul", "ol", "li"];
+const RICH_TEXT_ALLOWED_TAGS = [
+  "p",
+  "br",
+  "strong",
+  "em",
+  "b",
+  "i",
+  "ul",
+  "ol",
+  "li",
+];
 
 // Champs produits soit par l'ancien <Textarea> (texte brut, \n = paragraphe),
 // soit par le nouveau RichTextEditor (HTML gras/italique/listes). On
 // distingue les deux au rendu plutôt que de migrer les fiches existantes.
-function RichOrLegacyText({ text, className }: { text: string | null; className: string }) {
+function RichOrLegacyText({
+  text,
+  className,
+}: {
+  text: string | null;
+  className: string;
+}) {
   if (!text) return null;
-  const clean = sanitizeHtml(text, { allowedTags: RICH_TEXT_ALLOWED_TAGS, allowedAttributes: {} });
+  const clean = sanitizeHtml(text, {
+    allowedTags: RICH_TEXT_ALLOWED_TAGS,
+    allowedAttributes: {},
+  });
   const isRich = /<[a-z][\s\S]*>/i.test(clean);
-  if (!isRich) return <MultiParagraphLegacy text={text} className={className} />;
+  if (!isRich)
+    return <MultiParagraphLegacy text={text} className={className} />;
   return (
     <div
       className={`${className} [&_p]:mb-3 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1 [&_strong]:font-semibold`}
@@ -106,15 +194,26 @@ export default async function TrainingDetailPage({
 
   // training et l'utilisateur courant sont indépendants — parallélisables
   // même si training échoue ensuite (le coût de getUser() est négligeable).
-  const [{ data: training }, { data: { user } }] = await Promise.all([
-    supabase.from("trainings").select("*").eq("slug", slug).eq("status", "publiee").maybeSingle(),
+  const [
+    { data: training },
+    {
+      data: { user },
+    },
+  ] = await Promise.all([
+    supabase
+      .from("trainings")
+      .select("*")
+      .eq("slug", slug)
+      .eq("status", "publiee")
+      .maybeSingle(),
     supabase.auth.getUser(),
   ]);
 
   if (!training) notFound();
 
   const trainingImageUrl = training.image_path
-    ? supabase.storage.from("training-images").getPublicUrl(training.image_path).data.publicUrl
+    ? supabase.storage.from("training-images").getPublicUrl(training.image_path)
+        .data.publicUrl
     : null;
 
   // modules et session dépendent tous deux uniquement de training.id, pas
@@ -130,6 +229,7 @@ export default async function TrainingDetailPage({
       .select("*")
       .eq("training_id", training.id)
       .eq("status", "ouverte")
+      .gte("starts_on", new Date().toISOString().slice(0, 10))
       .order("starts_on", { ascending: true })
       .limit(1)
       .maybeSingle(),
@@ -165,7 +265,10 @@ export default async function TrainingDetailPage({
     const employees = (members ?? [])
       .map((m) => m.profiles)
       .filter((p): p is NonNullable<typeof p> => Boolean(p))
-      .map((p) => ({ id: p.id, name: `${p.first_name ?? ""} ${p.last_name ?? ""}`.trim() || p.id }));
+      .map((p) => ({
+        id: p.id,
+        name: `${p.first_name ?? ""} ${p.last_name ?? ""}`.trim() || p.id,
+      }));
     return { isResponsable: true, employees };
   }
 
@@ -177,9 +280,13 @@ export default async function TrainingDetailPage({
   ]);
 
   return (
-    <div data-theme="dark" className="flex min-h-screen flex-col bg-background text-foreground">
+    <div data-theme="dark" className="campus-root flex min-h-screen flex-col">
       <PublicHeader />
-      <main id="main-content" tabIndex={-1} className="mx-auto w-full max-w-(--spacing-container-max) flex-1 px-4 py-8 outline-none md:px-(--spacing-margin-desktop)">
+      <main
+        id="main-content"
+        tabIndex={-1}
+        className="mx-auto w-full max-w-(--spacing-container-max) flex-1 px-4 py-8 outline-none md:px-(--spacing-margin-desktop)"
+      >
         <nav className="mb-8 flex items-center gap-2 font-mono-label text-xs uppercase tracking-wide text-foreground-muted">
           <Link href="/formations" className="hover:text-accent">
             Catalogue
@@ -190,39 +297,61 @@ export default async function TrainingDetailPage({
 
         <div className="relative mb-8 h-48 w-full overflow-hidden rounded-xl md:h-64">
           {trainingImageUrl ? (
-            <Image src={trainingImageUrl} alt="" fill sizes="100vw" priority className="object-cover" />
+            <Image
+              src={trainingImageUrl}
+              alt=""
+              fill
+              sizes="100vw"
+              priority
+              className="object-cover"
+            />
           ) : (
             <TrainingCoverArt seed={training.id} className="h-full w-full" />
           )}
         </div>
 
         <div className="mb-8 flex flex-col gap-4">
-          <h1 className="font-display text-3xl font-bold text-foreground md:text-4xl">{training.title}</h1>
-          <p className="max-w-3xl font-body text-sm text-foreground-muted md:text-base">{training.summary}</p>
+          <h1 className="font-display text-3xl font-bold text-foreground md:text-4xl">
+            {training.title}
+          </h1>
+          <p className="max-w-3xl font-body text-sm text-foreground-muted md:text-base">
+            {training.summary}
+          </p>
         </div>
 
         <div className="grid grid-cols-1 gap-(--spacing-gutter) lg:grid-cols-12">
           <div className="flex flex-col gap-6 lg:col-span-8">
             <Card>
               <CardContent className="p-6 pt-6">
-                <SectionHeading icon={<IconTarget />}>Objectifs de la formation</SectionHeading>
-                <RichOrLegacyText text={training.objectives} className="font-body text-sm text-foreground" />
+                <SectionHeading icon={<IconTarget />}>
+                  Objectifs de la formation
+                </SectionHeading>
+                <RichOrLegacyText
+                  text={training.objectives}
+                  className="font-body text-sm text-foreground"
+                />
               </CardContent>
             </Card>
 
             {modules && modules.length > 0 && (
               <Card>
                 <CardContent className="p-6 pt-6">
-                  <SectionHeading icon={<IconLayers />}>Programme détaillé</SectionHeading>
+                  <SectionHeading icon={<IconLayers />}>
+                    Programme détaillé
+                  </SectionHeading>
                   <ol className="flex flex-col gap-4">
                     {modules.map((m, i) => (
                       <li key={m.id} className="border-l-2 border-border pl-4">
                         <p className="font-mono-label text-[11px] uppercase tracking-wide text-foreground-muted">
                           Module {i + 1}
                         </p>
-                        <p className="font-body text-sm font-semibold text-foreground">{m.title}</p>
+                        <p className="font-body text-sm font-semibold text-foreground">
+                          {m.title}
+                        </p>
                         {m.description && (
-                          <p className="font-body text-sm text-foreground-muted">{m.description}</p>
+                          <p className="font-body text-sm text-foreground-muted">
+                            {m.description}
+                          </p>
                         )}
                       </li>
                     ))}
@@ -233,37 +362,62 @@ export default async function TrainingDetailPage({
 
             <Card>
               <CardContent className="p-6 pt-6">
-                <SectionHeading icon={<IconLayers />}>Modalités pédagogiques</SectionHeading>
-                <RichOrLegacyText text={training.pedagogical_means} className="font-body text-sm text-foreground" />
+                <SectionHeading icon={<IconLayers />}>
+                  Modalités pédagogiques
+                </SectionHeading>
+                <RichOrLegacyText
+                  text={training.pedagogical_means}
+                  className="font-body text-sm text-foreground"
+                />
               </CardContent>
             </Card>
 
             <div className="grid grid-cols-1 gap-(--spacing-gutter) md:grid-cols-2">
               <Card>
                 <CardContent className="p-6 pt-6">
-                  <SectionHeading icon={<IconUsers />}>Public visé</SectionHeading>
-                  <RichOrLegacyText text={training.target_audience} className="font-body text-sm text-foreground-muted" />
+                  <SectionHeading icon={<IconUsers />}>
+                    Public visé
+                  </SectionHeading>
+                  <RichOrLegacyText
+                    text={training.target_audience}
+                    className="font-body text-sm text-foreground-muted"
+                  />
                 </CardContent>
               </Card>
               <Card>
                 <CardContent className="p-6 pt-6">
-                  <SectionHeading icon={<IconShieldCheck />}>Prérequis</SectionHeading>
-                  <RichOrLegacyText text={training.prerequisites} className="font-body text-sm text-foreground-muted" />
+                  <SectionHeading icon={<IconShieldCheck />}>
+                    Prérequis
+                  </SectionHeading>
+                  <RichOrLegacyText
+                    text={training.prerequisites}
+                    className="font-body text-sm text-foreground-muted"
+                  />
                 </CardContent>
               </Card>
             </div>
 
             <Card>
               <CardContent className="p-6 pt-6">
-                <h2 className="mb-3 font-display text-lg font-semibold text-accent">Modalités d'évaluation</h2>
-                <RichOrLegacyText text={training.assessment_methods} className="font-body text-sm text-foreground-muted" />
+                <h2 className="mb-3 font-display text-lg font-semibold text-accent">
+                  Modalités d’évaluation
+                </h2>
+                <RichOrLegacyText
+                  text={training.assessment_methods}
+                  className="font-body text-sm text-foreground-muted"
+                />
               </CardContent>
             </Card>
 
             <Card>
               <CardContent className="p-6 pt-6">
-                <h2 className="mb-3 font-display text-lg font-semibold text-accent">Accessibilité</h2>
-                <RichOrLegacyText text={training.accessibility_info} className="font-body text-sm text-foreground-muted" />
+                <h2 className="mb-3 font-display text-lg font-semibold text-accent">
+                  Accessibilité
+                </h2>
+                <RichOrLegacyText
+                  text={training.accessibility_info}
+                  className="font-body text-sm text-foreground-muted"
+                />
               </CardContent>
             </Card>
           </div>
@@ -272,32 +426,46 @@ export default async function TrainingDetailPage({
             <Card className="sticky top-24">
               <CardContent className="flex flex-col gap-6 p-6 pt-6">
                 <div className="flex items-end justify-between border-b border-border pb-6">
-                  <span className="font-display text-3xl font-bold text-accent">{training.price_ht} €</span>
-                  <span className="pb-1 font-body text-sm text-foreground-muted">HT / participant</span>
+                  <span className="font-display text-3xl font-bold text-accent">
+                    {training.price_ht} €
+                  </span>
+                  <span className="pb-1 font-body text-sm text-foreground-muted">
+                    HT / participant
+                  </span>
                 </div>
 
                 <dl className="flex flex-col gap-3 font-body text-sm">
                   <div className="flex items-center justify-between">
                     <dt className="text-foreground-muted">Durée</dt>
-                    <dd className="text-right font-semibold text-foreground">{training.duration_hours} heures</dd>
+                    <dd className="text-right font-semibold text-foreground">
+                      {training.duration_hours} heures
+                    </dd>
                   </div>
                   <div className="flex items-center justify-between">
                     <dt className="text-foreground-muted">Format</dt>
-                    <dd className="text-right font-semibold text-foreground">{training.modalities}</dd>
+                    <dd className="text-right font-semibold text-foreground">
+                      {training.modalities}
+                    </dd>
                   </div>
                   {training.is_certifying && (
                     <div className="flex items-center justify-between">
                       <dt className="text-foreground-muted">Certification</dt>
                       <dd className="text-right font-semibold text-foreground">
-                        {training.certification_name || "Certificat de réalisation"}
+                        {training.certification_name ||
+                          "Certificat de réalisation"}
                       </dd>
                     </div>
                   )}
                   {session && (
                     <div className="flex items-center justify-between">
-                      <dt className="text-foreground-muted">Prochaine session</dt>
+                      <dt className="text-foreground-muted">
+                        Prochaine session
+                      </dt>
                       <dd className="text-right font-semibold text-foreground">
-                        {new Date(session.starts_on).toLocaleDateString("fr-FR")} · {session.reference}
+                        {new Date(session.starts_on).toLocaleDateString(
+                          "fr-FR",
+                        )}{" "}
+                        · {session.reference}
                       </dd>
                     </div>
                   )}
@@ -309,16 +477,20 @@ export default async function TrainingDetailPage({
                       Aucune session ouverte pour le moment.
                     </p>
                   ) : existingEnrollment ? (
-                    <p role="status" className="rounded-DEFAULT bg-success-bg px-3 py-2 font-body text-sm text-success">
-                      Inscription enregistrée — statut : {existingEnrollment.status}. Un gestionnaire te
-                      contactera pour la suite.
+                    <p
+                      role="status"
+                      className="rounded-DEFAULT bg-success-bg px-3 py-2 font-body text-sm text-success"
+                    >
+                      Inscription enregistrée — statut :{" "}
+                      {existingEnrollment.status}. Un gestionnaire te contactera
+                      pour la suite.
                     </p>
                   ) : user ? (
                     <EnrollForm sessionId={session.id} slug={training.slug} />
                   ) : (
                     <Link href={`/connexion?next=/formations/${training.slug}`}>
                       <Button variant="accent" className="w-full">
-                        Se connecter pour s'inscrire
+                        Se connecter pour s’inscrire
                       </Button>
                     </Link>
                   )}
@@ -339,11 +511,15 @@ export default async function TrainingDetailPage({
                       Inscrire un salarié
                     </h2>
                     <p className="mt-1 font-body text-xs text-foreground-muted">
-                      En tant que responsable d&apos;entreprise, inscrivez directement un de vos
-                      salariés à cette session.
+                      En tant que responsable d&apos;entreprise, inscrivez
+                      directement un de vos salariés à cette session.
                     </p>
                   </div>
-                  <EnrollEmployeeForm sessionId={session.id} slug={training.slug} employees={employees} />
+                  <EnrollEmployeeForm
+                    sessionId={session.id}
+                    slug={training.slug}
+                    employees={employees}
+                  />
                 </CardContent>
               </Card>
             )}

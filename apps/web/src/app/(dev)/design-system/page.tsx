@@ -20,10 +20,18 @@ import {
 
 export const metadata = { title: "Design system — Titan Kinetic" };
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function Section({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
   return (
     <section className="flex flex-col gap-4">
-      <h2 className="font-display text-xl font-semibold text-foreground">{title}</h2>
+      <h2 className="font-display text-xl font-semibold text-foreground">
+        {title}
+      </h2>
       <div className="flex flex-wrap items-start gap-4">{children}</div>
     </section>
   );
@@ -48,8 +56,16 @@ function Primitives() {
 
       <Section title="Champs de saisie">
         <Input label="Email" placeholder="vous@exemple.fr" className="w-64" />
-        <PasswordInput label="Mot de passe" hint="8 caractères minimum" className="w-64" />
-        <Input label="Champ en erreur" error="Ce champ est requis." className="w-64" />
+        <PasswordInput
+          label="Mot de passe"
+          hint="8 caractères minimum"
+          className="w-64"
+        />
+        <Input
+          label="Champ en erreur"
+          error="Ce champ est requis."
+          className="w-64"
+        />
         <Input label="Désactivé" disabled placeholder="—" className="w-64" />
       </Section>
 
@@ -65,7 +81,7 @@ function Primitives() {
         <Card className="w-80">
           <CardHeader>
             <CardTitle>Formation</CardTitle>
-            <CardDescription>Management d'équipe — 21h</CardDescription>
+            <CardDescription>Management d’équipe — 21h</CardDescription>
           </CardHeader>
           <CardContent>
             <p className="font-body text-sm text-foreground-muted">
@@ -117,7 +133,9 @@ function Primitives() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableEmpty colSpan={2}>Aucune inscription pour le moment.</TableEmpty>
+            <TableEmpty colSpan={2}>
+              Aucune inscription pour le moment.
+            </TableEmpty>
           </TableBody>
         </Table>
       </Section>
@@ -133,20 +151,26 @@ export default function DesignSystemPage() {
           Design system — Titan Kinetic
         </h1>
         <p className="font-body text-sm text-foreground-muted">
-          Primitives construites à partir des tokens extraits des maquettes Stitch,
-          en thème clair et sombre forcés (indépendants du thème système) pour
-          comparaison directe.
+          Primitives construites à partir des tokens extraits des maquettes
+          Stitch, en thème clair et sombre forcés (indépendants du thème
+          système) pour comparaison directe.
         </p>
       </header>
 
-      <div data-theme="light" className="rounded-xl border border-border bg-background p-8">
+      <div
+        data-theme="light"
+        className="rounded-xl border border-border bg-background p-8"
+      >
         <h2 className="mb-8 font-mono-label text-xs uppercase tracking-wide text-foreground-muted">
           Thème clair
         </h2>
         <Primitives />
       </div>
 
-      <div data-theme="dark" className="rounded-xl border border-border bg-background p-8">
+      <div
+        data-theme="dark"
+        className="rounded-xl border border-border bg-background p-8"
+      >
         <h2 className="mb-8 font-mono-label text-xs uppercase tracking-wide text-foreground-muted">
           Thème sombre
         </h2>
