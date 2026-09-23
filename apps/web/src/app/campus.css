@@ -1458,3 +1458,117 @@ html {
     display: none !important;
   }
 }
+
+
+/* The alternative campus palette is independent of the learning workspace. */
+.campus-palette-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  gap: 8px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  color: var(--color-foreground);
+  cursor: pointer;
+  font-size: 11px;
+}
+.campus-palette-toggle svg { width: 20px; height: 20px; }
+.campus-palette-toggle:hover { background: var(--color-surface-elevated); }
+.campus-palette-toggle[aria-pressed="true"] {
+  background: #e7f0e9;
+  border-color: #567366;
+}
+@media (max-width: 1200px) {
+  .campus-palette-toggle span { display: none; }
+}
+@media (max-width: 480px) {
+  .campus-header-inner { gap: 8px; flex-wrap: wrap; padding-block: 12px; }
+  .campus-header-actions { gap: 4px; }
+  .campus-login { padding: 10px 7px; }
+  .campus-login span { display: none; }
+  .campus-palette-toggle { min-width: 36px; min-height: 44px; padding: 7px; }
+}
+html[data-campus-theme="light"] .campus-root[data-theme] {
+  --color-background: #ffffff;
+  --color-surface: #f4f7f3;
+  --color-surface-elevated: #eaf0e9;
+  --color-surface-zebra: #f4f7f3;
+  --color-border: #ccd9d0;
+  --color-foreground: #183e34;
+  --color-foreground-muted: #52685f;
+  --color-primary: #214b3d;
+  --color-on-primary: #ffffff;
+  --color-accent: #f5b292;
+  --color-accent-text: #9b462d;
+  --color-on-accent: #183e34;
+  color-scheme: light;
+}
+html[data-campus-theme="light"] .campus-root {
+  .text-accent, .hover\:text-accent:hover { color: var(--color-accent-text); }
+  .bg-primary.text-accent { color: #f5b292; }
+  a.text-accent-text { text-decoration: underline; text-underline-offset: 3px; }
+  .campus-hero h1 em,
+  .campus-text-link:hover,
+  .journey-tabs button[aria-selected="true"],
+  .journey-panel a,
+  .course-link,
+  .session-list time,
+  .session-list > a:hover h3 { color: #9b462d; }
+
+  .hero-description, .hero-note, .journey-panel p,
+  .section-heading > p, .category-links > span,
+  .course-content > p, .course-bottom small,
+  .section-bottom > span, .campus-facts span,
+  .catalogue-count, .catalogue-empty p { color: #52685f; }
+
+  .hero-note strong { color: #183e34; }
+  .status-dot { background: #426a50; }
+  .small-orbit, .orbital-star, .section-heading h2 em { color: #426a50; }
+  .coordinate, .journey-number, .journey-tabs button { color: #52685f; }
+  .journey-tabs { border-color: #ccd9d0; }
+  .journey-tabs button span { opacity: 1; }
+  .orbit-one { border-bottom-color: #73967e; }
+  .campus-ticker {
+    background: #f1f6ef;
+    color: #3e604c;
+    border-color: #ccd9d0;
+  }
+  .campus-ticker span { color: #9b462d; }
+  .campus-search {
+    background: #f4f7f3;
+    border-color: #8ea698;
+    color: #426a50;
+  }
+  .campus-search input { color: #183e34; }
+  .campus-search input::placeholder { color: #52685f; }
+  .category-links a { border-color: #b7cabb; }
+  .category-links a:hover { background: #eaf0e9; }
+  .course-card { background: #ffffff; border-color: #ccd9d0; }
+  .course-card:hover { border-color: #64816e; box-shadow: 0 18px 45px #183e3412; }
+  .course-meta { color: #52685f; }
+  .course-meta span, .course-bottom { border-color: #ccd9d0; }
+  .course-date { color: #426a50 !important; }
+  .course-card:focus-within { outline-color: #9b462d; }
+  .course-link { border-color: #8ea698; }
+  .experience-section { background: #f1f5ed; }
+  .session-list > a { border-color: #ccd9d0; }
+  .team-section {
+    --color-foreground: #f3f0e7;
+    --color-accent-text: #f5b292;
+    color: #f3f0e7;
+  }
+  .campus-footer {
+    --color-foreground: #f3f0e7;
+    --color-accent-text: #f5b292;
+  }
+  .catalogue-hero {
+    background: radial-gradient(ellipse at 85% 50%, #e1eddf, transparent 65%);
+    border-color: #ccd9d0;
+  }
+  .catalogue-filters { background: #f4f7f3 !important; }
+  .catalogue-empty { border-color: #8ea698; }
+}

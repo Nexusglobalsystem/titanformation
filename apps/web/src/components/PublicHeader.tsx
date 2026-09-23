@@ -3,6 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { SkipLink } from "@titan-kinetic/ui";
+import { PaletteToggle } from "./PaletteToggle";
 import { Brand } from "./Brand";
 export function PublicHeader() {
   const pathname = usePathname();
@@ -29,6 +30,7 @@ export function PublicHeader() {
             <Link href="/#entreprises">Pour les équipes</Link>
           </nav>
           <div className="campus-header-actions">
+            <PaletteToggle />
             <Link href="/connexion" className="campus-login">
               Mon espace <span aria-hidden="true">↗</span>
             </Link>
